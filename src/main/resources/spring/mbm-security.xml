@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+  xmlns:beans="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+           http://www.springframework.org/schema/security
+           http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+ 
+    <http>
+        <intercept-url pattern="/" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/favicon.ico" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/index.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/*.html" access="ROLE_USER" />
+        <openid-login user-service-ref="userService">
+            <attribute-exchange>
+                <openid-attribute name="email" type="http://axschema.org/contact/email" required="true" />
+            </attribute-exchange>
+        </openid-login>
+    </http>
+
+    <beans:bean id="openIdProvider" class="org.springframework.security.openid.OpenIDAuthenticationProvider">
+        <beans:property name="userDetailsService" ref="userService"/>
+    </beans:bean>
+    
+    <authentication-manager>
+        <authentication-provider ref="openIdProvider" />
+    </authentication-manager>
+</beans:beans>
