@@ -15,11 +15,16 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 
+/**
+ * Handles the process of authenticating all users
+ */
 @Component("userService")
 public class AuthenticateAllUsers implements UserDetailsService {
 
   private final Logger log = LoggerFactory.getLogger(AuthenticateAllUsers.class);
+
   private final static GrantedAuthority CUSTOMER = new SimpleGrantedAuthority("ROLE_USER");
+  private final static GrantedAuthority MERCHANT = new SimpleGrantedAuthority("ROLE_ADMIN");
 
   @Autowired
   private CustomerService customerService;
@@ -28,7 +33,8 @@ public class AuthenticateAllUsers implements UserDetailsService {
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     log.info("User '{}' logged in", username);
     MDC.put("user", username);
-    customerService.haveBeenAuthenticated(username, "test");
+    // TODO Hook into the database
+    //customerService.haveBeenAuthenticated(username, "test");
     return new User(username, "", Collections.singleton(CUSTOMER));
   }
 }

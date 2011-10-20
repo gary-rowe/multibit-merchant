@@ -5,9 +5,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body>
-<p>Hello, World!</p>
+<p>Welcome to the account page, ${friendlyName}!</p>
 </body>
-<script type="text/javascript" language="JavaScript"
-        src="js/jquery-i18n-properties-1.0.9.js"></script>
 
 </html>

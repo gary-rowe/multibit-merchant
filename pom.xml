@@ -227,6 +227,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <resteasy.version>1.2.GA</resteasy.version>
     <spring.version>3.1.0.M2</spring.version>
     <slf4j.version>1.6.1</slf4j.version>
   </properties>
