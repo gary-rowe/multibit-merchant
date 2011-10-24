@@ -12,12 +12,15 @@
     <intercept-url pattern="/" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
     <intercept-url pattern="/favicon.ico" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
     <intercept-url pattern="/index.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+    <intercept-url pattern="/authenticate.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
 
     <!-- Customer access -->
     <intercept-url pattern="/*" access="ROLE_USER"/>
 
     <!-- Admin access -->
     <intercept-url pattern="/admin/*" access="ROLE_ADMIN"/>
+
+    <form-login login-page='/authenticate.html'/>
 
     <!-- Determine which credentials need visibility -->
     <openid-login user-service-ref="userService">

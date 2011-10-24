@@ -7,6 +7,12 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class CatalogService {
 
+  @RequestMapping("/authenticate.html")
+  public ModelAndView authenticate() {
+
+    return new ModelAndView("authenticate");
+  }
+
   @RequestMapping("/index.html")
   public ModelAndView index() {
 
