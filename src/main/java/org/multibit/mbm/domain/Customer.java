@@ -2,24 +2,26 @@ package org.multibit.mbm.domain;
 
 import org.multibit.mbm.util.ObjectUtils;
 
-import java.io.Serializable;
 import java.util.UUID;
 
-public final class Customer implements Serializable {
+/**
+ * <p>A Customer represents a member of the general public</p>
+ */
+public final class Customer {
 
-  private static final long serialVersionUID = 2L;
+  // Mandatory fields
   private final UUID id;
   private final String openId;
-  private final String email;
 
-  public Customer(UUID id, String openId, String email) {
+  // Optional fields
+  private String emailAddress=null;
+
+  public Customer(UUID id, String openId) {
     Validate.isNotNull(id, "Id");
     Validate.isNotNull(openId, "OpenId");
-    Validate.isNotNull(email, "Email");
 
     this.id = id;
     this.openId = openId;
-    this.email = email;
   }
 
   public UUID getId() {
@@ -30,8 +32,12 @@ public final class Customer implements Serializable {
     return openId;
   }
 
-  public String getEmail() {
-    return email;
+  public String getEmailAddress() {
+    return emailAddress;
+  }
+
+  public void setEmailAddress(String emailAddress) {
+    this.emailAddress = emailAddress;
   }
 
   @Override
@@ -45,17 +51,16 @@ public final class Customer implements Serializable {
     final Customer other = (Customer) obj;
 
     return ObjectUtils.isEqual(id, other.id,
-      openId, other.openId,
-      email, other.email);
+      openId, other.openId, emailAddress, other.emailAddress);
   }
 
   @Override
   public int hashCode() {
-    return ObjectUtils.getHashCode(id, openId, email);
+    return ObjectUtils.getHashCode(id, openId, emailAddress);
   }
 
   @Override
   public String toString() {
-    return String.format("Customer[id=%s, openId='%s', email='%s']", id, openId, email + "]");
+    return String.format("Customer[id=%s, openId='%s', emailAddress='%s']]", id, openId, emailAddress);
   }
 }

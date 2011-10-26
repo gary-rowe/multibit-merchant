@@ -5,7 +5,7 @@ import org.multibit.mbm.domain.Customer;
 
 public interface CustomerDao {
 
-    Customer getCustomerByOpenId(String username) throws CustomerNotFoundException;
+  Customer getCustomerByOpenId(String uuid) throws CustomerNotFoundException;
 
-    void newCustomer(Customer newCustomer);
+  void newCustomer(Customer newCustomer);
 }

@@ -10,24 +10,26 @@ import org.springframework.stereotype.Service;
 @Service
 public class DefaultCustomerService implements CustomerService {
 
-    @Autowired
-    private CustomerDao customerDao;
-    @Autowired
-    private IdGenerator idGenerator;
+  @Autowired
+  private CustomerDao customerDao;
+  @Autowired
+  private IdGenerator idGenerator;
 
-    @Override
-    public void haveBeenAuthenticated(String username, String email) {
-        try {
-            customerDao.getCustomerByOpenId(username);
-        } catch (CustomerNotFoundException ex) {
-            Customer newCustomer = new Customer(idGenerator.random(), username, email);
-            customerDao.newCustomer(newCustomer);
-        }
-
+  @Override
+  public void haveBeenAuthenticated(String openId) {
+    try {
+      // Is this a new customer?
+      customerDao.getCustomerByOpenId(openId);
+    } catch (CustomerNotFoundException ex) {
+      // Yes, so add them in
+      Customer newCustomer = new Customer(idGenerator.random(), openId);
+      customerDao.newCustomer(newCustomer);
     }
 
-    @Override
-    public Customer getCustomerFromOpenId(String openId) throws CustomerNotFoundException {
-        return customerDao.getCustomerByOpenId(openId);
-    }
+  }
+
+  @Override
+  public Customer getCustomerFromOpenId(String openId) throws CustomerNotFoundException {
+    return customerDao.getCustomerByOpenId(openId);
+  }
 }

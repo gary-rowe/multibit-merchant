@@ -8,9 +8,10 @@
         http://www.springframework.org/schema/beans 
         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-    <context:component-scan base-package="org.multibit.mbm"/>
+  <context:component-scan base-package="org.multibit.mbm"/>
 
-    <import resource="classpath:/spring/mbm-rest.xml"/>
-    <import resource="classpath:/spring/mbm-jdbc.xml"/>
-    <import resource="classpath:/spring/mbm-security.xml"/>
+  <import resource="classpath:/spring/mbm-rest.xml"/>
+  <import resource="classpath:/spring/mbm-jdbc.xml"/>
+  <import resource="classpath:/spring/mbm-security.xml"/>
+
 </beans>

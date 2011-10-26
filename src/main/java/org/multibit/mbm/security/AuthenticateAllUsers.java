@@ -32,9 +32,15 @@ public class AuthenticateAllUsers implements UserDetailsService {
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     log.info("User '{}' logged in", username);
-    MDC.put("user", username);
-    // TODO Hook into the database
-    //customerService.haveBeenAuthenticated(username, "test");
+    // Keep track of their activity in the logs
+    MDC.put("username", username);
+
+    // Insert into data if new
+      customerService.haveBeenAuthenticated(username);
+
+    // TODO Read the database to get GrantedAuthority
+
+    // Provide a default principal (no password)
     return new User(username, "", Collections.singleton(CUSTOMER));
   }
 }

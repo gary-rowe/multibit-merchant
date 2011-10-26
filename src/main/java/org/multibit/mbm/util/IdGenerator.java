@@ -4,5 +4,5 @@ import java.util.UUID;
 
 public interface IdGenerator {
 
-    UUID random();
+  UUID random();
 }

@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class CatalogService {
+public class CatalogController {
 
   @RequestMapping("/authenticate.html")
   public ModelAndView authenticate() {
@@ -16,7 +16,7 @@ public class CatalogService {
   @RequestMapping("/index.html")
   public ModelAndView index() {
 
-    // TODO Add a model
+    // TODO Add a model providing products
     return new ModelAndView("index");
   }
 }

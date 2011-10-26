@@ -25,15 +25,20 @@ public class JdbcCustomerDao implements CustomerDao {
     public Customer mapRow(ResultSet rs, int rowNum) throws SQLException {
       UUID id = UUID.fromString(rs.getString("id"));
       String openId = rs.getString("openId");
-      String email = rs.getString("email");
 
-      return new Customer(id, openId, email);
+      // TODO Separate the email from the Customer
+      String emailAddress = rs.getString("email");
+
+      Customer customer=new Customer(id, openId);
+      customer.setEmailAddress(emailAddress);
+
+      return customer;
     }
   }
 
   @Override
   public Customer getCustomerByOpenId(String openId) throws CustomerNotFoundException {
-    String sql = "select id, openid, email from customer where openId=?";
+    String sql = "select id, openid, email from customers where openId=?";
     try {
       return jdbcTemplate.queryForObject(sql, new CustomerRowMapper(), openId);
     } catch (IncorrectResultSizeDataAccessException ex) {
@@ -43,7 +48,7 @@ public class JdbcCustomerDao implements CustomerDao {
 
   @Override
   public void newCustomer(Customer customer) {
-    String sql = "insert into customer (id, openid, email) values (?, ?, ?)";
-    jdbcTemplate.update(sql, customer.getId(), customer.getOpenId(), customer.getEmail());
+    String sql = "insert into customers (id, openid, email) values (?, ?, ?)";
+    jdbcTemplate.update(sql, customer.getId(), customer.getOpenId(), customer.getEmailAddress());
   }
 }

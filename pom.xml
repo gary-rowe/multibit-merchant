@@ -42,7 +42,7 @@
           <stopPort>8009</stopPort>
           <scanIntervalSeconds>10</scanIntervalSeconds>
           <webAppConfig>
-            <contextPath>/</contextPath>
+            <contextPath>/mbm</contextPath>
           </webAppConfig>
           <connectors>
             <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
@@ -184,6 +184,20 @@
       <version>2.5</version>
       <scope>provided</scope>
     </dependency>
+    <!-- JSP support -->
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.2</version>
+			<scope>provided</scope>
+		</dependency>
+    <!-- JSTL support -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+			<scope>runtime</scope>
+		</dependency>
 
     <!-- JUnit with JMockit, Hamcrest, Spring test, OpenPojo -->
     <dependency>
