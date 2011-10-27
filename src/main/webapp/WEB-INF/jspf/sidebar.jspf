@@ -1,0 +1,33 @@
+<%@include file="/WEB-INF/jspf/taglibs.jspf" %>
+<div id="sidebar">
+
+  <div class="offers sidepanel">
+    <h3>Latest offers</h3>
+
+    <div class="latest-offers">
+
+      <div class="latest-offer">
+        <img src="<c:url value="/images/mbm/icons/icon.png"/>" alt="Bitcoin Mug" class="os-logo">
+        <p>Bitcoin Mug!</p>
+      </div>
+
+
+    </div>
+
+  </div>
+
+  <div class="newslist sidepanel">
+    <h3>News</h3>
+    <ul>
+      <li class="clock">
+        <div><p>MultiBit Merchant saves you time</p></div>
+      </li>
+      <li class="secure">
+        <div><p>Secure: MultiBit Merchant uses the Bitcoin currency protocol</p></div>
+      </li>
+      <li class="globe">
+        <div><p>International: 7 languages supported, and more on the way</p></div>
+      </li>
+    </ul>
+  </div>
+</div>

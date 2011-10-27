@@ -10,13 +10,13 @@ public class CatalogController {
   @RequestMapping("/authenticate.html")
   public ModelAndView authenticate() {
 
-    return new ModelAndView("authenticate");
+    return new ModelAndView("public/authenticate");
   }
 
   @RequestMapping("/index.html")
   public ModelAndView index() {
 
     // TODO Add a model providing products
-    return new ModelAndView("index");
+    return new ModelAndView("public/index");
   }
 }

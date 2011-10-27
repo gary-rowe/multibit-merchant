@@ -1,0 +1,9 @@
+<%@include file="/WEB-INF/jspf/taglibs.jspf" %>
+<div id="footer">
+  <p>
+    <small>MultiBit Merchant is developed by <a href="http://multibit.org">Gary Rowe</a> at MultiBit.org. All content is
+      released under the (very open) <a href="http://creativecommons.org/licenses/MIT/">MIT licence</a>.
+      2011.
+    </small>
+  </p>
+</div>

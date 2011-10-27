@@ -1,0 +1,15 @@
+<%@include file="/WEB-INF/jspf/taglibs.jspf" %>
+<div id="header">
+  <h1>MultiBit</h1>
+
+  <h2>Secure lightweight international Bitcoin wallet for Windows, Mac OS and Linux</h2>
+
+  <div id="nav">
+    <ul>
+      <!-- TODO Add dynamic page selection from model -->
+      <li class="selected"><a href="<c:url value="index.html"/>" title="<fmt:message key="catalog.tab" />"><fmt:message key="catalog.tab" /></a></li>
+      <li><a href="account.html" title="<fmt:message key="account.tab" />"><fmt:message key="account.tab" /></a></li>
+      <li><a href="<c:url value="/j_spring_security_logout"/>" title="<fmt:message key="logout.tab" />"><fmt:message key="logout.tab" /></a></li>
+    </ul>
+  </div>
+</div>

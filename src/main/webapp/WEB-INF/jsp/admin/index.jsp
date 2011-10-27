@@ -11,7 +11,7 @@
 <div id="content">
   <div id="main">
     <div class="intro">
-      <p>Welcome to your account page, ${emailAddress}!</p>
+      <p>Welcome to the admin page, ${emailAddress}!</p>
 
     </div>
 
