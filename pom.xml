@@ -101,10 +101,16 @@
       <artifactId>spring-beans</artifactId>
       <version>${spring.version}</version>
     </dependency>
-    <!-- Spring JDBC for database -->
+    <!-- Spring JDBC for direct database queries -->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-jdbc</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <!-- Spring JPA for ORM -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-orm</artifactId>
       <version>${spring.version}</version>
     </dependency>
     <!-- Spring AOP for aspects via annotations -->
@@ -130,6 +136,32 @@
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-web</artifactId>
       <version>${spring.version}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>spring-web</artifactId>
+          <groupId>org.springframework</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>spring-expression</artifactId>
+          <groupId>org.springframework</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>spring-jdbc</artifactId>
+          <groupId>org.springframework</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>spring-context</artifactId>
+          <groupId>org.springframework</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>spring-core</artifactId>
+          <groupId>org.springframework</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>spring-beans</artifactId>
+          <groupId>org.springframework</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
@@ -140,12 +172,46 @@
           <groupId>commons-logging</groupId>
           <artifactId>commons-logging</artifactId>
         </exclusion>
+        <exclusion>
+          <artifactId>spring-context</artifactId>
+          <groupId>org.springframework</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>spring-beans</artifactId>
+          <groupId>org.springframework</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>spring-core</artifactId>
+          <groupId>org.springframework</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>spring-web</artifactId>
+          <groupId>org.springframework</groupId>
+        </exclusion>
       </exclusions>
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-config</artifactId>
       <version>${spring.version}</version>
+    </dependency>
+
+    <!-- Hibernate for persistence -->
+    <dependency>
+      <groupId>org.hibernate.java-persistence</groupId>
+      <artifactId>jpa-api</artifactId>
+      <version>2.0-cr-1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-entitymanager</artifactId>
+      <version>3.5.0-Beta-2</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>hsqldb</artifactId>
+          <groupId>hsqldb</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <!-- SLF4J for logging API -->
@@ -169,6 +235,13 @@
       <scope>runtime</scope>
     </dependency>
 
+    <!-- All time handling is through Joda -->
+    <dependency>
+      <groupId>joda-time</groupId>
+      <artifactId>joda-time</artifactId>
+      <version>1.6.2</version>
+    </dependency>
+
     <!-- H2 -->
     <dependency>
       <groupId>com.h2database</groupId>
@@ -185,19 +258,19 @@
       <scope>provided</scope>
     </dependency>
     <!-- JSP support -->
-		<dependency>
-			<groupId>javax.servlet.jsp</groupId>
-			<artifactId>jsp-api</artifactId>
-			<version>2.2</version>
-			<scope>provided</scope>
-		</dependency>
+    <dependency>
+      <groupId>javax.servlet.jsp</groupId>
+      <artifactId>jsp-api</artifactId>
+      <version>2.2</version>
+      <scope>provided</scope>
+    </dependency>
     <!-- JSTL support -->
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jstl</artifactId>
-			<version>1.2</version>
-			<scope>runtime</scope>
-		</dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>jstl</artifactId>
+      <version>1.2</version>
+      <scope>runtime</scope>
+    </dependency>
 
     <!-- JUnit with JMockit, Hamcrest, Spring test, OpenPojo -->
     <dependency>

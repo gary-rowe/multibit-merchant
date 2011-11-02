@@ -14,4 +14,10 @@ public final class Validate {
     }
   }
 
+  public static void isNull(Object obj, String fieldName) {
+    if (obj != null) {
+      throw new IllegalArgumentException(fieldName + " is not null!");
+    }
+  }
+
 }

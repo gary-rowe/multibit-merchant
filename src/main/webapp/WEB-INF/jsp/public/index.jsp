@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<%@include file="/WEB-INF/jspf/head.jspf" %>
+  <%@include file="/WEB-INF/jspf/head.jspf" %>
 </head>
 <body id="home">
 <%@include file="/WEB-INF/jspf/header.jspf" %>

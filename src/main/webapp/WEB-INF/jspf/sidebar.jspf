@@ -8,6 +8,7 @@
 
       <div class="latest-offer">
         <img src="<c:url value="/images/mbm/icons/icon.png"/>" alt="Bitcoin Mug" class="os-logo">
+
         <p>Bitcoin Mug!</p>
       </div>
 

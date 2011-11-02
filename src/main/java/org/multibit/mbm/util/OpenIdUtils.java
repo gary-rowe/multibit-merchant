@@ -20,6 +20,7 @@ public class OpenIdUtils {
 
   /**
    * @param oid The OpenID authentication token
+   *
    * @return The attribute values (never null)
    */
   public static List<String> getAttributeValuesByName(OpenIDAuthenticationToken oid, String name) {

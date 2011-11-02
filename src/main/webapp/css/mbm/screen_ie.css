@@ -1,10 +1,26 @@
 /* IE fixes */
-#home #main, .column1, .column2 { display: inline; }
-#home #sidebar { float: right; margin-left: 0; }
-.subnav li, .more, .downloadbox, form, #content, #sidebar, .latest-offers, .latest-offer { height: 1%; }
-#main { float: left; margin-left: 40px; }
-small { font-size: 90%; }
+#home #main, .column1, .column2 {
+  display: inline;
+}
+
+#home #sidebar {
+  float: right;
+  margin-left: 0;
+}
+
+.subnav li, .more, .downloadbox, form, #content, #sidebar, .latest-offers, .latest-offer {
+  height: 1%;
+}
+
+#main {
+  float: left;
+  margin-left: 40px;
+}
+
+small {
+  font-size: 90%;
+}
 
 form.layout .textbox, form.layout textarea, form.layout select {
-	width: 23em;
+  width: 23em;
 }

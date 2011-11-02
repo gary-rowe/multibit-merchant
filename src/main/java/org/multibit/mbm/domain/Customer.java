@@ -2,19 +2,29 @@ package org.multibit.mbm.domain;
 
 import org.multibit.mbm.util.ObjectUtils;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.UUID;
 
 /**
  * <p>A Customer represents a member of the general public</p>
  */
-public final class Customer {
+@Entity(name = "Customer")
+@Table(name="customers")
+public class Customer implements Serializable {
 
-  // Mandatory fields
+  @Id
+  @Column(name="id", nullable = false)
   private final UUID id;
+
+  @Column(name="openId", nullable = false)
   private final String openId;
 
-  // Optional fields
-  private String emailAddress=null;
+  @Column(name="email",nullable = true)
+  private String emailAddress = null;
 
   public Customer(UUID id, String openId) {
     Validate.isNotNull(id, "Id");

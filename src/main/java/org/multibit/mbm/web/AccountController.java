@@ -16,7 +16,7 @@ import java.util.List;
 public class AccountController {
 
   @Resource
-  private CustomerService customerService=null;
+  private CustomerService customerService = null;
 
   @RequestMapping("/account.html")
   public String getView(Model model, Principal principal) {

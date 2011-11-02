@@ -36,7 +36,7 @@ public class AuthenticateAllUsers implements UserDetailsService {
     MDC.put("username", username);
 
     // Insert into data if new
-      customerService.haveBeenAuthenticated(username);
+    customerService.haveBeenAuthenticated(username);
 
     // TODO Read the database to get GrantedAuthority
 

@@ -24,7 +24,7 @@
     <form-login login-page='/authenticate.html'/>
 
     <!-- After sign out -->
-    <logout logout-success-url="/index.html" />
+    <logout logout-success-url="/index.html"/>
 
     <!-- Determine which credentials need visibility -->
     <openid-login user-service-ref="userService">
