@@ -14,18 +14,13 @@
        http://www.springframework.org/schema/jdbc
        http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
-  <!-- Enables annotation driven configuration -->
-  <context:annotation-config/>
-
-  <!-- DAOs and DTOs are in these packages and below -->
-  <context:component-scan base-package="org.multibit"/>
-
-  <tx:annotation-driven transaction-manager="transactionManager"/>
-
   <!-- Provides Spring managed Hibernate transactions -->
   <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
+
+  <!-- Transactions are defined through annotations -->
+  <tx:annotation-driven transaction-manager="transactionManager" />
 
   <!-- Exception translation bean post processor -->
   <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>

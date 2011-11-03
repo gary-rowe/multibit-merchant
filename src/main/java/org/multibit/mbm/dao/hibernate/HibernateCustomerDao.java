@@ -25,9 +25,12 @@ public class HibernateCustomerDao implements CustomerDao {
   }
 
   @Override
-  public void newCustomer(Customer customer) {
-    hibernateTemplate.persist(customer);
-    hibernateTemplate.flush();
+  public void persist(Customer customer) {
+    if (customer.getId() != null) {
+      hibernateTemplate.merge(customer);
+    } else {
+      hibernateTemplate.persist(customer);
+    }
   }
 
   public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {

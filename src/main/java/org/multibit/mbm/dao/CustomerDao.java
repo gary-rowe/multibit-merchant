@@ -13,8 +13,9 @@ public interface CustomerDao {
   Customer getCustomerByOpenId(String openId) throws CustomerNotFoundException;
 
   /**
-   * Add a new customer
-   * @param newCustomer A transient Customer
+   * Persist the given Customer
+   * @param newCustomer A Customer (either new or updated)
    */
-  void newCustomer(Customer newCustomer);
+  void persist(Customer newCustomer);
+
 }

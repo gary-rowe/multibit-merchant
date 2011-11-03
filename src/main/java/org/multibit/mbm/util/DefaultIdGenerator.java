@@ -2,6 +2,7 @@ package org.multibit.mbm.util;
 
 import org.springframework.stereotype.Component;
 
+import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -11,7 +12,8 @@ import java.util.UUID;
 public final class DefaultIdGenerator implements IdGenerator {
 
   @Override
-  public UUID random() {
-    return UUID.randomUUID();
+  public Long random() {
+    Random random = new Random();
+    return random.nextLong();
   }
 }

@@ -2,44 +2,48 @@ package org.multibit.mbm.domain;
 
 import org.multibit.mbm.util.ObjectUtils;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
-import java.util.UUID;
 
 /**
  * <p>A Customer represents a member of the general public</p>
  */
-@Entity(name = "Customer")
+@Entity
 @Table(name="customers")
 public class Customer implements Serializable {
 
+  private static final long serialVersionUID = 38947590324750L;
+
   @Id
-  @Column(name="id", nullable = false)
-  private final UUID id;
+  @GeneratedValue(strategy=GenerationType.IDENTITY)
+  @Column(name="id", unique = true, nullable = false)
+  private Long id=null;
 
   @Column(name="openId", nullable = false)
-  private final String openId;
+  private String openId=null;
 
   @Column(name="email",nullable = true)
   private String emailAddress = null;
 
-  public Customer(UUID id, String openId) {
-    Validate.isNotNull(id, "Id");
-    Validate.isNotNull(openId, "OpenId");
+  /*
+   * Default constructor required for Hibernate
+   */
+  public Customer() {}
 
-    this.id = id;
-    this.openId = openId;
+  public Long getId() {
+    return id;
   }
 
-  public UUID getId() {
-    return id;
+  public void setId(Long id) {
+    this.id = id;
   }
 
   public String getOpenId() {
     return openId;
+  }
+
+  public void setOpenId(String openId) {
+    this.openId = openId;
   }
 
   public String getEmailAddress() {

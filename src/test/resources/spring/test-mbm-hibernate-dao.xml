@@ -20,9 +20,10 @@
   <!-- DAOs and DTOs are in these packages and below -->
   <context:component-scan base-package="org.multibit"/>
 
-  <!-- TODO Move this into it's own context -->
+  <!-- Transactions are annotation driven -->
   <tx:annotation-driven transaction-manager="transactionManager"/>
 
+  <!-- Provide a Hibernate transaction manager -->
   <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
@@ -43,7 +44,6 @@
   <!-- Configure a simple H2 connection as an embedded DataSource -->
   <jdbc:embedded-database type="H2" id="dataSource">
     <jdbc:script location="classpath:/sql/1/0/0/patch-schema.sql"/>
-    <jdbc:script location="classpath:/sql/1/0/0/patch-data.sql"/>
   </jdbc:embedded-database>
 
 

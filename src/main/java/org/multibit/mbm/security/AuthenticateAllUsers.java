@@ -35,12 +35,12 @@ public class AuthenticateAllUsers implements UserDetailsService {
     // Keep track of their activity in the logs
     MDC.put("username", username);
 
-    // Insert into data if new
+    // In OpenId authentication the username is the URL
     customerService.haveBeenAuthenticated(username);
 
     // TODO Read the database to get GrantedAuthority
 
-    // Provide a default principal (no password)
+    // Provide a default UserDetails (no password)
     return new User(username, "", Collections.singleton(CUSTOMER));
   }
 }

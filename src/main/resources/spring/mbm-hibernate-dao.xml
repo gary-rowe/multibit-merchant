@@ -10,18 +10,16 @@
        http://www.springframework.org/schema/jdbc
        http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
-  <!-- Enables annotation driven configuration -->
-  <context:annotation-config/>
-
-  <!-- DAOs and DTOs are in these packages and below -->
-  <context:component-scan base-package="org.multibit.mbm.domain"/>
-
   <!-- Exception translation bean post processor -->
   <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
 
   <!-- Hibernate persistence configuration -->
   <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
-    <property name="packagesToScan" value="org.multibit.mbm.domain"/>
+    <property name="packagesToScan">
+      <array>
+        <value>org.multibit.mbm.domain</value>
+      </array>
+    </property>
     <property name="dataSource" ref="dataSource"/>
   </bean>
 
