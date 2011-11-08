@@ -3,9 +3,7 @@ package org.multibit.mbm.service;
 import org.multibit.mbm.dao.CustomerDao;
 import org.multibit.mbm.dao.CustomerNotFoundException;
 import org.multibit.mbm.domain.Customer;
-import org.multibit.mbm.util.IdGenerator;
 import org.multibit.mbm.util.OpenIdUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.openid.OpenIDAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -30,9 +28,6 @@ public class CustomerService {
 
   @Resource(name = "hibernateCustomerDao")
   private CustomerDao customerDao;
-  @Autowired
-  private IdGenerator idGenerator;
-
 
   /**
    * <p>Attempts to insert new Customers into the database in response to a successful login</p>
@@ -82,5 +77,17 @@ public class CustomerService {
     }
 
     return customer;
+  }
+
+  /**
+   * Package private to allow testing
+   * @return The Customer DAO
+   */
+  CustomerDao getCustomerDao() {
+    return customerDao;
+  }
+
+  public void setCustomerDao(CustomerDao customerDao) {
+    this.customerDao = customerDao;
   }
 }

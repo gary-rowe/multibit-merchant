@@ -14,19 +14,14 @@
        http://www.springframework.org/schema/jdbc
        http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
-  <!-- Enables annotation driven configuration -->
+  <!-- Requires a configured TransactionManager -->
+  <import resource="classpath:/spring/mbm-hibernate-service.xml" />
+
+  <!-- Enables annotation driven configuration for tests -->
   <context:annotation-config/>
 
-  <!-- DAOs and DTOs are in these packages and below -->
+  <!-- DAOs and DTOs are in these packages and below for tests -->
   <context:component-scan base-package="org.multibit"/>
-
-  <!-- Transactions are annotation driven -->
-  <tx:annotation-driven transaction-manager="transactionManager"/>
-
-  <!-- Provide a Hibernate transaction manager -->
-  <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
-    <property name="sessionFactory" ref="sessionFactory"/>
-  </bean>
 
   <!-- Exception translation bean post processor -->
   <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
@@ -45,6 +40,5 @@
   <jdbc:embedded-database type="H2" id="dataSource">
     <jdbc:script location="classpath:/sql/1/0/0/patch-schema.sql"/>
   </jdbc:embedded-database>
-
 
 </beans>
