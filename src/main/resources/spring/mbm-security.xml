@@ -11,10 +11,14 @@
 
     <!-- Anonymous (public) access -->
     <intercept-url pattern="/" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
-    <intercept-url pattern="/favicon.ico" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
-    <intercept-url pattern="/index.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
     <intercept-url pattern="/authenticate.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
     <intercept-url pattern="/api-demo.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+    <intercept-url pattern="/contact.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+    <intercept-url pattern="/delivery.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+    <intercept-url pattern="/favicon.ico" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+    <intercept-url pattern="/feedback.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+    <intercept-url pattern="/help.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+    <intercept-url pattern="/index.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
 
     <!-- Customer access -->
     <intercept-url pattern="/*" access="ROLE_USER"/>

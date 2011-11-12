@@ -25,24 +25,6 @@
     <property name="basename" value="i18n.mbm"/>
   </bean>
 
-  <!--<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>-->
-
-  <!--<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">-->
-    <!--<property name="messageConverters">-->
-      <!--<list>-->
-        <!--<ref bean="marshallingHttpMessageConverter"/>-->
-      <!--</list>-->
-    <!--</property>-->
-  <!--</bean>-->
-
-  <!-- Output marshallers -->
-
-  <!--&lt;!&ndash; JSON marshalling converter &ndash;&gt;-->
-  <!--<bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">-->
-    <!--<property name="marshaller" ref="jaxb2Marshaller"/>-->
-    <!--<property name="unmarshaller" ref="jaxb2Marshaller"/>-->
-  <!--</bean>-->
-
   <!-- XML marshalling converter -->
   <bean id="marshallingHttpMessageConverter" class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
     <property name="marshaller" ref="jaxb2Marshaller"/>
@@ -53,9 +35,6 @@
   <bean id="jaxb2Marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
     <property name="classesToBeBound" value="org.multibit.mbm.domain.Customer"/>
   </bean>
-
-
-
 
 </beans>
 

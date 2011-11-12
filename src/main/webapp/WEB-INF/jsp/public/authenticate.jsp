@@ -9,42 +9,55 @@
 <%@include file="/WEB-INF/jspf/header.jspf" %>
 <%@include file="/WEB-INF/jspf/alert.jspf" %>
 
-<div id="mbm-content">
+<div id="mbm-content" class="ui-widget-header">
   <!-- TODO i18n -->
   <p>Do you already have an account on one of these sites? Click the logo to sign in with it here:</p>
   <br/>
 
   <form class="openid" method="post" action="<c:url value="/j_spring_openid_security_check"/>">
-    <div>
+    <div class="ui-widget-content">
       <ul class="providers">
-        <li class="openid" title="OpenID"><img src="<c:url value="/plugins/jquery/openid/images/openidW.png"/>" alt="icon"/>
+        <li class="openid" title="OpenID"><img src="<c:url value="/plugins/jquery/openid/images/openid.gif"/>"
+                                               alt="icon"/>
           <span><strong>http://{your-openid-url}</strong></span></li>
         <li class="direct" title="Google">
-          <img src="<c:url value="/plugins/jquery/openid/images/googleW.png"/>" alt="icon"/><span>https://www.google.com/accounts/o8/id</span></li>
+          <img src="<c:url value="/plugins/jquery/openid/images/google.gif"/>" alt="icon"/><span>https://www.google.com/accounts/o8/id</span>
+        </li>
         <li class="direct" title="Yahoo">
-          <img src="<c:url value="/plugins/jquery/openid/images/yahooW.png"/>" alt="icon"/><span>http://yahoo.com/</span></li>
-        <li class="username" title="AOL screen name">
-          <img src="<c:url value="/plugins/jquery/openid/images/aolW.png"/>" alt="icon"/><span>http://openid.aol.com/<strong>username</strong></span></li>
+          <img src="<c:url value="/plugins/jquery/openid/images/yahoo.gif"/>" alt="icon"/><span>http://yahoo.com/</span>
+        </li>
         <li class="username" title="MyOpenID user name">
-          <img src="<c:url value="/plugins/jquery/openid/images/myopenid.png"/>" alt="icon"/><span>http://<strong>username</strong>.myopenid.com/</span></li>
+          <img src="<c:url value="/plugins/jquery/openid/images/myopenid.gif"/>" alt="icon"/><span>http://<strong>username</strong>.myopenid.com/</span>
+        </li>
+        <li class="username" title="AOL screen name">
+          <img src="<c:url value="/plugins/jquery/openid/images/aol.gif"/>"
+               alt="icon"/><span>http://openid.aol.com/<strong>username</strong></span></li>
+      </ul>
+      <ul class="providers">
         <li class="username" title="Flickr user name">
-          <img src="<c:url value="/plugins/jquery/openid/images/flickr.png"/>" alt="icon"/><span>http://flickr.com/<strong>username</strong>/</span></li>
+          <img src="<c:url value="/plugins/jquery/openid/images/flickr.png"/>"
+               alt="icon"/><span>http://flickr.com/<strong>username</strong>/</span></li>
         <li class="username" title="Technorati user name">
           <img src="<c:url value="/plugins/jquery/openid/images/technorati.png"/>"
                alt="icon"/><span>http://technorati.com/people/technorati/<strong>username</strong>/</span></li>
         <li class="username" title="Wordpress blog name">
-          <img src="<c:url value="/plugins/jquery/openid/images/wordpress.png"/>" alt="icon"/><span>http://<strong>username</strong>.wordpress.com</span></li>
+          <img src="<c:url value="/plugins/jquery/openid/images/wordpress.png"/>" alt="icon"/><span>http://<strong>username</strong>.wordpress.com</span>
+        </li>
         <li class="username" title="Blogger blog name">
-          <img src="<c:url value="/plugins/jquery/openid/images/blogger.png"/>" alt="icon"/><span>http://<strong>username</strong>.blogspot.com/</span></li>
+          <img src="<c:url value="/plugins/jquery/openid/images/blogger.png"/>"
+               alt="icon"/><span>http://<strong>username</strong>.blogspot.com/</span></li>
         <li class="username" title="LiveJournal blog name">
           <img src="<c:url value="/plugins/jquery/openid/images/livejournal.png"/>" alt="icon"/><span>http://<strong>username</strong>.livejournal.com</span>
         </li>
         <li class="username" title="ClaimID user name">
-          <img src="<c:url value="/plugins/jquery/openid/images/claimid.png"/>" alt="icon"/><span>http://claimid.com/<strong>username</strong></span></li>
+          <img src="<c:url value="/plugins/jquery/openid/images/claimid.png"/>"
+               alt="icon"/><span>http://claimid.com/<strong>username</strong></span></li>
         <li class="username" title="Vidoop user name">
-          <img src="<c:url value="/plugins/jquery/openid/images/vidoop.png"/>" alt="icon"/><span>http://<strong>username</strong>.myvidoop.com/</span></li>
+          <img src="<c:url value="/plugins/jquery/openid/images/vidoop.png"/>"
+               alt="icon"/><span>http://<strong>username</strong>.myvidoop.com/</span></li>
         <li class="username" title="Verisign user name">
-          <img src="<c:url value="/plugins/jquery/openid/images/verisign.png"/>" alt="icon"/><span>http://<strong>username</strong>.pip.verisignlabs.com/</span>
+          <img src="<c:url value="/plugins/jquery/openid/images/verisign.png"/>"
+               alt="icon"/><span>http://<strong>username</strong>.pip.verisignlabs.com/</span>
         </li>
       </ul>
     </div>
@@ -55,14 +68,14 @@
         <input type="submit" value="Login"/></div>
     </fieldset>
     <fieldset>
-      <label for="openid_identifier">Enter your <a class="openid_logo" href="http://openid.net">OpenID</a></label>
-
-      <div><input type="text" name="openid_identifier"/>
-        <input type="submit" value="<fmt:message key="login.login"/>"/></div>
+      <!-- TODO Make this look nice -->
+      <label for="openid_identifier">Enter your OpenID (example: <span>http://<strong>username</strong>.myopenid.com/</span>)</label>
+      <input type="text" name="openid_identifier" />
+      <input type="submit" value="<fmt:message key="login.login"/>"/>
       <noscript>
-        <p>OpenID is service that allows you to sign in to many different websites using a single identity.
+        OpenID is service that allows you to sign in to many different websites using a single identity.
           Find out <a href="http://openid.net/what/" target="_blank">more about OpenID</a> and <a
-            href="http://openid.net/get/" target="_blank">how to get an OpenID enabled account</a>.</p>
+            href="http://openid.net/get/" target="_blank">how to get an OpenID enabled account</a>.
       </noscript>
     </fieldset>
   </form>

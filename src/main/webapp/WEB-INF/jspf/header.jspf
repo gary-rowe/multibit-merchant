@@ -1,13 +1,12 @@
 <%@include file="/WEB-INF/jspf/taglibs.jspf" %>
-<div id="header">
-  <div id="mbm-nav">
-    <ul>
-      <!-- TODO Add dynamic page selection from model -->
-      <li class="selected"><a href="<c:url value="index.html"/>" title="<fmt:message key="catalog.tab" />"><fmt:message
-        key="catalog.tab"/></a></li>
-      <li><a href="account.html" title="<fmt:message key="account.tab" />"><fmt:message key="account.tab"/></a></li>
-      <li><a href="<c:url value="/j_spring_security_logout"/>" title="<fmt:message key="logout.tab" />"><fmt:message
-        key="logout.tab"/></a></li>
-    </ul>
-  </div>
+<div id="switcher"></div>
+<div id="mbm-header-primary" class="ui-widget-header">
+  <a href="<c:url value="delivery.html"/>"><fmt:message key="header.primary.delivery"/></a>&nbsp;|&nbsp;
+  <a href="<c:url value="contact.html"/>"><fmt:message key="header.primary.contact"/></a>&nbsp;|&nbsp;
+  <a href="<c:url value="feedback.html"/>"><fmt:message key="header.primary.feedback"/></a>&nbsp;|&nbsp;
+  <a href="<c:url value="help.html"/>"><fmt:message key="header.primary.help"/></a>&nbsp;|&nbsp;
+  <a href="<c:url value="account.html"/>"><fmt:message key="header.primary.account"/></a>&nbsp;|&nbsp;
+  <a href="<c:url value="/j_spring_security_logout"/>" title="<fmt:message key="header.primary.logout" />"><fmt:message key="header.primary.logout"/></a>&nbsp;
+</div>
+<div id="mbm-header-secondary" class="ui-widget-header">
 </div>

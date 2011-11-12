@@ -7,11 +7,10 @@
 <body>
 <%@include file="/WEB-INF/jspf/header.jspf" %>
 <%@include file="/WEB-INF/jspf/alert.jspf" %>
-<div id="mbm-content">
-  <input type="text" name="date" id="date"/>
-
-  <p>Welcome to the catalog page, ${emailAddress}!</p>
-
+<div id="mbm-content" class="ui-widget-header">
+  <div class="ui-widget-content">
+    <p>Welcome to the catalog page, ${emailAddress}!</p>
+  </div>
 </div>
 
 <%@include file="/WEB-INF/jspf/sidebar.jspf" %>
