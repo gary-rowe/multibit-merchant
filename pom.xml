@@ -208,6 +208,13 @@
       <version>${spring.version}</version>
     </dependency>
 
+    <!-- Jackson JSON Mapper -->
+    <dependency>
+      <groupId>org.codehaus.jackson</groupId>
+      <artifactId>jackson-mapper-asl</artifactId>
+      <version>1.9.2</version>
+    </dependency>
+
     <!-- Hibernate for persistence -->
     <dependency>
       <groupId>org.hibernate.java-persistence</groupId>
@@ -316,7 +323,7 @@
       <artifactId>cglib</artifactId>
       <version>2.2.2</version>
     </dependency>
-    
+
     <!-- OpenPojo to verify getters/setters -->
     <dependency>
       <groupId>com.googlecode.openpojo</groupId>

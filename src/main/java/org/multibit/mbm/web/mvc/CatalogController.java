@@ -4,6 +4,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+/**
+ * <p>Controller for public catalog </p>
+ *
+ * @since 1.0.0
+ */
 @Controller
 public class CatalogController {
 

@@ -8,11 +8,13 @@
            http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
   <http>
+
     <!-- Anonymous (public) access -->
     <intercept-url pattern="/" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
     <intercept-url pattern="/favicon.ico" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
     <intercept-url pattern="/index.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
     <intercept-url pattern="/authenticate.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+    <intercept-url pattern="/api-demo.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
 
     <!-- Customer access -->
     <intercept-url pattern="/*" access="ROLE_USER"/>
@@ -20,8 +22,9 @@
     <!-- Admin access -->
     <intercept-url pattern="/admin/*" access="ROLE_ADMIN"/>
 
-    <!-- Sign in -->
+    <!-- Sign in form -->
     <form-login login-page='/authenticate.html'/>
+
 
     <!-- After sign out -->
     <logout logout-success-url="/index.html"/>

@@ -13,6 +13,8 @@
 
   <!-- Internal resource resolver -->
   <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <!-- This resolver is always the last in the chain since it will resolve to an error page -->
+    <property name="order" value="99"/>
     <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
     <property name="prefix" value="/WEB-INF/jsp/"/>
     <property name="suffix" value=".jsp"/>
@@ -26,22 +28,34 @@
   <!--<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>-->
 
   <!--<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">-->
-  <!--<property name="messageConverters">-->
-  <!--<list>-->
-  <!--<ref bean="marshallingHttpMessageConverter"/>-->
-  <!--</list>-->
-  <!--</property>-->
+    <!--<property name="messageConverters">-->
+      <!--<list>-->
+        <!--<ref bean="marshallingHttpMessageConverter"/>-->
+      <!--</list>-->
+    <!--</property>-->
   <!--</bean>-->
 
-  <!--<bean id="marshallingHttpMessageConverter"-->
-  <!--class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">-->
-  <!--<property name="marshaller" ref="jaxb2Marshaller"/>-->
-  <!--<property name="unmarshaller" ref="jaxb2Marshaller"/>-->
+  <!-- Output marshallers -->
+
+  <!--&lt;!&ndash; JSON marshalling converter &ndash;&gt;-->
+  <!--<bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">-->
+    <!--<property name="marshaller" ref="jaxb2Marshaller"/>-->
+    <!--<property name="unmarshaller" ref="jaxb2Marshaller"/>-->
   <!--</bean>-->
 
-  <!--<bean id="jaxb2Marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">-->
-  <!--<property name="classesToBeBound" value="org.multibit.mbm.domain.Customer"/>-->
-  <!--</bean>-->
+  <!-- XML marshalling converter -->
+  <bean id="marshallingHttpMessageConverter" class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
+    <property name="marshaller" ref="jaxb2Marshaller"/>
+    <property name="unmarshaller" ref="jaxb2Marshaller"/>
+  </bean>
+
+  <!-- XML marshaller -->
+  <bean id="jaxb2Marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+    <property name="classesToBeBound" value="org.multibit.mbm.domain.Customer"/>
+  </bean>
+
+
+
 
 </beans>
 
