@@ -2,13 +2,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="author" content="MultiBit.org">
 <meta name="copyright" content="Copyright (c) 2011 MultiBit">
-<meta name="description" content="MultiBit Bitcoin wallet - Official Site">
+<meta name="description" content="MultiBit Merchant">
 <link rel="shortcut icon" href="<c:url value="/images/mbm/icons/icon.png"/>">
 
-<link rel="stylesheet" type="text/css" href="<c:url value="/css/mbm/screen.css" />">
-<!--[if lt IE 7]>
-<link rel="stylesheet" type="text/css" href="<c:url value="/css/mbm/screen_ie.css"/>">
-<![endif]-->
+<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/flick/jquery-ui.css" />
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/mbm/mbm.css"/>" />
 
-<script type="text/javascript" src="/js/jquery-1.6.4.js"></script>
 <title><fmt:message key="common.title"/></title>

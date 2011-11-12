@@ -4,23 +4,20 @@
 <head>
   <%@include file="/WEB-INF/jspf/head.jspf" %>
 </head>
-<body id="home">
+<body>
 <%@include file="/WEB-INF/jspf/header.jspf" %>
 <%@include file="/WEB-INF/jspf/alert.jspf" %>
 
-<div id="content">
-  <div id="main">
-    <div class="intro">
-      <p>Welcome to the admin page, ${emailAddress}!</p>
-
-    </div>
-
-  </div>
-
-  <%@include file="/WEB-INF/jspf/sidebar.jspf" %>
+<div id="mbm-content">
+  <p>Welcome to the admin page, ${emailAddress}!</p>
 
 </div>
 
+<%@include file="/WEB-INF/jspf/sidebar.jspf" %>
 <%@include file="/WEB-INF/jspf/footer.jspf" %>
 
+<%@include file="/WEB-INF/jspf/cdn-scripts.jspf" %>
+<%@include file="/WEB-INF/jspf/mbm-scripts.jspf" %>
+
+</body>
 </html>

@@ -17,11 +17,8 @@
   <!-- Security configuration for HTTP requests -->
   <import resource="classpath:/spring/mbm-security.xml"/>
 
-  <!-- The RESTful web services/controllers -->
-  <import resource="classpath:/spring/mbm-rest.xml"/>
-
   <!-- Supporting transactional services -->
-  <!--<import resource="classpath:/spring/mbm-hibernate-service.xml"/>-->
+  <import resource="classpath:/spring/mbm-hibernate-service.xml"/>
 
   <!-- Hibernate implementations of DAOs -->
   <import resource="classpath:/spring/mbm-hibernate-dao.xml"/>

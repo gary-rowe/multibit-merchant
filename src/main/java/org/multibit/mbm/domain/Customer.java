@@ -3,6 +3,10 @@ package org.multibit.mbm.domain;
 import org.multibit.mbm.util.ObjectUtils;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 /**
@@ -10,6 +14,8 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name="customers")
+@XmlRootElement(name = "Customer")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Customer implements Serializable {
 
   private static final long serialVersionUID = 38947590324750L;
@@ -17,6 +23,7 @@ public class Customer implements Serializable {
   @Id
   @GeneratedValue(strategy=GenerationType.IDENTITY)
   @Column(name="id", unique = true, nullable = false)
+  @XmlElement(name = "id")
   private Long id=null;
 
   @Column(name="openId", nullable = false)

@@ -1,10 +1,6 @@
 <%@include file="/WEB-INF/jspf/taglibs.jspf" %>
 <div id="header">
-  <h1>MultiBit</h1>
-
-  <h2>Secure lightweight international Bitcoin wallet for Windows, Mac OS and Linux</h2>
-
-  <div id="nav">
+  <div id="mbm-nav">
     <ul>
       <!-- TODO Add dynamic page selection from model -->
       <li class="selected"><a href="<c:url value="index.html"/>" title="<fmt:message key="catalog.tab" />"><fmt:message

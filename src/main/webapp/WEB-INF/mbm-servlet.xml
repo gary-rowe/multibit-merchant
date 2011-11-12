@@ -12,7 +12,7 @@
   <mvc:annotation-driven/>
 
   <!-- Internal resource resolver -->
-  <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+  <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
     <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
     <property name="prefix" value="/WEB-INF/jsp/"/>
     <property name="suffix" value=".jsp"/>
@@ -22,6 +22,26 @@
   <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
     <property name="basename" value="i18n.mbm"/>
   </bean>
+
+  <!--<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>-->
+
+  <!--<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">-->
+  <!--<property name="messageConverters">-->
+  <!--<list>-->
+  <!--<ref bean="marshallingHttpMessageConverter"/>-->
+  <!--</list>-->
+  <!--</property>-->
+  <!--</bean>-->
+
+  <!--<bean id="marshallingHttpMessageConverter"-->
+  <!--class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">-->
+  <!--<property name="marshaller" ref="jaxb2Marshaller"/>-->
+  <!--<property name="unmarshaller" ref="jaxb2Marshaller"/>-->
+  <!--</bean>-->
+
+  <!--<bean id="jaxb2Marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">-->
+  <!--<property name="classesToBeBound" value="org.multibit.mbm.domain.Customer"/>-->
+  <!--</bean>-->
 
 </beans>
 

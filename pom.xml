@@ -17,6 +17,12 @@
       <id>springframework-milestone</id>
       <url>http://maven.springframework.org/milestone</url>
     </repository>
+    <!-- JBoss for RESTEasy -->
+    <repository>
+      <id>org.jboss.resteasy</id>
+      <url>http://maven.antelink.com/content/groups/public-jboss/</url>
+    </repository>
+
   </repositories>
   <build>
     <plugins>
@@ -111,6 +117,12 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-orm</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <!-- Spring OXM for XML/JSON -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-oxm</artifactId>
       <version>${spring.version}</version>
     </dependency>
     <!-- Spring AOP for aspects via annotations -->
@@ -297,12 +309,14 @@
       <version>${spring.version}</version>
       <scope>test</scope>
     </dependency>
+
+    <!-- CGLIB2 for AOP -->
     <dependency>
       <groupId>cglib</groupId>
       <artifactId>cglib</artifactId>
       <version>2.2.2</version>
-      <scope>test</scope>
     </dependency>
+    
     <!-- OpenPojo to verify getters/setters -->
     <dependency>
       <groupId>com.googlecode.openpojo</groupId>
@@ -314,7 +328,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <resteasy.version>1.2.GA</resteasy.version>
+    <resteasy.version>2.2.3.GA</resteasy.version>
     <spring.version>3.1.0.M2</spring.version>
     <slf4j.version>1.6.1</slf4j.version>
   </properties>

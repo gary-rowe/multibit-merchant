@@ -50,6 +50,7 @@
   <logger name="org.springframework.beans.factory.config" level="DEBUG" />
   <logger name="httpclient.wire.header" level="DEBUG" />
   -->
+  <logger name="org.springframework.web" level="DEBUG" />
 
   <!-- Define logging for organisation applications only -->
   <logger name="org.multibit.mbm" level="DEBUG" />

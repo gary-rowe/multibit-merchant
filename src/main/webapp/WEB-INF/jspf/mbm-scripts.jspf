@@ -1,0 +1,2 @@
+<%@include file="/WEB-INF/jspf/taglibs.jspf" %>
+<script type="text/javascript" src="<c:url value="/js/mbm/alert.js"/>"></script>

@@ -1,2 +1,3 @@
 <%@include file="/WEB-INF/jspf/taglibs.jspf" %>
-<div id="alert"><p>An alert would be here</p></div>
+<div id="alert" class="alert"><p>An alert would be here</p></div>
+<button id="btn-alert">Click me!</button>
