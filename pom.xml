@@ -150,28 +150,28 @@
       <version>${spring.version}</version>
       <exclusions>
         <exclusion>
+          <groupId>org.springframework</groupId>
           <artifactId>spring-web</artifactId>
-          <groupId>org.springframework</groupId>
         </exclusion>
         <exclusion>
+          <groupId>org.springframework</groupId>
           <artifactId>spring-expression</artifactId>
-          <groupId>org.springframework</groupId>
         </exclusion>
         <exclusion>
+          <groupId>org.springframework</groupId>
           <artifactId>spring-jdbc</artifactId>
-          <groupId>org.springframework</groupId>
         </exclusion>
         <exclusion>
+          <groupId>org.springframework</groupId>
           <artifactId>spring-context</artifactId>
-          <groupId>org.springframework</groupId>
         </exclusion>
         <exclusion>
+          <groupId>org.springframework</groupId>
           <artifactId>spring-core</artifactId>
-          <groupId>org.springframework</groupId>
         </exclusion>
         <exclusion>
-          <artifactId>spring-beans</artifactId>
           <groupId>org.springframework</groupId>
+          <artifactId>spring-beans</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -185,20 +185,20 @@
           <artifactId>commons-logging</artifactId>
         </exclusion>
         <exclusion>
+          <groupId>org.springframework</groupId>
           <artifactId>spring-context</artifactId>
-          <groupId>org.springframework</groupId>
         </exclusion>
         <exclusion>
+          <groupId>org.springframework</groupId>
           <artifactId>spring-beans</artifactId>
-          <groupId>org.springframework</groupId>
         </exclusion>
         <exclusion>
+          <groupId>org.springframework</groupId>
           <artifactId>spring-core</artifactId>
-          <groupId>org.springframework</groupId>
         </exclusion>
         <exclusion>
-          <artifactId>spring-web</artifactId>
           <groupId>org.springframework</groupId>
+          <artifactId>spring-web</artifactId>
         </exclusion>
       </exclusions>
     </dependency>

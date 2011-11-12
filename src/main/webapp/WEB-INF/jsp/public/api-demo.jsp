@@ -5,13 +5,12 @@
   <%@include file="/WEB-INF/jspf/head.jspf" %>
 </head>
 <body>
-<h2>MultiBit Merchant API demonstrator</h2>
-
 <div id="tabs" class="hidden">
   <ul>
     <li><a href="#tab-1">Alerts</a></li>
     <li><a href="#tab-2">Time</a></li>
   </ul>
+  <p><a href="<c:url value="/index.html" />">Home</a> | <a href="<c:url value="/admin.html" />">Admin</a></p>
   <div id="tab-1">
     <p>The Alert API provides notification text that a customer should pay attention to.</p>
     <table>

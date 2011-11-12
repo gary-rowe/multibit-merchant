@@ -24,7 +24,7 @@ public class AuthenticateAllUsers implements UserDetailsService {
   private final Logger log = LoggerFactory.getLogger(AuthenticateAllUsers.class);
 
   private final static GrantedAuthority CUSTOMER = new SimpleGrantedAuthority("ROLE_USER");
-  private final static GrantedAuthority MERCHANT = new SimpleGrantedAuthority("ROLE_ADMIN");
+  private final static GrantedAuthority ADMIN = new SimpleGrantedAuthority("ROLE_ADMIN");
 
   @Autowired
   private CustomerService customerService;
