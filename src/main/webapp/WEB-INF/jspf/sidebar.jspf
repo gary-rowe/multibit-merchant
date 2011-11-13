@@ -1,13 +1,95 @@
 <%@include file="/WEB-INF/jspf/taglibs.jspf" %>
-<div id="mbm-sidebar-lhs" class="ui-widget">
-  <div class="ui-widget-header">
-    <p>LHS title</p>
+<div id="mbm-col2" class="col2">
+  <!-- TODO Create a link list search widget -->
+  <div class="ui-widget">
+    <p class="ui-widget-header">Categories</p>
+    <ul class="ui-widget-content">
+      <li>Deals of the Week</li>
+      <li>Gadgets</li>
+      <li>Technology</li>
+      <li>Entertainment</li>
+      <li>Toys & Games</li>
+      <li>Kids</li>
+      <li>Sports & Outdoors</li>
+      <li>Home & Garden</li>
+      <li>Food & Drink</li>
+      <li>Gifts</li>
+      <li>Personalised</li>
+      <li>Experiences</li>
+      <li>Christmas Decorations</li>
+      <li>Top 10s</li>
+      <li>Clearance</li>
+    </ul>
   </div>
-  <div class="ui-widget-content"><p>LHS content</p></div>
+
+  <!-- TODO Create a link list search widget -->
+  <div class="ui-widget">
+    <p class="ui-widget-header">Random</p>
+    <ul class="ui-widget-content">
+      <li>Geek</li>
+      <li>Giant</li>
+      <li>Retro</li>
+      <li>Funny</li>
+    </ul>
+  </div>
+
+  <!-- TODO Create a link list search widget -->
+  <div class="ui-widget">
+    <p class="ui-widget-header">Themes</p>
+    <ul class="ui-widget-content">
+      <li>New Stuff!</li>
+      <li>Angry Birds</li>
+    </ul>
+  </div>
+
+  <!-- TODO Create a link list search widget -->
+  <div class="ui-widget">
+    <p class="ui-widget-header">Explore</p>
+    <ul class="ui-widget-content">
+      <li>Randomiser</li>
+      <li>Show Me Everything</li>
+      <li>Gift Finder</li>
+    </ul>
+  </div>
+
+  <!-- TODO Create a link list search widget -->
+  <div class="ui-widget">
+    <p class="ui-widget-header">Browse by Price</p>
+    <ul class="ui-widget-content">
+      <li>Under 10 BTC</li>
+      <li>10 BTC - 25 BTC</li>
+      <li>25 BTC - 50 BTC</li>
+      <li>Over 50 BTC</li>
+    </ul>
+  </div>
+
 </div>
-<div id="mbm-sidebar-rhs" class="ui-widget">
-  <div class="ui-widget-header">
-    <p>RHS title</p>
+<div id="mbm-col3" class="col3">
+
+  <!-- TODO Create an image list item widget -->
+  <div class="ui-widget">
+    <p class="ui-widget-header">What's New?</p>
+    <ul class="ui-widget-content">
+      <li>BookBook for iPhone</li>
+      <li>Beats by Dre Pro Headphones</li>
+    </ul>
   </div>
-  <div class="ui-widget-content"><p>RHS content</p></div>
+
+  <!-- TODO Create a top N image list item widget -->
+  <div class="ui-widget">
+    <p class="ui-widget-header">Top Ten</p>
+    <ol class="ui-widget-content">
+      <li>Mario Cart Battle Pack</li>
+      <li>OLED Projector</li>
+      <li>Bitcoin Coffee Mug</li>
+      <li>Beats Headphones</li>
+      <li>The Slanket</li>
+      <li>USB Mini Vacuum Cleaner</li>
+      <li>Marmite Chocolate</li>
+      <li>iPhone Gloves</li>
+      <li>Bike Spoke Light</li>
+      <li>Red Hot Chilli Jellies</li>
+    </ol>
+  </div>
+
 </div>
