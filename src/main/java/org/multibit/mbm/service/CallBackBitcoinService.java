@@ -88,60 +88,40 @@ public class CallBackBitcoinService implements BitcoinService {
     return addressBucket;
   }
 
+  @Override
   public void setAddressBucket(List<Address> addressBucket) {
     this.addressBucket = addressBucket;
   }
 
   /**
    * notify any address listeners of any of the addresses which receive bitcoin
-   * in the pending transaction
+   * in the transaction
    * 
    * @param transaction
-   *          a pending transaction
+   * @param isPending
+   *          true = transaction is a pending transaction i.e zero confirms
+   *          false = transaction is a confirmed transaction
    */
-  public void notifyAddressListenersOfPendingTransaction(Transaction transaction) {
+  public void notifyAddressListenersOfTransaction(Transaction transaction,
+      boolean isPending) {
     if (transaction != null) {
       List<TransactionOutput> transactionOutputs = transaction.getOutputs();
       if (transactionOutputs != null) {
         for (TransactionOutput transactionOutput : transactionOutputs) {
           try {
-            Address loopAddress = transactionOutput.getScriptPubKey().getToAddress();
+            Address loopAddress = transactionOutput.getScriptPubKey()
+                .getToAddress();
 
             AddressListener addressListener = addressToAddressListenerMap
                 .get(loopAddress);
             if (addressListener != null) {
               // notify listener
-              addressListener.onPendingCoinsReceived(loopAddress, transaction);
-            }
-          } catch (ScriptException e) {
-            e.printStackTrace();
-          }
-        }
-      }
-    }
-  }
-
-  /**
-   * notify any address listeners of any of the addresses which receive bitcoin
-   * in the pending transaction
-   * 
-   * @param transaction
-   *          a confirmed transaction
-   */
-  public void notifyAddressListenersOfConfirmedTransaction(
-      Transaction transaction) {
-    if (transaction != null) {
-      List<TransactionOutput> transactionOutputs = transaction.getOutputs();
-      if (transactionOutputs != null) {
-        for (TransactionOutput transactionOutput : transactionOutputs) {
-          try {
-            Address loopAddress = transactionOutput.getScriptPubKey().getToAddress();
-
-            AddressListener addressListener = addressToAddressListenerMap
-                .get(loopAddress);
-            if (addressListener != null) {
-              // notify listener
-              addressListener.onCoinsReceived(loopAddress, transaction);
+              if (isPending) {
+                addressListener
+                    .onPendingCoinsReceived(loopAddress, transaction);
+              } else {
+                addressListener.onCoinsReceived(loopAddress, transaction);
+              }
             }
           } catch (ScriptException e) {
             e.printStackTrace();

@@ -41,6 +41,35 @@
           <showWarnings>true</showWarnings>
         </configuration>
       </plugin>
+      <plugin>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <!-- Put bitcoinj classes into target dir for production of the executable jar later -->       
+          <execution>
+            <id>unpack-bitcoinj-classes</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>com.google</groupId>
+                  <artifactId>bitcoinj</artifactId>
+                  <version>0.3-SNAPSHOT</version>
+                  <type>jar</type>
+                  <overWrite>false</overWrite>
+                  <outputDirectory>${basedir}/target/bitcoinj</outputDirectory>
+                  <includes>**/*.*</includes>
+                  <!-- excludes classes that are duplicated in MBM -->
+                  <excludes>**/Peer.class, **/Peer$*.class,**/PeerGroup*.class, **/PendingTransactionListener.class</excludes>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      
       <!-- Built-in SSL server for local development -->
       <plugin>
         <groupId>org.mortbay.jetty</groupId>
@@ -334,6 +363,8 @@
       <version>0.3.5</version>
       <scope>test</scope>
     </dependency>
+    
+    <!-- bitcoinj used in bitcoin network service layer -->
     <dependency>
       <groupId>com.google</groupId>
       <artifactId>bitcoinj</artifactId>

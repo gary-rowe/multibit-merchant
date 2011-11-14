@@ -38,7 +38,7 @@ public class CallBackBitcoinServiceTest{
     Address address3 = key3.toAddress(prodNet); 
     addressBucket.add(address3);
     
-    CallBackBitcoinService bitcoinService = (CallBackBitcoinService)CallBackBitcoinService.getBitcoinService();
+    BitcoinService bitcoinService = CallBackBitcoinService.getBitcoinService();
    
     assertNotNull(bitcoinService);
     
@@ -82,7 +82,7 @@ public class CallBackBitcoinServiceTest{
     
     Transaction transaction1 = TestUtils.createFakeTx(prodNet, BigInteger.ONE, address1);   // 1 BTC received to address1
 
-    bitcoinService.notifyAddressListenersOfPendingTransaction(transaction1);
+    bitcoinService.notifyAddressListenersOfTransaction(transaction1, true);
     
     assertTrue(addressListener1.onPendingCoinsReceivedCalled);
     assertFalse(addressListener1.onCoinsReceivedCalled);
@@ -118,7 +118,7 @@ public class CallBackBitcoinServiceTest{
     
     Transaction transaction2 = TestUtils.createFakeTx(prodNet, BigInteger.ONE, address2);   // 1 BTC received to address2
 
-    bitcoinService.notifyAddressListenersOfConfirmedTransaction(transaction2);
+    bitcoinService.notifyAddressListenersOfTransaction(transaction2, false);
     
     assertFalse(addressListener1.onPendingCoinsReceivedCalled);
     assertFalse(addressListener1.onCoinsReceivedCalled);
