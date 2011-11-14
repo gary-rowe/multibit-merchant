@@ -4,7 +4,7 @@
 
   <groupId>org.multibit</groupId>
   <artifactId>multibit-merchant</artifactId>
-  <version>1.0.0-SNAPSOT</version>
+  <version>1.0.0-SNAPSHOT</version>
   <packaging>war</packaging>
 
   <name>MultiBit Merchant</name>

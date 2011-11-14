@@ -1,23 +1,26 @@
 package org.multibit.mbm.service;
 
+import java.util.concurrent.TimeUnit;
+
 import com.google.bitcoin.core.Address;
 
 /**
- * <p>An interface encapsulating the iteraction with the Bitcoin network for MultiBitMerchant</p>
+ * <p>Service to provide the following to Controllers</p>
+ * <ul>
+ * <li>Next available address from the address bucket.</li>
+ * <li>Registration of addresses for notification of relevant Transactions</li>
+ * </p>
  *
- * @author jim
+ * @since 1.0.0
  */
 public interface BitcoinService {
 
-  // TODO Consider using TimeUnit in java.util.concurrent
-  public static final long DEFAULT_TIME_TO_LIVE = 1000 * 60 * 60 * 24;    // 24 hours, in milliseconds
+  public static final long DEFAULT_TIME_TO_LIVE = TimeUnit.DAYS.toMillis(1);
 
   /**
    * <p>Get the next bitcoin address from the address bucket. This is guaranteed to be a never-previously used Bitcoin address</p>
    *
    * @return nextAddress The next Bitcoin address to use, or null if no more addresses are available
-   *
-   * @since 1.0.0
    */
   public Address getNextAddress();
 
