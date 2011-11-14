@@ -1,5 +1,6 @@
 package org.multibit.mbm.service;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import com.google.bitcoin.core.Address;
@@ -34,4 +35,11 @@ public interface BitcoinService {
    * @param addressListener The addressListener that will receive notifications
    */
   public void registerAddress(Address address, AddressListener addressListener);
+  
+  /**
+   * <p>Set the List of addresses that are available for use by the application</p>
+   * @param addressBucket The list of available addresses.
+   */
+  public void setAddressBucket(List<Address> addressBucket);
+
 }
