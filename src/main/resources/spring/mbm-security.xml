@@ -19,6 +19,7 @@
     <intercept-url pattern="/feedback.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
     <intercept-url pattern="/help.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
     <intercept-url pattern="/index.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+    <intercept-url pattern="/api/v1/pubsub/*" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
 
     <!-- Customer access -->
     <intercept-url pattern="/*" access="ROLE_USER"/>

@@ -32,6 +32,12 @@
         <td></td>
         <td></td>
       </tr>
+      <tr>
+        <td><a href="http://localhost:8080/mbm/api/v1/pubsub">Subscribe to 'test'</a></td>
+        <td>Echo an alert as a plain string</td>
+        <td></td>
+        <td></td>
+      </tr>
     </table>
     <p></p>
   </div>

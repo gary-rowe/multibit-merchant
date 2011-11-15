@@ -79,3 +79,35 @@ body {
 	float:left;
 	width:100%;
 }
+
+/* Twitter feed panel*/
+.twitterMessages {
+    list-style: none;
+}
+
+.twitterMessages img {
+    vertical-align: middle;
+}
+
+#twitterMessages {
+    list-style: none;
+}
+#twitterMessages li {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    clear: left;
+
+}
+
+#twitterMessages li img {
+    vertical-align: middle;
+    float: left;
+    margin-right: 10px;
+}
+
+#chartableStats td {
+
+    background-color: #FFFFFF;
+
+}
+
