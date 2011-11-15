@@ -22,21 +22,25 @@
       <id>org.jboss.resteasy</id>
       <url>http://maven.antelink.com/content/groups/public-jboss/</url>
     </repository>
-    <!-- bitcoinj -->
+    <!-- Java.net for Atmosphere and Servlet API -->
+    <repository>
+      <id>java.net</id>
+      <url>http://download.java.net/maven/2/</url>
+    </repository>
+    <!-- BitCoinJ Nexus for BitCoinJ -->
     <repository>
       <id>bitcoinj-snapshot</id>
       <snapshots/>
       <url>http://nexus.bitcoinj.org/content/repositories/snapshots</url>
     </repository>
     <!-- zxing repo -->
-	<repository>
-      <id>mvn-adamgent</id>
-        <url>http://mvn-adamgent.googlecode.com/svn/maven/release</url>
-        <name>Adam Gent Maven Repository</name>
-      </repository>
-    </repositories>
+    <repository>
+      <id>zxing</id>
+      <url>http://mvn-adamgent.googlecode.com/svn/maven/release</url>
+    </repository>
+  </repositories>
   <scm>
-  	<url>https://github.com/gary-rowe/MultiBitMerchant</url>
+    <url>https://github.com/gary-rowe/MultiBitMerchant</url>
   </scm>
   <build>
     <plugins>
@@ -55,7 +59,7 @@
       <plugin>
         <artifactId>maven-dependency-plugin</artifactId>
         <executions>
-          <!-- Put bitcoinj classes into target dir for production of the executable jar later -->       
+          <!-- Put bitcoinj classes into target dir for production of the executable jar later -->
           <execution>
             <id>unpack-bitcoinj-classes</id>
             <phase>process-resources</phase>
@@ -73,35 +77,36 @@
                   <outputDirectory>${basedir}/target/bitcoinj</outputDirectory>
                   <includes>**/*.*</includes>
                   <!-- excludes classes that are duplicated in MBM -->
-                  <excludes>**/Peer.class, **/Peer$*.class,**/PeerGroup*.class, **/PendingTransactionListener.class</excludes>
+                  <excludes>**/Peer.class, **/Peer$*.class,**/PeerGroup*.class, **/PendingTransactionListener.class
+                  </excludes>
                 </artifactItem>
               </artifactItems>
             </configuration>
           </execution>
         </executions>
       </plugin>
-      
+
       <!-- Built-in SSL server for local development -->
       <plugin>
         <groupId>org.mortbay.jetty</groupId>
-        <artifactId>maven-jetty-plugin</artifactId>
-        <version>6.1.14</version>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <!-- Jetty 7.3+ requires Maven 3+ -->
+        <version>${jetty.version}</version>
         <configuration>
           <stopKey>STOP</stopKey>
           <stopPort>8009</stopPort>
           <scanIntervalSeconds>10</scanIntervalSeconds>
           <webAppConfig>
             <contextPath>/mbm</contextPath>
+            <configurationDiscovered>false</configurationDiscovered>
           </webAppConfig>
           <connectors>
-            <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+            <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
               <port>8080</port>
-              <maxIdleTime>60000</maxIdleTime>
             </connector>
             <!-- SSL for localhost support -->
-            <connector implementation="org.mortbay.jetty.security.SslSocketConnector">
+            <connector implementation="org.eclipse.jetty.server.ssl.SslSelectChannelConnector">
               <port>8443</port>
-              <maxIdleTime>60000</maxIdleTime>
               <keystore>src/test/resources/jetty-ssl.keystore</keystore>
               <password>jetty6</password>
               <keyPassword>jetty6</keyPassword>
@@ -191,64 +196,33 @@
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-web</artifactId>
       <version>${spring.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-web</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-expression</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-jdbc</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-context</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-core</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-beans</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-openid</artifactId>
       <version>${spring.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>commons-logging</groupId>
-          <artifactId>commons-logging</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-context</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-beans</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-core</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-web</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-config</artifactId>
       <version>${spring.version}</version>
+    </dependency>
+
+    <!-- Spring Social (Twitter, Facebook) -->
+    <dependency>
+      <groupId>org.springframework.social</groupId>
+      <artifactId>spring-social-core</artifactId>
+      <version>${spring-social.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.social</groupId>
+      <artifactId>spring-social-web</artifactId>
+      <version>${spring-social.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.social</groupId>
+      <artifactId>spring-social-twitter</artifactId>
+      <version>${spring-social.version}</version>
     </dependency>
 
     <!-- Jackson JSON Mapper -->
@@ -304,7 +278,7 @@
       <version>1.6.2</version>
     </dependency>
 
-    <!-- H2 -->
+    <!-- H2 database -->
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
@@ -312,11 +286,11 @@
       <scope>runtime</scope>
     </dependency>
 
-    <!-- Servlet API -->
+    <!-- Servlet API (from Glassfish repo) -->
     <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
-      <version>2.5</version>
+      <groupId>org.glassfish</groupId>
+      <artifactId>javax.servlet</artifactId>
+      <version>3.0</version>
       <scope>provided</scope>
     </dependency>
     <!-- JSP support -->
@@ -360,11 +334,18 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- CGLIB2 for AOP -->
+    <!-- CGLIB2 for AOP (ensures main classpath) -->
     <dependency>
       <groupId>cglib</groupId>
       <artifactId>cglib</artifactId>
       <version>2.2.2</version>
+    </dependency>
+
+    <!-- Atmosphere for push broadcast -->
+    <dependency>
+      <groupId>org.atmosphere</groupId>
+      <artifactId>atmosphere-runtime</artifactId>
+      <version>0.8.0-RC3</version>
     </dependency>
 
     <!-- OpenPojo to verify getters/setters -->
@@ -374,28 +355,32 @@
       <version>0.3.5</version>
       <scope>test</scope>
     </dependency>
-    
-    <!-- bitcoinj used in bitcoin network service layer -->
+
+    <!-- BitCoinJ for Bitcoin in the service layer -->
     <dependency>
       <groupId>com.google</groupId>
       <artifactId>bitcoinj</artifactId>
       <version>0.3-SNAPSHOT</version>
-      <scope>compile</scope>
-    </dependency>  
-    
-    <!-- zxing used for swatches -->
+    </dependency>
+
+    <!-- ZXing used for Bitcoin swatches -->
     <dependency>
       <groupId>com.google.zxing</groupId>
       <artifactId>javase</artifactId>
       <version>1.6</version>
-    </dependency>    
+    </dependency>
+
   </dependencies>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <atmosphere.version>0.8.0-RC3</atmosphere.version>
     <resteasy.version>2.2.3.GA</resteasy.version>
     <spring.version>3.1.0.M2</spring.version>
+    <spring-social.version>1.0.0.RC1</spring-social.version>
     <slf4j.version>1.6.1</slf4j.version>
+    <!--<jetty.version>7.5.4.v20111024</jetty.version>-->
+    <jetty.version>8.0.4.v20111024</jetty.version>
   </properties>
 
 </project>

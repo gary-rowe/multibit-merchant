@@ -25,12 +25,55 @@
   <!-- TODO Create a link list search widget -->
   <div class="ui-widget">
     <p class="ui-widget-header">Random</p>
-    <ul class="ui-widget-content">
-      <li>Geek</li>
-      <li>Giant</li>
-      <li>Retro</li>
-      <li>Funny</li>
-    </ul>
+
+    <div class="ui-widget-content">
+      <div id="stats" class="prepend-1 span-4 append-1 prepend-top last">
+        <table id="asynchHttpStats">
+          <caption>AsynchHttp Stats</caption>
+          <thead>
+          <tr>
+            <th></th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Protocol</td>
+            <td id="transportType">N/A</td>
+          </tr>
+          </tbody>
+        </table>
+        <table id="chartableStats">
+          <caption>Stats</caption>
+          <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <th scope="row" style="color: #1751A7"># of Callbacks</th>
+            <td id="numberOfCallbackInvocations">0</td>
+          </tr>
+          <tr>
+            <th scope="row" style="color: #8AA717"># Tweets</th>
+            <td id="numberOfTweets">0</td>
+          </tr>
+          <tr>
+            <th scope="row" style="color: #A74217"># Errors</th>
+            <td id="numberOfErrors">0</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="content">
+        <ul id="twitterMessages">
+          <li id="placeHolder">Searching...</li>
+        </ul>
+      </div>
+
+    </div>
   </div>
 
   <!-- TODO Create a link list search widget -->

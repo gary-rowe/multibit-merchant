@@ -62,5 +62,94 @@
 <%@include file="/WEB-INF/jspf/mbm-scripts.jspf" %>
 
 <script type="text/javascript" src="<c:url value="/js/mbm/mbm.js"/>"></script>
+
+<script id="template" type="text/x-jquery-tmpl">
+  <li><img alt='\${fromUser}' title='\${fromUser}' src='\${profileImageUrl}' width='48' height='48'>
+
+    <div><c:out value='\${text}'/></div>
+  </li>
+</script>
+<script type="text/javascript">
+
+  var asyncHttpStatistics = {
+    transportType: 'N/A',
+    responseState: 'N/A',
+    numberOfCallbackInvocations: 0,
+    numberOfTweets: 0,
+    numberOfErrors: 0
+  };
+
+  var connectedEndpoint;
+  var callbackAdded = false;
+
+  function refresh() {
+
+    console.log("Refreshing data tables...");
+
+    $('#transportType').html(asyncHttpStatistics.transportType);
+    $('#responseState').html(asyncHttpStatistics.responseState);
+    $('#numberOfCallbackInvocations').html(asyncHttpStatistics.numberOfCallbackInvocations);
+    $('#numberOfTweets').html(asyncHttpStatistics.numberOfTweets);
+    $('#numberOfErrors').html(asyncHttpStatistics.numberOfErrors);
+
+  }
+
+  function callback(response) {
+    asyncHttpStatistics.numberOfCallbackInvocations++;
+    asyncHttpStatistics.transportType = response.transport;
+    asyncHttpStatistics.responseState = response.responseState;
+
+    $.atmosphere.log('info', ["response.state: " + response.state]);
+    $.atmosphere.log('info', ["response.transport: " + response.transport]);
+    if (response.transport != 'polling' && response.state != 'connected' && response.state != 'closed') {
+      $.atmosphere.log('info', ["response.responseBody: " + response.responseBody]);
+      if (response.status == 200) {
+        var data = response.responseBody;
+
+        if (data) {
+
+          if (data.substring(0, 2) == "<!") {
+            console.log("response is initial suspend text - ignoring.");
+          } else {
+            try {
+              var result = $.parseJSON(data);
+
+              var visible = $('#placeHolder').is(':visible');
+
+              if (result.length > 0 && visible) {
+                $("#placeHolder").fadeOut();
+              }
+
+              asyncHttpStatistics.numberOfTweets = asyncHttpStatistics.numberOfTweets + result.length;
+
+              $("#twitterMessages").html($("#template").tmpl(result)).fadeIn();
+
+            } catch (error) {
+              asyncHttpStatistics.numberOfErrors++;
+              console.log("An error ocurred: " + error);
+            }
+          }
+
+        } else {
+          console.log("response.responseBody is null - ignoring.");
+        }
+      }
+    }
+
+    refresh();
+
+  }
+
+  console.log("Performing initial subscription.");
+
+  /* transport can be : long-polling, streaming or websocket */
+  $.atmosphere.subscribe("<c:url value='/api/v1/pubsub/twitter'/>",
+    !callbackAdded ? callback : null,
+    $.atmosphere.request = {transport: 'websocket'});
+  connectedEndpoint = $.atmosphere.response;
+  callbackAdded = true;
+
+</script>
+
 </body>
 </html>

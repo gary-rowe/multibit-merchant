@@ -9,7 +9,16 @@
 
   <import resource="classpath:/spring/mbm-context.xml"/>
 
-  <mvc:annotation-driven/>
+  <!-- Enables the Spring MVC @Controller programming model -->
+  <mvc:annotation-driven>
+      <mvc:argument-resolvers>
+          <bean class="org.multibit.mbm.web.atmosphere.AtmosphereResourceArgumentResolver" />
+      </mvc:argument-resolvers>
+  </mvc:annotation-driven>
+
+  <!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+  <mvc:resources mapping="/css/**" location="/css/" />
+  <mvc:resources mapping="/js/**"  location="/js/" />
 
   <!-- Internal resource resolver -->
   <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -26,15 +35,15 @@
   </bean>
 
   <!-- XML marshalling converter -->
-  <bean id="marshallingHttpMessageConverter" class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
-    <property name="marshaller" ref="jaxb2Marshaller"/>
-    <property name="unmarshaller" ref="jaxb2Marshaller"/>
-  </bean>
+  <!--<bean id="marshallingHttpMessageConverter" class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">-->
+    <!--<property name="marshaller" ref="jaxb2Marshaller"/>-->
+    <!--<property name="unmarshaller" ref="jaxb2Marshaller"/>-->
+  <!--</bean>-->
 
-  <!-- XML marshaller -->
-  <bean id="jaxb2Marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
-    <property name="classesToBeBound" value="org.multibit.mbm.domain.Customer"/>
-  </bean>
+  <!--&lt;!&ndash; XML marshaller &ndash;&gt;-->
+  <!--<bean id="jaxb2Marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">-->
+    <!--<property name="classesToBeBound" value="org.multibit.mbm.domain.Customer"/>-->
+  <!--</bean>-->
 
 </beans>
 
