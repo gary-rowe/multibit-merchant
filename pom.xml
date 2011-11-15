@@ -22,8 +22,19 @@
       <id>org.jboss.resteasy</id>
       <url>http://maven.antelink.com/content/groups/public-jboss/</url>
     </repository>
-
-  </repositories>
+    <!-- bitcoinj -->
+    <repository>
+      <id>bitcoinj-snapshot</id>
+      <snapshots/>
+      <url>http://nexus.bitcoinj.org/content/repositories/snapshots</url>
+    </repository>
+    <!-- zxing repo -->
+	<repository>
+      <id>mvn-adamgent</id>
+        <url>http://mvn-adamgent.googlecode.com/svn/maven/release</url>
+        <name>Adam Gent Maven Repository</name>
+      </repository>
+    </repositories>
   <scm>
   	<url>https://github.com/gary-rowe/MultiBitMerchant</url>
   </scm>
@@ -370,7 +381,14 @@
       <artifactId>bitcoinj</artifactId>
       <version>0.3-SNAPSHOT</version>
       <scope>compile</scope>
-    </dependency>
+    </dependency>  
+    
+    <!-- zxing used for swatches -->
+    <dependency>
+      <groupId>com.google.zxing</groupId>
+      <artifactId>javase</artifactId>
+      <version>1.6</version>
+    </dependency>    
   </dependencies>
 
   <properties>
