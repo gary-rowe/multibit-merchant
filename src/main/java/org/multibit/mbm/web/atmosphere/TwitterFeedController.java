@@ -1,5 +1,6 @@
 package org.multibit.mbm.web.atmosphere;
 
+import com.google.common.collect.Lists;
 import org.atmosphere.cpr.AtmosphereResource;
 import org.atmosphere.cpr.Broadcaster;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
@@ -32,17 +32,11 @@ public class TwitterFeedController {
   private static final Logger log = LoggerFactory.getLogger(TwitterFeedController.class);
 
   /**
-   *
+   * @param event The Atmosphere event
    */
   @RequestMapping(value = "/pubsub/twitter", method = RequestMethod.GET)
   @ResponseBody
-  public void websockets(final AtmosphereResource<HttpServletRequest, HttpServletResponse> event) {
-
-    // TODO Fix the OncePerRequestFilter from firing multiple calls against this
-
-    // TODO This should only be called once per client
-    final HttpServletRequest req = event.getRequest();
-    final HttpServletResponse res = event.getResponse();
+  public void twitter(final AtmosphereResource<HttpServletRequest, HttpServletResponse> event) {
 
     final ObjectMapper mapper = new ObjectMapper();
 
@@ -51,7 +45,6 @@ public class TwitterFeedController {
     final Broadcaster bc = event.getBroadcaster();
 
     // Set up a scheduled broadcast for this client
-    // TODO Consider effect of many subscribers (lifecycle)
     bc.scheduleFixedBroadcast(new Callable<String>() {
 
       private long sinceId = 0;
@@ -66,7 +59,7 @@ public class TwitterFeedController {
 
         sinceId = results.getMaxId();
 
-        List<TwitterMessage> twitterMessages = new ArrayList<TwitterMessage>();
+        List<TwitterMessage> twitterMessages = Lists.newArrayList();
 
         for (Tweet tweet : results.getTweets()) {
           twitterMessages.add(new TwitterMessage(tweet.getId(),
@@ -84,7 +77,6 @@ public class TwitterFeedController {
 
     }, 10, TimeUnit.SECONDS);
 
-    //bc.delayBroadcast("Underlying Response now suspended");
 
   }
 

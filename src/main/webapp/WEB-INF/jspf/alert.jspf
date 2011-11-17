@@ -1,2 +1,2 @@
 <%@include file="/WEB-INF/jspf/taglibs.jspf" %>
-<div id="alert" class="alert"><p></p></div>
+<div id="alert" class="alert ui-widget-header"></div>
