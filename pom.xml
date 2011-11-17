@@ -96,6 +96,7 @@
           <stopKey>STOP</stopKey>
           <stopPort>8009</stopPort>
           <scanIntervalSeconds>10</scanIntervalSeconds>
+          <!--<jettyXml>src/test/resources/jetty.xml</jettyXml>-->
           <webAppConfig>
             <contextPath>/mbm</contextPath>
             <configurationDiscovered>false</configurationDiscovered>
@@ -286,11 +287,11 @@
       <scope>runtime</scope>
     </dependency>
 
-    <!-- Servlet API (from Glassfish repo) -->
+    <!-- Servlet API (2.5 does not introduce startup delays) -->
     <dependency>
-      <groupId>org.glassfish</groupId>
-      <artifactId>javax.servlet</artifactId>
-      <version>3.0</version>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>2.5</version>
       <scope>provided</scope>
     </dependency>
     <!-- JSP support -->
@@ -379,8 +380,8 @@
     <spring.version>3.1.0.M2</spring.version>
     <spring-social.version>1.0.0.RC1</spring-social.version>
     <slf4j.version>1.6.1</slf4j.version>
-    <!--<jetty.version>7.5.4.v20111024</jetty.version>-->
-    <jetty.version>8.0.4.v20111024</jetty.version>
+    <!-- Keep with Jetty 7.5.4 to avoid startup delays -->
+    <jetty.version>7.5.4.v20111024</jetty.version>
   </properties>
 
 </project>
