@@ -37,19 +37,7 @@
         porttitor imperdiet. Proin vitae risus nibh, a luctus tortor. Suspendisse egestas ipsum id leo eleifend
         sagittis. Integer vulputate nibh at tellus porttitor rhoncus.</p>
 
-      <p>In hac habitasse platea dictumst. Cras elementum auctor ultrices. Proin viverra facilisis nibh, at molestie
-        neque tristique a. Nulla facilisi. Donec ligula velit, facilisis eget placerat sit amet, aliquet in libero. Ut
-        suscipit magna ipsum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
-        Phasellus suscipit hendrerit sagittis. Donec facilisis blandit ornare. Nullam sem nisl, commodo a fringilla
-        quis, pretium eget sem. Curabitur condimentum felis in turpis molestie a consequat libero vestibulum.
-        Pellentesque lacinia, est eu commodo dapibus, arcu nibh pulvinar leo, sit amet ultrices lectus elit sed
-        metus.</p>
 
-      <p>Curabitur eget lacinia nisl. Donec dignissim dolor at ipsum pretium in eleifend felis sagittis. Maecenas et
-        quam sagittis eros pellentesque imperdiet quis eu nisl. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Ut cursus cursus dui, sed posuere nisi lobortis at. Phasellus eu risus nunc. Fusce vehicula molestie nisi, eget
-        laoreet risus imperdiet non. Nulla pellentesque volutpat viverra. Integer dolor lectus, interdum ac pharetra ut,
-        posuere nec magna. Donec sit amet mollis arcu. In viverra iaculis fringilla.</p></p>
     </div>
   </div>
 </div>
@@ -63,7 +51,7 @@
 
 <script type="text/javascript" src="<c:url value="/js/mbm/mbm.js"/>"></script>
 
-<script id="template" type="text/x-jquery-tmpl">
+<script id="twitterTemplate" type="text/x-jquery-tmpl">
   <li><img alt='\${fromUser}' title='\${fromUser}' src='\${profileImageUrl}' width='48' height='48'>
 
     <div><c:out value='\${text}'/></div>
@@ -79,7 +67,6 @@
     numberOfErrors: 0
   };
 
-  var connectedEndpoint;
   var callbackAdded = false;
 
   function refresh() {
@@ -94,7 +81,7 @@
 
   }
 
-  function callback(response) {
+  function twitterCallback(response) {
     asyncHttpStatistics.numberOfCallbackInvocations++;
     asyncHttpStatistics.transportType = response.transport;
     asyncHttpStatistics.responseState = response.responseState;
@@ -114,19 +101,19 @@
             try {
               var result = $.parseJSON(data);
 
-              var visible = $('#placeHolder').is(':visible');
+              var visible = $('#twitterPlaceHolder').is(':visible');
 
               if (result.length > 0 && visible) {
-                $("#placeHolder").fadeOut();
+                $("#twitterPlaceHolder").fadeOut();
               }
 
               asyncHttpStatistics.numberOfTweets = asyncHttpStatistics.numberOfTweets + result.length;
 
-              $("#twitterMessages").html($("#template").tmpl(result)).fadeIn();
+              $("#twitterMessages").html($("#twitterTemplate").tmpl(result)).fadeIn();
 
             } catch (error) {
               asyncHttpStatistics.numberOfErrors++;
-              console.log("An error ocurred: " + error);
+              console.log("A twitter error ocurred: " + error);
             }
           }
 
@@ -140,14 +127,53 @@
 
   }
 
-  console.log("Performing initial subscription.");
+  function alertCallback(response) {
 
-  /* transport can be : long-polling, streaming or websocket */
-  $.atmosphere.subscribe("<c:url value='/api/v1/pubsub/twitter'/>",
-    !callbackAdded ? callback : null,
+    if (response.transport != 'polling' && response.state != 'connected' && response.state != 'closed') {
+      $.atmosphere.log('info', ["response.responseBody: " + response.responseBody]);
+      if (response.status == 200) {
+        var data = response.responseBody;
+
+        if (data) {
+
+          if (data.substring(0, 2) == "<!") {
+            console.log("response is initial suspend text - ignoring.");
+          } else {
+            try {
+              var result = $.parseJSON(data);
+              console.log("alert message="+result.text);
+
+              $("#alert").html(result.text);
+              $("#alert").slideToggle("slow").toggleClass("active").delay(2000).slideToggle("slow").toggleClass("active");
+
+              
+
+            } catch (error) {
+              console.log("An alert error ocurred: " + error);
+            }
+          }
+
+        } else {
+          console.log("response.responseBody is null - ignoring.");
+        }
+      }
+    }
+
+  }
+
+  console.log("Performing initial subscriptions.");
+
+  /* Subscribe to Twitter feed */
+  <%--$.atmosphere.subscribe(--%>
+    <%--"<c:url value='/api/v1/pubsub/twitter'/>",--%>
+    <%--twitterCallback,--%>
+    <%--$.atmosphere.request = {transport: 'websocket'});--%>
+
+  /* Subscribe to Alert feed */
+  $.atmosphere.subscribe(
+    "<c:url value='/api/v1/pubsub/alert'/>",
+    alertCallback,
     $.atmosphere.request = {transport: 'websocket'});
-  connectedEndpoint = $.atmosphere.response;
-  callbackAdded = true;
 
 </script>
 

@@ -69,7 +69,7 @@
       </div>
       <div id="content">
         <ul id="twitterMessages">
-          <li id="placeHolder">Searching...</li>
+          <li id="twitterPlaceHolder">Searching...</li>
         </ul>
       </div>
 
