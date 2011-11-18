@@ -59,35 +59,14 @@
 </script>
 <script type="text/javascript">
 
-  var asyncHttpStatistics = {
-    transportType: 'N/A',
-    responseState: 'N/A',
-    numberOfCallbackInvocations: 0,
-    numberOfTweets: 0,
-    numberOfErrors: 0
-  };
-
-  var callbackAdded = false;
-
-  function refresh() {
-
-    console.log("Refreshing data tables...");
-
-    $('#transportType').html(asyncHttpStatistics.transportType);
-    $('#responseState').html(asyncHttpStatistics.responseState);
-    $('#numberOfCallbackInvocations').html(asyncHttpStatistics.numberOfCallbackInvocations);
-    $('#numberOfTweets').html(asyncHttpStatistics.numberOfTweets);
-    $('#numberOfErrors').html(asyncHttpStatistics.numberOfErrors);
-
-  }
-
-  function twitterCallback(response) {
-    asyncHttpStatistics.numberOfCallbackInvocations++;
-    asyncHttpStatistics.transportType = response.transport;
-    asyncHttpStatistics.responseState = response.responseState;
-
+  /*
+   * This is the primary callback for HTTP responses
+   * @param response
+   */
+  function handleMessage(response) {
     $.atmosphere.log('info', ["response.state: " + response.state]);
     $.atmosphere.log('info', ["response.transport: " + response.transport]);
+
     if (response.transport != 'polling' && response.state != 'connected' && response.state != 'closed') {
       $.atmosphere.log('info', ["response.responseBody: " + response.responseBody]);
       if (response.status == 200) {
@@ -96,83 +75,69 @@
         if (data) {
 
           if (data.substring(0, 2) == "<!") {
-            console.log("response is initial suspend text - ignoring.");
+            console.log("Response is initial suspend text - ignoring.");
           } else {
             try {
-              var result = $.parseJSON(data);
-
-              var visible = $('#twitterPlaceHolder').is(':visible');
-
-              if (result.length > 0 && visible) {
-                $("#twitterPlaceHolder").fadeOut();
+              var message = $.parseJSON(data);
+              if (message.topic == "AlertMessage") {
+                handleAlertMessage(message);
+                return;
               }
-
-              asyncHttpStatistics.numberOfTweets = asyncHttpStatistics.numberOfTweets + result.length;
-
-              $("#twitterMessages").html($("#twitterTemplate").tmpl(result)).fadeIn();
-
+              if (message[0].topic == "TwitterMessage") {
+                handleTwitterMessage(message);
+                return;
+              }
+              console.log("Unknown message topic: " + message.topic);
             } catch (error) {
-              asyncHttpStatistics.numberOfErrors++;
-              console.log("A twitter error ocurred: " + error);
+              console.log("An error ocurred: " + error);
             }
-          }
 
-        } else {
-          console.log("response.responseBody is null - ignoring.");
+          }
         }
       }
     }
-
-    refresh();
 
   }
 
-  function alertCallback(response) {
+  /**
+   * Handles a TwitterMessage
+   * @param message The decoded TwitterMessage
+   */
+  function handleTwitterMessage(message) {
 
-    if (response.transport != 'polling' && response.state != 'connected' && response.state != 'closed') {
-      $.atmosphere.log('info', ["response.responseBody: " + response.responseBody]);
-      if (response.status == 200) {
-        var data = response.responseBody;
+    var visible = $('#twitterPlaceHolder').is(':visible');
 
-        if (data) {
-
-          if (data.substring(0, 2) == "<!") {
-            console.log("response is initial suspend text - ignoring.");
-          } else {
-            try {
-              var result = $.parseJSON(data);
-              console.log("alert message="+result.text);
-
-              $("#alert").html(result.text);
-              $("#alert").slideToggle("slow").toggleClass("active").delay(2000).slideToggle("slow").toggleClass("active");
-
-              
-
-            } catch (error) {
-              console.log("An alert error ocurred: " + error);
-            }
-          }
-
-        } else {
-          console.log("response.responseBody is null - ignoring.");
-        }
-      }
+    if (message.length > 0 && visible) {
+      $("#twitterPlaceHolder").fadeOut();
     }
+
+    $("#twitterMessages").html($("#twitterTemplate").tmpl(message)).fadeIn();
+
+  }
+
+  /**
+   * Handles an AlertMessage
+   * @param message The decoded AlertMessage
+   */
+  function handleAlertMessage(message) {
+
+    $("#alert").html(message.text);
+    $("#alert").slideToggle("slow").toggleClass("active").delay(2000).slideToggle("slow").toggleClass("active");
 
   }
 
   console.log("Performing initial subscriptions.");
 
   /* Subscribe to Twitter feed */
-  <%--$.atmosphere.subscribe(--%>
-    <%--"<c:url value='/api/v1/pubsub/twitter'/>",--%>
-    <%--twitterCallback,--%>
-    <%--$.atmosphere.request = {transport: 'websocket'});--%>
+  $.atmosphere.subscribe(
+    "<c:url value='/api/v1/pubsub/twitter'/>",
+    handleMessage,
+    $.atmosphere.request = {transport: 'websocket'});
 
   /* Subscribe to Alert feed */
   $.atmosphere.subscribe(
     "<c:url value='/api/v1/pubsub/alert'/>",
-    alertCallback,
+    handleMessage,
     $.atmosphere.request = {transport: 'websocket'});
 
 </script>
