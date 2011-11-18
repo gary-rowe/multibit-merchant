@@ -11,6 +11,8 @@ import org.joda.time.DateTime;
  */
 public class TwitterMessage {
 
+  private String topic = "TwitterMessage";
+
   private Long id;
   private DateTime createdAt;
   private String text;
@@ -21,7 +23,6 @@ public class TwitterMessage {
    * Default constructor.
    */
   public TwitterMessage() {
-    super();
   }
 
   /**
@@ -75,6 +76,10 @@ public class TwitterMessage {
 
   public void setId(Long id) {
     this.id = id;
+  }
+
+  public String getTopic() {
+    return topic;
   }
 
   @Override

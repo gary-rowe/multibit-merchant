@@ -11,6 +11,8 @@ import org.joda.time.DateTime;
  */
 public class AlertMessage {
 
+  private String topic = "AlertMessage";
+
   private Long id;
   private DateTime createdAt;
   private String text;
@@ -28,7 +30,7 @@ public class AlertMessage {
    * @param id The Alert Id
    * @param createdAt The instant this Alert was created
    * @param text The text to show
-   * @param imageUrl
+   * @param imageUrl An image URL if appropriate
    */
   public AlertMessage(Long id, DateTime createdAt, String text, String imageUrl) {
     super();
@@ -69,6 +71,10 @@ public class AlertMessage {
 
   public void setId(Long id) {
     this.id = id;
+  }
+
+  public String getTopic() {
+    return topic;
   }
 
   @Override
