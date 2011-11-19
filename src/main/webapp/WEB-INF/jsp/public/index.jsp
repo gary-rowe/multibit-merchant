@@ -18,62 +18,89 @@
       <!-- TODO make this driven by the model -->
       <div class="mbm-item ui-widget-content ui-corner-all">
         <div class="mbm-item-summary">
-          <a href="#" class="mbm-item-link">Cryptonomicon, By Neal Stephenson</a>
+          <a href="#" class="mbm-item-link">Cryptonomicon, By Neal
+            Stephenson</a>
           <img class="mbm-item-thumbnail float-right" src="<c:url value="/images/catalog/items/2/thumbnail2.png" />"/>
 
           <p>'A brilliant patchwork of codebreaking mathematicians and their descendants who are striving to create a
             datahaven in the Philippines...trust me on this one' Guardian</p>
+
+          <p>3.25BTC (&euro;6.50)</p>
+
+            <button id="item-1">Add to basket</button>
         </div>
-        <div class="mbm-item-swatch ">
-          <img class="mbm-item-swatch" src="<c:url value="/images/catalog/items/2/swatch2b.png" />"
-               draggable="true"
-               alt="Drag to MultiBit to buy"
-               title="Drag to MultiBit to buy"/>
+        <div id="item-1-buy-options" class="mbm-item-buy-options">
+          <form>
+            <label for="item-count">Quantity</label>
+            <input id="item-count" type="text" value="1"/>
+          </form>
+          <button id="item-1-buy">Update basket</button>
+
         </div>
       </div>
       <div class="mbm-item ui-widget-content ui-corner-all">
-        <a href="#" class="mbm-item-link">A Year in Provence, By Peter Mayle</a>
+        <a href="#" class="mbm-item-link">A Year in Provence, By
+          Peter Mayle</a>
         <img class="mbm-item-thumbnail float-right" src="<c:url value="/images/catalog/items/1/thumbnail1.png" />"/>
 
         <p>Enjoy an irresistible feast of humour and discover the joys of French rural living with Peter Mayle's
           bestselling, much-loved account of 'A Year In Provence'.</p>
-        <img src="<c:url value="/images/catalog/items/1/swatch1.png" />"
-             draggable="true"
-             alt="Drag to MultiBit to buy"
-             title="Drag to MultiBit to buy"/>
+        <a href="bitcoin:1HqTK5KXTbSrgJgQ3uuZ8vZfYMtwN65D3W?amount=1.95">
+          <img id="1HqTK5KXTbSrgJgQ3uuZ8vZfYMtwN65D3W"
+               src="<c:url value="/images/catalog/items/1/swatch1.png" />"
+               class="mbm-item-swatch"
+               draggable="true"
+               ondragstart="dragStartHandler(event)"
+               alt="Drag to MultiBit to buy"
+               title="Drag to MultiBit to buy"/></a>
       </div>
-      <div class="mbm-item ui-widget-content ui-corner-all">
-        <a href="#" class="mbm-item-link">Plumbing and Central Heating, By Mike Lawrence</a>
+      <div class="ui-widget-content ui-corner-all">
+        <a href="#" class="mbm-item-link">Plumbing and Central
+          Heating, By Mike Lawrence</a>
         <img class="mbm-item-thumbnail float-right" src="<c:url value="/images/catalog/items/3/thumbnail3.png" />"/>
 
         <p>This guide begins with the basic skills of plumbing, which once mastered, can be applied to any situation,
           from mending a leaking tap to installing a new shower unit.</p>
-        <img src="<c:url value="/images/catalog/items/3/swatch3.png" />"
-             draggable="true"
-             alt="Drag to MultiBit to buy"
-             title="Drag to MultiBit to buy"/>
+        <a href="bitcoin:12B1Kwu2SXmm3Mw5YL55F1su3oejWzs3hL?amount=5.1">
+          <img id="12B1Kwu2SXmm3Mw5YL55F1su3oejWzs3hL"
+               src="<c:url value="/images/catalog/items/3/swatch3.png" />"
+               class="mbm-item-swatch"
+               draggable="true"
+               ondragstart="dragStartHandler(event)"
+               alt="Drag to MultiBit to buy"
+               title="Drag to MultiBit to buy"/></a>
       </div>
       <div class="mbm-item ui-widget-content ui-corner-all">
-        <a href="#" class="mbm-item-link">The Quantum Thief, By Hannu Rajaniemi</a>
+        <a href="#" class="mbm-item-link">The Quantum Thief, By Hannu
+          Rajaniemi</a>
         <img class="mbm-item-thumbnail float-right" src="<c:url value="/images/catalog/items/4/thumbnail4.png" />"/>
 
         <p>The most exciting SF debut of the last five years - a star to stand alongside Alistair Reynolds and Richard
           Morgan.</p>
-        <img src="<c:url value="/images/catalog/items/4/swatch4.png" />"
-             draggable="true"
-             alt="Drag to MultiBit to buy"
-             title="Drag to MultiBit to buy"/>
+        <a href="bitcoin:161cjqfgPpSXkjrugx3puraj85Wz5awqzp?amount=4"><img id="161cjqfgPpSXkjrugx3puraj85Wz5awqzp"
+                                                                           src="<c:url value="/images/catalog/items/4/swatch4.png" />"
+                                                                           class="mbm-item-swatch"
+                                                                           draggable="true"
+                                                                           ondragstart="dragStartHandler(event)"
+                                                                           alt="Drag to MultiBit to buy"
+                                                                           title="Drag to MultiBit to buy"/></a>
+
       </div>
       <div class="mbm-item ui-widget-content ui-corner-all">
-        <a href="#" class="mbm-item-link">The Complete Works of Emily Dickinson, Edited by Thomas H Johnson</a>
+        <a href="#" class="mbm-item-link">The Complete Works of
+          Emily Dickinson, Edited by Thomas H Johnson</a>
         <img class="mbm-item-thumbnail float-right" src="<c:url value="/images/catalog/items/5/thumbnail5.png" />"/>
 
         <p>The Complete Poems of Emily Dickinson is the only one-volume edition containing all Emily Dickinson's
           poems.</p>
-        <img src="<c:url value="/images/catalog/items/5/swatch5.png" />"
-             draggable="true"
-             alt="Drag to MultiBit to buy"
-             title="Drag to MultiBit to buy"/>
+        <a href="bitcoin:14bVhZispJk7ngVeoptnfAE3WhhCEPP8fE?amount=2.5">
+          <img id="14bVhZispJk7ngVeoptnfAE3WhhCEPP8fE"
+               src="<c:url value="/images/catalog/items/5/swatch5.png" />"
+               class="mbm-item-swatch"
+               draggable="true"
+               ondragstart="dragStartHandler(event)"
+               alt="Drag to MultiBit to buy"
+               title="Drag to MultiBit to buy"/></a>
       </div>
     </div>
   </div>
@@ -160,7 +187,7 @@
   function handleAlertMessage(message) {
 
     $("#alert").html(message.text);
-    $("#alert").slideToggle("slow").toggleClass("active").delay(2000).slideToggle("slow").toggleClass("active");
+    $("#alert").slideToggle("slow").toggleClass("active").delay(4000).slideToggle("slow").toggleClass("active");
 
   }
 
@@ -168,8 +195,9 @@
    * HTML5 drag event event handler
    */
   function dragStartHandler(event) {
-    // TODO Interrogate the underlying item for it's Bitcoin address
-    alert("Dragging " + event);
+    $.post("/mbm/api/v1/bitcoin/monitor" + event.srcElement.id, function(data) {
+      $("#bitcoin-monitor-output").html(data);
+    });
   }
 
 
@@ -178,16 +206,43 @@
   console.log("Performing initial subscriptions.");
 
   /* Subscribe to Twitter feed */
-  $.atmosphere.subscribe(
-    "<c:url value='/api/v1/pubsub/twitter'/>",
-    handleMessage,
-    $.atmosphere.request = {transport: 'websocket'});
+  <%--$.atmosphere.subscribe(--%>
+  <%--"<c:url value='/api/v1/twitter/subscribe'/>",--%>
+  <%--handleMessage,--%>
+  <%--$.atmosphere.request = {transport: 'websocket'});--%>
 
   /* Subscribe to Alert feed */
-  $.atmosphere.subscribe(
-    "<c:url value='/api/v1/pubsub/alert'/>",
-    handleMessage,
-    $.atmosphere.request = {transport: 'websocket'});
+  <%--$.atmosphere.subscribe(--%>
+  <%--"<c:url value='/api/v1/alert/subscribe'/>",--%>
+  <%--handleMessage,--%>
+  <%--$.atmosphere.request = {transport: 'websocket'});--%>
+
+  /* Decorate the buttons
+   * TODO Get this working properly
+   */
+  $("#item-1").button({
+    icons: {
+      primary: "ui-icon-locked",
+      secondary: "ui-icon-triangle-1-s"
+    },
+    text: false
+  });
+  $("#item-1-buy").button({
+    icons: {
+      primary: "ui-icon-locked",
+      secondary: "ui-icon-triangle-1-s"
+    },
+    text: false
+  });
+  $("#item-1").bind("click", function(event) {
+    $("#item-1-buy-options").slideToggle("fast").toggleClass("active");
+  });
+  $("#item-1-buy").bind("click", function(event) {
+    // TODO Generate a swatch here
+    $("#item-1-swatch").slideToggle("slow").toggleClass("active");
+  });
+
+
 
 </script>
 
