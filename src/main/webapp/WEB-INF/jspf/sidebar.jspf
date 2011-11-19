@@ -81,7 +81,9 @@
              ondragstart="dragStartHandler(event)"
              alt="Drag to MultiBit to buy"
              title="Drag to MultiBit to buy"/></a>
+      <label for="item-1-quantity">Qty: </label><input id="item-1-quantity" type="text" value="1" size="4">
     </div>
+
   </div>
 
   <!-- TODO Create a top N image list item widget -->
