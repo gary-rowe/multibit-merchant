@@ -7,7 +7,6 @@
 <body>
 <%@include file="/WEB-INF/jspf/header.jspf" %>
 <%@include file="/WEB-INF/jspf/alert.jspf" %>
-
 <%@include file="/WEB-INF/jspf/content-header.jspf" %>
 <div id="mbm-col1" class="col1">
   <div class="ui-widget">
@@ -26,9 +25,9 @@
     </div>
   </div>
 </div>
+<%@include file="/WEB-INF/jspf/sidebar.jspf" %>
 <%@include file="/WEB-INF/jspf/content-footer.jspf" %>
 
-<%@include file="/WEB-INF/jspf/sidebar.jspf" %>
 <%@include file="/WEB-INF/jspf/footer.jspf" %>
 
 <%@include file="/WEB-INF/jspf/cdn-scripts.jspf" %>
