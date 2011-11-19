@@ -13,7 +13,7 @@
     <p class="ui-widget-header">Administration</p>
 
     <div class="ui-widget-content">
-      <p>Welcome to the administration page, ${emailAddress}!</p>
+      <p>${greeting}</p>
 
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin non nulla libero. Vivamus lobortis dolor ut
         lectus iaculis vel vestibulum lectus sagittis. Duis id mollis velit. Vivamus faucibus scelerisque arcu. Vivamus
