@@ -10,36 +10,89 @@
 <%@include file="/WEB-INF/jspf/content-header.jspf" %>
 <div id="mbm-col1" class="col1">
   <div class="ui-widget">
-    <p class="ui-widget-header">Today's Top Offer</p>
+    <p class="ui-widget-header">Recommended Books</p>
 
     <div class="ui-widget-content">
-      <p>Welcome to the catalog page, ${emailAddress}!</p>
+      <p>${greeting}</p>
 
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin non nulla libero. Vivamus lobortis dolor ut
-        lectus iaculis vel vestibulum lectus sagittis. Duis id mollis velit. Vivamus faucibus scelerisque arcu. Vivamus
-        ullamcorper posuere lectus, nec sodales dolor suscipit vel. Nullam pulvinar luctus viverra. Donec consequat quam
-        at libero viverra molestie. Sed et semper nisi. Fusce eu erat elit. Vivamus non est metus, vel pharetra nulla.
-        Praesent ultrices nisi et libero cursus eleifend. Etiam condimentum gravida enim scelerisque pulvinar.
-        Pellentesque dignissim pharetra ligula venenatis volutpat.
+      <div class="mbm-item">
+        <!-- TODO make this driven by the model -->
+        <a href="#" class="mbm-item-link">Cryptonomicon, By Neal Stephenson</a>
+        <p></p>
+        <img class="mbm-item-thumbnail" src="<c:url value="/images/catalog/items/2/thumbnail2.png" />"/>
+        <p>A brilliant patchwork of codebreaking mathematicians and their descendants who are striving to create a
+          datahaven in the Philippines. '...trust me on this one' Guardian</p>
+        <img src="<c:url value="/images/catalog/items/2/swatch2b.png" />"
+             draggable="true"
+             class="borderimage"
+             onMouseover="borderit(this,'#9ec0da')"
+             onMouseout="borderit(this,'#e2e5e7')"
+             alt="Drag to MultiBit to buy"
+             title="Drag to MultiBit to buy"/>
+      </div>
+      <div class="mbm-item">
+        <a href="#" class="mbm-item-link">A Year in Provence, By Peter Mayle</a>
+        <p></p>
+        <img class="mbm-item-thumbnail" src="<c:url value="/images/catalog/items/1/thumbnail1.png" />"/>
 
-      <p>Quisque pretium augue sit amet nisl feugiat mollis. Phasellus at enim non justo malesuada fermentum. Lorem
-        ipsum dolor sit amet, consectetur adipiscing elit. Curabitur tristique ipsum quis augue scelerisque non accumsan
-        nisi sagittis. Vivamus facilisis pulvinar nunc eget rhoncus. Curabitur lorem risus, lacinia et consequat sit
-        amet, eleifend pulvinar nibh. Sed pulvinar tincidunt nunc, ut porttitor augue pharetra eu. Pellentesque non
-        velit elit, tempor pharetra risus.</p>
+        <p>Enjoy an irresistible feast of humour and discover the joys of French rural living with Peter Mayle's
+          bestselling, much-loved account of 'A Year In Provence'.</p>
+        <img src="<c:url value="/images/catalog/items/1/swatch1.png" />"
+             draggable="true"
+             class="borderimage"
+             onMouseover="borderit(this,'#9ec0da')"
+             onMouseout="borderit(this,'#e2e5e7')"
+             alt="Drag to MultiBit to buy"
+             title="Drag to MultiBit to buy"/>
+      </div>
+      <div class="mbm-item">
+        <a href="#" class="mbm-item-link">Plumbing and Central Heating, By Mike Lawrence</a>
+        <p></p>
+        <img class="mbm-item-thumbnail" src="<c:url value="/images/catalog/items/3/thumbnail3.png" />"/>
 
-      <p>Nullam quis ipsum odio, eleifend euismod lorem. Duis at lacus ligula. Nam porta, tortor nec molestie euismod,
-        urna mauris pellentesque sem, vitae euismod enim purus vitae nulla. Praesent congue sagittis mi et pellentesque.
-        Etiam pulvinar pretium eleifend. Ut at elit sit amet felis laoreet mollis ultricies id dolor. Phasellus
-        fermentum est quis quam consectetur vitae euismod lectus dignissim. Aliquam pretium, augue quis pulvinar
-        molestie, sapien tortor vulputate lectus, congue accumsan sem lacus at quam. Maecenas viverra quam ac libero
-        mollis egestas. Donec id volutpat mauris. Pellentesque ut velit metus. Praesent vulputate sapien cursus sem
-        porttitor imperdiet. Proin vitae risus nibh, a luctus tortor. Suspendisse egestas ipsum id leo eleifend
-        sagittis. Integer vulputate nibh at tellus porttitor rhoncus.</p>
+        <p>This guide begins with the basic skills of plumbing, which once mastered, can be applied to any situation,
+          from mending a leaking tap to installing a new shower unit.</p>
+        <img src="<c:url value="/images/catalog/items/3/swatch3.png" />"
+             draggable="true"
+             class="borderimage"
+             onMouseover="borderit(this,'#9ec0da')"
+             onMouseout="borderit(this,'#e2e5e7')"
+             alt="Drag to MultiBit to buy"
+             title="Drag to MultiBit to buy"/>
+      </div>
+      <div class="mbm-item">
+        <a href="#" class="mbm-item-link">The Quantum Thief, By Hannu Rajaniemi</a>
+        <p></p>
+        <img class="mbm-item-thumbnail" src="<c:url value="/images/catalog/items/4/thumbnail4.png" />"/>
 
+        <p>The most exciting SF debut of the last five years - a star to stand alongside Alistair Reynolds and Richard
+          Morgan.</p>
+        <img src="<c:url value="/images/catalog/items/4/swatch4.png" />"
+             draggable="true"
+             class="borderimage"
+             onMouseover="borderit(this,'#9ec0da')"
+             onMouseout="borderit(this,'#e2e5e7')"
+             alt="Drag to MultiBit to buy"
+             title="Drag to MultiBit to buy"/>
+      </div>
+      <div class="mbm-item">
+        <a href="#" class="mbm-item-link">The Complete Works of Emily Dickinson, Edited by Thomas H Johnson</a>
+        <p></p>
+        <img class="mbm-item-thumbnail" src="<c:url value="/images/catalog/items/5/thumbnail5.png" />"/>
 
+        <p>The Complete Poems of Emily Dickinson is the only one-volume edition containing all Emily Dickinson's
+          poems.</p>
+        <img src="<c:url value="/images/catalog/items/5/swatch5.png" />"
+             draggable="true"
+             class="borderimage"
+             onMouseover="borderit(this,'#9ec0da')"
+             onMouseout="borderit(this,'#e2e5e7')"
+             alt="Drag to MultiBit to buy"
+             title="Drag to MultiBit to buy"/>
+      </div>
     </div>
   </div>
+
 </div>
 <%@include file="/WEB-INF/jspf/sidebar.jspf" %>
 <%@include file="/WEB-INF/jspf/content-footer.jspf" %>
@@ -125,6 +178,17 @@
     $("#alert").slideToggle("slow").toggleClass("active").delay(2000).slideToggle("slow").toggleClass("active");
 
   }
+
+  /**
+   * HTML5 drag event event handler
+   */
+  function dragStartHandler(event) {
+    // TODO Interrogate the underlying item for it's Bitcoin address
+    alert("Dragging " + event);
+  }
+
+
+  // Initialisation
 
   console.log("Performing initial subscriptions.");
 

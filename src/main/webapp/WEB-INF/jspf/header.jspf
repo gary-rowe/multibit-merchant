@@ -1,5 +1,6 @@
 <%@include file="/WEB-INF/jspf/taglibs.jspf" %>
 <div id="mbm-header1" class="mbm-header ui-widget-header">
+  <a href="<c:url value="index.html"/>"><fmt:message key="header.primary.home"/></a>&nbsp;|&nbsp;
   <a href="<c:url value="delivery.html"/>"><fmt:message key="header.primary.delivery"/></a>&nbsp;|&nbsp;
   <a href="<c:url value="contact.html"/>"><fmt:message key="header.primary.contact"/></a>&nbsp;|&nbsp;
   <a href="<c:url value="feedback.html"/>"><fmt:message key="header.primary.feedback"/></a>&nbsp;|&nbsp;
