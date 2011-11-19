@@ -29,14 +29,6 @@
 
             <button id="item-1">Add to basket</button>
         </div>
-        <div id="item-1-buy-options" class="mbm-item-buy-options">
-          <form>
-            <label for="item-count">Quantity</label>
-            <input id="item-count" type="text" value="1"/>
-          </form>
-          <button id="item-1-buy">Update basket</button>
-
-        </div>
       </div>
       <div class="mbm-item ui-widget-content ui-corner-all">
         <a href="#" class="mbm-item-link">A Year in Provence, By
@@ -235,9 +227,6 @@
     text: false
   });
   $("#item-1").bind("click", function(event) {
-    $("#item-1-buy-options").slideToggle("fast").toggleClass("active");
-  });
-  $("#item-1-buy").bind("click", function(event) {
     // TODO Generate a swatch here
     $("#item-1-swatch").slideToggle("slow").toggleClass("active");
   });
