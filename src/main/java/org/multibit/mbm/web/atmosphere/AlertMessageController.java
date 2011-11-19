@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
  * a broadcast event.</p>
  */
 @Controller
-@RequestMapping(value = "/v1")
+@RequestMapping(value = "/v1/alert")
 public class AlertMessageController {
 
   private static final Logger log = LoggerFactory.getLogger(AlertMessageController.class);
@@ -35,7 +35,7 @@ public class AlertMessageController {
    * Send out a regular alert
    * @param event The Atmosphere event
    */
-  @RequestMapping(value = "/pubsub/alert", method = RequestMethod.GET)
+  @RequestMapping(value = "/subscribe", method = RequestMethod.GET)
   @ResponseBody
   public void alert(final AtmosphereResource<HttpServletRequest, HttpServletResponse> event) {
 

@@ -5,12 +5,15 @@
   <%@include file="/WEB-INF/jspf/head.jspf" %>
 </head>
 <body>
-<div id="tabs" class="hidden">
+<div id="switcher"></div>
+<div><a href="<c:url value="/index.html" />">Home</a> | <a href="<c:url value="/admin.html" />">Admin</a></div>
+<div id="tabs">
   <ul>
     <li><a href="#tab-1">Alerts</a></li>
     <li><a href="#tab-2">Time</a></li>
+    <li><a href="#tab-3">Bitcoin</a></li>
   </ul>
-  <p><a href="<c:url value="/index.html" />">Home</a> | <a href="<c:url value="/admin.html" />">Admin</a></p>
+
   <div id="tab-1">
     <p>The Alert API provides notification text that a customer should pay attention to.</p>
     <table>
@@ -27,14 +30,8 @@
         <td>Output</td>
       </tr>
       <tr>
-        <td><a href="http://localhost:8080/mbm/api/v1/alert/echo/Hello">Hello</a></td>
-        <td>Echo an alert as a plain string</td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a href="http://localhost:8080/mbm/api/v1/pubsub">Subscribe to 'test'</a></td>
-        <td>Echo an alert as a plain string</td>
+        <td><a href="http://localhost:8080/mbm/api/v1/alert/subscribe">Subscribe to 'alert'</a></td>
+        <td>TODO require demo</td>
         <td></td>
         <td></td>
       </tr>
@@ -57,7 +54,7 @@
         <td>Output</td>
       </tr>
       <tr>
-        <td><a href="http://localhost:8080/mbm/api/v1/time">Now UTC</a></td>
+        <td><a href="http://localhost:8080/mbm/api/v1/time/now">Now UTC</a></td>
         <td>Echo the current server time in UTC as a plain string</td>
         <td></td>
         <td></td>
@@ -80,22 +77,48 @@
     <p>
     </p>
   </div>
+  <div id="tab-3">
+    <p>The Bitcoin API provides access to various Bitcoin related facilities.</p>
+    <table>
+      <colgroup>
+        <col span="1" style="width:10%"/>
+        <col span="1" style="width:40%"/>
+        <col span="1" style="width:40%"/>
+        <col span="1" style="width:10%"/>
+      </colgroup>
+      <tr>
+        <td>Example</td>
+        <td>Description</td>
+        <td>Code</td>
+        <td>Output</td>
+      </tr>
+      <tr>
+        <td><a id="bitcoin-monitor" href="#">Monitor</a></td>
+        <td>Monitor a Bitcoin address on the blockchain. Will respond with 202_ACCEPTED if successful. Location header
+          will provide the monitor status for polling.
+        </td>
+        <td><code>$("#bitcoin-monitor").bind("click", function(event) {
+
+  $.post('/mbm/api/v1/bitcoin/monitor/1abcdefgh',
+    function(data) {
+      $('#bitcoin-monitor-output').html(data);
+    });
+});
+</code>
+        </td>
+        <td id="bitcoin-monitor-output"></td>
+      </tr>
+    </table>
+
+    <p>
+    </p>
+  </div>
 </div>
-<%@include file="/WEB-INF/jspf/footer.jspf" %>
 
 <%@include file="/WEB-INF/jspf/cdn-scripts.jspf" %>
 <%@include file="/WEB-INF/jspf/mbm-scripts.jspf" %>
 
-<script type="text/javascript" src="<c:url value="/js/mbm/mbm.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/mbm/demo-time.js"/>"></script>
-<script type="text/javascript">
-
-  $(document).ready(function() {
-    // Apply jQueryUI tabs
-    $("#tabs").tabs();
-
-  });
-
-</script>
+<script type="text/javascript" src="<c:url value="/js/mbm/demo-bitcoin.js"/>"></script>
 </body>
 </html>
