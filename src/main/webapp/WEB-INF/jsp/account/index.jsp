@@ -27,6 +27,7 @@
 </div>
 <%@include file="/WEB-INF/jspf/sidebar.jspf" %>
 <%@include file="/WEB-INF/jspf/content-footer.jspf" %>
+
 <%@include file="/WEB-INF/jspf/footer.jspf" %>
 
 <%@include file="/WEB-INF/jspf/cdn-scripts.jspf" %>
