@@ -152,5 +152,11 @@ img.float-right {
 }
 
 .mbm-item-swatch {
-  border: 1px;
+  cursor:move;
+  display: none;
 }
+
+.mbm-item-buy-options {
+  display: none;
+}
+
