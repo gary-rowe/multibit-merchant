@@ -127,9 +127,36 @@ body {
   left: 0;
   width: 100%;
   text-align: center;
-  font-size: xx-large;
+  font-size: large;
   display: none;
   z-index: 2;
 }
 
+img.float-left {
+  float: left;
+  margin: 4px;
+}
+
+img.float-right {
+  float: right;
+  margin: 4px;
+}
+
+.mbm-item {
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.mbm-item-summary {
+  border: 1px;
+}
+
+.mbm-item-swatch {
+  cursor:move;
+  display: none;
+}
+
+.mbm-item-buy-options {
+  display: none;
+}
 
