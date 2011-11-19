@@ -12,81 +12,66 @@
   <div class="ui-widget">
     <p class="ui-widget-header">Recommended Books</p>
 
-    <div class="ui-widget-content">
+    <div>
       <p>${greeting}</p>
 
-      <div class="mbm-item">
-        <!-- TODO make this driven by the model -->
-        <a href="#" class="mbm-item-link">Cryptonomicon, By Neal Stephenson</a>
-        <p></p>
-        <img class="mbm-item-thumbnail" src="<c:url value="/images/catalog/items/2/thumbnail2.png" />"/>
-        <p>A brilliant patchwork of codebreaking mathematicians and their descendants who are striving to create a
-          datahaven in the Philippines. '...trust me on this one' Guardian</p>
-        <img src="<c:url value="/images/catalog/items/2/swatch2b.png" />"
-             draggable="true"
-             class="borderimage"
-             onMouseover="borderit(this,'#9ec0da')"
-             onMouseout="borderit(this,'#e2e5e7')"
-             alt="Drag to MultiBit to buy"
-             title="Drag to MultiBit to buy"/>
+      <!-- TODO make this driven by the model -->
+      <div class="mbm-item ui-widget-content ui-corner-all">
+        <div class="mbm-item-summary">
+          <a href="#" class="mbm-item-link">Cryptonomicon, By Neal Stephenson</a>
+          <img class="mbm-item-thumbnail float-right" src="<c:url value="/images/catalog/items/2/thumbnail2.png" />"/>
+
+          <p>'A brilliant patchwork of codebreaking mathematicians and their descendants who are striving to create a
+            datahaven in the Philippines...trust me on this one' Guardian</p>
+        </div>
+        <div class="mbm-item-swatch ">
+          <img class="mbm-item-swatch" src="<c:url value="/images/catalog/items/2/swatch2b.png" />"
+               draggable="true"
+               alt="Drag to MultiBit to buy"
+               title="Drag to MultiBit to buy"/>
+        </div>
       </div>
-      <div class="mbm-item">
+      <div class="mbm-item ui-widget-content ui-corner-all">
         <a href="#" class="mbm-item-link">A Year in Provence, By Peter Mayle</a>
-        <p></p>
-        <img class="mbm-item-thumbnail" src="<c:url value="/images/catalog/items/1/thumbnail1.png" />"/>
+        <img class="mbm-item-thumbnail float-right" src="<c:url value="/images/catalog/items/1/thumbnail1.png" />"/>
 
         <p>Enjoy an irresistible feast of humour and discover the joys of French rural living with Peter Mayle's
           bestselling, much-loved account of 'A Year In Provence'.</p>
         <img src="<c:url value="/images/catalog/items/1/swatch1.png" />"
              draggable="true"
-             class="borderimage"
-             onMouseover="borderit(this,'#9ec0da')"
-             onMouseout="borderit(this,'#e2e5e7')"
              alt="Drag to MultiBit to buy"
              title="Drag to MultiBit to buy"/>
       </div>
-      <div class="mbm-item">
+      <div class="mbm-item ui-widget-content ui-corner-all">
         <a href="#" class="mbm-item-link">Plumbing and Central Heating, By Mike Lawrence</a>
-        <p></p>
-        <img class="mbm-item-thumbnail" src="<c:url value="/images/catalog/items/3/thumbnail3.png" />"/>
+        <img class="mbm-item-thumbnail float-right" src="<c:url value="/images/catalog/items/3/thumbnail3.png" />"/>
 
         <p>This guide begins with the basic skills of plumbing, which once mastered, can be applied to any situation,
           from mending a leaking tap to installing a new shower unit.</p>
         <img src="<c:url value="/images/catalog/items/3/swatch3.png" />"
              draggable="true"
-             class="borderimage"
-             onMouseover="borderit(this,'#9ec0da')"
-             onMouseout="borderit(this,'#e2e5e7')"
              alt="Drag to MultiBit to buy"
              title="Drag to MultiBit to buy"/>
       </div>
-      <div class="mbm-item">
+      <div class="mbm-item ui-widget-content ui-corner-all">
         <a href="#" class="mbm-item-link">The Quantum Thief, By Hannu Rajaniemi</a>
-        <p></p>
-        <img class="mbm-item-thumbnail" src="<c:url value="/images/catalog/items/4/thumbnail4.png" />"/>
+        <img class="mbm-item-thumbnail float-right" src="<c:url value="/images/catalog/items/4/thumbnail4.png" />"/>
 
         <p>The most exciting SF debut of the last five years - a star to stand alongside Alistair Reynolds and Richard
           Morgan.</p>
         <img src="<c:url value="/images/catalog/items/4/swatch4.png" />"
              draggable="true"
-             class="borderimage"
-             onMouseover="borderit(this,'#9ec0da')"
-             onMouseout="borderit(this,'#e2e5e7')"
              alt="Drag to MultiBit to buy"
              title="Drag to MultiBit to buy"/>
       </div>
-      <div class="mbm-item">
+      <div class="mbm-item ui-widget-content ui-corner-all">
         <a href="#" class="mbm-item-link">The Complete Works of Emily Dickinson, Edited by Thomas H Johnson</a>
-        <p></p>
-        <img class="mbm-item-thumbnail" src="<c:url value="/images/catalog/items/5/thumbnail5.png" />"/>
+        <img class="mbm-item-thumbnail float-right" src="<c:url value="/images/catalog/items/5/thumbnail5.png" />"/>
 
         <p>The Complete Poems of Emily Dickinson is the only one-volume edition containing all Emily Dickinson's
           poems.</p>
         <img src="<c:url value="/images/catalog/items/5/swatch5.png" />"
              draggable="true"
-             class="borderimage"
-             onMouseover="borderit(this,'#9ec0da')"
-             onMouseout="borderit(this,'#e2e5e7')"
              alt="Drag to MultiBit to buy"
              title="Drag to MultiBit to buy"/>
       </div>
