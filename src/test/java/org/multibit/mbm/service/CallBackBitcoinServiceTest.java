@@ -1,19 +1,14 @@
 package org.multibit.mbm.service;
 
-import static org.junit.Assert.*;
+import com.google.bitcoin.core.*;
+import org.junit.Test;
 
 import java.awt.image.BufferedImage;
 import java.math.BigInteger;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.junit.Test;
-
-import com.google.bitcoin.core.Address;
-import com.google.bitcoin.core.ECKey;
-import com.google.bitcoin.core.NetworkParameters;
-import com.google.bitcoin.core.TestUtils;
-import com.google.bitcoin.core.Transaction;
+import static org.junit.Assert.*;
 
 public class CallBackBitcoinServiceTest{
 
@@ -39,11 +34,12 @@ public class CallBackBitcoinServiceTest{
     Address address3 = key3.toAddress(prodNet); 
     addressBucket.add(address3);
     
-    BitcoinService bitcoinService = CallBackBitcoinService.getBitcoinService();
+    BitcoinService bitcoinService = CallBackBitcoinService.INSTANCE;
    
     assertNotNull(bitcoinService);
     
     // should return null if no address bucket set
+
     assertNull(bitcoinService.getNextAddress(1L));
     
     bitcoinService.setAddressBucket(addressBucket);
@@ -71,7 +67,7 @@ public class CallBackBitcoinServiceTest{
     Address address2 = key2.toAddress(prodNet); 
     addressBucket.add(address2);
        
-    CallBackBitcoinService bitcoinService = (CallBackBitcoinService)CallBackBitcoinService.getBitcoinService();
+    CallBackBitcoinService bitcoinService = CallBackBitcoinService.INSTANCE;
    
     assertNotNull(bitcoinService);
     
@@ -109,7 +105,7 @@ public class CallBackBitcoinServiceTest{
     Address address2 = key2.toAddress(prodNet); 
     addressBucket.add(address2);
        
-    CallBackBitcoinService bitcoinService = (CallBackBitcoinService)CallBackBitcoinService.getBitcoinService();
+    CallBackBitcoinService bitcoinService = CallBackBitcoinService.INSTANCE;
    
     assertNotNull(bitcoinService);
     
