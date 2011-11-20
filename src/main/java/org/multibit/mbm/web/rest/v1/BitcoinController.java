@@ -1,7 +1,6 @@
 package org.multibit.mbm.web.rest.v1;
 
 import org.multibit.mbm.qrcode.SwatchGenerator;
-import org.multibit.mbm.web.view.PNGImageView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -11,7 +10,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 /**
  * <p>Controller to handle the submission and receipt of Bitcoin messages</p>
@@ -31,20 +33,26 @@ public class BitcoinController {
   /**
    * Provides a Bitcoin swatch with the given parameters
    *
-   *
    * @param address The Bitcoin address
-   * @param amount The amount
-   * @param label The associated label
+   * @param amount  The amount
+   * @param label   The associated label
+   *
    * @return A String containing the message
    */
   @RequestMapping(value = "/swatch", method = RequestMethod.GET)
   @ResponseBody
-  public PNGImageView swatch(
+  public void swatch(
     @RequestParam("address") String address,
     @RequestParam("amount") String amount,
-    @RequestParam("label") String label) {
+    @RequestParam("label") String label,
+    HttpServletResponse response) throws IOException {
+
+    // Generate the swatch
     BufferedImage rawSwatch = swatchGenerator.generateSwatch(address, amount, label);
-    return new PNGImageView(rawSwatch);
+
+    // Configure the response
+    response.setHeader("Content-Type", "image/png");
+    ImageIO.write(rawSwatch, "png", response.getOutputStream());
   }
 
 }
