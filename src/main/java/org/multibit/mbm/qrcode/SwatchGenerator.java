@@ -23,8 +23,12 @@ import com.google.zxing.qrcode.encoder.ByteMatrix;
 import com.google.zxing.qrcode.encoder.Encoder;
 import com.google.zxing.qrcode.encoder.QRCode;
 
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -297,54 +301,54 @@ public class SwatchGenerator {
   }
 
   public static void main(String[] args) {
-//    SwatchGenerator swatchGenerator = new SwatchGenerator();
-//    String address = "15BGmyMKxGFkejW1oyf2Gwv3NHqeUP7aWh";
-//    String amount = "0.423232";
-//    String label = "A longish label xyz";
-//
-//    BufferedImage swatch = swatchGenerator.generateSwatch(address, amount, label);
-//    ImageIcon icon = new ImageIcon(swatch);
-//    JOptionPane.showMessageDialog(null, "", "Swatch Generator 1", JOptionPane.INFORMATION_MESSAGE, icon);
-//
-//    address = "1HB5XMLmzFVj8ALj6mfBsbifRoD4miY36v";
-//    amount = "0.5";
-//    label = "Donate to Wikileaks\nWith a second line";
-//
-//    swatch = swatchGenerator.generateSwatch(address, amount, label);
-//    icon = new ImageIcon(swatch);
-//    JOptionPane.showMessageDialog(null, "", "Swatch Generator 2", JOptionPane.INFORMATION_MESSAGE, icon);
-//
-//    address = "15BGmyMKxGFkejW1oyf2Gwv3NHqeUP7aWh";
-//    amount = "0.41";
-//    label = "";
-//
-//    swatch = swatchGenerator.generateSwatch(address, amount, label);
-//    icon = new ImageIcon(swatch);
-//    JOptionPane.showMessageDialog(null, "", "Swatch Generator 3", JOptionPane.INFORMATION_MESSAGE, icon);
-//
-//    address = "15BGmyMKxGFkejW1oyf2Gwv3NHqeUP7aWh";
-//    amount = "";
-//    label = "A longerer label xyzabc - with no amount";
-//
-//    swatch = swatchGenerator.generateSwatch(address, amount, label);
-//    icon = new ImageIcon(swatch);
-//    JOptionPane.showMessageDialog(null, "", "Swatch Generator 4", JOptionPane.INFORMATION_MESSAGE, icon);
-//
-//    address = "15BGmyMKxGFkejW1oyf2Gwv3NHqeUP7aWh";
-//    amount = "1.2";
-//    label = "Shorty\r\non three\rseparate lines";
-//
-//    swatch = swatchGenerator.generateSwatch(address, amount, label);
-//    icon = new ImageIcon(swatch);
-//    JOptionPane.showMessageDialog(null, "", "Swatch Generator 5", JOptionPane.INFORMATION_MESSAGE, icon);
-//
-//    // write the image to the output stream
-//    try {
-//      ImageIO.write(swatch, "png", new File("swatch.png"));
-//    } catch (IOException e) {
-//      // TODO Auto-generated catch block
-//      e.printStackTrace();
-//    }
+    SwatchGenerator swatchGenerator = new SwatchGenerator();
+    String address = "15BGmyMKxGFkejW1oyf2Gwv3NHqeUP7aWh";
+    String amount = "0.423232";
+    String label = "A longish label xyz";
+
+    BufferedImage swatch = swatchGenerator.generateSwatch(address, amount, label);
+    ImageIcon icon = new ImageIcon(swatch);
+    JOptionPane.showMessageDialog(null, "", "Swatch Generator 1", JOptionPane.INFORMATION_MESSAGE, icon);
+
+    address = "1HB5XMLmzFVj8ALj6mfBsbifRoD4miY36v";
+    amount = "0.5";
+    label = "Donate to Wikileaks\nWith a second line";
+
+    swatch = swatchGenerator.generateSwatch(address, amount, label);
+    icon = new ImageIcon(swatch);
+    JOptionPane.showMessageDialog(null, "", "Swatch Generator 2", JOptionPane.INFORMATION_MESSAGE, icon);
+
+    address = "15BGmyMKxGFkejW1oyf2Gwv3NHqeUP7aWh";
+    amount = "0.41";
+    label = "";
+
+    swatch = swatchGenerator.generateSwatch(address, amount, label);
+    icon = new ImageIcon(swatch);
+    JOptionPane.showMessageDialog(null, "", "Swatch Generator 3", JOptionPane.INFORMATION_MESSAGE, icon);
+
+    address = "15BGmyMKxGFkejW1oyf2Gwv3NHqeUP7aWh";
+    amount = "";
+    label = "A longerer label xyzabc - with no amount";
+
+    swatch = swatchGenerator.generateSwatch(address, amount, label);
+    icon = new ImageIcon(swatch);
+    JOptionPane.showMessageDialog(null, "", "Swatch Generator 4", JOptionPane.INFORMATION_MESSAGE, icon);
+
+    address = "15BGmyMKxGFkejW1oyf2Gwv3NHqeUP7aWh";
+    amount = "1.2";
+    label = "Shorty\r\non three\rseparate lines";
+
+    swatch = swatchGenerator.generateSwatch(address, amount, label);
+    icon = new ImageIcon(swatch);
+    JOptionPane.showMessageDialog(null, "", "Swatch Generator 5", JOptionPane.INFORMATION_MESSAGE, icon);
+
+    // write the image to the output stream
+    try {
+      ImageIO.write(swatch, "png", new File("swatch.png"));
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
 
   /**
