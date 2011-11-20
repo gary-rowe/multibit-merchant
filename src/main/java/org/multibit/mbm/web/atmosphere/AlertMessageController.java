@@ -1,10 +1,12 @@
 package org.multibit.mbm.web.atmosphere;
 
 import org.atmosphere.cpr.AtmosphereResource;
-import org.atmosphere.cpr.Broadcaster;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.joda.time.DateTime;
 import org.multibit.mbm.domain.AlertMessage;
+import org.multibit.mbm.domain.Customer;
+import org.multibit.mbm.service.BroadcastService;
+import org.multibit.mbm.service.CustomerService;
+import org.multibit.mbm.util.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -12,10 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
+import java.io.IOException;
+import java.security.Principal;
 
 /**
  * <p>Reverse Ajax Controller providing the following for clients</p>
@@ -31,36 +34,57 @@ public class AlertMessageController {
 
   private static final Logger log = LoggerFactory.getLogger(AlertMessageController.class);
 
+  @Resource
+  private CustomerService customerService;
+
   /**
    * Send out a regular alert
    * @param event The Atmosphere event
    */
   @RequestMapping(value = "/subscribe", method = RequestMethod.GET)
   @ResponseBody
-  public void alert(final AtmosphereResource<HttpServletRequest, HttpServletResponse> event) {
+  public void alert(final AtmosphereResource<HttpServletRequest, HttpServletResponse> event, Principal principal) {
 
     final ObjectMapper mapper = new ObjectMapper();
 
+    // Suspend the underlying connection for the client to alow Reverse Ajax
     event.suspend();
 
-    final Broadcaster bc = event.getBroadcaster();
+    // 
+    log.debug("Principal is {}",principal);
 
-    // Set up a scheduled broadcast for this client
-    bc.scheduleFixedBroadcast(new Callable<String>() {
 
-      @Override
-      public String call() throws Exception {
+    Customer customer = customerService.getCustomerFromPrincipal(principal);
 
-        AlertMessage alertMessage = new AlertMessage(1L,new DateTime(), "Your order for \"Cryptonomicon by Neal Stephenson\" has been confirmed",null);
+    if (customer==null) {
+      log.info("Alert subscription without OpenId");
+      return;
+    } else {
+      BroadcastService.INSTANCE.addBroadcaster(customer, event.getBroadcaster());
+    }
+  }
 
-        // Create a JSON output
-        String result = mapper.writeValueAsString(alertMessage);
-        log.debug("JSON: {}", mapper.writeValueAsString(alertMessage));
-        return result;
-      }
+  /**
+   * Send out a regular alert
+   */
+  @RequestMapping(value = "/demo", method = RequestMethod.GET)
+  @ResponseBody
+  public void demo(Principal principal) throws IOException {
 
-    }, 20, TimeUnit.SECONDS);
+    log.debug("Principal is {}",principal);
 
+    Customer customer = customerService.getCustomerFromPrincipal(principal);
+
+    if (customer==null) {
+      log.info("Alert subscription without OpenId");
+      return;
+    } else {
+      AlertMessage alertMessage = new AlertMessage();
+      alertMessage.setId(1L);
+      alertMessage.setCreatedAt(DateUtils.nowUtc());
+      alertMessage.setText("Your order has been confirmed");
+      BroadcastService.INSTANCE.broadcast(customer, alertMessage);
+    }
   }
 
 }

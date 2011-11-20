@@ -27,7 +27,8 @@
 
           <p>3.25BTC (&euro;6.50)</p>
 
-            <button id="item-1">Add to basket</button>
+          <button id="item-1">Add to basket</button>
+
         </div>
       </div>
       <div class="mbm-item ui-widget-content ui-corner-all">
@@ -37,10 +38,13 @@
 
         <p>Enjoy an irresistible feast of humour and discover the joys of French rural living with Peter Mayle's
           bestselling, much-loved account of 'A Year In Provence'.</p>
+
+        <p>1.95BTC (&euro;3.90)</p>
+
+        <button id="item-2">Add to basket</button>
         <a href="bitcoin:1HqTK5KXTbSrgJgQ3uuZ8vZfYMtwN65D3W?amount=1.95">
           <img id="1HqTK5KXTbSrgJgQ3uuZ8vZfYMtwN65D3W"
                src="<c:url value="/images/catalog/items/1/swatch1.png" />"
-               class="mbm-item-swatch"
                draggable="true"
                ondragstart="dragStartHandler(event)"
                alt="Drag to MultiBit to buy"
@@ -204,10 +208,10 @@
   <%--$.atmosphere.request = {transport: 'websocket'});--%>
 
   /* Subscribe to Alert feed */
-  <%--$.atmosphere.subscribe(--%>
-  <%--"<c:url value='/api/v1/alert/subscribe'/>",--%>
-  <%--handleMessage,--%>
-  <%--$.atmosphere.request = {transport: 'websocket'});--%>
+  $.atmosphere.subscribe(
+    "<c:url value='/api/v1/alert/subscribe'/>",
+    handleMessage,
+    $.atmosphere.request = {transport: 'websocket'});
 
   /* Decorate the buttons
    * TODO Get this working properly
@@ -229,8 +233,11 @@
   $("#item-1").bind("click", function(event) {
     // TODO Generate a swatch here
     $("#item-1-swatch").slideToggle("slow").toggleClass("active");
-  });
 
+    // TODO remove this
+    // Trigger the alert
+    $.get("/mbm/api/v1/alert/demo");
+  });
 
 
 </script>
