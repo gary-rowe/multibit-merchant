@@ -9,7 +9,9 @@ import com.google.bitcoin.store.BoundedOverheadBlockStore;
 import org.multibit.mbm.qrcode.SwatchGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.InetAddress;
@@ -18,9 +20,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public enum DefaultBitcoinService implements BitcoinService, PeerEventListener, PendingTransactionListener {
-  INSTANCE;
-  
+@Component
+public class DefaultBitcoinService implements BitcoinService, PeerEventListener, PendingTransactionListener {
+
   public Logger log = LoggerFactory.getLogger(DefaultBitcoinService.class.getName());
 
   public static final String MULTIBIT_PREFIX = "multibit";
@@ -54,9 +56,10 @@ public enum DefaultBitcoinService implements BitcoinService, PeerEventListener, 
    */
   private Map<Address, AddressListener> addressToAddressListenerMap;
 
-  private SwatchGenerator swatchGenerator;
+  @Resource
+  private SwatchGenerator swatchGenerator=new SwatchGenerator();
 
-  private DefaultBitcoinService() {
+  public DefaultBitcoinService() {
     // TODO replace settings from config file
     // BEGIN config options
 

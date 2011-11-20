@@ -151,12 +151,14 @@ img.float-right {
   border: 1px;
 }
 
-.mbm-item-swatch {
+.mbm-order-swatch {
   cursor:move;
+}
+
+#mbm-item-1-order {
   display: none;
 }
 
-.mbm-item-buy-options {
+#mbm-item-2-order {
   display: none;
 }
-

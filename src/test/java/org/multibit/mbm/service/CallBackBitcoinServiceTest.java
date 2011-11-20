@@ -34,22 +34,22 @@ public class CallBackBitcoinServiceTest{
     Address address3 = key3.toAddress(prodNet); 
     addressBucket.add(address3);
     
-    BitcoinService bitcoinService = CallBackBitcoinService.INSTANCE;
+    CallBackBitcoinService testObject = new CallBackBitcoinService();
    
-    assertNotNull(bitcoinService);
+    assertNotNull(testObject);
     
     // should return null if no address bucket set
 
-    assertNull(bitcoinService.getNextAddress(1L));
+    assertNull(testObject.getNextAddress(1L));
     
-    bitcoinService.setAddressBucket(addressBucket);
+    testObject.setAddressBucket(addressBucket);
     
-    assertEquals(address1.toString(), bitcoinService.getNextAddress(1L));
-    assertEquals(address2.toString(), bitcoinService.getNextAddress(1L));
-    assertEquals(address3.toString(), bitcoinService.getNextAddress(1L));
+    assertEquals(address1.toString(), testObject.getNextAddress(1L));
+    assertEquals(address2.toString(), testObject.getNextAddress(1L));
+    assertEquals(address3.toString(), testObject.getNextAddress(1L));
     
     // no more addresses available
-    assertNull(bitcoinService.getNextAddress(1L));
+    assertNull(testObject.getNextAddress(1L));
   }
   
   @Test
@@ -67,21 +67,21 @@ public class CallBackBitcoinServiceTest{
     Address address2 = key2.toAddress(prodNet); 
     addressBucket.add(address2);
        
-    CallBackBitcoinService bitcoinService = CallBackBitcoinService.INSTANCE;
+    CallBackBitcoinService testObject = new CallBackBitcoinService();
    
-    assertNotNull(bitcoinService);
+    assertNotNull(testObject);
     
 //    WasICalledAddressListener addressListener1 = new WasICalledAddressListener();
 //    WasICalledAddressListener addressListener2 = new WasICalledAddressListener();
 
-    BufferedImage swatch1 = bitcoinService.createSwatch(address1.toString(), "label1", "1.0");
-    BufferedImage swatch2 = bitcoinService.createSwatch(address2.toString(), "label2", "2.0");
+    BufferedImage swatch1 = testObject.createSwatch(address1.toString(), "label1", "1.0");
+    BufferedImage swatch2 = testObject.createSwatch(address2.toString(), "label2", "2.0");
     assertNotNull(swatch1);
     assertNotNull(swatch2);
     
     Transaction transaction1 = TestUtils.createFakeTx(prodNet, BigInteger.ONE, address1);   // 1 BTC received to address1
 
-    bitcoinService.notifyAddressListenersOfTransaction(transaction1, true);
+    testObject.notifyAddressListenersOfTransaction(transaction1, true);
     
 //    assertTrue(addressListener1.onPendingCoinsReceivedCalled);
 //    assertFalse(addressListener1.onCoinsReceivedCalled);
@@ -105,21 +105,21 @@ public class CallBackBitcoinServiceTest{
     Address address2 = key2.toAddress(prodNet); 
     addressBucket.add(address2);
        
-    CallBackBitcoinService bitcoinService = CallBackBitcoinService.INSTANCE;
+    CallBackBitcoinService testObject = new CallBackBitcoinService();
    
-    assertNotNull(bitcoinService);
+    assertNotNull(testObject);
     
 //    WasICalledAddressListener addressListener1 = new WasICalledAddressListener();
 //    WasICalledAddressListener addressListener2 = new WasICalledAddressListener();
 
-    BufferedImage swatch1 = bitcoinService.createSwatch(address1.toString(), "label1", "1.0");
-    BufferedImage swatch2 = bitcoinService.createSwatch(address2.toString(), "label2", "2.0");
+    BufferedImage swatch1 = testObject.createSwatch(address1.toString(), "label1", "1.0");
+    BufferedImage swatch2 = testObject.createSwatch(address2.toString(), "label2", "2.0");
     assertNotNull(swatch1);
     assertNotNull(swatch2);
    
     Transaction transaction2 = TestUtils.createFakeTx(prodNet, BigInteger.ONE, address2);   // 1 BTC received to address2
 
-    bitcoinService.notifyAddressListenersOfTransaction(transaction2, false);
+    testObject.notifyAddressListenersOfTransaction(transaction2, false);
     
 //    assertFalse(addressListener1.onPendingCoinsReceivedCalled);
 //    assertFalse(addressListener1.onCoinsReceivedCalled);

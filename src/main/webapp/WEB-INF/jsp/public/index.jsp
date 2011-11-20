@@ -15,9 +15,10 @@
     <div>
       <p>${greeting}</p>
 
+      <p>Hello!</p>
+
       <!-- TODO make this driven by the model -->
       <div class="mbm-item ui-widget-content ui-corner-all">
-        <div class="mbm-item-summary">
           <a href="#" class="mbm-item-link">Cryptonomicon, By Neal
             Stephenson</a>
           <img class="mbm-item-thumbnail float-right" src="<c:url value="/images/catalog/items/2/thumbnail2.png" />"/>
@@ -27,10 +28,9 @@
 
           <p>3.25BTC (&euro;6.50)</p>
 
-          <button id="item-1">Add to basket</button>
-
-        </div>
+          <button id="item-1" class="mbm-add-to-basket"><fmt:message key="catalog.page.add-to-basket"/></button>
       </div>
+
       <div class="mbm-item ui-widget-content ui-corner-all">
         <a href="#" class="mbm-item-link">A Year in Provence, By
           Peter Mayle</a>
@@ -41,14 +41,7 @@
 
         <p>1.95BTC (&euro;3.90)</p>
 
-        <button id="item-2">Add to basket</button>
-        <a href="bitcoin:1HqTK5KXTbSrgJgQ3uuZ8vZfYMtwN65D3W?amount=1.95">
-          <img id="1HqTK5KXTbSrgJgQ3uuZ8vZfYMtwN65D3W"
-               src="<c:url value="/images/catalog/items/1/swatch1.png" />"
-               draggable="true"
-               ondragstart="dragStartHandler(event)"
-               alt="Drag to MultiBit to buy"
-               title="Drag to MultiBit to buy"/></a>
+        <button id="item-2" class="mbm-add-to-basket"><fmt:message key="catalog.page.add-to-basket"/></button>
       </div>
       <div class="ui-widget-content ui-corner-all">
         <a href="#" class="mbm-item-link">Plumbing and Central
@@ -57,15 +50,12 @@
 
         <p>This guide begins with the basic skills of plumbing, which once mastered, can be applied to any situation,
           from mending a leaking tap to installing a new shower unit.</p>
-        <a href="bitcoin:12B1Kwu2SXmm3Mw5YL55F1su3oejWzs3hL?amount=5.1">
-          <img id="12B1Kwu2SXmm3Mw5YL55F1su3oejWzs3hL"
-               src="<c:url value="/images/catalog/items/3/swatch3.png" />"
-               class="mbm-item-swatch"
-               draggable="true"
-               ondragstart="dragStartHandler(event)"
-               alt="Drag to MultiBit to buy"
-               title="Drag to MultiBit to buy"/></a>
+
+        <p>1.95BTC (&euro;3.90)</p>
+
+        <button id="item-3" class="mbm-add-to-basket"><fmt:message key="catalog.page.add-to-basket"/></button>
       </div>
+
       <div class="mbm-item ui-widget-content ui-corner-all">
         <a href="#" class="mbm-item-link">The Quantum Thief, By Hannu
           Rajaniemi</a>
@@ -73,15 +63,12 @@
 
         <p>The most exciting SF debut of the last five years - a star to stand alongside Alistair Reynolds and Richard
           Morgan.</p>
-        <a href="bitcoin:161cjqfgPpSXkjrugx3puraj85Wz5awqzp?amount=4"><img id="161cjqfgPpSXkjrugx3puraj85Wz5awqzp"
-                                                                           src="<c:url value="/images/catalog/items/4/swatch4.png" />"
-                                                                           class="mbm-item-swatch"
-                                                                           draggable="true"
-                                                                           ondragstart="dragStartHandler(event)"
-                                                                           alt="Drag to MultiBit to buy"
-                                                                           title="Drag to MultiBit to buy"/></a>
 
+        <p>1.95BTC (&euro;3.90)</p>
+
+        <button id="item-4" class="mbm-add-to-basket"><fmt:message key="catalog.page.add-to-basket"/></button>
       </div>
+
       <div class="mbm-item ui-widget-content ui-corner-all">
         <a href="#" class="mbm-item-link">The Complete Works of
           Emily Dickinson, Edited by Thomas H Johnson</a>
@@ -89,14 +76,10 @@
 
         <p>The Complete Poems of Emily Dickinson is the only one-volume edition containing all Emily Dickinson's
           poems.</p>
-        <a href="bitcoin:14bVhZispJk7ngVeoptnfAE3WhhCEPP8fE?amount=2.5">
-          <img id="14bVhZispJk7ngVeoptnfAE3WhhCEPP8fE"
-               src="<c:url value="/images/catalog/items/5/swatch5.png" />"
-               class="mbm-item-swatch"
-               draggable="true"
-               ondragstart="dragStartHandler(event)"
-               alt="Drag to MultiBit to buy"
-               title="Drag to MultiBit to buy"/></a>
+
+        <p>1.95BTC (&euro;3.90)</p>
+
+        <button id="item-5" class="mbm-add-to-basket"><fmt:message key="catalog.page.add-to-basket"/></button>
       </div>
     </div>
   </div>
@@ -191,7 +174,7 @@
    * HTML5 drag event event handler
    */
   function dragStartHandler(event) {
-    $.post("/mbm/api/v1/bitcoin/monitor" + event.srcElement.id, function(data) {
+    $.post("/mbm/api/v1/bitcoin/monitor/" + event.srcElement.id, function(data) {
       $("#bitcoin-monitor-output").html(data);
     });
   }
@@ -216,29 +199,36 @@
   /* Decorate the buttons
    * TODO Get this working properly
    */
-  $("#item-1").button({
-    icons: {
-      primary: "ui-icon-locked",
-      secondary: "ui-icon-triangle-1-s"
-    },
-    text: false
-  });
-  $("#item-1-buy").button({
-    icons: {
-      primary: "ui-icon-locked",
-      secondary: "ui-icon-triangle-1-s"
-    },
-    text: false
-  });
+//  $("#item-1").button({
+//    icons: {
+//      primary: "ui-icon-plus",
+//      secondary: "ui-icon-triangle-1-s"
+//    },
+//    text: false
+//  });
+
   $("#item-1").bind("click", function(event) {
-    // TODO Generate a swatch here
-    $("#item-1-swatch").slideToggle("slow").toggleClass("active");
-
-    // TODO remove this
-    // Trigger the alert
-    $.get("/mbm/api/v1/alert/demo");
+    console.log("Adding item-1 to shopping basket");
+    $("#item-1-order").slideToggle("slow").addClass("active");
   });
 
+//  $("#item-2").button({
+//    icons: {
+//      primary: "ui-icon-plus",
+//      secondary: "ui-icon-triangle-1-s"
+//    },
+//    text: false
+//  });
+
+  $("#item-2").bind("click", function(event) {
+    console.log("Adding item-2 to shopping basket");
+    $("#item-2-order").slideToggle("slow").addClass("active");
+  });
+
+  $("#mbm-confirm-order").bind("click", function(event) {
+    // Show a swatch
+    $("#mbm-order-swatch").html("<img src='/mbm/api/v1/bitcoin/swatch?address=1pmG7fTVaVL1omx1TAgrGG2mNHbL4B1fb&amount=1&label=Your%20items'/>");
+  });
 
 </script>
 

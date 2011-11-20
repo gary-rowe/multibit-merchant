@@ -93,17 +93,17 @@
         <td>Output</td>
       </tr>
       <tr>
-        <td><a id="bitcoin-monitor" href="#">Request address</a></td>
+        <td><a id="bitcoin-new-address" href="#">Request new address</a></td>
         <td>Request a Bitcoin address from the MBM pool. Will respond with an address if successful.</td>
-        <td><code>$("#bitcoin-monitor").bind("click", function(event) {
-          $.post('/mbm/api/v1/bitcoin/monitor/1abcdefgh',
+        <td><code>$("#bitcoin-new-address").bind("click", function(event) {
+          $.post('/mbm/api/v1/bitcoin/new-address',
           function(data) {
-          $('#bitcoin-monitor-output').html(data);
+          $('#bitcoin-new-address-output').html(data);
           });
           });
         </code>
         </td>
-        <td id="bitcoin-monitor-output"></td>
+        <td id="bitcoin-new-address-output"></td>
       </tr>
       <tr>
         <td><a id="bitcoin-swatch" href="#">Swatch</a></td>
@@ -111,7 +111,8 @@
         </td>
         <td><code></code>
         </td>
-        <td id="bitcoin-swatch-output"><img src="<c:url value="/api/v1/bitcoin/swatch?address=1abcdefg&amount=4.5&label=Example"/>"/></td>
+        <td id="bitcoin-swatch-output"><img
+          src="<c:url value="/api/v1/bitcoin/swatch?address=1abcdefg&amount=4.5&label=Example"/>"/></td>
       </tr>
     </table>
 
