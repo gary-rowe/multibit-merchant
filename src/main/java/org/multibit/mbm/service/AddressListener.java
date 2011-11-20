@@ -22,7 +22,7 @@ public interface AddressListener {
    * 
    * @param address
    *          The address that received the coins
-   * @param tx
+   * @param transaction
    *          The transaction which sent us the coins.
    */
   void onCoinsReceived(Address address, Transaction transaction);
@@ -32,7 +32,7 @@ public interface AddressListener {
    * some coins to you. It's safe to use methods of wallet during the execution
    * of this callback.
    * 
-   * @param wallet
+   * @param address
    *          The address that received the coins/
    * @param tx
    *          The transaction which sent us the coins.

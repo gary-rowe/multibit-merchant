@@ -48,10 +48,19 @@ public class CustomerService {
 
   }
 
+  /**
+   * Attempts to locate a Customer based on the given Principal
+   * @param principal The security principal (can be null but just leads to a null Customer)
+   * @return A Customer or null if not found
+   */
   @Transactional(propagation = Propagation.REQUIRED)
   public Customer getCustomerFromPrincipal(Principal principal) {
     Customer customer = null;
     String emailAddress = null;
+
+    if (principal==null) {
+      return null;
+    }
 
     if (principal instanceof OpenIDAuthenticationToken) {
       // Extract information from the OpenId principal
