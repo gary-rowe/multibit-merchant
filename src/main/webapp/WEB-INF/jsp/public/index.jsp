@@ -15,20 +15,20 @@
     <div>
       <p>${greeting}</p>
 
-      <p>Hello!</p>
+      <p>hello!</p>
 
       <!-- TODO make this driven by the model -->
       <div class="mbm-item ui-widget-content ui-corner-all">
-          <a href="#" class="mbm-item-link">Cryptonomicon, By Neal
-            Stephenson</a>
-          <img class="mbm-item-thumbnail float-right" src="<c:url value="/images/catalog/items/2/thumbnail2.png" />"/>
+        <a href="#" class="mbm-item-link">Cryptonomicon, By Neal
+          Stephenson</a>
+        <img class="mbm-item-thumbnail float-right" src="<c:url value="/images/catalog/items/2/thumbnail2.png" />"/>
 
-          <p>'A brilliant patchwork of codebreaking mathematicians and their descendants who are striving to create a
-            datahaven in the Philippines...trust me on this one' Guardian</p>
+        <p>'A brilliant patchwork of codebreaking mathematicians and their descendants who are striving to create a
+          datahaven in the Philippines...trust me on this one' Guardian</p>
 
-          <p>3.25BTC (&euro;6.50)</p>
+        <p>3.25BTC (&euro;6.50)</p>
 
-          <button id="item-1" class="mbm-add-to-basket"><fmt:message key="catalog.page.add-to-basket"/></button>
+        <button id="item-1" class="mbm-add-to-basket" onclick="handleAddToBasketClick(this)"><fmt:message key="catalog.page.add-to-basket"/></button>
       </div>
 
       <div class="mbm-item ui-widget-content ui-corner-all">
@@ -41,7 +41,7 @@
 
         <p>1.95BTC (&euro;3.90)</p>
 
-        <button id="item-2" class="mbm-add-to-basket"><fmt:message key="catalog.page.add-to-basket"/></button>
+        <button id="item-2" class="mbm-add-to-basket"onclick="handleAddToBasketClick(this)"><fmt:message key="catalog.page.add-to-basket"/></button>
       </div>
       <div class="ui-widget-content ui-corner-all">
         <a href="#" class="mbm-item-link">Plumbing and Central
@@ -53,7 +53,7 @@
 
         <p>1.95BTC (&euro;3.90)</p>
 
-        <button id="item-3" class="mbm-add-to-basket"><fmt:message key="catalog.page.add-to-basket"/></button>
+        <button id="item-3" class="mbm-add-to-basket" onclick="handleAddToBasketClick(this)"><fmt:message key="catalog.page.add-to-basket"/></button>
       </div>
 
       <div class="mbm-item ui-widget-content ui-corner-all">
@@ -66,7 +66,7 @@
 
         <p>1.95BTC (&euro;3.90)</p>
 
-        <button id="item-4" class="mbm-add-to-basket"><fmt:message key="catalog.page.add-to-basket"/></button>
+        <button id="item-4" class="mbm-add-to-basket" onclick="handleAddToBasketClick(this)"><fmt:message key="catalog.page.add-to-basket"/></button>
       </div>
 
       <div class="mbm-item ui-widget-content ui-corner-all">
@@ -79,7 +79,7 @@
 
         <p>1.95BTC (&euro;3.90)</p>
 
-        <button id="item-5" class="mbm-add-to-basket"><fmt:message key="catalog.page.add-to-basket"/></button>
+        <button id="item-5" class="mbm-add-to-basket" onclick="handleAddToBasketClick(this)"><fmt:message key="catalog.page.add-to-basket"/></button>
       </div>
     </div>
   </div>
@@ -179,6 +179,25 @@
     });
   }
 
+  function handleAddToBasketClick(event) {
+    console.log("Adding item-1 to shopping basket");
+    $("#item-1-order").slideToggle("slow").toggleClass("active");
+  }
+
+  function handleConfirmOrder(event) {
+    console.log("Confirming order");
+    // Request an address
+    $.post('/mbm/api/v1/bitcoin/new-address',
+      function(data) {
+        console.log("Received callback");
+        if (data == null || data=="") {
+          alert("You need to be logged in to confirm an order");
+        } else {
+          // Show a swatch based on the bitcoin address (1pmG7fTVaVL1omx1TAgrGG2mNHbL4B1fb)
+          $("#mbm-order-swatch").html("<img src='/mbm/api/v1/bitcoin/swatch?address=&'+data+'amount=1&label=Your%20items' />");
+        }
+      });
+  }
 
   // Initialisation
 
@@ -196,38 +215,14 @@
     handleMessage,
     $.atmosphere.request = {transport: 'websocket'});
 
-  /* Decorate the buttons
-   * TODO Get this working properly
-   */
-//  $("#item-1").button({
-//    icons: {
-//      primary: "ui-icon-plus",
-//      secondary: "ui-icon-triangle-1-s"
-//    },
-//    text: false
-//  });
-
-  $("#item-1").bind("click", function(event) {
-    console.log("Adding item-1 to shopping basket");
-    $("#item-1-order").slideToggle("slow").addClass("active");
-  });
-
-//  $("#item-2").button({
-//    icons: {
-//      primary: "ui-icon-plus",
-//      secondary: "ui-icon-triangle-1-s"
-//    },
-//    text: false
-//  });
-
-  $("#item-2").bind("click", function(event) {
-    console.log("Adding item-2 to shopping basket");
-    $("#item-2-order").slideToggle("slow").addClass("active");
-  });
-
-  $("#mbm-confirm-order").bind("click", function(event) {
-    // Show a swatch
-    $("#mbm-order-swatch").html("<img src='/mbm/api/v1/bitcoin/swatch?address=1pmG7fTVaVL1omx1TAgrGG2mNHbL4B1fb&amount=1&label=Your%20items'/>");
+  $("button").each(function() {
+    $(this).button({
+      icons: {
+        primary: "ui-icon-plus",
+        secondary: "ui-icon-triangle-1-s"
+      },
+      text: false
+    });
   });
 
 </script>
