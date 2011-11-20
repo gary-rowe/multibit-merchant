@@ -1,19 +1,14 @@
 package org.multibit.mbm.service;
 
-import static org.junit.Assert.*;
+import com.google.bitcoin.core.*;
+import org.junit.Test;
 
 import java.awt.image.BufferedImage;
 import java.math.BigInteger;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.junit.Test;
-
-import com.google.bitcoin.core.Address;
-import com.google.bitcoin.core.ECKey;
-import com.google.bitcoin.core.NetworkParameters;
-import com.google.bitcoin.core.TestUtils;
-import com.google.bitcoin.core.Transaction;
+import static org.junit.Assert.*;
 
 public class CallBackBitcoinServiceTest{
 
@@ -39,21 +34,21 @@ public class CallBackBitcoinServiceTest{
     Address address3 = key3.toAddress(prodNet); 
     addressBucket.add(address3);
     
-    BitcoinService bitcoinService = CallBackBitcoinService.getBitcoinService();
+    BitcoinService bitcoinService = CallBackBitcoinService.INSTANCE;
    
     assertNotNull(bitcoinService);
     
     // should return null if no address bucket set
-    assertNull(bitcoinService.getNextAddress());
+    assertNull(bitcoinService.getNextAddress(0L));
     
     bitcoinService.setAddressBucket(addressBucket);
     
-    assertEquals(address1, bitcoinService.getNextAddress());
-    assertEquals(address2, bitcoinService.getNextAddress());
-    assertEquals(address3, bitcoinService.getNextAddress());
+    assertEquals(address1, bitcoinService.getNextAddress(0L));
+    assertEquals(address2, bitcoinService.getNextAddress(0L));
+    assertEquals(address3, bitcoinService.getNextAddress(0L));
     
     // no more addresses available
-    assertNull(bitcoinService.getNextAddress());
+    assertNull(bitcoinService.getNextAddress(0L));
   }
   
   @Test
@@ -71,7 +66,7 @@ public class CallBackBitcoinServiceTest{
     Address address2 = key2.toAddress(prodNet); 
     addressBucket.add(address2);
        
-    CallBackBitcoinService bitcoinService = (CallBackBitcoinService)CallBackBitcoinService.getBitcoinService();
+    CallBackBitcoinService bitcoinService = CallBackBitcoinService.INSTANCE;
    
     assertNotNull(bitcoinService);
     
@@ -109,7 +104,7 @@ public class CallBackBitcoinServiceTest{
     Address address2 = key2.toAddress(prodNet); 
     addressBucket.add(address2);
        
-    CallBackBitcoinService bitcoinService = (CallBackBitcoinService)CallBackBitcoinService.getBitcoinService();
+    CallBackBitcoinService bitcoinService = CallBackBitcoinService.INSTANCE;
    
     assertNotNull(bitcoinService);
     

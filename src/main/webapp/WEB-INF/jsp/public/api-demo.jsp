@@ -93,20 +93,25 @@
         <td>Output</td>
       </tr>
       <tr>
-        <td><a id="bitcoin-monitor" href="#">Monitor</a></td>
-        <td>Monitor a Bitcoin address on the blockchain. Will respond with 202_ACCEPTED if successful. Location header
-          will provide the monitor status for polling.
-        </td>
+        <td><a id="bitcoin-monitor" href="#">Request address</a></td>
+        <td>Request a Bitcoin address from the MBM pool. Will respond with an address if successful.</td>
         <td><code>$("#bitcoin-monitor").bind("click", function(event) {
-
-  $.post('/mbm/api/v1/bitcoin/monitor/1abcdefgh',
-    function(data) {
-      $('#bitcoin-monitor-output').html(data);
-    });
-});
-</code>
+          $.post('/mbm/api/v1/bitcoin/monitor/1abcdefgh',
+          function(data) {
+          $('#bitcoin-monitor-output').html(data);
+          });
+          });
+        </code>
         </td>
         <td id="bitcoin-monitor-output"></td>
+      </tr>
+      <tr>
+        <td><a id="bitcoin-swatch" href="#">Swatch</a></td>
+        <td>Create a Bitcoin swatch.
+        </td>
+        <td><code></code>
+        </td>
+        <td id="bitcoin-swatch-output"><img src="<c:url value="/api/v1/bitcoin/swatch?address=1abcdefg&amount=4.5&label=Example"/>"/></td>
       </tr>
     </table>
 
