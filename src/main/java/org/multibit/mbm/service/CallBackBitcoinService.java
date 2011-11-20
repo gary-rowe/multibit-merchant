@@ -1,18 +1,16 @@
 package org.multibit.mbm.service;
 
-import java.awt.image.BufferedImage;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
-import org.multibit.mbm.qrcode.SwatchGenerator;
-
 import com.google.bitcoin.core.Address;
 import com.google.bitcoin.core.ScriptException;
 import com.google.bitcoin.core.Transaction;
 import com.google.bitcoin.core.TransactionOutput;
 import com.google.common.collect.Maps;
+import org.multibit.mbm.qrcode.SwatchGenerator;
+
+import javax.annotation.Resource;
+import java.awt.image.BufferedImage;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -49,7 +47,7 @@ public enum CallBackBitcoinService implements BitcoinService {
   private Map<Address, AddressListener> addressToAddressListenerMap= Maps.newHashMap();;
 
   @Resource
-  private SwatchGenerator swatchGenerator;
+  private SwatchGenerator swatchGenerator=new SwatchGenerator();
 
   CallBackBitcoinService() {
 
