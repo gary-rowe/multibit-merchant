@@ -8,7 +8,6 @@ import com.google.common.collect.Maps;
 import org.multibit.mbm.qrcode.SwatchGenerator;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Map;
@@ -46,10 +45,12 @@ public class CallBackBitcoinService implements BitcoinService {
    */
   private Map<Address, AddressListener> addressToAddressListenerMap= Maps.newHashMap();;
 
-  @Resource
-  private SwatchGenerator swatchGenerator=new SwatchGenerator();
+  // TODO Reinstate this annotation
+//  @Resource
+  private SwatchGenerator swatchGenerator;
 
   public CallBackBitcoinService() {
+    swatchGenerator=new SwatchGenerator();
 
   }
 
@@ -115,4 +116,10 @@ public class CallBackBitcoinService implements BitcoinService {
       }
     }
   }
+
+  public void setSwatchGenerator(SwatchGenerator swatchGenerator) {
+    this.swatchGenerator = swatchGenerator;
+  }
+
+
 }

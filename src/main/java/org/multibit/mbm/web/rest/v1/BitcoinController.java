@@ -37,8 +37,9 @@ public class BitcoinController {
   @Resource()
   CustomerService customerService;
 
-  @Resource
-  SwatchGenerator swatchGenerator;
+  // TODO Reinstate this annotation
+//  @Resource
+  SwatchGenerator swatchGenerator=new SwatchGenerator();
 
   /**
    * Provides a Bitcoin swatch with the given parameters

@@ -28,7 +28,8 @@
 
         <p>3.25BTC (&euro;6.50)</p>
 
-        <button id="item-1" class="mbm-add-to-basket" onclick="handleAddToBasketClick(this)"><fmt:message key="catalog.page.add-to-basket"/></button>
+        <button id="item-1" class="mbm-add-to-basket" onclick="handleAddToBasketClick(this)"><fmt:message
+          key="catalog.page.add-to-basket"/></button>
       </div>
 
       <div class="mbm-item ui-widget-content ui-corner-all">
@@ -41,9 +42,10 @@
 
         <p>1.95BTC (&euro;3.90)</p>
 
-        <button id="item-2" class="mbm-add-to-basket"onclick="handleAddToBasketClick(this)"><fmt:message key="catalog.page.add-to-basket"/></button>
+        <button id="item-2" class="mbm-add-to-basket" onclick="handleAddToBasketClick(this)"><fmt:message
+          key="catalog.page.add-to-basket"/></button>
       </div>
-      <div class="ui-widget-content ui-corner-all">
+      <div class="mbm-item ui-widget-content ui-corner-all">
         <a href="#" class="mbm-item-link">Plumbing and Central
           Heating, By Mike Lawrence</a>
         <img class="mbm-item-thumbnail float-right" src="<c:url value="/images/catalog/items/3/thumbnail3.png" />"/>
@@ -53,7 +55,8 @@
 
         <p>1.95BTC (&euro;3.90)</p>
 
-        <button id="item-3" class="mbm-add-to-basket" onclick="handleAddToBasketClick(this)"><fmt:message key="catalog.page.add-to-basket"/></button>
+        <button id="item-3" class="mbm-add-to-basket" onclick="handleAddToBasketClick(this)"><fmt:message
+          key="catalog.page.add-to-basket"/></button>
       </div>
 
       <div class="mbm-item ui-widget-content ui-corner-all">
@@ -66,7 +69,8 @@
 
         <p>1.95BTC (&euro;3.90)</p>
 
-        <button id="item-4" class="mbm-add-to-basket" onclick="handleAddToBasketClick(this)"><fmt:message key="catalog.page.add-to-basket"/></button>
+        <button id="item-4" class="mbm-add-to-basket" onclick="handleAddToBasketClick(this)"><fmt:message
+          key="catalog.page.add-to-basket"/></button>
       </div>
 
       <div class="mbm-item ui-widget-content ui-corner-all">
@@ -79,7 +83,8 @@
 
         <p>1.95BTC (&euro;3.90)</p>
 
-        <button id="item-5" class="mbm-add-to-basket" onclick="handleAddToBasketClick(this)"><fmt:message key="catalog.page.add-to-basket"/></button>
+        <button id="item-5" class="mbm-add-to-basket" onclick="handleAddToBasketClick(this)"><fmt:message
+          key="catalog.page.add-to-basket"/></button>
       </div>
     </div>
   </div>
@@ -190,7 +195,7 @@
     $.post('/mbm/api/v1/bitcoin/new-address',
       function(data) {
         console.log("Received callback");
-        if (data == null || data=="") {
+        if (data == null || data == "") {
           alert("You need to be logged in to confirm an order");
         } else {
           // Show a swatch based on the bitcoin address (1pmG7fTVaVL1omx1TAgrGG2mNHbL4B1fb)

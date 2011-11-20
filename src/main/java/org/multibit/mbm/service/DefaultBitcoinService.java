@@ -1,46 +1,24 @@
 package org.multibit.mbm.service;
 
+import com.google.bitcoin.core.*;
+import com.google.bitcoin.discovery.DnsDiscovery;
+import com.google.bitcoin.discovery.IrcDiscovery;
+import com.google.bitcoin.store.BlockStore;
+import com.google.bitcoin.store.BlockStoreException;
+import com.google.bitcoin.store.BoundedOverheadBlockStore;
+import org.multibit.mbm.qrcode.SwatchGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.Resource;
-
-import org.multibit.mbm.qrcode.SwatchGenerator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
-
-import com.google.bitcoin.core.Address;
-import com.google.bitcoin.core.AddressFormatException;
-import com.google.bitcoin.core.Block;
-import com.google.bitcoin.core.BlockChain;
-import com.google.bitcoin.core.ECKey;
-import com.google.bitcoin.core.NetworkParameters;
-import com.google.bitcoin.core.Peer;
-import com.google.bitcoin.core.PeerAddress;
-import com.google.bitcoin.core.PeerEventListener;
-import com.google.bitcoin.core.PeerGroup;
-import com.google.bitcoin.core.PendingTransactionListener;
-import com.google.bitcoin.core.ScriptException;
-import com.google.bitcoin.core.Transaction;
-import com.google.bitcoin.core.TransactionOutput;
-import com.google.bitcoin.discovery.DnsDiscovery;
-import com.google.bitcoin.discovery.IrcDiscovery;
-import com.google.bitcoin.store.BlockStore;
-import com.google.bitcoin.store.BlockStoreException;
-import com.google.bitcoin.store.BoundedOverheadBlockStore;
 
 @Component
 public class DefaultBitcoinService implements BitcoinService, PeerEventListener, PendingTransactionListener {
@@ -80,8 +58,9 @@ public class DefaultBitcoinService implements BitcoinService, PeerEventListener,
    */
   private Map<Address, AddressListener> addressToAddressListenerMap;
 
-  @Resource
-  private SwatchGenerator swatchGenerator = new SwatchGenerator();
+  // TODO Reinstate this annotation
+//  @Resource
+  private SwatchGenerator swatchGenerator;
 
   public DefaultBitcoinService() {
     // TODO replace settings from config file
@@ -282,6 +261,10 @@ public class DefaultBitcoinService implements BitcoinService, PeerEventListener,
       }
     }
     return newAddressBucket;
+  }
+
+  public void setSwatchGenerator(SwatchGenerator swatchGenerator) {
+    this.swatchGenerator = swatchGenerator;
   }
 
   /**
