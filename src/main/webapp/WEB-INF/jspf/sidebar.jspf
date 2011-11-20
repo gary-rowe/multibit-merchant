@@ -89,7 +89,7 @@
   <!-- TODO Create a shopping basket widget -->
   <div class="ui-widget">
     <p class="ui-widget-header">Your Basket</p>
-    <button id="confirm-order"><fmt:message key="catalog.page.confirm-order"/></button>
+    <button id="confirm-order" onclick="handleConfirmOrder(this)"><fmt:message key="catalog.page.confirm-order"/></button>
     <div id="mbm-order-swatch"></div>
     <div id="item-1-order">
       <p>Cryptonomicon</p>
