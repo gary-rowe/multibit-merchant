@@ -197,7 +197,8 @@ public class DefaultBitcoinService implements BitcoinService, PeerEventListener,
               addressListener.onPendingCoinsReceived(loopAddress, transaction);
             }
           } catch (ScriptException e) {
-            e.printStackTrace();
+            // some of the transaction have non-standard scripts that are not addresses
+            // we ignore these
           }
         }
       }
