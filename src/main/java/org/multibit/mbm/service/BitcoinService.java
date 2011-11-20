@@ -27,7 +27,7 @@ public interface BitcoinService {
    * @return nextAddress The next Bitcoin address to use, or null if no more addresses are available
    * 
    */
-  public String getNextAddress(long id);
+  public String getNextAddress(Long id);
 
   /**
    * <p>Create a swatch containing the specified address, label and amount</p>
