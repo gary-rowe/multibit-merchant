@@ -199,8 +199,10 @@
           alert("You need to be logged in to confirm an order");
         } else {
           // Show a swatch based on the bitcoin address (1pmG7fTVaVL1omx1TAgrGG2mNHbL4B1fb)
-          $("#mbm-order-swatch").html("<img src='/mbm/api/v1/bitcoin/swatch?address=&'+data+'amount=1&label=Your%20items' />");
+          var address = "/mbm/api/v1/bitcoin/swatch?address=" + data + "&amount=1&label=Your%20items";
+          $("#mbm-order-swatch").html("<img class='mbm-order-swatch' src='" + address + "' />");
         }
+        $("#confirm-order").addClass("ui-state-disabled").attr("disabled", true);;
       });
   }
 

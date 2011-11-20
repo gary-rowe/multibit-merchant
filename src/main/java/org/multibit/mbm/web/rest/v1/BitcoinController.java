@@ -44,11 +44,14 @@ public class BitcoinController {
   /**
    * Provides a Bitcoin swatch with the given parameters
    *
-   * @param address The Bitcoin address
-   * @param amount  The amount
-   * @param label   The associated label
+   * @param address  The Bitcoin address
+   * @param amount   The amount
+   * @param label    The associated label
+   * @param response The response
    *
    * @return A String containing the message
+   *
+   * @throws java.io.IOException If something goes wrong
    */
   @RequestMapping(value = "/swatch", method = RequestMethod.GET)
   @ResponseBody
@@ -70,18 +73,19 @@ public class BitcoinController {
    * Creates a new Bitcoin address for monitoring
    *
    * @param principal The security principal
+   *
    * @return A String containing the message
    */
   @RequestMapping(value = "/new-address", method = RequestMethod.POST)
   @ResponseBody
   public String newAddress(Principal principal) {
     Customer customer = customerService.getCustomerFromPrincipal(principal);
-    if (customer==null) {
+    if (customer == null) {
       // TODO Should this be an authorisation failure?
       return null;
     }
-    String newBitcoinAddress=bitcoinService.getNextAddress(customer.getId());
-    log.debug("New bitcoin address requested '{}'",newBitcoinAddress);
+    String newBitcoinAddress = bitcoinService.getNextAddress(customer.getId());
+    log.debug("New bitcoin address requested '{}'", newBitcoinAddress);
     return newBitcoinAddress;
   }
 

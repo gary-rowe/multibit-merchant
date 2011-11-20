@@ -153,6 +153,7 @@ img.float-right {
 
 .mbm-order-swatch {
   cursor:move;
+  width:240px;
 }
 
 #mbm-item-1-order {
