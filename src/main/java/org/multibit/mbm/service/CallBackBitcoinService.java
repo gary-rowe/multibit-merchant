@@ -1,8 +1,11 @@
 package org.multibit.mbm.service;
 
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.multibit.mbm.qrcode.SwatchGenerator;
 
 import com.google.bitcoin.core.Address;
 import com.google.bitcoin.core.ScriptException;
@@ -45,10 +48,17 @@ public class CallBackBitcoinService implements BitcoinService {
    * the instance of the BitcoinService
    */
   private static BitcoinService instance;
+  
+  private SwatchGenerator swatchGenerator;
 
   private CallBackBitcoinService() {
     addressToAddressListenerMap = new HashMap<Address, AddressListener>();
     lastAddressIndex = NO_ADDRESS_GOT_YET;
+    
+    
+    // create a SwatchGenerator for later use
+    swatchGenerator = new SwatchGenerator();
+
   }
 
   /**
@@ -75,12 +85,14 @@ public class CallBackBitcoinService implements BitcoinService {
   }
 
   @Override
-  public void registerAddress(Address address, AddressListener addressListener) {
+  public BufferedImage createSwatchAndRegisterAddress(Address address, String label, String amount, AddressListener addressListener) {
     // TODO add time-to-live and a timer to remove stale addressListeners
-    // TODO only have a single listener per address - OK ?
     if (address != null && addressListener != null) {
       addressToAddressListenerMap.put(address, addressListener);
     }
+    
+    BufferedImage swatch = swatchGenerator.generateSwatch(address.toString(), amount, label);
+    return swatch;
   }
 
   // Set up methods
