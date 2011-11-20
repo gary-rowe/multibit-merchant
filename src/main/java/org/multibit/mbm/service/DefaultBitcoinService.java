@@ -57,7 +57,7 @@ public class DefaultBitcoinService implements BitcoinService, PeerEventListener,
 
   private static final int NO_ADDRESS_GOT_YET = -1;
 
-  private static final String DEFAULT_ADDRESS_BUCKET_FILENAME = "bulkAddresses.csv";
+  public static final String DEFAULT_ADDRESS_BUCKET_FILENAME = "bulkAddresses.csv";
 
   private NetworkParameters networkParameters;
 
