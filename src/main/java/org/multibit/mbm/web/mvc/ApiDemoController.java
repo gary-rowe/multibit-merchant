@@ -10,10 +10,10 @@ import org.springframework.web.servlet.ModelAndView;
  * @since 1.0.0
  */
 @Controller
-public class ApiDemoController {
+public class ApiDemoController extends BaseMVCController {
 
   @RequestMapping("/api-demo.html")
-  public ModelAndView authenticate() {
+  public ModelAndView apiDemo() {
     return new ModelAndView("public/api-demo");
   }
 

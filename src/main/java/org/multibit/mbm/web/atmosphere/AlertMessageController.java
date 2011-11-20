@@ -60,13 +60,10 @@ public class AlertMessageController {
       log.info("Alert subscription without OpenId");
       return;
     } else {
-      BroadcastService.INSTANCE.addBroadcaster(customer, event.getBroadcaster());
+      BroadcastService.INSTANCE.addBroadcaster(customer.getId(), event.getBroadcaster());
     }
   }
 
-  /**
-   * Send out a regular alert
-   */
   @RequestMapping(value = "/demo", method = RequestMethod.GET)
   @ResponseBody
   public void demo(Principal principal) throws IOException {
@@ -83,7 +80,7 @@ public class AlertMessageController {
       alertMessage.setId(1L);
       alertMessage.setCreatedAt(DateUtils.nowUtc());
       alertMessage.setText("Your order has been confirmed");
-      BroadcastService.INSTANCE.broadcast(customer, alertMessage);
+      BroadcastService.INSTANCE.broadcast(customer.getId(), alertMessage);
     }
   }
 

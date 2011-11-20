@@ -1,5 +1,6 @@
 package org.multibit.mbm.web.mvc.admin;
 
+import org.multibit.mbm.web.mvc.BaseMVCController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,11 +12,11 @@ import java.security.Principal;
  * @since 1.0.0
  */
 @Controller
-public class AdminController {
+public class AdminController extends BaseMVCController {
 
   @RequestMapping("/admin.html")
-  public String getView(Model model, Principal principal) {
-
+  public String getDeliveryView(Model model, Principal principal) {
+    addCustomerToModel(principal, model);
     return "admin/index";
   }
 
