@@ -209,4 +209,12 @@ public class DefaultBitcoinService implements BitcoinService, PeerEventListener,
   private String getFilePrefix(boolean useTestNet) {
     return useTestNet ? MULTIBIT_PREFIX + SEPARATOR + TEST_NET_PREFIX : MULTIBIT_PREFIX;
   }
+  
+  /**
+   * start a DefaultBitcoinService
+   * @param args
+   */
+  public static void main(String[] args) {
+    BitcoinService bitcoinService = new DefaultBitcoinService();
+  }
 }
