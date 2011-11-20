@@ -1,24 +1,46 @@
 package org.multibit.mbm.service;
 
-import com.google.bitcoin.core.*;
-import com.google.bitcoin.discovery.DnsDiscovery;
-import com.google.bitcoin.discovery.IrcDiscovery;
-import com.google.bitcoin.store.BlockStore;
-import com.google.bitcoin.store.BlockStoreException;
-import com.google.bitcoin.store.BoundedOverheadBlockStore;
+import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
 import org.multibit.mbm.qrcode.SwatchGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.google.bitcoin.core.Address;
+import com.google.bitcoin.core.AddressFormatException;
+import com.google.bitcoin.core.Block;
+import com.google.bitcoin.core.BlockChain;
+import com.google.bitcoin.core.ECKey;
+import com.google.bitcoin.core.NetworkParameters;
+import com.google.bitcoin.core.Peer;
+import com.google.bitcoin.core.PeerAddress;
+import com.google.bitcoin.core.PeerEventListener;
+import com.google.bitcoin.core.PeerGroup;
+import com.google.bitcoin.core.PendingTransactionListener;
+import com.google.bitcoin.core.ScriptException;
+import com.google.bitcoin.core.Transaction;
+import com.google.bitcoin.core.TransactionOutput;
+import com.google.bitcoin.discovery.DnsDiscovery;
+import com.google.bitcoin.discovery.IrcDiscovery;
+import com.google.bitcoin.store.BlockStore;
+import com.google.bitcoin.store.BlockStoreException;
+import com.google.bitcoin.store.BoundedOverheadBlockStore;
 
 @Component
 public class DefaultBitcoinService implements BitcoinService, PeerEventListener, PendingTransactionListener {
@@ -34,6 +56,8 @@ public class DefaultBitcoinService implements BitcoinService, PeerEventListener,
   public static final String IRC_CHANNEL_TEST = "#bitcoinTEST";;
 
   private static final int NO_ADDRESS_GOT_YET = -1;
+
+  private static final String DEFAULT_ADDRESS_BUCKET_FILENAME = "bulkAddresses.csv";
 
   private NetworkParameters networkParameters;
 
@@ -57,7 +81,7 @@ public class DefaultBitcoinService implements BitcoinService, PeerEventListener,
   private Map<Address, AddressListener> addressToAddressListenerMap;
 
   @Resource
-  private SwatchGenerator swatchGenerator=new SwatchGenerator();
+  private SwatchGenerator swatchGenerator = new SwatchGenerator();
 
   public DefaultBitcoinService() {
     // TODO replace settings from config file
@@ -115,12 +139,16 @@ public class DefaultBitcoinService implements BitcoinService, PeerEventListener,
     } catch (BlockStoreException e) {
       e.printStackTrace();
     }
-    
+
     // create a SwatchGenerator for later use
     swatchGenerator = new SwatchGenerator();
-    
+
     // warm it up - initialises some of the QR code so that it runs faster
     swatchGenerator.generateSwatch((new ECKey()).toAddress(networkParameters).toString(), "0.0", "warmup");
+    
+    // load address bucket
+    addressBucket = loadAddressBucket();
+    log.info("Address bucket loaded with " + addressBucket.size() + " addresses");
   }
 
   @Override
@@ -130,16 +158,16 @@ public class DefaultBitcoinService implements BitcoinService, PeerEventListener,
       return null;
     } else {
       lastAddressIndex++;
-      
+
       Address nextAddress = addressBucket.get(lastAddressIndex);
-      
+
       // register the address and the address listener with id
       // TODO add time-to-live and a timer to remove stale addressListeners
       if (nextAddress != null) {
         AddressListener addressListener = new DefaultAddressListener(nextAddress, id);
         addressToAddressListenerMap.put(nextAddress, addressListener);
       }
-      
+
       return nextAddress.toString();
     }
   }
@@ -197,7 +225,8 @@ public class DefaultBitcoinService implements BitcoinService, PeerEventListener,
               addressListener.onPendingCoinsReceived(loopAddress, transaction);
             }
           } catch (ScriptException e) {
-            // some of the transaction have non-standard scripts that are not addresses
+            // some of the transaction have non-standard scripts that are not
+            // addresses
             // we ignore these
           }
         }
@@ -210,9 +239,54 @@ public class DefaultBitcoinService implements BitcoinService, PeerEventListener,
   private String getFilePrefix(boolean useTestNet) {
     return useTestNet ? MULTIBIT_PREFIX + SEPARATOR + TEST_NET_PREFIX : MULTIBIT_PREFIX;
   }
-  
+
+  /**
+   * load the address bucket stored in the default address bucket file
+   * 
+   * @return
+   */
+  List<Address> loadAddressBucket() {
+    List<Address> newAddressBucket = new LinkedList<Address>();
+
+    // Read in the address bucket
+    if ((new File(DEFAULT_ADDRESS_BUCKET_FILENAME)).exists()) {
+      FileInputStream fileInputStream = null;
+      try {
+        fileInputStream = new FileInputStream(DEFAULT_ADDRESS_BUCKET_FILENAME);
+        // Get the object of DataInputStream
+        InputStream inputStream = new DataInputStream(fileInputStream);
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF8"));
+        String inputLine;
+
+        while ((inputLine = bufferedReader.readLine()) != null) {
+          // see if the input line is an address
+          try {
+            Address loopAddress = new Address(networkParameters, inputLine);
+            newAddressBucket.add(loopAddress);
+          } catch (AddressFormatException afe) {
+            // not an address
+          }
+        }
+      } catch (IOException ioe) {
+        log.error(ioe.getClass().getName() + " " + ioe.getMessage());
+      } finally {
+
+        // Close the input stream
+        if (fileInputStream != null) {
+          try {
+            fileInputStream.close();
+          } catch (IOException e) {
+            log.error(e.getClass().getName() + " " + e.getMessage());
+          }
+        }
+      }
+    }
+    return newAddressBucket;
+  }
+
   /**
    * start a DefaultBitcoinService
+   * 
    * @param args
    */
   public static void main(String[] args) {
