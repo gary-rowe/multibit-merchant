@@ -6,6 +6,7 @@ import com.google.bitcoin.core.Transaction;
 import com.google.bitcoin.core.TransactionOutput;
 import com.google.common.collect.Maps;
 import org.multibit.mbm.qrcode.SwatchGenerator;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.awt.image.BufferedImage;
@@ -25,9 +26,8 @@ import java.util.Map;
  * 
  * @since 1.0.0
  */
-public enum CallBackBitcoinService implements BitcoinService {
-
-  INSTANCE;
+@Component
+public class CallBackBitcoinService implements BitcoinService {
 
   private static final int NO_ADDRESS_GOT_YET = -1;
   
@@ -49,7 +49,7 @@ public enum CallBackBitcoinService implements BitcoinService {
   @Resource
   private SwatchGenerator swatchGenerator=new SwatchGenerator();
 
-  CallBackBitcoinService() {
+  public CallBackBitcoinService() {
 
   }
 

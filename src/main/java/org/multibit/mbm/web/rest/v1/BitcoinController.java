@@ -1,6 +1,9 @@
 package org.multibit.mbm.web.rest.v1;
 
+import org.multibit.mbm.domain.Customer;
 import org.multibit.mbm.qrcode.SwatchGenerator;
+import org.multibit.mbm.service.BitcoinService;
+import org.multibit.mbm.service.CustomerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -14,6 +17,7 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.security.Principal;
 
 /**
  * <p>Controller to handle the submission and receipt of Bitcoin messages</p>
@@ -26,6 +30,12 @@ import java.io.IOException;
 public class BitcoinController {
 
   private static final Logger log = LoggerFactory.getLogger(BitcoinController.class);
+
+  @Resource(name="defaultBitcoinService")
+  BitcoinService bitcoinService;
+
+  @Resource()
+  CustomerService customerService;
 
   @Resource
   SwatchGenerator swatchGenerator;
@@ -53,6 +63,25 @@ public class BitcoinController {
     // Configure the response
     response.setHeader("Content-Type", "image/png");
     ImageIO.write(rawSwatch, "png", response.getOutputStream());
+  }
+
+  /**
+   * Creates a new Bitcoin address for monitoring
+   *
+   * @param principal The security principal
+   * @return A String containing the message
+   */
+  @RequestMapping(value = "/new-address", method = RequestMethod.POST)
+  @ResponseBody
+  public String newAddress(Principal principal) {
+    Customer customer = customerService.getCustomerFromPrincipal(principal);
+    if (customer==null) {
+      // TODO Should this be an authorisation failure?
+      return null;
+    }
+    String newBitcoinAddress=bitcoinService.getNextAddress(customer.getId());
+    log.debug("New bitcoin address requested '{}'",newBitcoinAddress);
+    return newBitcoinAddress;
   }
 
 }

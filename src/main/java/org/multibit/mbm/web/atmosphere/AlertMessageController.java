@@ -2,11 +2,9 @@ package org.multibit.mbm.web.atmosphere;
 
 import org.atmosphere.cpr.AtmosphereResource;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.multibit.mbm.domain.AlertMessage;
 import org.multibit.mbm.domain.Customer;
 import org.multibit.mbm.service.BroadcastService;
 import org.multibit.mbm.service.CustomerService;
-import org.multibit.mbm.util.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.security.Principal;
 
 /**
@@ -61,26 +58,6 @@ public class AlertMessageController {
       return;
     } else {
       BroadcastService.INSTANCE.addBroadcaster(customer.getId(), event.getBroadcaster());
-    }
-  }
-
-  @RequestMapping(value = "/demo", method = RequestMethod.GET)
-  @ResponseBody
-  public void demo(Principal principal) throws IOException {
-
-    log.debug("Principal is {}",principal);
-
-    Customer customer = customerService.getCustomerFromPrincipal(principal);
-
-    if (customer==null) {
-      log.info("Alert subscription without OpenId");
-      return;
-    } else {
-      AlertMessage alertMessage = new AlertMessage();
-      alertMessage.setId(1L);
-      alertMessage.setCreatedAt(DateUtils.nowUtc());
-      alertMessage.setText("Your order has been confirmed");
-      BroadcastService.INSTANCE.broadcast(customer.getId(), alertMessage);
     }
   }
 

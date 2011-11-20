@@ -66,26 +66,6 @@
     </ul>
   </div>
 
-</div>
-<div id="mbm-col3" class="col3">
-
-  <!-- TODO Create an image list item widget -->
-  <div class="ui-widget">
-    <p class="ui-widget-header">Your Basket</p>
-    <div id="item-1-swatch" class="mbm-item-swatch ui-widget-content">
-      <a href="bitcoin:1pmG7fTVaVL1omx1TAgrGG2mNHbL4B1fb?amount=3.25">
-        <img id="1pmG7fTVaVL1omx1TAgrGG2mNHbL4B1fb"
-             width="240"
-             src="<c:url value="/images/catalog/items/2/swatch2b.png" />"
-             draggable="true"
-             ondragstart="dragStartHandler(event)"
-             alt="Drag to MultiBit to buy"
-             title="Drag to MultiBit to buy"/></a>
-      <label for="item-1-quantity">Cryptonomicon Qty: </label><input id="item-1-quantity" type="text" value="1" size="4">
-    </div>
-
-  </div>
-
   <!-- TODO Create a top N image list item widget -->
   <div class="ui-widget">
     <p class="ui-widget-header">Top Ten</p>
@@ -101,6 +81,24 @@
       <li>Bike Spoke Light</li>
       <li>Red Hot Chilli Jellies</li>
     </ol>
+  </div>
+
+</div>
+<div id="mbm-col3" class="col3">
+
+  <!-- TODO Create a shopping basket widget -->
+  <div class="ui-widget">
+    <p class="ui-widget-header">Your Basket</p>
+    <button id="confirm-order"><fmt:message key="catalog.page.confirm-order"/></button>
+    <div id="mbm-order-swatch"></div>
+    <div id="item-1-order">
+      <p>Cryptonomicon</p>
+      <p>Quantity: 1</p>
+    </div>
+    <div id="item-2-order">
+      <p>A Year In Provence</p>
+      <p>Quantity: 1</p>
+    </div>
   </div>
 
 </div>

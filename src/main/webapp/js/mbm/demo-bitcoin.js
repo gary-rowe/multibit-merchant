@@ -1,8 +1,7 @@
 // Bitcoin API bindings
-$("#bitcoin-monitor").bind("click", function(event) {
-
-  $.post('/mbm/api/v1/bitcoin/monitor/1abcdefgh',
+$("#bitcoin-new-address").bind("click", function(event) {
+  $.post('/mbm/api/v1/bitcoin/new-address',
     function(data) {
-      $('#bitcoin-monitor-output').html(data);
+      $('#bitcoin-new-address-output').html(data);
     });
 });
