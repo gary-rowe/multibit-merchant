@@ -31,7 +31,7 @@ public class BitcoinController {
 
   private static final Logger log = LoggerFactory.getLogger(BitcoinController.class);
 
-  @Resource(name="callBackBitcoinService")
+  @Resource(name="defaultBitcoinService")
   BitcoinService bitcoinService;
 
   @Resource()
