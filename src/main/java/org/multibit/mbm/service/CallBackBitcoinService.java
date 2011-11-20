@@ -74,23 +74,18 @@ public class CallBackBitcoinService implements BitcoinService {
   }
 
   @Override
-  public Address getNextAddress() {
+  public String getNextAddress(Long id) {
     // if no addresses available return null;
     if (addressBucket == null || lastAddressIndex >= addressBucket.size() - 1) {
       return null;
     } else {
       lastAddressIndex++;
-      return addressBucket.get(lastAddressIndex);
+      return addressBucket.get(lastAddressIndex).toString();
     }
   }
 
   @Override
-  public BufferedImage createSwatchAndRegisterAddress(Address address, String label, String amount, AddressListener addressListener) {
-    // TODO add time-to-live and a timer to remove stale addressListeners
-    if (address != null && addressListener != null) {
-      addressToAddressListenerMap.put(address, addressListener);
-    }
-    
+  public BufferedImage createSwatch(String address, String label, String amount) {    
     BufferedImage swatch = swatchGenerator.generateSwatch(address.toString(), amount, label);
     return swatch;
   }
