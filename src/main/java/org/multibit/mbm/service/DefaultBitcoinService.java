@@ -1,5 +1,15 @@
 package org.multibit.mbm.service;
 
+import com.google.bitcoin.core.*;
+import com.google.bitcoin.discovery.DnsDiscovery;
+import com.google.bitcoin.discovery.IrcDiscovery;
+import com.google.bitcoin.store.BlockStore;
+import com.google.bitcoin.store.BlockStoreException;
+import com.google.bitcoin.store.BoundedOverheadBlockStore;
+import org.multibit.mbm.qrcode.SwatchGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.InetAddress;
@@ -8,32 +18,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
-
-import org.multibit.mbm.qrcode.SwatchGenerator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.bitcoin.core.Address;
-import com.google.bitcoin.core.Block;
-import com.google.bitcoin.core.BlockChain;
-import com.google.bitcoin.core.ECKey;
-import com.google.bitcoin.core.NetworkParameters;
-import com.google.bitcoin.core.Peer;
-import com.google.bitcoin.core.PeerAddress;
-import com.google.bitcoin.core.PeerEventListener;
-import com.google.bitcoin.core.PeerGroup;
-import com.google.bitcoin.core.PendingTransactionListener;
-import com.google.bitcoin.core.ScriptException;
-import com.google.bitcoin.core.Transaction;
-import com.google.bitcoin.core.TransactionOutput;
-import com.google.bitcoin.discovery.DnsDiscovery;
-import com.google.bitcoin.discovery.IrcDiscovery;
-import com.google.bitcoin.store.BlockStore;
-import com.google.bitcoin.store.BlockStoreException;
-import com.google.bitcoin.store.BoundedOverheadBlockStore;
 
 public class DefaultBitcoinService implements BitcoinService, PeerEventListener, PendingTransactionListener {
 
@@ -110,13 +94,14 @@ public class DefaultBitcoinService implements BitcoinService, PeerEventListener,
       }
     };
 
-    BufferedImage swatch1 = bitcoinService.createSwatchAndRegisterAddress(address1, "myLabel1", "12.34", addressListener);
-    ImageIcon icon1 = new ImageIcon(swatch1);
-    JOptionPane.showMessageDialog(null, "", "Example Swatch 1", JOptionPane.INFORMATION_MESSAGE, icon1);
-
-    BufferedImage swatch2 = bitcoinService.createSwatchAndRegisterAddress(address2, "myLabel2", "62.34", addressListener);
-    ImageIcon icon2 = new ImageIcon(swatch2);
-    JOptionPane.showMessageDialog(null, "", "Example Swatch 2", JOptionPane.INFORMATION_MESSAGE, icon2);
+    // TODO Broken
+//    BufferedImage swatch1 = bitcoinService.createSwatchAndRegisterAddress(address1, "myLabel1", "12.34", addressListener);
+//    ImageIcon icon1 = new ImageIcon(swatch1);
+//    JOptionPane.showMessageDialog(null, "", "Example Swatch 1", JOptionPane.INFORMATION_MESSAGE, icon1);
+//
+//    BufferedImage swatch2 = bitcoinService.createSwatchAndRegisterAddress(address2, "myLabel2", "62.34", addressListener);
+//    ImageIcon icon2 = new ImageIcon(swatch2);
+//    JOptionPane.showMessageDialog(null, "", "Example Swatch 2", JOptionPane.INFORMATION_MESSAGE, icon2);
 
     System.out.println("DefaultBitcoinService#main - listening to addresses " + address1 + " and " + address2);
     System.out.println("DefaultBitcoinService#main - send either some bitcoin and you should see the listeners print out here.");
@@ -201,7 +186,7 @@ public class DefaultBitcoinService implements BitcoinService, PeerEventListener,
     return instance;
   }
 
-  @Override
+  @Deprecated
   public Address getNextAddress() {
     // if no addresses available return null;
     if (addressBucket == null || lastAddressIndex >= addressBucket.size() - 1) {
@@ -212,7 +197,7 @@ public class DefaultBitcoinService implements BitcoinService, PeerEventListener,
     }
   }
 
-  @Override
+  @Deprecated
   public BufferedImage createSwatchAndRegisterAddress(Address address, String label, String amount, AddressListener addressListener) {
     // TODO add time-to-live and a timer to remove stale addressListeners
     if (address != null && addressListener != null) {
@@ -221,6 +206,16 @@ public class DefaultBitcoinService implements BitcoinService, PeerEventListener,
     
     BufferedImage swatch = swatchGenerator.generateSwatch(address.toString(), amount, label);
     return swatch;
+  }
+
+  @Override
+  public String getNextAddress(Long id) {
+    return null;  //To change body of implemented methods use File | Settings | File Templates.
+  }
+
+  @Override
+  public BufferedImage createSwatch(String address, String label, String amount) {
+    return swatchGenerator.generateSwatch(address.toString(), amount, label);
   }
 
   @Override

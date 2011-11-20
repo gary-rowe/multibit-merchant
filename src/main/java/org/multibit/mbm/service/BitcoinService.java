@@ -1,10 +1,10 @@
 package org.multibit.mbm.service;
 
+import com.google.bitcoin.core.Address;
+
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import com.google.bitcoin.core.Address;
 
 /**
  * <p>Service to provide the following to Controllers</p>
@@ -23,11 +23,12 @@ public interface BitcoinService {
    * <p>Get the next bitcoin address from the address bucket and register the id for notifications. 
    * The address is guaranteed to be a never-previously used Bitcoin address</p>
    *
+   *
    * @param id The id that is to be notified if the address receives any bitcoin
    * @return nextAddress The next Bitcoin address to use, or null if no more addresses are available
    * 
    */
-  public String getNextAddress(long id);
+  public String getNextAddress(Long id);
 
   /**
    * <p>Create a swatch containing the specified address, label and amount</p>

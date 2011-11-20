@@ -1,16 +1,16 @@
 package org.multibit.mbm.service;
 
-import java.awt.image.BufferedImage;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.multibit.mbm.qrcode.SwatchGenerator;
-
 import com.google.bitcoin.core.Address;
 import com.google.bitcoin.core.ScriptException;
 import com.google.bitcoin.core.Transaction;
 import com.google.bitcoin.core.TransactionOutput;
+import com.google.common.collect.Maps;
+import org.multibit.mbm.qrcode.SwatchGenerator;
+
+import javax.annotation.Resource;
+import java.awt.image.BufferedImage;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -25,7 +25,9 @@ import com.google.bitcoin.core.TransactionOutput;
  * 
  * @since 1.0.0
  */
-public class CallBackBitcoinService implements BitcoinService {
+public enum CallBackBitcoinService implements BitcoinService {
+
+  INSTANCE;
 
   private static final int NO_ADDRESS_GOT_YET = -1;
   
@@ -37,43 +39,21 @@ public class CallBackBitcoinService implements BitcoinService {
   /**
    * the index of the last address that was given out
    */
-  private int lastAddressIndex;
+  private int lastAddressIndex=NO_ADDRESS_GOT_YET;
 
   /**
    * Map of addresses to address listeners
    */
-  private Map<Address, AddressListener> addressToAddressListenerMap;
+  private Map<Address, AddressListener> addressToAddressListenerMap= Maps.newHashMap();;
 
-  /**
-   * the instance of the BitcoinService
-   */
-  private static BitcoinService instance;
-  
+  @Resource
   private SwatchGenerator swatchGenerator;
 
-  private CallBackBitcoinService() {
-    addressToAddressListenerMap = new HashMap<Address, AddressListener>();
-    lastAddressIndex = NO_ADDRESS_GOT_YET;
-    
-    
-    // create a SwatchGenerator for later use
-    swatchGenerator = new SwatchGenerator();
+  CallBackBitcoinService() {
 
   }
 
-  /**
-   * get the single instance of the Bitcoin service
-   * 
-   * @return bitcoinService
-   */
-  public static BitcoinService getBitcoinService() {
-    if (instance == null) {
-      instance = new CallBackBitcoinService();
-    }
-    return instance;
-  }
-
-  @Override
+  @Deprecated
   public Address getNextAddress() {
     // if no addresses available return null;
     if (addressBucket == null || lastAddressIndex >= addressBucket.size() - 1) {
@@ -84,7 +64,7 @@ public class CallBackBitcoinService implements BitcoinService {
     }
   }
 
-  @Override
+  @Deprecated
   public BufferedImage createSwatchAndRegisterAddress(Address address, String label, String amount, AddressListener addressListener) {
     // TODO add time-to-live and a timer to remove stale addressListeners
     if (address != null && addressListener != null) {
@@ -98,6 +78,17 @@ public class CallBackBitcoinService implements BitcoinService {
   // Set up methods
   public List<Address> getAddressBucket() {
     return addressBucket;
+  }
+
+  @Override
+  public String getNextAddress(Long id) {
+    // TODO Breaks test
+    return null;
+  }
+
+  @Override
+  public BufferedImage createSwatch(String address, String label, String amount) {
+    return swatchGenerator.generateSwatch(address, amount, label);
   }
 
   @Override
