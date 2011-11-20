@@ -6,5 +6,3 @@ $("#bitcoin-monitor").bind("click", function(event) {
       $('#bitcoin-monitor-output').html(data);
     });
 });
-
-
