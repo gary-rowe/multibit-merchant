@@ -1,12 +1,18 @@
 package org.multibit.mbm.service;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
+import org.multibit.mbm.qrcode.SwatchGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,34 +74,55 @@ public class DefaultBitcoinService implements BitcoinService, PeerEventListener,
    * the instance of the BitcoinService
    */
   private static BitcoinService instance;
+  
+  private SwatchGenerator swatchGenerator;
 
   /**
-   * start up the DefaultBitcoinServer listening to a single address
-   * if you send bitcoin to the address printed out you get a message
+   * start up the DefaultBitcoinServer listening to a single address if you send
+   * bitcoin to the address printed out you get a message
+   * 
    * @param args
    */
   public static void main(String[] args) {
-    // create a single address for the address bucket
-    ECKey key = new ECKey();
+    // create a two addresses for the address bucket
+    ECKey key1 = new ECKey();
+    ECKey key2 = new ECKey();
+
+    Address address1 = key1.toAddress(NetworkParameters.prodNet());
+    Address address2 = key2.toAddress(NetworkParameters.prodNet());
+
+    List<Address> addressBucket = new LinkedList<Address>();
+    addressBucket.add(address1);
+    addressBucket.add(address2);
     
-    Address address = key.toAddress(NetworkParameters.prodNet());
-    
-    BitcoinService defaultBitcoinService = DefaultBitcoinService.getBitcoinService();
-    defaultBitcoinService.registerAddress(address, new AddressListener(){
+    BitcoinService bitcoinService = DefaultBitcoinService.getBitcoinService();
+    AddressListener addressListener = new AddressListener() {
       @Override
       public void onCoinsReceived(Address address, Transaction transaction) {
-        System.out.println("DefaultBitcoinService#main the address " + address.toString() + " saw the confirmed transaction " + transaction );        
+        System.out.println("DefaultBitcoinService#main the address " + address.toString() + " saw the confirmed transaction "
+            + transaction);
       }
 
       @Override
       public void onPendingCoinsReceived(Address address, Transaction transaction) {
-        System.out.println("DefaultBitcoinService#main the address " + address.toString() + " saw the pending transaction " + transaction );
-      }});
-    System.out.println("DefaultBitcoinService#main - listening to address " + address);
-    System.out.println("DefaultBitcoinService#main - send it some bitcoin and you should see the listeners print out here.");
+        System.out.println("DefaultBitcoinService#main the address " + address.toString() + " saw the pending transaction "
+            + transaction);
+      }
+    };
+
+    BufferedImage swatch1 = bitcoinService.createSwatchAndRegisterAddress(address1, "myLabel1", "12.34", addressListener);
+    ImageIcon icon1 = new ImageIcon(swatch1);
+    JOptionPane.showMessageDialog(null, "", "Example Swatch 1", JOptionPane.INFORMATION_MESSAGE, icon1);
+
+    BufferedImage swatch2 = bitcoinService.createSwatchAndRegisterAddress(address2, "myLabel2", "62.34", addressListener);
+    ImageIcon icon2 = new ImageIcon(swatch2);
+    JOptionPane.showMessageDialog(null, "", "Example Swatch 2", JOptionPane.INFORMATION_MESSAGE, icon2);
+
+    System.out.println("DefaultBitcoinService#main - listening to addresses " + address1 + " and " + address2);
+    System.out.println("DefaultBitcoinService#main - send either some bitcoin and you should see the listeners print out here.");
 
   }
-  
+
   private DefaultBitcoinService() {
     addressToAddressListenerMap = new HashMap<Address, AddressListener>();
     lastAddressIndex = NO_ADDRESS_GOT_YET;
@@ -103,10 +130,10 @@ public class DefaultBitcoinService implements BitcoinService, PeerEventListener,
     // TODO replace settings from config file
 
     // BEGIN config options
-    
+
     // default to prodNet
     boolean useTestNet = false;
-    
+
     // default to not connecting to a single node
     String singleNodeConnection = "";
 
@@ -146,14 +173,20 @@ public class DefaultBitcoinService implements BitcoinService, PeerEventListener,
       }
       // add this class as a PeerEventListener
       peerGroup.addEventListener(this);
-      
+
       // add this class as a PendingTransaction listener
       peerGroup.addPendingTransactionListener(this);
-      
+
       peerGroup.start();
     } catch (BlockStoreException e) {
       e.printStackTrace();
     }
+    
+    // create a SwatchGenerator for later use
+    swatchGenerator = new SwatchGenerator();
+    
+    // warm it up
+    swatchGenerator.generateSwatch((new ECKey()).toAddress(networkParameters).toString(), "0.0", "warmup");
   }
 
   /**
@@ -180,12 +213,14 @@ public class DefaultBitcoinService implements BitcoinService, PeerEventListener,
   }
 
   @Override
-  public void registerAddress(Address address, AddressListener addressListener) {
+  public BufferedImage createSwatchAndRegisterAddress(Address address, String label, String amount, AddressListener addressListener) {
     // TODO add time-to-live and a timer to remove stale addressListeners
-    // TODO only have a single listener per address - OK ?
     if (address != null && addressListener != null) {
       addressToAddressListenerMap.put(address, addressListener);
     }
+    
+    BufferedImage swatch = swatchGenerator.generateSwatch(address.toString(), amount, label);
+    return swatch;
   }
 
   @Override
@@ -193,7 +228,6 @@ public class DefaultBitcoinService implements BitcoinService, PeerEventListener,
     this.addressBucket = addressBucket;
   }
 
-  
   // PeerEventListener methods
 
   @Override
@@ -220,9 +254,8 @@ public class DefaultBitcoinService implements BitcoinService, PeerEventListener,
 
   }
 
-  
   // PendingTransactionListener methods
-  
+
   @Override
   public void processPendingTransaction(Transaction transaction) {
     if (transaction != null) {
@@ -244,10 +277,9 @@ public class DefaultBitcoinService implements BitcoinService, PeerEventListener,
       }
     }
   }
-  
-  
+
   // Utility methods
-  
+
   private String getFilePrefix(boolean useTestNet) {
     return useTestNet ? MULTIBIT_PREFIX + SEPARATOR + TEST_NET_PREFIX : MULTIBIT_PREFIX;
   }

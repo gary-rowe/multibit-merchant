@@ -2,6 +2,7 @@ package org.multibit.mbm.service;
 
 import static org.junit.Assert.*;
 
+import java.awt.image.BufferedImage;
 import java.math.BigInteger;
 import java.util.LinkedList;
 import java.util.List;
@@ -77,8 +78,10 @@ public class CallBackBitcoinServiceTest{
     WasICalledAddressListener addressListener1 = new WasICalledAddressListener();
     WasICalledAddressListener addressListener2 = new WasICalledAddressListener();
 
-    bitcoinService.registerAddress(address1, addressListener1);
-    bitcoinService.registerAddress(address2, addressListener2);
+    BufferedImage swatch1 = bitcoinService.createSwatchAndRegisterAddress(address1, "label1", "1.0", addressListener1);
+    BufferedImage swatch2 = bitcoinService.createSwatchAndRegisterAddress(address2, "label2", "2.0", addressListener2);
+    assertNotNull(swatch1);
+    assertNotNull(swatch2);
     
     Transaction transaction1 = TestUtils.createFakeTx(prodNet, BigInteger.ONE, address1);   // 1 BTC received to address1
 
@@ -113,9 +116,11 @@ public class CallBackBitcoinServiceTest{
     WasICalledAddressListener addressListener1 = new WasICalledAddressListener();
     WasICalledAddressListener addressListener2 = new WasICalledAddressListener();
 
-    bitcoinService.registerAddress(address1, addressListener1);
-    bitcoinService.registerAddress(address2, addressListener2);
-    
+    BufferedImage swatch1 = bitcoinService.createSwatchAndRegisterAddress(address1, "label1", "1.0", addressListener1);
+    BufferedImage swatch2 = bitcoinService.createSwatchAndRegisterAddress(address2, "label2", "2.0", addressListener2);
+    assertNotNull(swatch1);
+    assertNotNull(swatch2);
+   
     Transaction transaction2 = TestUtils.createFakeTx(prodNet, BigInteger.ONE, address2);   // 1 BTC received to address2
 
     bitcoinService.notifyAddressListenersOfTransaction(transaction2, false);
