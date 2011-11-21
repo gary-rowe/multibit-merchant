@@ -28,6 +28,8 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.JFrame;
+
 /**
  * <p>Utility class for to create swatches</p>
  * <ul>
@@ -87,7 +89,7 @@ public class SwatchGenerator {
 
     // fonts
     addressFont = new Font("Verdana", Font.PLAIN, 10); // 10 best
-    labelFont = new Font("Times New Roman", Font.PLAIN, 17); // 17 looks best
+    labelFont = new  Font("Serif", Font.PLAIN, 17); //new Font("Times New Roman", Font.PLAIN, 17); // 17 looks best
     amountFont = labelFont;
 
     // cached to save time
@@ -98,6 +100,9 @@ public class SwatchGenerator {
 
     // initialise statics for extra speed later
     BitcoinURI.convertToBitcoinURI("1", "1", "1");
+    
+    // make sure fonts are loaded
+    JFrame frame = new JFrame();
   }
 
   /**
@@ -430,4 +435,34 @@ public class SwatchGenerator {
       row[x] = value;
     }
   }
+  
+//  private static final Font SERIF_FONT = new Font("serif", Font.PLAIN, 24);
+//
+//  private static Font getFont(String name) {
+//      Font font = null;
+//      if (name == null) {
+//          return SERIF_FONT;
+//      }
+//
+//      try {
+//          // load from a cache map, if exists
+//          if (fonts != null && (font = fonts.get(name)) != null) {
+//              return font;
+//          }
+//          String fName = Params.get().getFontPath() + name;
+//          File fontFile = new File(fName);
+//          font = Font.createFont(Font.TRUETYPE_FONT, fontFile);
+//          GraphicsEnvironment ge = GraphicsEnvironment
+//                  .getLocalGraphicsEnvironment();
+//
+//          ge.registerFont(font);
+//
+//          fonts.put(name, font);
+//      } catch (Exception ex) {
+//          log.info(name + " not loaded.  Using serif font.");
+//          font = SERIF_FONT;
+//      }
+//      return font;
+//  }
+
 }
