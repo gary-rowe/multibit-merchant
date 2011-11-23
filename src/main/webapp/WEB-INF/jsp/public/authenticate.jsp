@@ -1,14 +1,14 @@
-<%@include file="/WEB-INF/jspf/taglibs.jspf" %>
+<%@include file="/WEB-INF/jspf/public/taglibs.jspf" %>
 <!DOCTYPE html>
 <html>
 <head>
-  <%@include file="/WEB-INF/jspf/head.jspf" %>
+  <%@include file="/WEB-INF/jspf/public/head.jspf" %>
   <link type="text/css" rel="stylesheet" href="<c:url value="/plugins/jquery/openid/openid.css"/>"/>
 </head>
 <body>
-<%@include file="/WEB-INF/jspf/header.jspf" %>
-<%@include file="/WEB-INF/jspf/alert.jspf" %>
-<%@include file="/WEB-INF/jspf/content-header.jspf" %>
+<%@include file="/WEB-INF/jspf/public/header.jspf" %>
+<%@include file="/WEB-INF/jspf/public/alert.jspf" %>
+<%@include file="/WEB-INF/jspf/public/content-header.jspf" %>
 <div id="mbm-col1" class="col1">
   <div class="ui-widget">
     <p class="ui-widget-header">Authentication Required</p>
@@ -87,14 +87,14 @@
     </div>
   </div>
 </div>
-<%@include file="/WEB-INF/jspf/sidebar.jspf" %>
-<%@include file="/WEB-INF/jspf/content-footer.jspf" %>
+<%@include file="/WEB-INF/jspf/public/sidebar.jspf" %>
+<%@include file="/WEB-INF/jspf/public/content-footer.jspf" %>
 
-<%@include file="/WEB-INF/jspf/sidebar.jspf" %>
-<%@include file="/WEB-INF/jspf/footer.jspf" %>
+<%@include file="/WEB-INF/jspf/public/sidebar.jspf" %>
+<%@include file="/WEB-INF/jspf/public/footer.jspf" %>
 
-<%@include file="/WEB-INF/jspf/cdn-scripts.jspf" %>
-<%@include file="/WEB-INF/jspf/mbm-scripts.jspf" %>
+<%@include file="/WEB-INF/jspf/public/cdn-scripts.jspf" %>
+<%@include file="/WEB-INF/jspf/public/mbm-scripts.jspf" %>
 <script type="text/javascript" src="<c:url value="/plugins/jquery/openid/openid.js"/>"></script>
 <script type="text/javascript"> $(function() {
   $("form.openid:eq(0)").openid();

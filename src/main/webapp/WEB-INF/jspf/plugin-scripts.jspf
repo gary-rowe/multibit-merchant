@@ -1,2 +1,0 @@
-<%@include file="/WEB-INF/jspf/taglibs.jspf" %>
-<script type="text/javascript" src="<c:url value="/plugins/jquery-ui/fisheye/fisheye.js"/>"></script>

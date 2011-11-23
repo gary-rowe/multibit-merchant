@@ -1,21 +1,19 @@
-<%@include file="/WEB-INF/jspf/taglibs.jspf" %>
+<%@include file="/WEB-INF/jspf/public/taglibs.jspf" %>
 <!DOCTYPE html>
 <html>
 <head>
-  <%@include file="/WEB-INF/jspf/head.jspf" %>
+  <%@include file="/WEB-INF/jspf/public/head.jspf" %>
 </head>
 <body>
-<%@include file="/WEB-INF/jspf/header.jspf" %>
-<%@include file="/WEB-INF/jspf/alert.jspf" %>
-<%@include file="/WEB-INF/jspf/content-header.jspf" %>
+<%@include file="/WEB-INF/jspf/public/header.jspf" %>
+<%@include file="/WEB-INF/jspf/public/alert.jspf" %>
+<%@include file="/WEB-INF/jspf/public/content-header.jspf" %>
 <div id="mbm-col1" class="col1">
   <div class="ui-widget">
     <p class="ui-widget-header">Recommended Books</p>
 
     <div>
       <p>${greeting}</p>
-
-      <p>hello!</p>
 
       <!-- TODO make this driven by the model -->
       <div class="mbm-item ui-widget-content ui-corner-all">
@@ -90,13 +88,13 @@
   </div>
 
 </div>
-<%@include file="/WEB-INF/jspf/sidebar.jspf" %>
-<%@include file="/WEB-INF/jspf/content-footer.jspf" %>
+<%@include file="/WEB-INF/jspf/public/sidebar.jspf" %>
+<%@include file="/WEB-INF/jspf/public/content-footer.jspf" %>
 
-<%@include file="/WEB-INF/jspf/footer.jspf" %>
+<%@include file="/WEB-INF/jspf/public/footer.jspf" %>
 
-<%@include file="/WEB-INF/jspf/cdn-scripts.jspf" %>
-<%@include file="/WEB-INF/jspf/mbm-scripts.jspf" %>
+<%@include file="/WEB-INF/jspf/public/cdn-scripts.jspf" %>
+<%@include file="/WEB-INF/jspf/public/mbm-scripts.jspf" %>
 
 <script type="text/javascript" src="<c:url value="/js/mbm/mbm.js"/>"></script>
 
@@ -175,35 +173,13 @@
 
   }
 
-  /**
-   * HTML5 drag event event handler
-   */
-  function dragStartHandler(event) {
-    $.post("/mbm/api/v1/bitcoin/monitor/" + event.srcElement.id, function(data) {
-      $("#bitcoin-monitor-output").html(data);
-    });
-  }
-
   function handleAddToBasketClick(event) {
     console.log("Adding item-1 to shopping basket");
     $("#item-1-order").slideToggle("slow").toggleClass("active");
   }
 
   function handleConfirmOrder(event) {
-    console.log("Confirming order");
-    // Request an address
-    $.post('/mbm/api/v1/bitcoin/new-address',
-      function(data) {
-        console.log("Received callback");
-        if (data == null || data == "") {
-          alert("You need to be logged in to confirm an order");
-        } else {
-          // Show a swatch based on the bitcoin address (1pmG7fTVaVL1omx1TAgrGG2mNHbL4B1fb)
-          var address = "/mbm/api/v1/bitcoin/swatch?address=" + data + "&amount=1&label=Your%20items";
-          $("#mbm-order-swatch").html("<img class='mbm-order-swatch' src='" + address + "' />");
-        }
-        $("#confirm-order").addClass("ui-state-disabled").attr("disabled", true);;
-      });
+    window.location = "<c:url value="/payment.html"/>";
   }
 
   // Initialisation
@@ -223,13 +199,7 @@
     $.atmosphere.request = {transport: 'websocket'});
 
   $("button").each(function() {
-    $(this).button({
-      icons: {
-        primary: "ui-icon-plus",
-        secondary: "ui-icon-triangle-1-s"
-      },
-      text: false
-    });
+    $(this).button();
   });
 
 </script>

@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
  * Handles requests for the application home page.
  */
 @Controller
-@RequestMapping(value = "/v1/subscribe")
+@RequestMapping(value = "/v1")
 public class TwitterFeedController {
 
   private static final Logger log = LoggerFactory.getLogger(TwitterFeedController.class);
@@ -34,7 +34,7 @@ public class TwitterFeedController {
   /**
    * @param event The Atmosphere event
    */
-  @RequestMapping(value = "/twitter", method = RequestMethod.GET)
+  @RequestMapping(value = "/subscribe/twitter", method = RequestMethod.GET)
   @ResponseBody
   public void twitter(final AtmosphereResource<HttpServletRequest, HttpServletResponse> event) {
 
@@ -79,6 +79,16 @@ public class TwitterFeedController {
 
 
   }
+
+  /**
+   */
+  @RequestMapping(value = "/broadcast/twitter", method = RequestMethod.GET)
+  @ResponseBody
+  public void twitter(final Tweet tweet) {
+
+
+  }
+
 
 }
 

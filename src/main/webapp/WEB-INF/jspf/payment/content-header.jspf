@@ -1,4 +1,4 @@
-<%@include file="/WEB-INF/jspf/taglibs.jspf" %>
+<%@include file="taglibs.jspf" %>
 <div id="mbm-colmask" class="colmask threecol">
   <div class="colmid">
     <div class="colleft">

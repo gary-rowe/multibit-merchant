@@ -21,15 +21,19 @@
     <intercept-url pattern="/index.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
     <intercept-url pattern="/api/v1/alert/*" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
 
-    <!-- Customer access -->
+    <!-- Customer access (payment and account processing) -->
     <intercept-url pattern="/*" access="ROLE_USER"/>
+    <intercept-url pattern="/css/mbm/payment/*" access="ROLE_USER"/>
+    <intercept-url pattern="/js/mbm/payment/*" access="ROLE_USER"/>
+    <intercept-url pattern="/payment.html" access="ROLE_USER"/>
 
     <!-- Admin access -->
+    <intercept-url pattern="/css/mbm/admin/*" access="ROLE_ADMIN"/>
+    <intercept-url pattern="/js/mbm/admin/*" access="ROLE_ADMIN"/>
     <intercept-url pattern="/admin/*" access="ROLE_ADMIN"/>
 
     <!-- Sign in form -->
     <form-login login-page='/authenticate.html'/>
-
 
     <!-- After sign out -->
     <logout logout-success-url="/index.html"/>

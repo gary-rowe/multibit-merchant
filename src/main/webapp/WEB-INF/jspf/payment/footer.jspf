@@ -1,4 +1,4 @@
-<%@include file="/WEB-INF/jspf/taglibs.jspf" %>
+<%@include file="taglibs.jspf" %>
 <div id="mbm-footer1" class="mbm-footer ui-widget-content">
   <p>
     <small>MultiBit Merchant is developed by <a href="http://gary-rowe.com" target="_blank" >Gary Rowe</a> at <a href="http://multibit.org" target="_blank">MultiBit.org</a>. All content is
