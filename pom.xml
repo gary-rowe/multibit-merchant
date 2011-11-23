@@ -385,7 +385,7 @@
     <atmosphere.version>0.8.0-RC3</atmosphere.version>
     <resteasy.version>2.2.3.GA</resteasy.version>
     <spring.version>3.1.0.M2</spring.version>
-    <spring-social.version>1.0.0.RC1</spring-social.version>
+    <spring-social.version>1.0.0.RELEASE</spring-social.version>
     <slf4j.version>1.6.1</slf4j.version>
     <!-- Keep with Jetty 7.5.4 to avoid startup delays -->
     <jetty.version>7.5.4.v20111024</jetty.version>

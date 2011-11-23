@@ -1,0 +1,10 @@
+<%@include file="taglibs.jspf" %>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title><fmt:message key="common.title"/></title>
+<meta name="author" content="MultiBit.org">
+<meta name="copyright" content="Copyright (c) 2011 MultiBit">
+<meta name="description" content="MultiBit Merchant: A Bitcoin online shop">
+<link rel="shortcut icon" href="/images/mbm/icons/icon.png"/>
+<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/flick/jquery-ui.css" />
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/mbm/3-column.css" />" />
+

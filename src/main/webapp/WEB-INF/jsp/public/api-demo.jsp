@@ -1,8 +1,8 @@
-<%@include file="/WEB-INF/jspf/taglibs.jspf" %>
+<%@include file="/WEB-INF/jspf/public/taglibs.jspf" %>
 <!DOCTYPE html>
 <html>
 <head>
-  <%@include file="/WEB-INF/jspf/head.jspf" %>
+  <%@include file="/WEB-INF/jspf/public/head.jspf" %>
 </head>
 <body>
 <div id="switcher"></div>
@@ -121,8 +121,8 @@
   </div>
 </div>
 
-<%@include file="/WEB-INF/jspf/cdn-scripts.jspf" %>
-<%@include file="/WEB-INF/jspf/mbm-scripts.jspf" %>
+<%@include file="/WEB-INF/jspf/public/cdn-scripts.jspf" %>
+<%@include file="/WEB-INF/jspf/public/mbm-scripts.jspf" %>
 
 <script type="text/javascript" src="<c:url value="/js/mbm/demo-time.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/mbm/demo-bitcoin.js"/>"></script>
