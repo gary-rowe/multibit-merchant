@@ -1,6 +1,8 @@
 package org.multibit.mbm.web.rest.v1;
 
-import org.multibit.mbm.domain.Customer;
+import org.multibit.mbm.customer.ContactMethod;
+import org.multibit.mbm.customer.ContactMethodDetail;
+import org.multibit.mbm.customer.Customer;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +16,7 @@ public class CustomerEntityController {
   /**
    * Echo service
    *
-   * @param emailAddress The email address to put into the {@link Customer}
+   * @param emailAddress The email address to put into the {@link org.multibit.mbm.customer.Customer}
    *
    * @return A populated Customer
    */
@@ -22,7 +24,9 @@ public class CustomerEntityController {
   @ResponseBody
   public Customer alert(@PathVariable("emailAddress") String emailAddress) {
     Customer customer = new Customer();
-    customer.setEmailAddress(emailAddress);
+    ContactMethodDetail contactMethodDetail = new ContactMethodDetail();
+    contactMethodDetail.setPrimaryDetail(emailAddress);
+    customer.setContactMethodDetail(ContactMethod.EMAIL,contactMethodDetail);
     return customer;
   }
 }

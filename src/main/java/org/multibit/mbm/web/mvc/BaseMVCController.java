@@ -1,6 +1,8 @@
 package org.multibit.mbm.web.mvc;
 
-import org.multibit.mbm.domain.Customer;
+import org.multibit.mbm.customer.ContactMethod;
+import org.multibit.mbm.customer.ContactMethodDetail;
+import org.multibit.mbm.customer.Customer;
 import org.multibit.mbm.service.CustomerService;
 import org.springframework.ui.Model;
 
@@ -34,12 +36,14 @@ public class BaseMVCController {
     // Retrieve the Customer to form the model (if they are authenticated then they will be present)
     Customer customer = customerService.getCustomerFromPrincipal(principal);
 
-    if (customer == null || customer.getEmailAddress() == null) {
+    ContactMethodDetail contactMethodDetail = customer.getContactMethodDetail(ContactMethod.EMAIL);
+
+    if (contactMethodDetail.getPrimaryDetail() == null) {
       model.addAttribute("greeting", "Welcome!");
       model.addAttribute("emailAddress", "Anonymous");
     } else {
-      model.addAttribute("greeting", "Welcome back, "+customer.getEmailAddress());
-      model.addAttribute("emailAddress", customer.getEmailAddress());
+      model.addAttribute("greeting", "Welcome back, "+contactMethodDetail.getPrimaryDetail());
+      model.addAttribute("emailAddress", contactMethodDetail.getPrimaryDetail());
     }
   }
 }

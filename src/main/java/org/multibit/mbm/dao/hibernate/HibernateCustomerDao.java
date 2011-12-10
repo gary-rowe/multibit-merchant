@@ -2,7 +2,7 @@ package org.multibit.mbm.dao.hibernate;
 
 import org.multibit.mbm.dao.CustomerDao;
 import org.multibit.mbm.dao.CustomerNotFoundException;
-import org.multibit.mbm.domain.Customer;
+import org.multibit.mbm.customer.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
@@ -25,13 +25,21 @@ public class HibernateCustomerDao implements CustomerDao {
   }
 
   @Override
-  public void persist(Customer customer) {
+  public Customer persist(Customer customer) {
     if (customer.getId() != null) {
-      hibernateTemplate.merge(customer);
-    } else {
-      hibernateTemplate.persist(customer);
+      customer=hibernateTemplate.merge(customer);
     }
+    hibernateTemplate.persist(customer);
+    return customer;
   }
+
+  /**
+   * Force an immediate in-transaction flush (normally only used in test code)
+   */
+  public void flush() {
+    hibernateTemplate.flush();
+  }
+
 
   public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
     this.hibernateTemplate = hibernateTemplate;

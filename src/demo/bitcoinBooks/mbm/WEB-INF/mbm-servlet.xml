@@ -42,7 +42,7 @@
 
   <!--&lt;!&ndash; XML marshaller &ndash;&gt;-->
   <!--<bean id="jaxb2Marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">-->
-    <!--<property name="classesToBeBound" value="org.multibit.mbm.domain.Customer"/>-->
+    <!--<property name="classesToBeBound" value="org.multibit.mbm.customer.Customer"/>-->
   <!--</bean>-->
 
 </beans>

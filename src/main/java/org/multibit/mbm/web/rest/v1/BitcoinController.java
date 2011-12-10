@@ -1,6 +1,6 @@
 package org.multibit.mbm.web.rest.v1;
 
-import org.multibit.mbm.domain.Customer;
+import org.multibit.mbm.customer.Customer;
 import org.multibit.mbm.qrcode.SwatchGenerator;
 import org.multibit.mbm.service.BitcoinService;
 import org.multibit.mbm.service.CustomerService;

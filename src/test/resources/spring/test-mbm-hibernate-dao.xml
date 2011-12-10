@@ -28,17 +28,26 @@
 
   <!-- Hibernate persistence configuration -->
   <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
-    <property name="packagesToScan" value="org.multibit.mbm.domain"/>
+    <property name="packagesToScan" value="org.multibit.mbm.customer"/>
     <property name="dataSource" ref="dataSource"/>
+    <!-- Use Hibernate to provide a schema update DDL for development environment only
+         This allows for rapid generation of the schema patch SQL
+    -->
+    <property name="schemaUpdate" value="true" />
+    <property name="hibernateProperties">
+      <props>
+        <prop key="show_sql">true</prop>
+        <prop key="format_sql">true</prop>
+        <prop key="use_sql_comments">true</prop>
+      </props>
+    </property>
   </bean>
 
   <bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
 
-  <!-- Configure a simple H2 connection as an embedded DataSource -->
-  <jdbc:embedded-database type="H2" id="dataSource">
-    <jdbc:script location="classpath:/sql/1/0/0/patch-schema.sql"/>
-  </jdbc:embedded-database>
+  <!-- Configure a simple H2 connection as an embedded DataSource with no schema patch SQL -->
+  <jdbc:embedded-database type="H2" id="dataSource" />
 
 </beans>

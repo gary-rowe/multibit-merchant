@@ -2,7 +2,7 @@ package org.multibit.mbm.service;
 
 import org.junit.Test;
 import org.multibit.mbm.dao.CustomerDao;
-import org.multibit.mbm.domain.Customer;
+import org.multibit.mbm.customer.Customer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
