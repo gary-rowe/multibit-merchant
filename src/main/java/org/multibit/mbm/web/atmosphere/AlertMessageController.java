@@ -2,7 +2,7 @@ package org.multibit.mbm.web.atmosphere;
 
 import org.atmosphere.cpr.AtmosphereResource;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.multibit.mbm.domain.Customer;
+import org.multibit.mbm.customer.Customer;
 import org.multibit.mbm.service.BroadcastService;
 import org.multibit.mbm.service.CustomerService;
 import org.slf4j.Logger;

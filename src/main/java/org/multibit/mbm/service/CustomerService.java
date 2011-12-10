@@ -1,8 +1,10 @@
 package org.multibit.mbm.service;
 
+import org.multibit.mbm.customer.ContactMethod;
+import org.multibit.mbm.customer.ContactMethodDetail;
+import org.multibit.mbm.customer.Customer;
 import org.multibit.mbm.dao.CustomerDao;
 import org.multibit.mbm.dao.CustomerNotFoundException;
-import org.multibit.mbm.domain.Customer;
 import org.multibit.mbm.util.OpenIdUtils;
 import org.springframework.security.openid.OpenIDAuthenticationToken;
 import org.springframework.stereotype.Service;
@@ -74,10 +76,11 @@ public class CustomerService {
       // Attempt to locate the customer
       customer = customerDao.getCustomerByOpenId(openId);
 
-      // Check for known email address (if supplied)
-      if (customer.getEmailAddress() == null && emailAddress != null) {
+      // Check for known primary email address (if supplied)
+      ContactMethodDetail contactMethodDetail = customer.getContactMethodDetail(ContactMethod.EMAIL);
+      if (contactMethodDetail != null && contactMethodDetail.getPrimaryDetail() == null && emailAddress != null) {
         // Fill in the obtained email address
-        customer.setEmailAddress(emailAddress);
+        contactMethodDetail.setPrimaryDetail(emailAddress);
         customerDao.persist(customer);
       }
     } else {
