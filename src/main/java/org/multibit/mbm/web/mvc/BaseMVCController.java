@@ -37,19 +37,25 @@ public class BaseMVCController {
     Customer customer = customerService.getCustomerFromPrincipal(principal);
     if (customer == null) {
       // No customer so use anonymous
-      model.addAttribute("greeting", "Welcome!");
-      model.addAttribute("emailAddress", "Anonymous");
+      configureAnonymous(model);
     } else {
       // Customer is known, so attempt to provide a customised configuration
       ContactMethodDetail contactMethodDetail = customer.getContactMethodDetail(ContactMethod.EMAIL);
-
-      if (contactMethodDetail.getPrimaryDetail() == null) {
-        model.addAttribute("greeting", "Welcome!");
-        model.addAttribute("emailAddress", "Anonymous");
+      if (contactMethodDetail == null) {
+        configureAnonymous(model);
       } else {
-        model.addAttribute("greeting", "Welcome back, " + contactMethodDetail.getPrimaryDetail());
-        model.addAttribute("emailAddress", contactMethodDetail.getPrimaryDetail());
+        if (contactMethodDetail.getPrimaryDetail() == null) {
+          configureAnonymous(model);
+        } else {
+          model.addAttribute("greeting", "Welcome back, " + contactMethodDetail.getPrimaryDetail());
+          model.addAttribute("emailAddress", contactMethodDetail.getPrimaryDetail());
+        }
       }
     }
+  }
+
+  private void configureAnonymous(Model model) {
+    model.addAttribute("greeting", "Welcome!");
+    model.addAttribute("emailAddress", "Anonymous");
   }
 }
