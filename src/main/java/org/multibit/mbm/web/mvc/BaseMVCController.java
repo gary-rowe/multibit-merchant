@@ -31,19 +31,25 @@ public class BaseMVCController {
    * @param model     The page model (not null)
    */
   protected void addCustomerToModel(Principal principal, Model model) {
-    // TODO Intoduce the obvious refactoring for a base class and "customer proxy object" for model
+    // TODO Introduce the obvious refactoring for a base class and "customer proxy object" for model
 
     // Retrieve the Customer to form the model (if they are authenticated then they will be present)
     Customer customer = customerService.getCustomerFromPrincipal(principal);
-
-    ContactMethodDetail contactMethodDetail = customer.getContactMethodDetail(ContactMethod.EMAIL);
-
-    if (contactMethodDetail.getPrimaryDetail() == null) {
+    if (customer == null) {
+      // No customer so use anonymous
       model.addAttribute("greeting", "Welcome!");
       model.addAttribute("emailAddress", "Anonymous");
     } else {
-      model.addAttribute("greeting", "Welcome back, "+contactMethodDetail.getPrimaryDetail());
-      model.addAttribute("emailAddress", contactMethodDetail.getPrimaryDetail());
+      // Customer is known, so attempt to provide a customised configuration
+      ContactMethodDetail contactMethodDetail = customer.getContactMethodDetail(ContactMethod.EMAIL);
+
+      if (contactMethodDetail.getPrimaryDetail() == null) {
+        model.addAttribute("greeting", "Welcome!");
+        model.addAttribute("emailAddress", "Anonymous");
+      } else {
+        model.addAttribute("greeting", "Welcome back, " + contactMethodDetail.getPrimaryDetail());
+        model.addAttribute("emailAddress", contactMethodDetail.getPrimaryDetail());
+      }
     }
   }
 }

@@ -368,6 +368,12 @@
       <artifactId>bitcoinj</artifactId>
       <version>0.3</version>
     </dependency>
+    <dependency>
+      <groupId>org.bouncycastle</groupId>
+      <artifactId>bcprov-jdk15</artifactId>
+      <version>1.46</version>
+      <scope>compile</scope>
+    </dependency>
 
     <!-- ZXing (Zebra Crossing) used for Bitcoin swatches -->
     <dependency>

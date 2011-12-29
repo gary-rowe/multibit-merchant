@@ -1,6 +1,3 @@
-alter table contact_method_secondary_details drop constraint FK1734DD8C4526A22;
-alter table customers_contact_method_details drop constraint FKD51AD20D7E720D6D;
-alter table customers_contact_method_details drop constraint FKD51AD20DBE26167;
 drop table contact_method_details if exists;
 drop table contact_method_secondary_details if exists;
 drop table customers if exists;
