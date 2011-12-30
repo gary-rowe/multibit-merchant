@@ -5,7 +5,7 @@ import org.atmosphere.cpr.AtmosphereResource;
 import org.atmosphere.cpr.Broadcaster;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
-import org.multibit.mbm.domain.social.twitter.TwitterMessage;
+import org.multibit.mbm.social.twitter.TwitterMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.social.twitter.api.SearchResults;

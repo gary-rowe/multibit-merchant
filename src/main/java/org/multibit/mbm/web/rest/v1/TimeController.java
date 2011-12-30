@@ -1,6 +1,5 @@
 package org.multibit.mbm.web.rest.v1;
 
-import org.multibit.mbm.domain.DateTimeSummary;
 import org.multibit.mbm.util.DateUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +24,7 @@ public class TimeController {
   /**
    * Provides the current server time in UTC
    *
-   * @return A {@link org.multibit.mbm.domain.DateTimeSummary} containing the date split into fields
+   * @return A {@link DateTimeSummary} containing the date split into fields
    */
   @RequestMapping(value = "/time/extended", method = RequestMethod.GET)
   @ResponseBody

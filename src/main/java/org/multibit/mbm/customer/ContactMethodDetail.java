@@ -1,6 +1,7 @@
 package org.multibit.mbm.customer;
 
 import com.google.common.collect.Sets;
+import org.multibit.mbm.util.ObjectUtils;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -55,5 +56,31 @@ public class ContactMethodDetail {
 
   public void setSecondaryDetails(Set<String> secondaryDetails) {
     this.secondaryDetails = secondaryDetails;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    final ContactMethodDetail other = (ContactMethodDetail) obj;
+
+    return ObjectUtils.isEqual(
+      id, other.id,
+      primaryDetail, other.primaryDetail
+    );
+  }
+
+  @Override
+  public int hashCode() {
+    return ObjectUtils.getHashCode(id, primaryDetail);
+  }
+
+  @Override
+  public String toString() {
+    return String.format("ContactMethodDetail[id=%s, primaryDetail='%s']]", id, primaryDetail);
   }
 }
