@@ -1,9 +1,9 @@
 package org.multibit.mbm.web.mvc;
 
-import org.multibit.mbm.customer.ContactMethod;
-import org.multibit.mbm.customer.ContactMethodDetail;
-import org.multibit.mbm.customer.Customer;
-import org.multibit.mbm.service.CustomerService;
+import org.multibit.mbm.customer.dto.ContactMethodDetail;
+import org.multibit.mbm.customer.dto.Customer;
+import org.multibit.mbm.customer.service.CustomerService;
+import org.multibit.mbm.customer.dto.ContactMethod;
 import org.springframework.ui.Model;
 
 import javax.annotation.Resource;

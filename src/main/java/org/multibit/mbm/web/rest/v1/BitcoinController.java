@@ -1,9 +1,9 @@
 package org.multibit.mbm.web.rest.v1;
 
-import org.multibit.mbm.customer.Customer;
+import org.multibit.mbm.bitcoin.service.BitcoinService;
+import org.multibit.mbm.customer.service.CustomerService;
+import org.multibit.mbm.customer.dto.Customer;
 import org.multibit.mbm.qrcode.SwatchGenerator;
-import org.multibit.mbm.service.BitcoinService;
-import org.multibit.mbm.service.CustomerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;

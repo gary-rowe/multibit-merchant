@@ -26,4 +26,7 @@
   <!-- Twitter messaging -->
   <!--<import resource="classpath:/spring/mbm-twitter.xml"/>-->
 
+  <!-- Database loader -->
+  <import resource="classpath:/spring/mbm-catalog.xml"/>
+
 </beans>
