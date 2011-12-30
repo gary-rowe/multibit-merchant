@@ -1,6 +1,6 @@
 package org.multibit.mbm.accounting;
 
-import org.multibit.mbm.domain.Validate;
+import org.multibit.mbm.util.ValidationUtils;
 
 /**
  * <p>Single entry transaction to provide the following to {@link Transaction}:</p>
@@ -24,8 +24,8 @@ public class SingleEntryTransaction<T extends Entry<T>> extends Transaction<T> {
   protected void validate(T withdrawalEntry, T depositEntry) {
 
     // Validation
-    Validate.isNull(withdrawalEntry, "withdrawalEntry");
-    Validate.isNotNull(depositEntry, "depositEntry");
+    ValidationUtils.isNull(withdrawalEntry, "withdrawalEntry");
+    ValidationUtils.isNotNull(depositEntry, "depositEntry");
 
   }
 

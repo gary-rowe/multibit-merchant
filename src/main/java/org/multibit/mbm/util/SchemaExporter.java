@@ -4,6 +4,8 @@ import com.google.common.collect.Lists;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.dialect.H2Dialect;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,6 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SchemaExporter {
+  
+  private static final Logger log = LoggerFactory.getLogger(SchemaExporter.class);
+  
   private AnnotationConfiguration cfg;
 
   public SchemaExporter(List<String> packageNames) throws ClassNotFoundException {
@@ -33,6 +38,9 @@ public class SchemaExporter {
    * @throws java.io.IOException If something goes wrong
    */
   private void execute(int revision) throws IOException {
+    
+    log.info("Starting schema export process");
+    
     cfg.setProperty("hibernate.dialect", H2Dialect.class.getCanonicalName());
 
     File patchSchema = new File("src/main/resources/sql/" + revision + "/patch-schema.sql");
@@ -45,17 +53,22 @@ public class SchemaExporter {
     export.setDelimiter(";");
     export.setOutputFile(patchSchema.getAbsolutePath());
     export.execute(true, false, false, false);
+    
+    log.info("Schema export complete. Results in '{}'",patchSchema.getAbsolutePath());
   }
 
   /**
    * @param args Command line args (ignored)
+   * @throws Exception If something goes wrong
    */
-  public static void main(String[] args) throws ClassNotFoundException, IOException {
+  public static void main(String[] args) throws Exception {
     // The target revision based on the current domain model
     int revision = 0;
 
     List<String> packages = Lists.newArrayList(
+      "org.multibit.mbm.catalog",
       "org.multibit.mbm.customer",
+      "org.multibit.mbm.i18n",
       "");
 
     SchemaExporter schemaExporter = new SchemaExporter(packages);
@@ -67,6 +80,7 @@ public class SchemaExporter {
    *
    * @param packageName The package name containing the annotated classes
    * @return A list of classes within the given package
+   * @throws ClassNotFoundException If something goes wrong
    */
   private List<Class> getClasses(String packageName) throws ClassNotFoundException {
     List<Class> classes = new ArrayList<Class>();

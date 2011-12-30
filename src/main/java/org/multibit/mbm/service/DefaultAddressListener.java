@@ -2,7 +2,7 @@ package org.multibit.mbm.service;
 
 import java.io.IOException;
 
-import org.multibit.mbm.domain.AlertMessage;
+import org.multibit.mbm.web.atmosphere.AlertMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -14,9 +14,9 @@ public interface CustomerDao {
 
   /**
    * Persist the given Customer
-   * @param newCustomer A Customer (either new or updated)
+   * @param customer A Customer (either new or updated)
    */
-  Customer persist(Customer newCustomer);
+  Customer persist(Customer customer);
 
   /**
    * <p>Force an immediate in-transaction flush</p>

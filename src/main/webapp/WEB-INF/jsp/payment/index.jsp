@@ -123,8 +123,9 @@
         alert("You need to be logged in to confirm an order");
       } else {
         // Show a swatch based on the bitcoin address (1pmG7fTVaVL1omx1TAgrGG2mNHbL4B1fb)
-        var address = "/mbm/api/v1/bitcoin/swatch?address=" + data + "&amount=3.25&label=Bitcoin%20Books";
-        $("#mbm-order-swatch").html("<img class='mbm-order-swatch' src='" + address + "' />");
+        var swatchURI = "/mbm/api/v1/bitcoin/swatch?address=" + data + "&amount=3.25&label=Bitcoin%20Books";
+        var bitcoinURI = "bitcoin:"+data+"?amount=3.25&label=Bitcoin%20Books";
+        $("#mbm-order-swatch").html("<a href='"+bitcoinURI+"'><img class='mbm-order-swatch' src='" + swatchURI + "' /></a>");
       }
     });
 
