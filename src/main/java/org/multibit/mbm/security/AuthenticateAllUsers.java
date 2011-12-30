@@ -1,6 +1,6 @@
 package org.multibit.mbm.security;
 
-import org.multibit.mbm.service.CustomerService;
+import org.multibit.mbm.customer.service.CustomerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;

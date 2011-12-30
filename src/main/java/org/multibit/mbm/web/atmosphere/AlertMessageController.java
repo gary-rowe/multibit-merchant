@@ -2,9 +2,9 @@ package org.multibit.mbm.web.atmosphere;
 
 import org.atmosphere.cpr.AtmosphereResource;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.multibit.mbm.customer.Customer;
+import org.multibit.mbm.customer.service.CustomerService;
+import org.multibit.mbm.customer.dto.Customer;
 import org.multibit.mbm.service.BroadcastService;
-import org.multibit.mbm.service.CustomerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;

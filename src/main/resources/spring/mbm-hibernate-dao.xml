@@ -18,7 +18,9 @@
     <property name="packagesToScan">
       <!-- Keep this list in synch with {@link SchemaExporter} -->
       <array>
+        <value>org.multibit.mbm.catalog</value>
         <value>org.multibit.mbm.customer</value>
+        <value>org.multibit.mbm.i18n</value>
       </array>
     </property>
     <property name="dataSource" ref="dataSource"/>
@@ -34,6 +36,5 @@
     <jdbc:script location="classpath:/sql/0/patch-schema.sql"/>
     <jdbc:script location="classpath:/sql/0/patch-data.sql"/>
   </jdbc:embedded-database>
-
 
 </beans>
