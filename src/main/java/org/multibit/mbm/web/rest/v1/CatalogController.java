@@ -26,6 +26,10 @@ public class CatalogController {
 
   /**
    * Search service for locating Items
+   * TODO Make this a generic search facility against items
+   * Consider support for named parameters (e.g. category:, reference: etc)
+   * Consider caching strategies (e.g. DAO against ItemFieldDetail with word index)
+   * Consider a Lucene or Hibernate Search implementation
    *
    * @param query The query to decode
    *
@@ -33,16 +37,20 @@ public class CatalogController {
    */
   @RequestMapping(value = "/catalog/item/search", method = RequestMethod.GET)
   @ResponseBody
-  public SearchResults<ItemSearchSummary> search(@RequestParam("q") String query) {
+  public SearchResults<ItemSearchSummary> search(@RequestParam(value = "q", required = false) String query) {
 
-    // TODO Make this a generic search facility against items
-    // Consider support for named parameters (e.g. category:, reference: etc)
-    // Consider caching strategies (e.g. DAO against ItemFieldDetail with word index)
-    // Consider a Lucene or Hibernate Search implementation
-    Item item = catalogService.getItemFromReference(query);
+    List<Item> items=Lists.newArrayList();
+    if (query ==null) {
+      // Broad search of front page items
+      items = catalogService.getAllItems();
+    } else {
+      // Assume reference search at present
+      Item item = catalogService.getItemFromReference(query);
+      items.add(item);
+    }
 
     List<ItemSearchSummary> itemSummaries = Lists.newArrayList();
-    if (item != null) {
+    for (Item item: items) {
       ItemSearchSummary itemSummary = new ItemSearchSummary(item);
       itemSummaries.add(itemSummary);
     }

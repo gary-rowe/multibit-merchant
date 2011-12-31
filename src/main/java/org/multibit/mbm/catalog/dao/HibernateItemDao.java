@@ -24,6 +24,11 @@ public class HibernateItemDao implements ItemDao {
   }
 
   @Override
+  public List<Item> getAllItems() {
+    return hibernateTemplate.find("from Item");
+  }
+
+  @Override
   public Item persist(Item item) {
     if (item.getId() != null) {
       item=hibernateTemplate.merge(item);

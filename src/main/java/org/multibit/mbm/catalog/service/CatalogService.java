@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>Service to provide the following to Controllers:</p>
@@ -32,6 +33,15 @@ public class CatalogService {
   @Transactional(propagation = Propagation.REQUIRED)
   public Item getItemFromReference(String reference) {
     return itemDao.getItemByReference(reference);
+  }
+
+  /**
+   * Attempts to locate a Item based on the given reference
+   * @return An Item or null if not found
+   */
+  @Transactional(propagation = Propagation.REQUIRED)
+  public List<Item> getAllItems() {
+    return itemDao.getAllItems();
   }
 
   /**
