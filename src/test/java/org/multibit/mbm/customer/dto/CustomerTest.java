@@ -11,7 +11,6 @@ public class CustomerTest {
   public void testPrimaryEmailAddress() {
 
     Customer testObject = CustomerBuilder.getInstance()
-      .newCustomer()
       .addContactMethod(ContactMethod.EMAIL,"test1@example.org")
       .build();
 
