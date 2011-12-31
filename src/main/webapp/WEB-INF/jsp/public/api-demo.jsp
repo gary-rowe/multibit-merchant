@@ -12,6 +12,7 @@
     <li><a href="#tab-1">Alerts</a></li>
     <li><a href="#tab-2">Time</a></li>
     <li><a href="#tab-3">Bitcoin</a></li>
+    <li><a href="#tab-4">Catalog</a></li>
   </ul>
 
   <div id="tab-1">
@@ -19,9 +20,9 @@
     <table>
       <colgroup>
         <col span="1" style="width:10%"/>
-        <col span="1" style="width:40%"/>
-        <col span="1" style="width:40%"/>
-        <col span="1" style="width:10%"/>
+        <col span="1" style="width:20%"/>
+        <col span="1" style="width:20%"/>
+        <col span="1" style="width:50%"/>
       </colgroup>
       <tr>
         <td>Example</td>
@@ -119,6 +120,54 @@
     <p>
     </p>
   </div>
+
+  <div id="tab-4">
+    <p>The Catalog API provides access to various catalog related facilities (items, file uploads etc).</p>
+    <table>
+      <colgroup>
+        <col span="1" style="width:10%"/>
+        <col span="1" style="width:40%"/>
+        <col span="1" style="width:40%"/>
+        <col span="1" style="width:10%"/>
+      </colgroup>
+      <tr>
+        <td>Example</td>
+        <td>Description</td>
+        <td>Code</td>
+        <td>Output</td>
+      </tr>
+      <tr>
+        <td><a id="catalog-item-create" href="#">Request new item</a></td>
+        <td>Request a new Item. Will respond with a .</td>
+        <td><code>$("#catalog-item-create").bind("click", function(event) {
+          $.post('/mbm/api/v1/catalog/item',
+          function(data) {
+          $('#catalog-item-create-output').html(data);
+          });
+          });
+        </code>
+        </td>
+        <td id="catalog-item-create-output"></td>
+      </tr>
+      <tr>
+        <td><a id="catalog-item-search" href="#">Search item</a></td>
+        <td>Search for a catalog item.
+        </td>
+        <td><code>$("#catalog-item-search").bind("click", function(event) {
+          $.get('/mbm/api/v1/catalog/item/search?q=0099410672',
+          function(data) {
+          $('#catalog-item-search-output').html(data);
+          });
+          });
+        </code>
+        </td>
+        <td id="catalog-item-search-output"></td>
+      </tr>
+    </table>
+
+    <p>
+    </p>
+  </div>
 </div>
 
 <%@include file="/WEB-INF/jspf/public/cdn-scripts.jspf" %>
@@ -126,5 +175,6 @@
 
 <script type="text/javascript" src="<c:url value="/js/mbm/demo-time.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/mbm/demo-bitcoin.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/mbm/demo-catalog.js"/>"></script>
 </body>
 </html>

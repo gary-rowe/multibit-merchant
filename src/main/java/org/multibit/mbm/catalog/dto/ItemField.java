@@ -28,6 +28,18 @@ public enum ItemField {
    */
   SUMMARY,
   /**
+   * URI to a thumbnail image associated with the item (typically appears in search results)
+   */
+  IMAGE_THUMBNAIL_URI,
+  /**
+   * URI to a video associated with the item
+   */
+  VIDEO_URI,
+  /**
+   * URI to audio associated with the item
+   */
+  AUDIO_URI,
+  /**
    * Describes the main features of the item (max 50 words)
    */
   FEATURES,
