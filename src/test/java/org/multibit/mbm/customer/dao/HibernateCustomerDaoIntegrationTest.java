@@ -1,7 +1,6 @@
 package org.multibit.mbm.customer.dao;
 
 import org.junit.Test;
-import org.multibit.mbm.customer.dao.CustomerDao;
 import org.multibit.mbm.customer.dto.ContactMethod;
 import org.multibit.mbm.customer.dto.ContactMethodDetail;
 import org.multibit.mbm.customer.dto.Customer;
@@ -15,6 +14,7 @@ import static org.junit.Assert.assertThat;
 
 /**
  * Integration test to verify the Hibernate annotations of the DTOs against a generated schema
+ * TODO Add in the CustomerBuilder
  */
 @ContextConfiguration(locations = {"/spring/test-mbm-hibernate-dao.xml"})
 public class HibernateCustomerDaoIntegrationTest extends AbstractTransactionalJUnit4SpringContextTests {

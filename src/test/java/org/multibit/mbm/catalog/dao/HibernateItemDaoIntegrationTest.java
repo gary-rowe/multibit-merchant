@@ -1,11 +1,9 @@
 package org.multibit.mbm.catalog.dao;
 
 import org.junit.Test;
-import org.multibit.mbm.catalog.dao.ItemDao;
 import org.multibit.mbm.catalog.dto.Item;
 import org.multibit.mbm.catalog.dto.ItemField;
 import org.multibit.mbm.catalog.dto.ItemFieldDetail;
-import org.multibit.mbm.catalog.dao.ItemDao;
 import org.multibit.mbm.i18n.LocalisedText;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
@@ -17,6 +15,7 @@ import static org.junit.Assert.assertThat;
 
 /**
  * Integration test to verify the Hibernate annotations of the DTOs against a generated schema
+ * TODO Add in the ItemBuilder
  */
 @ContextConfiguration(locations = {"/spring/test-mbm-hibernate-dao.xml"})
 public class HibernateItemDaoIntegrationTest extends AbstractTransactionalJUnit4SpringContextTests {

@@ -15,7 +15,6 @@ public class ItemTest {
 
     // Use the builder
     Item testObject=ItemBuilder.getInstance()
-      .newItem()
       .addPrimaryFieldDetail(ItemField.SUMMARY,"en","English")
       .addSecondaryFieldDetail(ItemField.SUMMARY,"fr_FR","French french")
       .addSecondaryFieldDetail(ItemField.SUMMARY,"en_GB","British english")

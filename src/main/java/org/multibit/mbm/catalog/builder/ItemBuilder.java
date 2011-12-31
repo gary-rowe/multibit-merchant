@@ -1,9 +1,12 @@
 package org.multibit.mbm.catalog.builder;
 
+import com.google.common.collect.Lists;
 import org.multibit.mbm.catalog.dto.Item;
 import org.multibit.mbm.catalog.dto.ItemField;
 import org.multibit.mbm.catalog.dto.ItemFieldDetail;
 import org.multibit.mbm.i18n.LocalisedText;
+
+import java.util.List;
 
 /**
  *  <p>Builder to provide the following to {@link Item}:</p>
@@ -16,7 +19,10 @@ import org.multibit.mbm.i18n.LocalisedText;
  */
 public class ItemBuilder {
 
-  private Item item=null;
+  private List<PrimaryFieldDetail> primaryFieldDetails = Lists.newArrayList();
+  private List<SecondaryFieldDetail> secondaryFieldDetails = Lists.newArrayList();
+
+  private boolean isBuilt= false;
 
   /**
    * @return A new instance of the builder
@@ -27,20 +33,32 @@ public class ItemBuilder {
 
   /**
    * Handles the building process. No further configuration is possible after this.
+   * @return The item instance
    */
   public Item build() {
+    
+    validateState();
+    
+    // Item is a DTO so requires a public default constructor
+    Item item = new Item();
+    
+    for (PrimaryFieldDetail primaryFieldDetail : primaryFieldDetails) {
+      primaryFieldDetail.applyTo(item);
+    }
+    for (SecondaryFieldDetail secondaryFieldDetail : secondaryFieldDetails) {
+      secondaryFieldDetail.applyTo(item);
+    }
+
+    isBuilt=true;
+    
     return item;
   }
 
-  /**
-   * Create a new {@link Item}
-   * @return The builder
-   */
-  public ItemBuilder newItem() {
-    this.item = new Item();
-    return this;
+  private void validateState() {
+    if (isBuilt) {
+      throw new IllegalStateException("Build process is complete - no further changes can be made");
+    }
   }
-
 
   /**
    * 
@@ -50,23 +68,14 @@ public class ItemBuilder {
    * @return The builder
    */
   public ItemBuilder addPrimaryFieldDetail(ItemField itemField, String localeKey, String content) {
-    if (item==null) {
-      throw new IllegalStateException("Item is null, need to call newItem() first.");
-    }
-    LocalisedText localisedText  = new LocalisedText();
-    localisedText.setLocaleKey(localeKey);
-    localisedText.setContent(content);
 
-    ItemFieldDetail itemFieldDetail = item.getItemFieldDetail(itemField);
-    if (itemFieldDetail==null) {
-      itemFieldDetail = new ItemFieldDetail();
-    }
-    itemFieldDetail.setPrimaryDetail(localisedText);
+    validateState();
 
-    item.setItemFieldDetail(itemField,itemFieldDetail);
+    primaryFieldDetails.add(new PrimaryFieldDetail(itemField, localeKey, content));
 
     return this;  
   }
+  
 
   /**
    *
@@ -76,23 +85,80 @@ public class ItemBuilder {
    * @return The builder
    */
   public ItemBuilder addSecondaryFieldDetail(ItemField itemField, String localeKey, String content) {
-    if (item==null) {
-      throw new IllegalStateException("Item is null, need to call newItem() first.");
-    }
-    LocalisedText localisedText  = new LocalisedText();
-    localisedText.setLocaleKey(localeKey);
-    localisedText.setContent(content);
 
-    ItemFieldDetail itemFieldDetail = item.getItemFieldDetail(itemField);
-    if (itemFieldDetail==null) {
-      itemFieldDetail = new ItemFieldDetail();
-    }
-    itemFieldDetail.getSecondaryDetails().add(localisedText);
+    validateState();
 
-    item.setItemFieldDetail(itemField,itemFieldDetail);
+    secondaryFieldDetails.add(new SecondaryFieldDetail(itemField, localeKey, content));
 
     return this;
   }
+  
+  /**
+   * Storage of parameters until ready for application
+   */
+  private class PrimaryFieldDetail {
+    private final ItemField itemField;
+    private final String localeKey;
+    private final String content;
 
+    PrimaryFieldDetail(ItemField itemField, String localeKey, String content) {
+      this.itemField=itemField;
+      this.localeKey=localeKey;
+      this.content=content;
+    }
+
+    /**
+     * Applies the parameters to the given Item
+     * @param item The Item
+     */
+    void applyTo(Item item) {
+      LocalisedText localisedText  = new LocalisedText();
+      localisedText.setLocaleKey(localeKey);
+      localisedText.setContent(content);
+
+      ItemFieldDetail itemFieldDetail = item.getItemFieldDetail(itemField);
+      if (itemFieldDetail==null) {
+        itemFieldDetail = new ItemFieldDetail();
+      }
+      itemFieldDetail.setPrimaryDetail(localisedText);
+
+      item.setItemFieldDetail(itemField,itemFieldDetail);
+
+    }
+  }
+
+  /**
+   * Storage of parameters until ready for application
+   */
+  private class SecondaryFieldDetail {
+    private final ItemField itemField;
+    private final String localeKey;
+    private final String content;
+
+    SecondaryFieldDetail(ItemField itemField, String localeKey, String content) {
+      this.itemField=itemField;
+      this.localeKey=localeKey;
+      this.content=content;
+    }
+
+    /**
+     * Applies the parameters to the given Item
+     * @param item The item
+     */
+    void applyTo(Item item) {
+      LocalisedText localisedText  = new LocalisedText();
+      localisedText.setLocaleKey(localeKey);
+      localisedText.setContent(content);
+
+      ItemFieldDetail itemFieldDetail = item.getItemFieldDetail(itemField);
+      if (itemFieldDetail==null) {
+        itemFieldDetail = new ItemFieldDetail();
+      }
+      itemFieldDetail.getSecondaryDetails().add(localisedText);
+
+      item.setItemFieldDetail(itemField,itemFieldDetail);
+
+    }
+  }
 
 }
