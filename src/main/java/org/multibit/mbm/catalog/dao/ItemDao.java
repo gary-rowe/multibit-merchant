@@ -1,7 +1,8 @@
 package org.multibit.mbm.catalog.dao;
 
-import org.multibit.mbm.catalog.dao.ItemNotFoundException;
 import org.multibit.mbm.catalog.dto.Item;
+
+import java.util.List;
 
 public interface ItemDao {
 
@@ -14,8 +15,15 @@ public interface ItemDao {
   Item getItemByReference(String reference) throws ItemNotFoundException;
 
   /**
+   * TODO Remove this once the main search solution is in place since it does not scale
+   * @return All items
+   */
+  List<Item> getAllItems();
+
+  /**
    * Persist the given Item
    * @param item A Item (either new or updated)
+   * @return The persisted Item
    */
   Item persist(Item item);
 

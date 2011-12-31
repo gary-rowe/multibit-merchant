@@ -10,81 +10,9 @@
 <%@include file="/WEB-INF/jspf/public/content-header.jspf" %>
 <div id="mbm-col1" class="col1">
   <div class="ui-widget">
-    <p class="ui-widget-header">Recommended Books</p>
+    <p class="ui-widget-header">${greeting}</p>
 
-    <div>
-      <p>${greeting}</p>
-
-      <!-- TODO make this driven by the model -->
-      <div class="mbm-item ui-widget-content ui-corner-all">
-        <a href="#" class="mbm-item-link">Cryptonomicon, By Neal
-          Stephenson</a>
-        <img class="mbm-item-thumbnail float-right" src="<c:url value="/images/catalog/items/2/thumbnail2.png" />"/>
-
-        <p>'A brilliant patchwork of codebreaking mathematicians and their descendants who are striving to create a
-          datahaven in the Philippines...trust me on this one' Guardian</p>
-
-        <p>3.25BTC (&euro;6.50)</p>
-
-        <button id="item-1" class="mbm-add-to-basket" onclick="handleAddToBasketClick(this)"><fmt:message
-          key="catalog.page.add-to-basket"/></button>
-      </div>
-
-      <div class="mbm-item ui-widget-content ui-corner-all">
-        <a href="#" class="mbm-item-link">A Year in Provence, By
-          Peter Mayle</a>
-        <img class="mbm-item-thumbnail float-right" src="<c:url value="/images/catalog/items/1/thumbnail1.png" />"/>
-
-        <p>Enjoy an irresistible feast of humour and discover the joys of French rural living with Peter Mayle's
-          bestselling, much-loved account of 'A Year In Provence'.</p>
-
-        <p>1.95BTC (&euro;3.90)</p>
-
-        <button id="item-2" class="mbm-add-to-basket" onclick="handleAddToBasketClick(this)"><fmt:message
-          key="catalog.page.add-to-basket"/></button>
-      </div>
-      <div class="mbm-item ui-widget-content ui-corner-all">
-        <a href="#" class="mbm-item-link">Plumbing and Central
-          Heating, By Mike Lawrence</a>
-        <img class="mbm-item-thumbnail float-right" src="<c:url value="/images/catalog/items/3/thumbnail3.png" />"/>
-
-        <p>This guide begins with the basic skills of plumbing, which once mastered, can be applied to any situation,
-          from mending a leaking tap to installing a new shower unit.</p>
-
-        <p>1.95BTC (&euro;3.90)</p>
-
-        <button id="item-3" class="mbm-add-to-basket" onclick="handleAddToBasketClick(this)"><fmt:message
-          key="catalog.page.add-to-basket"/></button>
-      </div>
-
-      <div class="mbm-item ui-widget-content ui-corner-all">
-        <a href="#" class="mbm-item-link">The Quantum Thief, By Hannu
-          Rajaniemi</a>
-        <img class="mbm-item-thumbnail float-right" src="<c:url value="/images/catalog/items/4/thumbnail4.png" />"/>
-
-        <p>The most exciting SF debut of the last five years - a star to stand alongside Alistair Reynolds and Richard
-          Morgan.</p>
-
-        <p>1.95BTC (&euro;3.90)</p>
-
-        <button id="item-4" class="mbm-add-to-basket" onclick="handleAddToBasketClick(this)"><fmt:message
-          key="catalog.page.add-to-basket"/></button>
-      </div>
-
-      <div class="mbm-item ui-widget-content ui-corner-all">
-        <a href="#" class="mbm-item-link">The Complete Works of
-          Emily Dickinson, Edited by Thomas H Johnson</a>
-        <img class="mbm-item-thumbnail float-right" src="<c:url value="/images/catalog/items/5/thumbnail5.png" />"/>
-
-        <p>The Complete Poems of Emily Dickinson is the only one-volume edition containing all Emily Dickinson's
-          poems.</p>
-
-        <p>1.95BTC (&euro;3.90)</p>
-
-        <button id="item-5" class="mbm-add-to-basket" onclick="handleAddToBasketClick(this)"><fmt:message
-          key="catalog.page.add-to-basket"/></button>
-      </div>
-    </div>
+    <div id="catalog-item-search-output"></div>
   </div>
 
 </div>
@@ -200,6 +128,22 @@
 
   $("button").each(function() {
     $(this).button();
+  });
+
+  // TODO Serve this from the app
+  var searchTemplate="<div class='mbm-item ui-widget-content ui-corner-all'><a href='#' class='mbm-item-link'>{title}</a><img class='mbm-item-thumbnail float-right' src='{imgThumbnailUri}'/></a><p>{summary}</p><p>3.25BTC (&euro;6.50)</p><button id='item-1' class='mbm-add-to-basket' onclick='handleAddToBasketClick(this)'>Add to basket</button></div>";
+
+  $(document).ready(function() {
+    // Populate the main page
+    $.get('/mbm/api/v1/catalog/item/search',
+      function(data) {
+        var results = data.results;
+        for (var i=0; i<results.length; i++) {
+          var html = searchTemplate.supplant(results[i]);
+          $('#catalog-item-search-output').append(html);
+        }
+      });
+
   });
 
 </script>
