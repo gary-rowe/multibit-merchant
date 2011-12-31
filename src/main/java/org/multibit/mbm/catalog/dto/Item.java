@@ -29,7 +29,10 @@ public class Item implements Serializable {
   @Column(name = "reference", nullable = false)
   private String reference = null;
 
-  @OneToMany(cascade = CascadeType.ALL)
+  /**
+   * This collection is effectively the fields for the Item so must be eager
+   */
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @MapKeyEnumerated()
   private Map<ItemField, ItemFieldDetail> itemFieldMap = Maps.newLinkedHashMap();
 

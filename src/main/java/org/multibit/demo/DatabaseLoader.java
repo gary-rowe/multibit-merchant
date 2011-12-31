@@ -1,14 +1,13 @@
 package org.multibit.demo;
 
+import org.multibit.mbm.catalog.builder.ItemBuilder;
 import org.multibit.mbm.catalog.dao.ItemDao;
 import org.multibit.mbm.catalog.dto.Item;
 import org.multibit.mbm.catalog.dto.ItemField;
-import org.multibit.mbm.catalog.dto.ItemFieldDetail;
 import org.multibit.mbm.customer.dao.CustomerDao;
 import org.multibit.mbm.customer.dto.ContactMethod;
 import org.multibit.mbm.customer.dto.ContactMethodDetail;
 import org.multibit.mbm.customer.dto.Customer;
-import org.multibit.mbm.i18n.LocalisedText;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -50,24 +49,14 @@ public class DatabaseLoader {
    * Build a demonstration database based on books
    */
   private void buildCatalogBooks() {
-    Item cryptonomicon = new Item();
-    cryptonomicon.setReference("0099410672");
+    Item book1 = ItemBuilder.getInstance()
+      .setReference("0099410672")
+      .addPrimaryFieldDetail(ItemField.TITLE,"en","Cryptonomicon, by Neal Stephenson")
+      .addPrimaryFieldDetail(ItemField.SUMMARY,"en","'A brilliant patchwork of code-breaking mathematicians and their descendants who are striving to create a data haven in the Philippines...trust me on this one' Guardian")
+      .addPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI,"en","/mbm/images/catalog/items/2/thumbnail2.png")
+      .build();
 
-    // TODO Create a simplified ItemFactory
-    ItemFieldDetail title = new ItemFieldDetail();
-    LocalisedText titleText = new LocalisedText();
-    titleText.setContent("Cryptonomicon, by Neal Stephenson");
-    title.setPrimaryDetail(titleText);
-
-    ItemFieldDetail summary = new ItemFieldDetail();
-    LocalisedText summaryText = new LocalisedText();
-    summaryText.setContent("'A brilliant patchwork of code-breaking mathematicians and their descendants who are striving to create a data haven in the Philippines...trust me on this one' Guardian");
-    summary.setPrimaryDetail(summaryText);
-
-    cryptonomicon.setItemFieldDetail(ItemField.TITLE, title);
-    cryptonomicon.setItemFieldDetail(ItemField.SUMMARY, summary);
-
-    itemDao.persist(cryptonomicon);
+    itemDao.persist(book1);
 
   }
 

@@ -1,7 +1,6 @@
 package org.multibit.mbm.catalog.dao;
 
 import org.multibit.mbm.catalog.dto.Item;
-import org.multibit.mbm.catalog.dao.ItemDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
@@ -18,7 +17,8 @@ public class HibernateItemDao implements ItemDao {
   public Item getItemByReference(String reference) throws ItemNotFoundException {
     List items = hibernateTemplate.find("from Item i where i.reference = ?", reference);
     if (items==null || items.isEmpty()) {
-      throw new ItemNotFoundException();
+      // No matching item
+      return null;
     }
     return (Item) items.get(0);
   }

@@ -1,9 +1,8 @@
-package org.multibit.mbm.service;
+package org.multibit.mbm.web.atmosphere;
 
 import com.google.common.collect.Maps;
 import org.atmosphere.cpr.Broadcaster;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.multibit.mbm.web.atmosphere.AlertMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

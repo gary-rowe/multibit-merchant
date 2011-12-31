@@ -22,7 +22,8 @@ public class ItemBuilder {
   private List<PrimaryFieldDetail> primaryFieldDetails = Lists.newArrayList();
   private List<SecondaryFieldDetail> secondaryFieldDetails = Lists.newArrayList();
 
-  private boolean isBuilt= false;
+  private boolean isBuilt = false;
+  private String reference = null;
 
   /**
    * @return A new instance of the builder
@@ -33,15 +34,21 @@ public class ItemBuilder {
 
   /**
    * Handles the building process. No further configuration is possible after this.
+   *
    * @return The item instance
    */
   public Item build() {
-    
+
     validateState();
-    
+
     // Item is a DTO so requires a public default constructor
     Item item = new Item();
-    
+
+    if (reference == null) {
+      throw new IllegalStateException("Reference is a mandatory field");
+    }
+    item.setReference(reference);
+
     for (PrimaryFieldDetail primaryFieldDetail : primaryFieldDetails) {
       primaryFieldDetail.applyTo(item);
     }
@@ -49,8 +56,8 @@ public class ItemBuilder {
       secondaryFieldDetail.applyTo(item);
     }
 
-    isBuilt=true;
-    
+    isBuilt = true;
+
     return item;
   }
 
@@ -61,10 +68,10 @@ public class ItemBuilder {
   }
 
   /**
-   * 
    * @param itemField The item field (e.g. SUMMARY)
    * @param localeKey The locale key (e.g. "en")
-   * @param content The locale specific content (e.g. "Hello", "Bonjour" etc)
+   * @param content   The locale specific content (e.g. "Hello", "Bonjour" etc)
+   *
    * @return The builder
    */
   public ItemBuilder addPrimaryFieldDetail(ItemField itemField, String localeKey, String content) {
@@ -73,15 +80,15 @@ public class ItemBuilder {
 
     primaryFieldDetails.add(new PrimaryFieldDetail(itemField, localeKey, content));
 
-    return this;  
+    return this;
   }
-  
+
 
   /**
-   *
    * @param itemField The item field (e.g. SUMMARY)
    * @param localeKey The locale key (e.g. "en")
-   * @param content The locale specific content (e.g. "Hello", "Bonjour" etc)
+   * @param content   The locale specific content (e.g. "Hello", "Bonjour" etc)
+   *
    * @return The builder
    */
   public ItemBuilder addSecondaryFieldDetail(ItemField itemField, String localeKey, String content) {
@@ -92,7 +99,12 @@ public class ItemBuilder {
 
     return this;
   }
-  
+
+  public ItemBuilder setReference(String reference) {
+    this.reference = reference;
+    return this;
+  }
+
   /**
    * Storage of parameters until ready for application
    */
@@ -102,27 +114,28 @@ public class ItemBuilder {
     private final String content;
 
     PrimaryFieldDetail(ItemField itemField, String localeKey, String content) {
-      this.itemField=itemField;
-      this.localeKey=localeKey;
-      this.content=content;
+      this.itemField = itemField;
+      this.localeKey = localeKey;
+      this.content = content;
     }
 
     /**
      * Applies the parameters to the given Item
+     *
      * @param item The Item
      */
     void applyTo(Item item) {
-      LocalisedText localisedText  = new LocalisedText();
+      LocalisedText localisedText = new LocalisedText();
       localisedText.setLocaleKey(localeKey);
       localisedText.setContent(content);
 
       ItemFieldDetail itemFieldDetail = item.getItemFieldDetail(itemField);
-      if (itemFieldDetail==null) {
+      if (itemFieldDetail == null) {
         itemFieldDetail = new ItemFieldDetail();
       }
       itemFieldDetail.setPrimaryDetail(localisedText);
 
-      item.setItemFieldDetail(itemField,itemFieldDetail);
+      item.setItemFieldDetail(itemField, itemFieldDetail);
 
     }
   }
@@ -136,27 +149,28 @@ public class ItemBuilder {
     private final String content;
 
     SecondaryFieldDetail(ItemField itemField, String localeKey, String content) {
-      this.itemField=itemField;
-      this.localeKey=localeKey;
-      this.content=content;
+      this.itemField = itemField;
+      this.localeKey = localeKey;
+      this.content = content;
     }
 
     /**
      * Applies the parameters to the given Item
+     *
      * @param item The item
      */
     void applyTo(Item item) {
-      LocalisedText localisedText  = new LocalisedText();
+      LocalisedText localisedText = new LocalisedText();
       localisedText.setLocaleKey(localeKey);
       localisedText.setContent(content);
 
       ItemFieldDetail itemFieldDetail = item.getItemFieldDetail(itemField);
-      if (itemFieldDetail==null) {
+      if (itemFieldDetail == null) {
         itemFieldDetail = new ItemFieldDetail();
       }
       itemFieldDetail.getSecondaryDetails().add(localisedText);
 
-      item.setItemFieldDetail(itemField,itemFieldDetail);
+      item.setItemFieldDetail(itemField, itemFieldDetail);
 
     }
   }

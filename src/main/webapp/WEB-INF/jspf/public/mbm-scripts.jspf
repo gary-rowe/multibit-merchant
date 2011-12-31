@@ -4,5 +4,6 @@
 <script type="text/javascript" src="<c:url value="/plugins/jquery/templates/jquery.tmpl.min.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/mbm/alert.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/mbm/root.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/mbm/string.js"/>"></script>
 
 
