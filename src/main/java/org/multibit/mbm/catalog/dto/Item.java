@@ -26,8 +26,8 @@ public class Item implements Serializable {
   @Column(name = "id", unique = true, nullable = false)
   private Long id = null;
 
-  @Column(name = "reference", nullable = false)
-  private String reference = null;
+  @Column(name = "sku", nullable = false)
+  private String sku = null;
 
   /**
    * This collection is effectively the fields for the Item so must be eager
@@ -54,14 +54,14 @@ public class Item implements Serializable {
   }
 
   /**
-   * @return A general purpose reference field typically used in a product numbering scheme
+   * @return The stock-keeping unit reference (see http://en.wikipedia.org/wiki/Stock-keeping_unit)
    */
-  public String getReference() {
-    return reference;
+  public String getSKU() {
+    return sku;
   }
 
-  public void setReference(String reference) {
-    this.reference = reference;
+  public void setSKU(String sku) {
+    this.sku = sku;
   }
 
   /**
@@ -175,18 +175,18 @@ public class Item implements Serializable {
 
     return ObjectUtils.isEqual(
       id, other.id,
-      reference, other.reference
+      sku, other.sku
     );
   }
 
   @Override
   public int hashCode() {
-    return ObjectUtils.getHashCode(id, reference);
+    return ObjectUtils.getHashCode(id, sku);
   }
 
   @Override
   public String toString() {
-    return String.format("Item[id=%s, reference='%s']]", id, reference);
+    return String.format("Item[id=%s, SKU='%s']]", id, sku);
   }
 
 }

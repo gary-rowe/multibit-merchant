@@ -3,7 +3,11 @@ package org.multibit.mbm.util;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.ReadableInstant;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
+
+import java.util.Locale;
 
 /**
  * <p>Utility to provide the following to all layers:</p>
@@ -16,6 +20,7 @@ import org.joda.time.format.ISODateTimeFormat;
  */
 public class DateUtils {
 
+  private static final DateTimeFormatter friendlyDateFormatter = DateTimeFormat.forPattern("EEEE, MMMM dd");
   /**
    * @return The current instant in UTC
    */
@@ -48,6 +53,32 @@ public class DateUtils {
    */
   public static String formatBasicDate(ReadableInstant when) {
     return ISODateTimeFormat.basicDate().print(when);
+  }
+
+  /**
+   * @param when The instant
+   * @param locale The required locale
+   * @return The instant formatted as "yyyyMMdd"
+   */
+  public static String formatBasicDate(ReadableInstant when, Locale locale) {
+    return ISODateTimeFormat.basicDate().withLocale(locale).print(when);
+  }
+
+  /**
+   * @param when The instant
+   * @return The instant formatted as "ddd, MMM dd"
+   */
+  public static String formatFriendlyDate(ReadableInstant when) {
+    return friendlyDateFormatter.print(when);
+  }
+
+  /**
+   * @param when The instant
+   * @param locale The required locale
+   * @return The instant formatted as "ddd, MMM dd"
+   */
+  public static String formatFriendlyDate(ReadableInstant when, Locale locale) {
+    return friendlyDateFormatter.withLocale(locale).print(when);
   }
 
 }

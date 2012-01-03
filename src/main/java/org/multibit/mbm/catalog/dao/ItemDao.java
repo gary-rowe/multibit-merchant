@@ -12,7 +12,16 @@ public interface ItemDao {
    * @return A matching Item
    * @throws org.multibit.mbm.catalog.dao.ItemNotFoundException If something goes wrong
    */
-  Item getItemByReference(String reference) throws ItemNotFoundException;
+  Item getItemBySKU(String reference) throws ItemNotFoundException;
+
+  /**
+   * Attempt to locate the item using it's ID
+   *
+   * @param id The item ID
+   * @return A matching Item
+   * @throws org.multibit.mbm.catalog.dao.ItemNotFoundException If something goes wrong
+   */
+  Item getItemById(Long id) throws ItemNotFoundException;
 
   /**
    * TODO Remove this once the main search solution is in place since it does not scale

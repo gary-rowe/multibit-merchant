@@ -86,13 +86,12 @@
 </div>
 <div id="mbm-col3" class="col3">
 
-  <!-- TODO Create a shopping basket widget -->
-  <div class="ui-widget">
-    <p class="ui-widget-header">Your Basket</p>
-    <div id="mbm-order-swatch"></div>
-    <div id="item-1-order">
-      <p>Cryptonomicon</p>
-      <p>Quantity: 1</p>
+  <!-- TODO Create a shopping cart widget -->
+  <div id="cart" class="ui-widget">
+    <p class="ui-widget-header">Your Cart</p>
+    <div id="cart-contents"></div>
+    <div id="cart-subtotal">
+      <p>Subtotal</p>
       <button id="confirm-order" onclick="handleConfirmOrder(this)"><fmt:message key="catalog.page.confirm-order"/></button>
     </div>
   </div>
