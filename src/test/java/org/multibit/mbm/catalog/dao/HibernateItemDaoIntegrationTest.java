@@ -26,9 +26,9 @@ public class HibernateItemDaoIntegrationTest extends AbstractTransactionalJUnit4
   @Test
   public void testPersistAndFindByReference() {
 
-    String reference="abc123";
+    String sku="abc123";
     Item expected = new Item();
-    expected.setReference(reference);
+    expected.setSKU(sku);
 
     // Persist with insert
     int originalItemRows = countRowsInTable("items");
@@ -85,7 +85,7 @@ public class HibernateItemDaoIntegrationTest extends AbstractTransactionalJUnit4
     testObject.flush();
 
     // Query against the "reference"
-    Item actual=testObject.getItemByReference("abc123");
+    Item actual=testObject.getItemBySKU("abc123");
 
     // Session flush: Expect no change to items, contact_method_details, insert into contact_method_secondary_details
     updatedItemRows = countRowsInTable("items");

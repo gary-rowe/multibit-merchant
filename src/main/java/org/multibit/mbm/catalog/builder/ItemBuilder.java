@@ -23,7 +23,7 @@ public class ItemBuilder {
   private List<SecondaryFieldDetail> secondaryFieldDetails = Lists.newArrayList();
 
   private boolean isBuilt = false;
-  private String reference = null;
+  private String sku = null;
 
   /**
    * @return A new instance of the builder
@@ -44,10 +44,10 @@ public class ItemBuilder {
     // Item is a DTO so requires a public default constructor
     Item item = new Item();
 
-    if (reference == null) {
-      throw new IllegalStateException("Reference is a mandatory field");
+    if (sku == null) {
+      throw new IllegalStateException("SKU is a mandatory field");
     }
-    item.setReference(reference);
+    item.setSKU(sku);
 
     for (PrimaryFieldDetail primaryFieldDetail : primaryFieldDetails) {
       primaryFieldDetail.applyTo(item);
@@ -100,8 +100,8 @@ public class ItemBuilder {
     return this;
   }
 
-  public ItemBuilder setReference(String reference) {
-    this.reference = reference;
+  public ItemBuilder setSku(String sku) {
+    this.sku = sku;
     return this;
   }
 

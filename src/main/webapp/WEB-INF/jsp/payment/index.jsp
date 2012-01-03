@@ -32,11 +32,13 @@
       <p>&nbsp;</p>
 
     </div>
-    <p>To pay, you can click, drag or scan this swatch</p>
+    <p>To pay, you should <strong>click</strong>, drag or scan this swatch</p>
 
     <div id="mbm-order-swatch"></div>
     <button id="item-1" onclick="handleConfirmPaymentClick(this)"><fmt:message
       key="payment.page.payment-confirmed"/></button>
+    <!-- TODO Obtain a countdown script -->
+    <p>This price is available for 5:00 minutes</p>
 
   </div>
 </div>

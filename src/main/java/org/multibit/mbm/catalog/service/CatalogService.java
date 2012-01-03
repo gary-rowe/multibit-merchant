@@ -26,22 +26,32 @@ public class CatalogService {
   private ItemDao itemDao;
 
   /**
-   * Attempts to locate a Item based on the given reference
-   * @param reference The reference number for the Item
+   * Attempts to locate a Item based on the given SKU (Stock-keeping unit)
+   * @param sku The sku number for the Item
    * @return An Item or null if not found
    */
   @Transactional(propagation = Propagation.REQUIRED)
-  public Item getItemFromReference(String reference) {
-    return itemDao.getItemByReference(reference);
+  public Item getBySKU(String sku) {
+    return itemDao.getItemBySKU(sku);
   }
 
   /**
-   * Attempts to locate a Item based on the given reference
+   * Attempts to locate a Item based on the given sku
    * @return An Item or null if not found
    */
   @Transactional(propagation = Propagation.REQUIRED)
   public List<Item> getAllItems() {
     return itemDao.getAllItems();
+  }
+
+  /**
+   *
+   * @param id The primary key of the item
+   * @return The matching Item (if it exists)
+   */
+  @Transactional(propagation = Propagation.REQUIRED)
+  public Item getById(Long id) {
+    return itemDao.getItemById(id);
   }
 
   /**
@@ -55,4 +65,5 @@ public class CatalogService {
   public void setItemDao(ItemDao itemDao) {
     this.itemDao = itemDao;
   }
+
 }
