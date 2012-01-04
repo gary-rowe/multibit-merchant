@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import org.multibit.mbm.catalog.dto.Item;
 import org.multibit.mbm.catalog.dto.ItemField;
 import org.multibit.mbm.catalog.dto.ItemFieldDetail;
-import org.multibit.mbm.i18n.LocalisedText;
+import org.multibit.mbm.i18n.dto.LocalisedText;
 
 import java.util.List;
 
@@ -24,6 +24,7 @@ public class ItemBuilder {
 
   private boolean isBuilt = false;
   private String sku = null;
+  private String gtin = null;
 
   /**
    * @return A new instance of the builder
@@ -48,6 +49,8 @@ public class ItemBuilder {
       throw new IllegalStateException("SKU is a mandatory field");
     }
     item.setSKU(sku);
+
+    item.setGTIN(gtin);
 
     for (PrimaryFieldDetail primaryFieldDetail : primaryFieldDetails) {
       primaryFieldDetail.applyTo(item);
@@ -100,10 +103,16 @@ public class ItemBuilder {
     return this;
   }
 
-  public ItemBuilder setSku(String sku) {
+  public ItemBuilder setSKU(String sku) {
     this.sku = sku;
     return this;
   }
+
+  public ItemBuilder setGTIN(String gtin) {
+    this.gtin = gtin;
+    return this;
+  }
+
 
   /**
    * Storage of parameters until ready for application

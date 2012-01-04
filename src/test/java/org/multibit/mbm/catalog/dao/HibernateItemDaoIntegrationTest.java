@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.multibit.mbm.catalog.dto.Item;
 import org.multibit.mbm.catalog.dto.ItemField;
 import org.multibit.mbm.catalog.dto.ItemFieldDetail;
-import org.multibit.mbm.i18n.LocalisedText;
+import org.multibit.mbm.i18n.dto.LocalisedText;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 
@@ -15,7 +15,6 @@ import static org.junit.Assert.assertThat;
 
 /**
  * Integration test to verify the Hibernate annotations of the DTOs against a generated schema
- * TODO Add in the ItemBuilder
  */
 @ContextConfiguration(locations = {"/spring/test-mbm-hibernate-dao.xml"})
 public class HibernateItemDaoIntegrationTest extends AbstractTransactionalJUnit4SpringContextTests {
@@ -27,8 +26,11 @@ public class HibernateItemDaoIntegrationTest extends AbstractTransactionalJUnit4
   public void testPersistAndFindByReference() {
 
     String sku="abc123";
+    String gtin="def456";
+
     Item expected = new Item();
     expected.setSKU(sku);
+    expected.setGTIN(gtin);
 
     // Persist with insert
     int originalItemRows = countRowsInTable("items");
@@ -84,7 +86,7 @@ public class HibernateItemDaoIntegrationTest extends AbstractTransactionalJUnit4
     // Force a flush
     testObject.flush();
 
-    // Query against the "reference"
+    // Query against the SKU
     Item actual=testObject.getItemBySKU("abc123");
 
     // Session flush: Expect no change to items, contact_method_details, insert into contact_method_secondary_details
@@ -96,6 +98,7 @@ public class HibernateItemDaoIntegrationTest extends AbstractTransactionalJUnit4
     assertThat("Expected data in item_field_secondary_details", updatedItemFieldDetailSecondaryRows, equalTo(originalItemFieldDetailSecondaryRows+1));
 
     assertThat(actual,equalTo(expected));
+    assertThat(actual.getGTIN(),equalTo("def456"));
 
 
   }

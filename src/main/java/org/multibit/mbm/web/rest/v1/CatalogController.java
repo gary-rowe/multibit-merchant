@@ -42,7 +42,7 @@ public class CatalogController {
       // Broad search of front page items
       items = catalogService.getAllItems();
     } else {
-      // Assume reference search at present
+      // Assume SKU search at present
       Item item = catalogService.getBySKU(query);
       items.add(item);
     }

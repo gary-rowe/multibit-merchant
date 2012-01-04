@@ -24,16 +24,16 @@
 
   <!-- TODO Create a link list search widget -->
   <%--<div class="ui-widget">--%>
-    <%--<p class="ui-widget-header">Random</p>--%>
+  <%--<p class="ui-widget-header">Random</p>--%>
 
-    <%--<div class="ui-widget-content">--%>
-      <%--<div id="content">--%>
-        <%--<ul id="twitterMessages">--%>
-          <%--<li id="twitterPlaceHolder">Searching...</li>--%>
-        <%--</ul>--%>
-      <%--</div>--%>
+  <%--<div class="ui-widget-content">--%>
+  <%--<div id="content">--%>
+  <%--<ul id="twitterMessages">--%>
+  <%--<li id="twitterPlaceHolder">Searching...</li>--%>
+  <%--</ul>--%>
+  <%--</div>--%>
 
-    <%--</div>--%>
+  <%--</div>--%>
   <%--</div>--%>
 
   <!-- TODO Create a link list search widget -->
@@ -89,11 +89,9 @@
   <!-- TODO Create a shopping cart widget -->
   <div id="cart" class="ui-widget">
     <p class="ui-widget-header">Your Cart</p>
-    <div id="cart-contents"></div>
-    <div id="cart-subtotal">
-      <p>Subtotal</p>
-      <button id="confirm-order" onclick="handleConfirmOrder(this)"><fmt:message key="catalog.page.confirm-order"/></button>
-    </div>
+
+    <div id="cart-items"></div>
+    <div id="cart-total"></div>
   </div>
 
 </div>

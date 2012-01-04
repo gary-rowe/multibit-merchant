@@ -14,6 +14,16 @@ public class HibernateItemDao implements ItemDao {
   private HibernateTemplate hibernateTemplate = null;
 
   @Override
+  public Item getItemById(Long id) throws ItemNotFoundException {
+    List items = hibernateTemplate.find("from Item i where i.id = ?", id);
+    if (items==null || items.isEmpty()) {
+      // No matching item
+      return null;
+    }
+    return (Item) items.get(0);
+  }
+
+  @Override
   public Item getItemBySKU(String sku) throws ItemNotFoundException {
     List items = hibernateTemplate.find("from Item i where i.sku = ?", sku);
     if (items==null || items.isEmpty()) {
@@ -23,15 +33,17 @@ public class HibernateItemDao implements ItemDao {
     return (Item) items.get(0);
   }
 
+
   @Override
-  public Item getItemById(Long id) throws ItemNotFoundException {
-    List items = hibernateTemplate.find("from Item i where i.id = ?", id);
+  public Item getItemByGTIN(String gtin) throws ItemNotFoundException {
+    List items = hibernateTemplate.find("from Item i where i.gtin = ?", gtin);
     if (items==null || items.isEmpty()) {
       // No matching item
       return null;
     }
     return (Item) items.get(0);
   }
+
 
   // TODO Remove support for this
   @Override
