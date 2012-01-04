@@ -43,6 +43,8 @@
     <p>Get it by <strong>\${offeredDeliveryDate}</strong> if you order it today.</p>
 
     <p><strong>\${btcPrice} BTC</strong> (\${localSymbol} \${localPrice})</p>
+
+    <button onclick='handleAddToCartClick("/mbm/api/v1/cart/item/\${id}")'>Add to cart</button>
   </div>
 </script>
 
@@ -56,66 +58,43 @@
 
     <p><strong>\${btcPrice} BTC</strong> (\${localSymbol} \${localPrice})</p>
 
-    <button id='\${id}' onclick='handleAddToBasketClick("/mbm/api/vi/cart/\${id}")'>Add to cart</button>
+    <button onclick='handleAddToCartClick("/mbm/api/v1/cart/item/\${id}")'>Add to cart</button>
 
   </div>
 </script>
 
-<script id="cartDetailTemplate" type="text/x-jquery-tmpl">
-  <div class='mbm-item ui-widget-content ui-corner-all'>
-    <a href='#' onclick='handleItemDetailClick("/mbm/api/v1/catalog/item/\${id}/\${slug}")' class='mbm-item-link'>\${title}</a>
-    <a href="#" onclick='handleItemDetailClick("/mbm/api/v1/catalog/item/\${id}/\${slug}")'><img
-      class='mbm-item-thumbnail float-right' src='\${imgThumbnailUri}'/></a>
+<script id="cartTotalTemplate" type="text/x-jquery-tmpl">
+  <p><span class="align-right"><strong>Total: \${btcTotal} BTC (\${localSymbol} \${localTotal})</strong></span></p>
 
-    <p>x 1 @ \${btcPrice} BTC (\${localSymbol} \${localPrice})</p>
+  <p>Total includes tax and postage</p>
+  <button id="confirm-order" onclick="handleConfirmOrder(this)"><fmt:message
+    key="catalog.page.confirm-order"/></button>
+</script>
 
-    <p><strong>\${btcPrice} BTC</strong> (\${localSymbol} \${localPrice})</p>
+<script id="cartItemTemplate" type="text/x-jquery-tmpl">
+  <div id='cart-item=\${id}' class='mbm-item ui-widget-content ui-corner-all'>
+    <p><a href='#' onclick='handleItemDetailClick("/mbm/api/v1/catalog/item/\${id}/\${slug}")' class='mbm-item-link'>\${title}</a>
+    </p>
 
-    <p><input type="hidden" name="action" value="add_to_basket"></p>
-
-    <p><input type="hidden" name="addquant" value="1">
-      <input type="hidden" name="item" value="sku10364">
-      <input type="hidden" id="m_dfd0e8f6f22250c2bdf14a0125977fdb_selected_item" name="selected_item" value="10364">
-				<span class="skuname">
-White				</span></p>
-
-    <table width="100%" class="no_cell_padding">
-      <tbody>
-      <tr>
-        <td class="price">
-          £149.99
-        </td>
-        <td>
-          <img src="http://media.firebox.com/i/spinner.gif" style="display: none;" class="buy_button_spinner"
-               id="m_e0dce987ce9a25058e072168f85d3efb_spinner" width="16" height="16" alt="spin, spin">
-        </td>
-        <td rowspan="1">
-          <div style="float: right; text-align: center;">
-            <input type="submit" id="butt_f4568302afd5fd1b4a65ee0fbda9f099" name="butt_f4568302afd5fd1b4a65ee0fbda9f099"
-                   onmouseover="this.className='freshbutton_base freshbutton_green_over';"
-                   onmousedown="this.className='freshbutton_base freshbutton_green_down';"
-                   onmouseup="this.className='freshbutton_base freshbutton_green_over';"
-                   onmouseout="this.className='freshbutton_base freshbutton_green_up';"
-                   class="freshbutton_base freshbutton_green_up" value="Buy"
-                   onclick="return addbuttons_ajax_submission('submit_basket_form(\'m_dfd0e8f6f22250c2bdf14a0125977fdb\', \'m_e0dce987ce9a25058e072168f85d3efb_spinner\' )')"
-                   style=""></div>
-        </td>
-      </tr>
-      <tr>
-        <td colspan="2" valign="top">
-          <div class="price" style="font-size: 1.2em; position: relative; top: -0.25em">with free delivery</div>
-        </td>
-        <td class="add_to_wishlist" style="white-space: nowrap" valign="top">
-          <a href="http://www.firebox.com/product/3731/Skatecycle?wl_add"
-             onclick="return add_to_wishlist('m_dfd0e8f6f22250c2bdf14a0125977fdb', 'm_e0dce987ce9a25058e072168f85d3efb_spinner', '');">Add
-            to wishlist</a></td>
-      </tr>
-      </tbody>
-    </table>
+    <p><span class="align-right">\${quantity} @ \${btcPrice} BTC</span><span class='ui-icon-closethick'
+                                                    onclick='handleRemoveItem("\${id}")'></span></p>
   </div>
 </script>
 
 <script type="text/javascript">
+
+  function handleAddToCartClick(uri) {
+    console.log("Adding item to cart");
+    $.post(uri,
+      function (data) {
+        var cartItems = data.cartItems;
+        $('#cart-contents').html("");
+        for (var i = 0; i < cartItems.length; i++) {
+          $('#cart-items').append($("#cartItemTemplate").tmpl(cartItems[i]));
+        }
+        $('#cart-total').html($("#cartTotalTemplate").tmpl(data));
+      });
+  }
 
   /*
    * This is the primary callback for HTTP responses
@@ -193,16 +172,6 @@ White				</span></p>
       });
   }
 
-  function handleAddToCartClick(event) {
-    console.log("Adding item to cart");
-    $.post(uri,
-      function (data) {
-        var results = data.results;
-        for (var i = 0; i < results.length; i++) {
-          $('#cart-detail').append($("#cartDetailTemplate").tmpl(results[i]));
-        }
-      });
-  }
 
   function handleConfirmOrder(event) {
     window.location = "<c:url value="/payment.html"/>";

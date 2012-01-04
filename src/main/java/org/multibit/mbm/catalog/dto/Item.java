@@ -1,7 +1,7 @@
 package org.multibit.mbm.catalog.dto;
 
 import com.google.common.collect.Maps;
-import org.multibit.mbm.i18n.LocalisedText;
+import org.multibit.mbm.i18n.dto.LocalisedText;
 import org.multibit.mbm.util.ObjectUtils;
 
 import javax.persistence.*;
@@ -29,6 +29,9 @@ public class Item implements Serializable {
   @Column(name = "sku", nullable = false)
   private String sku = null;
 
+  @Column(name = "gtin", nullable = true)
+  private String gtin = null;
+
   /**
    * This collection is effectively the fields for the Item so must be eager
    */
@@ -43,6 +46,7 @@ public class Item implements Serializable {
   }
 
   /**
+   * Required
    * @return The internal unique ID
    */
   public Long getId() {
@@ -54,6 +58,7 @@ public class Item implements Serializable {
   }
 
   /**
+   * Required
    * @return The stock-keeping unit reference (see http://en.wikipedia.org/wiki/Stock-keeping_unit)
    */
   public String getSKU() {
@@ -62,6 +67,18 @@ public class Item implements Serializable {
 
   public void setSKU(String sku) {
     this.sku = sku;
+  }
+
+  /**
+   * Optional
+   * @return The global trade item number (see http://en.wikipedia.org/wiki/Global_Trade_Item_Number)
+   */
+  public String getGTIN() {
+    return gtin;
+  }
+
+  public void setGTIN(String gtin) {
+    this.gtin = gtin;
   }
 
   /**

@@ -26,13 +26,23 @@ public class CatalogService {
   private ItemDao itemDao;
 
   /**
-   * Attempts to locate a Item based on the given SKU (Stock-keeping unit)
-   * @param sku The sku number for the Item
+   * Attempts to locate an Item based on the given SKU (Stock-keeping unit)
+   * @param sku The SKU for the Item
    * @return An Item or null if not found
    */
   @Transactional(propagation = Propagation.REQUIRED)
   public Item getBySKU(String sku) {
     return itemDao.getItemBySKU(sku);
+  }
+
+  /**
+   * Attempts to locate an Item based on the given GTIN (Global Trade Identification Number)
+   * @param gtin The GTIN for the Item
+   * @return An Item or null if not found
+   */
+  @Transactional(propagation = Propagation.REQUIRED)
+  public Item getByGTIN(String gtin) {
+    return itemDao.getItemByGTIN(gtin);
   }
 
   /**

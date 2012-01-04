@@ -7,14 +7,6 @@ import java.util.List;
 public interface ItemDao {
 
   /**
-   * Attempt to locate the item using it's reference
-   * @param reference The item reference
-   * @return A matching Item
-   * @throws org.multibit.mbm.catalog.dao.ItemNotFoundException If something goes wrong
-   */
-  Item getItemBySKU(String reference) throws ItemNotFoundException;
-
-  /**
    * Attempt to locate the item using it's ID
    *
    * @param id The item ID
@@ -22,6 +14,22 @@ public interface ItemDao {
    * @throws org.multibit.mbm.catalog.dao.ItemNotFoundException If something goes wrong
    */
   Item getItemById(Long id) throws ItemNotFoundException;
+
+  /**
+   * Attempt to locate the item using it's SKU
+   * @param sku The item SKU
+   * @return A matching Item
+   * @throws org.multibit.mbm.catalog.dao.ItemNotFoundException If something goes wrong
+   */
+  Item getItemBySKU(String sku) throws ItemNotFoundException;
+
+  /**
+   * Attempt to locate the item using it's sku
+   * @param gtin The item GTIN
+   * @return A matching Item
+   * @throws org.multibit.mbm.catalog.dao.ItemNotFoundException If something goes wrong
+   */
+  Item getItemByGTIN(String gtin);
 
   /**
    * TODO Remove this once the main search solution is in place since it does not scale

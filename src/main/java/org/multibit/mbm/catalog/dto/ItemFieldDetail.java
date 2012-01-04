@@ -1,7 +1,7 @@
 package org.multibit.mbm.catalog.dto;
 
 import com.google.common.collect.Sets;
-import org.multibit.mbm.i18n.LocalisedText;
+import org.multibit.mbm.i18n.dto.LocalisedText;
 
 import javax.persistence.*;
 import java.util.Set;

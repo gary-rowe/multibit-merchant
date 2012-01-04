@@ -173,8 +173,8 @@
 <%@include file="/WEB-INF/jspf/public/cdn-scripts.jspf" %>
 <%@include file="/WEB-INF/jspf/public/mbm-scripts.jspf" %>
 
-<script type="text/javascript" src="<c:url value="/js/mbm/demo-time.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/js/mbm/demo-bitcoin.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/js/mbm/demo-catalog.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/mbm/demo/demo-time.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/mbm/demo/demo-bitcoin.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/mbm/demo/demo-catalog.js"/>"></script>
 </body>
 </html>
