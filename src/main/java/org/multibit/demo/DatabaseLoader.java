@@ -4,9 +4,9 @@ import org.multibit.mbm.catalog.builder.ItemBuilder;
 import org.multibit.mbm.catalog.dao.ItemDao;
 import org.multibit.mbm.catalog.dto.Item;
 import org.multibit.mbm.catalog.dto.ItemField;
+import org.multibit.mbm.customer.builder.CustomerBuilder;
 import org.multibit.mbm.customer.dao.CustomerDao;
 import org.multibit.mbm.customer.dto.ContactMethod;
-import org.multibit.mbm.customer.dto.ContactMethodDetail;
 import org.multibit.mbm.customer.dto.Customer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +16,8 @@ import javax.annotation.Resource;
 
 /**
  *  <p>Loads the database to provide default standard data to the application:</p>
+ *
+ * TODO Move this into the test source tree after the database has been stabilised
  *
  * @since 1.0.0
  *         
@@ -56,7 +58,7 @@ public class DatabaseLoader {
       .addPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI,"en","/mbm/images/catalog/items/2/thumbnail2.png")
       .build();
 
-    itemDao.persist(book1);
+    itemDao.saveOrUpdate(book1);
 
     Item book2 = ItemBuilder.getInstance()
       .setSKU("0140296034")
@@ -65,7 +67,7 @@ public class DatabaseLoader {
       .addPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI,"en","/mbm/images/catalog/items/1/thumbnail1.png")
       .build();
 
-    itemDao.persist(book2);
+    itemDao.saveOrUpdate(book2);
 
     Item book3 = ItemBuilder.getInstance()
       .setSKU("186126173X")
@@ -74,7 +76,7 @@ public class DatabaseLoader {
       .addPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI,"en","/mbm/images/catalog/items/3/thumbnail3.png")
       .build();
 
-    itemDao.persist(book3);
+    itemDao.saveOrUpdate(book3);
 
     Item book4 = ItemBuilder.getInstance()
       .setSKU("0575088893")
@@ -83,7 +85,7 @@ public class DatabaseLoader {
       .addPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI,"en","/mbm/images/catalog/items/4/thumbnail4.png")
       .build();
 
-    itemDao.persist(book4);
+    itemDao.saveOrUpdate(book4);
 
     Item book5 = ItemBuilder.getInstance()
       .setSKU("0316184136")
@@ -92,18 +94,24 @@ public class DatabaseLoader {
       .addPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI,"en","/mbm/images/catalog/items/5/thumbnail5.png")
       .build();
 
-    itemDao.persist(book5);
+    itemDao.saveOrUpdate(book5);
 
   }
 
   private void buildCustomerAdmin() {
-    Customer admin = new Customer();
-    admin.setOpenId("abc123");
-    ContactMethodDetail adminCmd = new ContactMethodDetail();
-    adminCmd.setPrimaryDetail("admin@example.org");
-    admin.setContactMethodDetail(ContactMethod.EMAIL, adminCmd);
+    Customer admin = CustomerBuilder.getInstance()
+      .setUUID("abc123")
+      .addContactMethod(ContactMethod.EMAIL,"admin@example.org")
+      .build();
 
-    customerDao.persist(admin);
+    customerDao.saveOrUpdate(admin);
   }
 
+  public void setCustomerDao(CustomerDao customerDao) {
+    this.customerDao = customerDao;
+  }
+
+  public void setItemDao(ItemDao itemDao) {
+    this.itemDao = itemDao;
+  }
 }

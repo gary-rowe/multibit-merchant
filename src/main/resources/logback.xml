@@ -49,7 +49,8 @@
   <!--<logger name="org.springframework.transaction" level="DEBUG" />-->
   <!--<logger name="org.springframework.beans.factory.config" level="DEBUG" />-->
   <!--<logger name="httpclient.wire.header" level="DEBUG" />-->
-  <!--<logger name="org.springframework.web" level="DEBUG" />-->
+  <logger name="org.springframework.web" level="DEBUG" />
+  <logger name="org.springframework.security" level="DEBUG" />
   <!--<logger name="oejs" level="DEBUG" />-->
 
   <!-- Define logging for organisation applications only -->

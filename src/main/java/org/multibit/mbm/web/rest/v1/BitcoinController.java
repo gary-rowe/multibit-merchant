@@ -79,7 +79,7 @@ public class BitcoinController {
   @RequestMapping(value = "/new-address", method = RequestMethod.POST)
   @ResponseBody
   public String newAddress(Principal principal) {
-    Customer customer = customerService.getCustomerFromPrincipal(principal);
+    Customer customer = customerService.getCustomerByPrincipal(principal);
     if (customer == null) {
       // TODO Should this be an authorisation failure?
       return null;

@@ -1,5 +1,6 @@
 package org.multibit.mbm.web.rest.v1.cart;
 
+import org.multibit.mbm.cart.dto.CartItem;
 import org.multibit.mbm.catalog.dto.Item;
 import org.multibit.mbm.catalog.dto.ItemField;
 import org.multibit.mbm.util.DateUtils;
@@ -13,28 +14,31 @@ import org.multibit.mbm.util.DateUtils;
  * @since 1.0.0
  *         
  */
-public class CartItem {
+public class CartItemSummary {
 
   private final String id;
   private final String title;
   private final String summary;
   private final String imgThumbnailUri;
+  private final int quantity;
   private String slug;
   private String offeredDeliveryDate= DateUtils.formatFriendlyDate(DateUtils.nowUtc().plusDays(2));
   private String btcPrice="3.6";
   private String localPrice="1.4";
   private String localSymbol="&euro;";
-  private String quantity="1";
+  private String uom="each";
 
   /**
-   * TODO Widen the mandatory fields to include pricing, stock and delivery
-   * @param item The Item
+   * TODO Widen the mandatory fields to include pricing, stock status and delivery
+   * @param cartItem The Item
    */
-  public CartItem(Item item) {
+  public CartItemSummary(CartItem cartItem) {
+    Item item = cartItem.getItem();
     this.id = item.getId().toString();
     this.title = item.getItemFieldContent(ItemField.TITLE);
     this.summary = item.getItemFieldContent(ItemField.SUMMARY);
     this.imgThumbnailUri = item.getItemFieldContent(ItemField.IMAGE_THUMBNAIL_URI);
+    this.quantity = cartItem.getQuantity();
     this.slug = title.replaceAll(" ","-").toLowerCase();
   }
 
@@ -74,11 +78,15 @@ public class CartItem {
     return localSymbol;
   }
 
-  public String getQuantity() {
+  public int getQuantity() {
     return quantity;
   }
 
-  public void setQuantity(String quantity) {
-    this.quantity = quantity;
+  public String getUom() {
+    return uom;
+  }
+
+  public void setUom(String uom) {
+    this.uom = uom;
   }
 }

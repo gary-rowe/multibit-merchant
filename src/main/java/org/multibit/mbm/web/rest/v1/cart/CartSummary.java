@@ -1,6 +1,8 @@
 package org.multibit.mbm.web.rest.v1.cart;
 
 import com.google.common.collect.Lists;
+import org.multibit.mbm.cart.dto.Cart;
+import org.multibit.mbm.cart.dto.CartItem;
 
 import java.util.List;
 
@@ -15,17 +17,24 @@ import java.util.List;
  */
 public class CartSummary {
 
-  private List<CartItem> cartItems = Lists.newArrayList();
+  private List<CartItemSummary> cartItemSummaries = Lists.newArrayList();
   private String btcTotal="3.6";
   private String localTotal="1.4";
   private String localSymbol="&euro;";
 
-  public List<CartItem> getCartItems() {
-    return cartItems;
+  public CartSummary(Cart cart) {
+    // Populate the items
+    for (CartItem cartItem: cart.getCartItems()) {
+      cartItemSummaries.add(new CartItemSummary(cartItem));
+    }
   }
 
-  public void setCartItems(List<CartItem> cartItems) {
-    this.cartItems = cartItems;
+  public List<CartItemSummary> getCartItemSummaries() {
+    return cartItemSummaries;
+  }
+
+  public void setCartItemSummaries(List<CartItemSummary> cartItemSummaries) {
+    this.cartItemSummaries = cartItemSummaries;
   }
 
   public String getBtcTotal() {

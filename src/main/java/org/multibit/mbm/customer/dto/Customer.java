@@ -1,6 +1,7 @@
 package org.multibit.mbm.customer.dto;
 
 import com.google.common.collect.Maps;
+import org.multibit.mbm.cart.dto.Cart;
 import org.multibit.mbm.util.ObjectUtils;
 
 import javax.persistence.*;
@@ -27,16 +28,23 @@ public class Customer implements Serializable {
   @Column(name = "id", unique = true, nullable = false)
   private Long id = null;
 
-  @Column(name = "openId", nullable = false)
+  @Column(name = "open_id", nullable = true)
   private String openId = null;
 
-  @OneToMany(cascade = CascadeType.ALL)
+  @Column(name = "uuid", nullable = false)
+  private String uuid= null;
+
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @MapKeyEnumerated()
   private Map<ContactMethod, ContactMethodDetail> contactMethodMap = Maps.newLinkedHashMap();
 
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name="cart_fk")
+  private Cart cart;
+
   /*
-   * Default constructor required for Hibernate
-   */
+  * Default constructor required for Hibernate
+  */
   public Customer() {
   }
 
@@ -57,6 +65,17 @@ public class Customer implements Serializable {
   }
 
   /**
+   * @return The shopping Cart associated with this Customer (if present)
+   */
+  public Cart getCart() {
+    return cart;
+  }
+
+  public void setCart(Cart cart) {
+    this.cart = cart;
+  }
+
+  /**
    * @return The {@link ContactMethod} map
    */
   public Map<ContactMethod, ContactMethodDetail> getContactMethodMap() {
@@ -67,6 +86,16 @@ public class Customer implements Serializable {
     this.contactMethodMap = contactMethodMap;
   }
 
+  /**
+   * @return The UUID associated with this Customer
+   */
+  public String getUUID() {
+    return uuid;
+  }
+
+  public void setUUID(String uuid) {
+    this.uuid = uuid;
+  }
   /**
    * @param contactMethod The contact method (e.g. "EMAIL", "VOIP")
    * @return The {@link ContactMethodDetail} providing the information, or null if none available

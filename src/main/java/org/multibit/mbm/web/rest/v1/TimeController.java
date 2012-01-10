@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping(value = "/v1/time")
+@RequestMapping(value = "/v1")
 public class TimeController {
 
   /**
@@ -15,7 +15,7 @@ public class TimeController {
    *
    * @return A default ISO 8601 time string
    */
-  @RequestMapping(value = "/now", method = RequestMethod.GET)
+  @RequestMapping(value = "/time/now", method = RequestMethod.GET)
   @ResponseBody
   public String time() {
     return DateUtils.nowUtc().toString();

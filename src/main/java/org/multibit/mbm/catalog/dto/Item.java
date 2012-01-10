@@ -1,12 +1,16 @@
 package org.multibit.mbm.catalog.dto;
 
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
+import org.hibernate.annotations.Cascade;
+import org.multibit.mbm.cart.dto.CartItem;
 import org.multibit.mbm.i18n.dto.LocalisedText;
 import org.multibit.mbm.util.ObjectUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * <p>DTO to provide the following to the application</p>
@@ -32,6 +36,10 @@ public class Item implements Serializable {
   @Column(name = "gtin", nullable = true)
   private String gtin = null;
 
+  @OneToMany(targetEntity=CartItem.class, cascade = {CascadeType.ALL}, mappedBy = "primaryKey.item")
+  @Cascade({org.hibernate.annotations.CascadeType.DELETE_ORPHAN})
+  private Set<CartItem> cartItems = Sets.newLinkedHashSet();
+  
   /**
    * This collection is effectively the fields for the Item so must be eager
    */
@@ -39,6 +47,7 @@ public class Item implements Serializable {
   @MapKeyEnumerated()
   private Map<ItemField, ItemFieldDetail> itemFieldMap = Maps.newLinkedHashMap();
 
+  
   /*
    * Default constructor required for Hibernate
    */
@@ -79,6 +88,20 @@ public class Item implements Serializable {
 
   public void setGTIN(String gtin) {
     this.gtin = gtin;
+  }
+
+  /**
+   * The CartItem instances that bind Cart and Item<br>
+   * Cascade occurs on the owner side
+   *
+   * @return Returns cartItems
+   */
+  public Set<CartItem> getCartItems() {
+    return cartItems;
+  }
+
+  public void setCartItems(Set<CartItem> cartItems) {
+    this.cartItems = cartItems;
   }
 
   /**
@@ -192,7 +215,8 @@ public class Item implements Serializable {
 
     return ObjectUtils.isEqual(
       id, other.id,
-      sku, other.sku
+      sku, other.sku,
+      gtin, other.gtin
     );
   }
 
@@ -203,7 +227,7 @@ public class Item implements Serializable {
 
   @Override
   public String toString() {
-    return String.format("Item[id=%s, SKU='%s']]", id, sku);
+    return String.format("Item[id=%s, SKU='%s', GTIN='%s']]", id, sku, gtin);
   }
 
 }

@@ -76,7 +76,7 @@
                 <artifactItem>
                   <groupId>com.google</groupId>
                   <artifactId>bitcoinj</artifactId>
-                  <version>0.3-SNAPSHOT</version>
+                  <version>${bitcoinj.version}</version>
                   <type>jar</type>
                   <overWrite>false</overWrite>
                   <outputDirectory>${basedir}/target/bitcoinj</outputDirectory>
@@ -366,7 +366,7 @@
     <dependency>
       <groupId>com.google</groupId>
       <artifactId>bitcoinj</artifactId>
-      <version>0.3</version>
+      <version>${bitcoinj.version}</version>
     </dependency>
     <dependency>
       <groupId>org.bouncycastle</groupId>
@@ -407,6 +407,7 @@
     <slf4j.version>1.6.1</slf4j.version>
     <!-- Keep with Jetty 7.5.4 to avoid startup delays -->
     <jetty.version>7.5.4.v20111024</jetty.version>
+    <bitcoinj.version>0.3</bitcoinj.version>
   </properties>
 
 </project>

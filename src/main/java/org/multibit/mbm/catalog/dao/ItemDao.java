@@ -10,26 +10,24 @@ public interface ItemDao {
    * Attempt to locate the item using it's ID
    *
    * @param id The item ID
-   * @return A matching Item
-   * @throws org.multibit.mbm.catalog.dao.ItemNotFoundException If something goes wrong
+   * @return A matching Item (never null)
+   * @throws org.multibit.mbm.catalog.dao.ItemNotFoundException If the item is not matched
    */
-  Item getItemById(Long id) throws ItemNotFoundException;
+  Item getById(Long id) throws ItemNotFoundException;
 
   /**
    * Attempt to locate the item using it's SKU
    * @param sku The item SKU
    * @return A matching Item
-   * @throws org.multibit.mbm.catalog.dao.ItemNotFoundException If something goes wrong
    */
-  Item getItemBySKU(String sku) throws ItemNotFoundException;
+  Item getBySKU(String sku);
 
   /**
    * Attempt to locate the item using it's sku
    * @param gtin The item GTIN
    * @return A matching Item
-   * @throws org.multibit.mbm.catalog.dao.ItemNotFoundException If something goes wrong
    */
-  Item getItemByGTIN(String gtin);
+  Item getByGTIN(String gtin);
 
   /**
    * TODO Remove this once the main search solution is in place since it does not scale
@@ -42,7 +40,7 @@ public interface ItemDao {
    * @param item A Item (either new or updated)
    * @return The persisted Item
    */
-  Item persist(Item item);
+  Item saveOrUpdate(Item item);
 
   /**
    * <p>Force an immediate in-transaction flush</p>

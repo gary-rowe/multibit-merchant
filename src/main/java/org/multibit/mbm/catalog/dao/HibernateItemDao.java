@@ -14,17 +14,17 @@ public class HibernateItemDao implements ItemDao {
   private HibernateTemplate hibernateTemplate = null;
 
   @Override
-  public Item getItemById(Long id) throws ItemNotFoundException {
+  public Item getById(Long id) throws ItemNotFoundException {
     List items = hibernateTemplate.find("from Item i where i.id = ?", id);
     if (items==null || items.isEmpty()) {
-      // No matching item
-      return null;
+      // Failing to find using a known primary key is exceptional
+      throw new ItemNotFoundException();
     }
     return (Item) items.get(0);
   }
 
   @Override
-  public Item getItemBySKU(String sku) throws ItemNotFoundException {
+  public Item getBySKU(String sku) {
     List items = hibernateTemplate.find("from Item i where i.sku = ?", sku);
     if (items==null || items.isEmpty()) {
       // No matching item
@@ -35,7 +35,7 @@ public class HibernateItemDao implements ItemDao {
 
 
   @Override
-  public Item getItemByGTIN(String gtin) throws ItemNotFoundException {
+  public Item getByGTIN(String gtin) {
     List items = hibernateTemplate.find("from Item i where i.gtin = ?", gtin);
     if (items==null || items.isEmpty()) {
       // No matching item
@@ -52,11 +52,8 @@ public class HibernateItemDao implements ItemDao {
   }
 
   @Override
-  public Item persist(Item item) {
-    if (item.getId() != null) {
-      item=hibernateTemplate.merge(item);
-    }
-    hibernateTemplate.persist(item);
+  public Item saveOrUpdate(Item item) {
+    hibernateTemplate.saveOrUpdate(item);
     return item;
   }
 
