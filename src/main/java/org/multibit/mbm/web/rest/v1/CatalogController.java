@@ -66,10 +66,9 @@ public class CatalogController {
    * Consider caching strategies (e.g. DAO against ItemFieldDetail with word index)
    * Consider a Lucene or Hibernate Search implementation
    *
-   *
-   * @param id The id to locate
-   *
+   * @param id   The id to locate
    * @param slug The slug (ignored but helps with SEO)
+   *
    * @return A batch of matching results
    */
   @RequestMapping(value = "/catalog/item/{id}/{slug}", method = RequestMethod.GET)
@@ -78,11 +77,6 @@ public class CatalogController {
 
     // Broad search of front page items
     Item item = catalogService.getById(id);
-
-    // TODO Consider error handling in API
-    if (item==null) {
-      return null;
-    }
 
     return new ItemDetail(item);
 

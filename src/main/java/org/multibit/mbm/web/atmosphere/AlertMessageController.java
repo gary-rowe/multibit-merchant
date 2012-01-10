@@ -50,7 +50,7 @@ public class AlertMessageController {
     log.debug("Principal is {}",principal);
 
 
-    Customer customer = customerService.getCustomerFromPrincipal(principal);
+    Customer customer = customerService.getCustomerByPrincipal(principal);
 
     if (customer==null) {
       log.info("Alert subscription without OpenId");

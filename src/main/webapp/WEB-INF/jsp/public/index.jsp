@@ -44,7 +44,7 @@
 
     <p><strong>\${btcPrice} BTC</strong> (\${localSymbol} \${localPrice})</p>
 
-    <button onclick='handleAddToCartClick("/mbm/api/v1/cart/item/\${id}")'>Add to cart</button>
+    <button onclick='handleAddToCartClick("/mbm/api/v1/cart/item/\${id}?token=df575838-94dd-4b6b-8c86-8fc2371bd883")'>Add to cart</button>
   </div>
 </script>
 
@@ -87,8 +87,8 @@
     console.log("Adding item to cart");
     $.post(uri,
       function (data) {
-        var cartItems = data.cartItems;
-        $('#cart-contents').html("");
+        var cartItems = data.cartItemSummaries;
+        $('#cart-items').html("");
         for (var i = 0; i < cartItems.length; i++) {
           $('#cart-items').append($("#cartItemTemplate").tmpl(cartItems[i]));
         }

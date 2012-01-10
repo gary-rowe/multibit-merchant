@@ -32,7 +32,7 @@ public class CatalogService {
    */
   @Transactional(propagation = Propagation.REQUIRED)
   public Item getBySKU(String sku) {
-    return itemDao.getItemBySKU(sku);
+    return itemDao.getBySKU(sku);
   }
 
   /**
@@ -42,7 +42,7 @@ public class CatalogService {
    */
   @Transactional(propagation = Propagation.REQUIRED)
   public Item getByGTIN(String gtin) {
-    return itemDao.getItemByGTIN(gtin);
+    return itemDao.getByGTIN(gtin);
   }
 
   /**
@@ -61,7 +61,7 @@ public class CatalogService {
    */
   @Transactional(propagation = Propagation.REQUIRED)
   public Item getById(Long id) {
-    return itemDao.getItemById(id);
+    return itemDao.getById(id);
   }
 
   /**

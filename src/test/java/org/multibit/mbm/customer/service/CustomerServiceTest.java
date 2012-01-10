@@ -19,12 +19,12 @@ public class CustomerServiceTest {
     // Configure supporting objects
 
     // This context will pull in the CustomerService using the production TransactionManager
-    ApplicationContext context = new ClassPathXmlApplicationContext("/spring/test-mbm-hibernate-dao.xml");
+    ApplicationContext context = new ClassPathXmlApplicationContext("/spring/test-mbm-context.xml");
 
     CustomerService testObject = (CustomerService) context.getBean("customerService");
 
     // Perform the test
-    testObject.haveBeenAuthenticated("abc123");
+    testObject.persistAuthenticatedCustomer("abc123");
 
     CustomerDao customerDao = testObject.getCustomerDao();
     Customer customer = customerDao.getCustomerByOpenId("abc123");

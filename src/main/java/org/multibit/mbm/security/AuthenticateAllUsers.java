@@ -36,7 +36,7 @@ public class AuthenticateAllUsers implements UserDetailsService {
     MDC.put("username", username);
 
     // In OpenId authentication the username is the URL
-    customerService.haveBeenAuthenticated(username);
+    customerService.persistAuthenticatedCustomer(username);
 
     // TODO Read the database to get GrantedAuthority
 

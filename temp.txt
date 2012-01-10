@@ -1,0 +1,47 @@
+Cryptonomicon
+    <div id="item-1-swatch" class="mbm-item-swatch ui-widget-content">
+      <a href="bitcoin:1pmG7fTVaVL1omx1TAgrGG2mNHbL4B1fb?amount=3.25">
+        <img id="1pmG7fTVaVL1omx1TAgrGG2mNHbL4B1fb"
+             width="240"
+             src="<c:url value="/images/catalog/items/2/swatch2b.png" />"
+             draggable="true"
+             ondragstart="dragStartHandler(event)"
+             alt="Drag to MultiBit to buy"
+             title="Drag to MultiBit to buy"/></a>
+      <label for="item-1-quantity">Cryptonomicon Qty: </label><input id="item-1-quantity" type="text" value="1" size="4">
+    </div>
+
+Provence
+        <a href="bitcoin:1HqTK5KXTbSrgJgQ3uuZ8vZfYMtwN65D3W?amount=1.95">
+          <img id="1HqTK5KXTbSrgJgQ3uuZ8vZfYMtwN65D3W"
+               src="<c:url value="/images/catalog/items/1/swatch1.png" />"
+               draggable="true"
+               ondragstart="dragStartHandler(event)"
+               alt="Drag to MultiBit to buy"
+               title="Drag to MultiBit to buy"/></a>
+
+        <a href="bitcoin:12B1Kwu2SXmm3Mw5YL55F1su3oejWzs3hL?amount=5.1">
+          <img id="12B1Kwu2SXmm3Mw5YL55F1su3oejWzs3hL"
+               src="<c:url value="/images/catalog/items/3/swatch3.png" />"
+               class="mbm-item-swatch"
+               draggable="true"
+               ondragstart="dragStartHandler(event)"
+               alt="Drag to MultiBit to buy"
+               title="Drag to MultiBit to buy"/></a>
+
+        <a href="bitcoin:161cjqfgPpSXkjrugx3puraj85Wz5awqzp?amount=4"><img id="161cjqfgPpSXkjrugx3puraj85Wz5awqzp"
+                                                                           src="<c:url value="/images/catalog/items/4/swatch4.png" />"
+                                                                           class="mbm-item-swatch"
+                                                                           draggable="true"
+                                                                           ondragstart="dragStartHandler(event)"
+                                                                           alt="Drag to MultiBit to buy"
+                                                                           title="Drag to MultiBit to buy"/></a>
+
+        <a href="bitcoin:14bVhZispJk7ngVeoptnfAE3WhhCEPP8fE?amount=2.5">
+          <img id="14bVhZispJk7ngVeoptnfAE3WhhCEPP8fE"
+               src="<c:url value="/images/catalog/items/5/swatch5.png" />"
+               class="mbm-item-swatch"
+               draggable="true"
+               ondragstart="dragStartHandler(event)"
+               alt="Drag to MultiBit to buy"
+               title="Drag to MultiBit to buy"/></a>

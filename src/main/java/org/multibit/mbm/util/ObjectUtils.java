@@ -1,12 +1,17 @@
 package org.multibit.mbm.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Provides standard implementations of common method overrides
  */
 public final class ObjectUtils {
+  
+  private static final Logger log = LoggerFactory.getLogger(ObjectUtils.class); 
 
-  static final int HASH_START_VALUE = 11;
-  static final int HASH_MULTIPLIER = 29;
+  private static final int HASH_START_VALUE = 11;
+  private static final int HASH_MULTIPLIER = 29;
 
   private ObjectUtils() {
   }
@@ -26,10 +31,17 @@ public final class ObjectUtils {
     }
 
     for (int i = 0; i < pairwise.length; i = i + 2) {
-      if (!pairwise[i].equals(pairwise[i + 1])) {
+      if (pairwise[i]==null && pairwise[i+1] != null) {
+        return false;
+      } else if (pairwise[i]==null && pairwise[i+1]==null) {
+        continue;
+      } else if (!pairwise[i].equals(pairwise[i + 1])) {
         return false;
       }
     }
+
+    log.debug("Objects are equal");
+    
     return true;
   }
 }

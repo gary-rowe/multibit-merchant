@@ -34,7 +34,7 @@ public class BaseMVCController {
     // TODO Introduce the obvious refactoring for a base class and "customer proxy object" for model
 
     // Retrieve the Customer to form the model (if they are authenticated then they will be present)
-    Customer customer = customerService.getCustomerFromPrincipal(principal);
+    Customer customer = customerService.getCustomerByPrincipal(principal);
     if (customer == null) {
       // No customer so use anonymous
       configureAnonymous(model);

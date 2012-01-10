@@ -10,27 +10,26 @@
   <http>
 
     <!-- Anonymous (public) access -->
-    <intercept-url pattern="/" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
-    <intercept-url pattern="/authenticate.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
-    <intercept-url pattern="/api-demo.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
-    <intercept-url pattern="/contact.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
-    <intercept-url pattern="/delivery.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
-    <intercept-url pattern="/favicon.ico" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
-    <intercept-url pattern="/feedback.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
-    <intercept-url pattern="/help.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
-    <intercept-url pattern="/index.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
-    <intercept-url pattern="/api/v1/alert/*" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+    <intercept-url pattern="/" access="ROLE_ANONYMOUS"/>
+    <intercept-url pattern="/authenticate.html" access="ROLE_ANONYMOUS"/>
+    <intercept-url pattern="/api-demo.html" access="ROLE_ANONYMOUS"/>
+    <intercept-url pattern="/contact.html" access="ROLE_ANONYMOUS"/>
+    <intercept-url pattern="/delivery.html" access="ROLE_ANONYMOUS"/>
+    <intercept-url pattern="/favicon.ico" access="ROLE_ANONYMOUS"/>
+    <intercept-url pattern="/feedback.html" access="ROLE_ANONYMOUS"/>
+    <intercept-url pattern="/help.html" access="ROLE_ANONYMOUS"/>
+    <intercept-url pattern="/index.html" access="ROLE_ANONYMOUS"/>
+    <intercept-url pattern="/api/v1/**" access="ROLE_ANONYMOUS"/>
 
-    <!-- Customer access (payment and account processing) -->
-    <intercept-url pattern="/*" access="ROLE_USER"/>
-    <intercept-url pattern="/css/mbm/payment/*" access="ROLE_USER"/>
-    <intercept-url pattern="/js/mbm/payment/*" access="ROLE_USER"/>
+    <!-- Customer access (cart, payment and account processing) -->
+    <intercept-url pattern="/css/mbm/payment/**" access="ROLE_USER"/>
+    <intercept-url pattern="/js/mbm/payment/**" access="ROLE_USER"/>
     <intercept-url pattern="/payment.html" access="ROLE_USER"/>
 
     <!-- Admin access -->
-    <intercept-url pattern="/css/mbm/admin/*" access="ROLE_ADMIN"/>
-    <intercept-url pattern="/js/mbm/admin/*" access="ROLE_ADMIN"/>
-    <intercept-url pattern="/admin/*" access="ROLE_ADMIN"/>
+    <intercept-url pattern="/css/mbm/admin/**" access="ROLE_ADMIN"/>
+    <intercept-url pattern="/js/mbm/admin/**" access="ROLE_ADMIN"/>
+    <intercept-url pattern="/admin/**" access="ROLE_ADMIN"/>
 
     <!-- Sign in form -->
     <form-login login-page='/authenticate.html'/>

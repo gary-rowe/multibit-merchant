@@ -16,14 +16,14 @@ import static org.junit.Assert.assertThat;
 /**
  * Integration test to verify the Hibernate annotations of the DTOs against a generated schema
  */
-@ContextConfiguration(locations = {"/spring/test-mbm-hibernate-dao.xml"})
+@ContextConfiguration(locations = {"/spring/test-mbm-context.xml"})
 public class HibernateItemDaoIntegrationTest extends AbstractTransactionalJUnit4SpringContextTests {
 
   @Resource(name= "hibernateItemDao")
   ItemDao testObject;
 
   @Test
-  public void testPersistAndFindByReference() {
+  public void testPersistAndFindBySKU() {
 
     String sku="abc123";
     String gtin="def456";
@@ -36,7 +36,7 @@ public class HibernateItemDaoIntegrationTest extends AbstractTransactionalJUnit4
     int originalItemRows = countRowsInTable("items");
     int originalItemFieldDetailRows = countRowsInTable("item_field_details");
     int originalItemFieldDetailSecondaryRows = countRowsInTable("item_field_secondary_details");
-    testObject.persist(expected);
+    testObject.saveOrUpdate(expected);
 
     // Session flush: Expect an insert in items only
     int updatedItemRows = countRowsInTable("items");
@@ -54,7 +54,8 @@ public class HibernateItemDaoIntegrationTest extends AbstractTransactionalJUnit4
     summary.setPrimaryDetail(summary_en);
 
     expected.setItemFieldDetail(ItemField.SUMMARY, summary);
-    expected=testObject.persist(expected);
+    expected=testObject.saveOrUpdate(expected);
+    testObject.flush();
 
     // Session flush: Expect no change to items, insert into item_field_details
     // Note that itemFieldDetail is now a different instance from the persistent one
@@ -73,29 +74,27 @@ public class HibernateItemDaoIntegrationTest extends AbstractTransactionalJUnit4
     summary_fr.setContent("test Summary_fr");
 
     summary.getSecondaryDetails().add(summary_fr);
-    expected=testObject.persist(expected);
+    expected=testObject.saveOrUpdate(expected);
+    testObject.flush();
 
-    // No session flush: Expect no change to items, contact_method_details, contact_method_secondary_details
+    // Session flush: Expect no change to items, item_field_details, insert into item_field_secondary_details
     updatedItemRows = countRowsInTable("items");
     updatedItemFieldDetailRows = countRowsInTable("item_field_details");
     updatedItemFieldDetailSecondaryRows = countRowsInTable("item_field_secondary_details");
     assertThat("Unexpected data in items", updatedItemRows, equalTo(originalItemRows+1));
     assertThat("Unexpected data in item_field_details", updatedItemFieldDetailRows, equalTo(originalItemFieldDetailRows+1));
-    assertThat("Unexpected session flush in item_field_secondary_details", updatedItemFieldDetailSecondaryRows, equalTo(originalItemFieldDetailSecondaryRows));
-
-    // Force a flush
-    testObject.flush();
+    assertThat("Unexpected data in item_field_secondary_details", updatedItemFieldDetailSecondaryRows, equalTo(originalItemFieldDetailSecondaryRows+1));
 
     // Query against the SKU
-    Item actual=testObject.getItemBySKU("abc123");
+    Item actual=testObject.getBySKU("abc123");
 
-    // Session flush: Expect no change to items, contact_method_details, insert into contact_method_secondary_details
+    // Session flush: Expect no change to items, contact_method_details, contact_method_secondary_details
     updatedItemRows = countRowsInTable("items");
     updatedItemFieldDetailRows = countRowsInTable("item_field_details");
     updatedItemFieldDetailSecondaryRows = countRowsInTable("item_field_secondary_details");
     assertThat("Unexpected data in items",updatedItemRows, equalTo(originalItemRows+1));
     assertThat("Unexpected data in item_field_details",updatedItemFieldDetailRows, equalTo(originalItemFieldDetailRows+1));
-    assertThat("Expected data in item_field_secondary_details", updatedItemFieldDetailSecondaryRows, equalTo(originalItemFieldDetailSecondaryRows+1));
+    assertThat("Unexpected data in item_field_secondary_details", updatedItemFieldDetailSecondaryRows, equalTo(originalItemFieldDetailSecondaryRows+1));
 
     assertThat(actual,equalTo(expected));
     assertThat(actual.getGTIN(),equalTo("def456"));

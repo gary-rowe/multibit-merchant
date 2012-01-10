@@ -19,6 +19,7 @@ import java.util.List;
 public class CustomerBuilder {
 
   private String openId;
+  private String uuid;
   private List<AddContactMethod> addContactMethods = Lists.newArrayList();
 
   private boolean isBuilt= false;
@@ -41,6 +42,11 @@ public class CustomerBuilder {
 
     customer.setOpenId(openId);
 
+    if (uuid == null) {
+      throw new IllegalStateException("UUID cannot be null");
+    }
+    customer.setUUID(uuid);
+
     for (AddContactMethod addContactMethod: addContactMethods) {
       addContactMethod.applyTo(customer);
     }
@@ -58,6 +64,16 @@ public class CustomerBuilder {
     validateState();
     this.openId=openId;
     return this;  
+  }
+
+  /**
+   * @param uuid The UUID (e.g. "1234-5678")
+   * @return The builder
+   */
+  public CustomerBuilder setUUID(String uuid) {
+    validateState();
+    this.uuid=uuid;
+    return this;
   }
 
   public CustomerBuilder addContactMethod(ContactMethod contactMethod, String detail) {

@@ -18,6 +18,7 @@
     <property name="packagesToScan">
       <!-- Keep this list in synch with {@link SchemaExporter} -->
       <array>
+        <value>org.multibit.mbm.cart.dto</value>
         <value>org.multibit.mbm.catalog.dto</value>
         <value>org.multibit.mbm.customer.dto</value>
         <value>org.multibit.mbm.i18n.dto</value>
