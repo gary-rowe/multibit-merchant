@@ -4,6 +4,8 @@ import com.google.common.collect.Lists;
 import org.multibit.mbm.cart.dto.Cart;
 import org.multibit.mbm.cart.dto.CartItem;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -18,15 +20,30 @@ import java.util.List;
 public class CartSummary {
 
   private List<CartItemSummary> cartItemSummaries = Lists.newArrayList();
-  private String btcTotal="3.6";
-  private String localTotal="1.4";
-  private String localSymbol="&euro;";
+  private String btcTotal = "";
+  private String localTotal = "";
+  private String localSymbol = "&euro;";
 
   public CartSummary(Cart cart) {
-    // Populate the items
-    for (CartItem cartItem: cart.getCartItems()) {
+    // Populate the items (keeping a running total)
+    double btcSubTotal = 0;
+    double localSubTotal = 0;
+    for (CartItem cartItem : cart.getCartItems()) {
       cartItemSummaries.add(new CartItemSummary(cartItem));
+      btcSubTotal += (cartItem.getQuantity() * 36);
+      localSubTotal += (cartItem.getQuantity() * 14);
     }
+    // Provide a simple totalling system (needs a lot more work!)
+    btcTotal = String.format("%.4f",btcSubTotal/10);
+    localTotal = String.format("%.2f",localSubTotal/10);
+
+    // Provide a simple ordering scheme
+    Collections.sort(cartItemSummaries, new Comparator<CartItemSummary>() {
+      @Override
+      public int compare(CartItemSummary c1, CartItemSummary c2) {
+        return c1.getTitle().compareTo(c2.getTitle());
+      }
+    });
   }
 
   public List<CartItemSummary> getCartItemSummaries() {
