@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="multibit-merchant:war">
-    <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="multibit-merchant-1.0.0-SNAPSHOT.war">
-      <element id="artifact" artifact-name="multibit-merchant:war exploded" />
-    </root>
-  </artifact>
-</component>
