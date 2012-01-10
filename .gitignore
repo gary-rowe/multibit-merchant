@@ -2,8 +2,8 @@
 /log
 /.classpath
 /.project
+/.idea
 /target
 /pom.xml.bak
 /multibit.blockchain
 
-.idea/workspace.xml
