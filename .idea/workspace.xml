@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f0801bc4-ef34-4eb2-af94-15dc5a702d2e" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/multibit-merchant.iml" afterPath="$PROJECT_DIR$/multibit-merchant.iml" />
-    </list>
+    <list default="true" id="f0801bc4-ef34-4eb2-af94-15dc5a702d2e" name="Default" comment="" />
     <ignored path="MultiBitMerchant.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/" />
