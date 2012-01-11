@@ -24,7 +24,7 @@ import java.util.Set;
 @Entity
 @Table(name = "carts")
 public class Cart implements Serializable {
-  
+
   private static final long serialVersionUID = 38947590321234L;
 
   @Transient
@@ -60,46 +60,33 @@ public class Cart implements Serializable {
   }
 
   /**
-   * @param item The Item
-   * @param quantity The quantity to add
+   * @param item     The Item
+   * @param quantity The quantity
    */
   @Transient
-  public void addItemByQuantity(Item item, int quantity) {
-    Assert.notNull(item,"item cannot be null");
-    Assert.isTrue(quantity>0,"quantity must be greater than 0");
+  public void setItemQuantity(Item item, int quantity) {
+    Assert.notNull(item, "item cannot be null");
 
     CartItem cartItem = getCartItemByItem(item);
-    if (cartItem != null) {
-      cartItem.setQuantity(cartItem.getQuantity() + quantity);
-      log.debug("Incremented existing quantity by {} to get {}",quantity, cartItem.getQuantity());
-    } else {
-      log.debug("Creating new CartItem with quantity {}",quantity);
-      cartItem = new CartItem(this, item);
-      cartItem.setQuantity(quantity);
-      cartItems.add(cartItem);
-    }
-  }
 
-  /**
-   * @param item The Item
-   * @param quantity The quantity to remove (zero quantity or less removes the entire Item)
-   */
-  @Transient
-  public void removeItemByQuantity(Item item, int quantity) {
-    Assert.notNull(item,"item cannot be null");
-    Assert.isTrue(quantity>0,"quantity must be greater than 0");
-
-    CartItem cartItem = getCartItemByItem(item);
-    if (cartItem != null) {
-      if (cartItem.getQuantity() > quantity) {
-        cartItem.setQuantity(cartItem.getQuantity() - quantity);
-        log.debug("Decremented existing quantity by {} to get {}",quantity, cartItem.getQuantity());
-        return;
+    if (quantity > 0) {
+      // Insert or update Item without removal
+      if (cartItem != null) {
+        cartItem.setQuantity(quantity);
+        log.debug("Update quantity to {}", cartItem.getQuantity());
       } else {
-        // Item remove due to leaving none (or negative)
+        log.debug("Insert new CartItem with quantity {}", quantity);
+        cartItem = new CartItem(this, item);
+        cartItem.setQuantity(quantity);
+        cartItems.add(cartItem);
+      }
+    } else {
+      if (cartItem != null) {
+        // Remove Item
         cartItems.remove(cartItem);
       }
     }
+
   }
 
   /**
@@ -109,7 +96,7 @@ public class Cart implements Serializable {
    */
   @Transient
   public CartItem getCartItemByItem(Item item) {
-    Assert.notNull(item,"item cannot be null");
+    Assert.notNull(item, "item cannot be null");
 
     for (CartItem cartItem : cartItems) {
       if (cartItem.getItem().equals(item)) {
