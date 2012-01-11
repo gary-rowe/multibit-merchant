@@ -65,8 +65,8 @@ public class HibernateCartDaoIntegrationTest extends AbstractTransactionalJUnit4
     Item book1 = itemDao.getBySKU("0099410672");
     Item book2 = itemDao.getBySKU("0140296034");
 
-    expectedCart.addItemByQuantity(book1, 1);
-    expectedCart.addItemByQuantity(book2, 2);
+    expectedCart.setItemQuantity(book1, 1);
+    expectedCart.setItemQuantity(book2, 2);
     expectedCart = testObject.saveOrUpdate(expectedCart);
     testObject.flush();
 
@@ -82,8 +82,8 @@ public class HibernateCartDaoIntegrationTest extends AbstractTransactionalJUnit4
     assertThat("Unexpected quantity for book1", expectedCart.getCartItemByItem(book1).getQuantity(), equalTo(1));
     assertThat("Unexpected quantity for book2", expectedCart.getCartItemByItem(book2).getQuantity(), equalTo(2));
 
-    expectedCart.addItemByQuantity(book1, 4);
-    expectedCart.addItemByQuantity(book2, 5);
+    expectedCart.setItemQuantity(book1, 4);
+    expectedCart.setItemQuantity(book2, 5);
     expectedCart = testObject.saveOrUpdate(expectedCart);
     testObject.flush();
 
@@ -96,13 +96,12 @@ public class HibernateCartDaoIntegrationTest extends AbstractTransactionalJUnit4
     assertThat("Unexpected data in items", updatedItemRows, equalTo(originalItemRows));
     assertThat("Unexpected data in customers", updatedCustomerRows, equalTo(originalCustomerRows));
     assertThat("Unexpected data in cart_items", updatedCartItemRows, equalTo(originalCartItemRows + 2));
-    assertThat("Unexpected quantity for book1", expectedCart.getCartItemByItem(book1).getQuantity(), equalTo(5));
-    assertThat("Unexpected quantity for book2", expectedCart.getCartItemByItem(book2).getQuantity(), equalTo(7));
+    assertThat("Unexpected quantity for book1", expectedCart.getCartItemByItem(book1).getQuantity(), equalTo(4));
+    assertThat("Unexpected quantity for book2", expectedCart.getCartItemByItem(book2).getQuantity(), equalTo(5));
 
     // Perform an update to the Cart that cascades to a delete in join table
     // due to an addition to the linked reference
-    expectedCart.removeItemByQuantity(book1, 1);
-    expectedCart.removeItemByQuantity(book2, 7);
+    expectedCart.setItemQuantity(book2, 0);
     testObject.saveOrUpdate(expectedCart);
     testObject.flush();
 

@@ -135,53 +135,26 @@ public class CustomerService {
   }
 
   /**
-   * Handles the process of adding Items to a Cart
+   * Handles the process of updating the quantity of CartItems
    *
    * @param customer The Customer
    * @param itemId   The Item ID
-   * @param quantity The quantity to add
+   * @param quantity The quantity to set
    *
    * @return The updated Customer
    */
   @Transactional(propagation = Propagation.REQUIRED)
-  public Customer addItemToCart(Customer customer, Long itemId, int quantity) {
+  public Customer setCartItemQuantity(Customer customer, Long itemId, int quantity) {
     Cart cart = cartDao.getInitialisedCartByCustomer(customer);
 
     // Find the Item in the database
     Item item = itemDao.getById(itemId);
 
-    // Add the quantity of Items to the cart
-    cart.addItemByQuantity(item, quantity);
+    // Set the quantity of Items in the cart
+    cart.setItemQuantity(item, quantity);
 
     return customerDao.saveOrUpdate(customer);
 
-  }
-
-  /**
-   * Handles the process of removing Items from a Cart
-   *
-   * @param customer The Customer
-   * @param itemId   The Item ID
-   * @param quantity The quantity to remove
-   *
-   * @return The updated Customer
-   */
-  @Transactional(propagation = Propagation.REQUIRED)
-  public Customer removeItemFromCart(Customer customer, long itemId, int quantity) {
-    Cart cart = customer.getCart();
-
-    if (cart == null) {
-      // Nothing to do
-      return customer;
-    }
-
-    // Find the Item in the database
-    Item item = itemDao.getById(itemId);
-
-    // Remove the item from the cart by quantity
-    cart.removeItemByQuantity(item, quantity);
-
-    return customerDao.saveOrUpdate(customer);
   }
 
   /**

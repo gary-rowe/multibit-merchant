@@ -9,7 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +24,7 @@ import java.security.Principal;
 @Controller
 @RequestMapping(value = "/v1")
 public class CartController extends BaseController {
-  
+
   private static final Logger log = LoggerFactory.getLogger(CartController.class);
 
   @Resource(name = "catalogService")
@@ -31,24 +34,23 @@ public class CartController extends BaseController {
   private CustomerService customerService = null;
 
   /**
-   * Add an Item to the shopping cart
-   * Consider support for named parameters (e.g. category:, reference: etc)
-   * Consider caching strategies (e.g. DAO against ItemFieldDetail with word index)
-   * Consider a Lucene or Hibernate Search implementation
+   * Update the quantity of an Item in the shopping cart
    *
    * @param itemId    The Item ID
+   * @param quantity  The quantity to set
    * @param principal The current security principal (injected)
    * @param request   The original request (injected)
    *
    * @return A batch of matching results
    */
-  @RequestMapping(value = "/cart/item/{itemId}", method = RequestMethod.POST)
+  @RequestMapping(value = "/cart", method = RequestMethod.POST)
   @ResponseBody
-  public CartSummary addToCart(@PathVariable(value = "itemId") Long itemId, @RequestParam(value = "token", required = false) String uuid, Principal principal, HttpServletRequest request) {
+  public CartSummary setCartItemQuantity(@RequestParam(value = "itemId") Long itemId, @RequestParam(value = "quantity", required = false) int quantity, @RequestParam(value = "token", required = false) String uuid, Principal principal, HttpServletRequest request) {
+    // TODO Validate the parameters
 
     // TODO Generalise this behaviour (possibly into the CustomerController)
     // Ensure that a limit on the creation of Customers from a given IP address is enforced
-    Customer customer = null;
+    Customer customer;
     if (principal == null || principal instanceof AnonymousAuthenticationToken) {
       log.debug("Looking for UUID in cookie");
       // Require a UUID to proceed
@@ -60,14 +62,14 @@ public class CartController extends BaseController {
           throw new UUIDNotFoundException();
         }
       }
-      log.debug("Persisting anonymous Customer with UUID '{}'",uuid);
+      log.debug("Persisting anonymous Customer with UUID '{}'", uuid);
       customer = customerService.persistAnonymousCustomer(uuid);
     } else {
       log.debug("Persisting authenticated Customer");
       customer = customerService.getCustomerByPrincipal(principal);
     }
-    
-    customer = customerService.addItemToCart(customer, itemId, 1);
+
+    customer = customerService.setCartItemQuantity(customer, itemId, quantity);
 
     return new CartSummary(customer.getCart());
 

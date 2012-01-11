@@ -13,6 +13,7 @@
     <li><a href="#tab-2">Time</a></li>
     <li><a href="#tab-3">Bitcoin</a></li>
     <li><a href="#tab-4">Catalog</a></li>
+    <li><a href="#tab-5">Cart</a></li>
   </ul>
 
   <div id="tab-1">
@@ -137,6 +138,44 @@
         <td>Output</td>
       </tr>
       <tr>
+        <td><a id="cart-add" href="#">Add to cart</a></td>
+        <td>Add 2 items to the cart (token='df575838-94dd-4b6b-8c86-8fc2371bd883').</td>
+        <td><code>$("#cart-add").bind("click", function(event) {
+          $.post('/mbm/api/v1/cart',
+          function(data) {
+            var cartItems = data.cartItemSummaries;
+            $('#cart-items').html("");
+            for (var i = 0; i < cartItems.length; i++) {
+            $('#cart-items').append($("#cartItemTemplate").tmpl(cartItems[i]));
+            }
+            $('#cart-total').html($("#cartTotalTemplate").tmpl(data));
+          });
+        </code>
+        </td>
+        <td id="cart-add-output"></td>
+      </tr>
+    </table>
+
+    <p>
+    </p>
+  </div>
+
+  <div id="tab-5">
+    <p>The Cart API provides access to various shopping cart related facilities (etc).</p>
+    <table>
+      <colgroup>
+        <col span="1" style="width:10%"/>
+        <col span="1" style="width:20%"/>
+        <col span="1" style="width:20%"/>
+        <col span="1" style="width:50%"/>
+      </colgroup>
+      <tr>
+        <td>Example</td>
+        <td>Description</td>
+        <td>Code</td>
+        <td>Output</td>
+      </tr>
+      <tr>
         <td><a id="catalog-item-create" href="#">Request new item</a></td>
         <td>Request a new Item. Will respond with a .</td>
         <td><code>$("#catalog-item-create").bind("click", function(event) {
@@ -168,6 +207,8 @@
     <p>
     </p>
   </div>
+
+
 </div>
 
 <%@include file="/WEB-INF/jspf/public/cdn-scripts.jspf" %>

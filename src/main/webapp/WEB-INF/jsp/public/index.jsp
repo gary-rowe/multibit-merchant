@@ -44,7 +44,8 @@
 
     <p><strong>\${btcPrice} BTC</strong> (\${localSymbol} \${localPrice})</p>
 
-    <button onclick='handleAddToCartClick("/mbm/api/v1/cart/item/\${id}?token=df575838-94dd-4b6b-8c86-8fc2371bd883")'>Add to cart</button>
+    <button onclick='handleAddToCartClick(\${id},1)'>Add to cart</button>
+    <button onclick='handleAddToCartClick(\${id},0)'>Remove from cart</button>
   </div>
 </script>
 
@@ -58,7 +59,8 @@
 
     <p><strong>\${btcPrice} BTC</strong> (\${localSymbol} \${localPrice})</p>
 
-    <button onclick='handleAddToCartClick("/mbm/api/v1/cart/item/\${id}")'>Add to cart</button>
+    <button onclick='handleAddToCartClick(\${id},1)'>Add to cart</button>
+    <button onclick='handleAddToCartClick(\${id},0)'>Remove from cart</button>
 
   </div>
 </script>
@@ -77,15 +79,22 @@
     </p>
 
     <p><span class="align-right">\${quantity} @ \${btcPrice} BTC</span><span class='ui-icon-closethick'
-                                                    onclick='handleRemoveItem("\${id}")'></span></p>
+                                                                             onclick='handleRemoveItem("\${id}")'></span>
+    </p>
   </div>
 </script>
 
 <script type="text/javascript">
 
-  function handleAddToCartClick(uri) {
+  function handleAddToCartClick(id, quantity) {
     console.log("Adding item to cart");
-    $.post(uri,
+    $.post(
+      '/mbm/api/v1/cart',
+      {
+        itemId:id,
+        quantity:quantity,
+        token:'df575838-94dd-4b6b-8c86-8fc2371bd883'
+      },
       function (data) {
         var cartItems = data.cartItemSummaries;
         $('#cart-items').html("");
