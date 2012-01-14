@@ -1,0 +1,318 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.multibit.merchant</groupId>
+    <artifactId>mbm-parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <relativePath>../../../pom.xml</relativePath>
+  </parent>
+
+  <groupId>org.multibit.merchant.client.java</groupId>
+  <artifactId>mbm-jsp-query</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>war</packaging>
+
+  <name>MultiBit Merchant Java Client (JSP and jQuery)</name>
+  <description>A free and open source client for the MultiBit Merchant API based on JSP and jQuery</description>
+  <inceptionYear>2011</inceptionYear>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <!-- Put bitcoinj classes into target dir for production of the executable jar later -->
+          <execution>
+            <id>unpack-bitcoinj-classes</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>com.google</groupId>
+                  <artifactId>bitcoinj</artifactId>
+                  <version>${bitcoinj.version}</version>
+                  <type>jar</type>
+                  <overWrite>false</overWrite>
+                  <outputDirectory>${basedir}/target/bitcoinj</outputDirectory>
+                  <includes>**/*.*</includes>
+                  <!-- excludes classes that are duplicated in MBM -->
+                  <excludes>**/Peer.class, **/Peer$*.class,**/PeerGroup*.class, **/PendingTransactionListener.class
+                  </excludes>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Built-in SSL server for local development -->
+      <plugin>
+        <groupId>org.mortbay.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <!-- Jetty 7.3+ requires Maven 3+ -->
+        <!-- Keep with Jetty 7.5.4 to avoid startup delays -->
+        <!--<version>7.5.4.v20111024</version>-->
+        <version>7.6.0.RC1</version>
+        <configuration>
+          <stopKey>STOP</stopKey>
+          <stopPort>8009</stopPort>
+          <scanIntervalSeconds>10</scanIntervalSeconds>
+          <!--<jettyXml>src/test/resources/jetty.xml</jettyXml>-->
+          <webAppConfig>
+            <contextPath>/mbm-client</contextPath>
+          </webAppConfig>
+          <connectors>
+            <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+              <port>8080</port>
+            </connector>
+            <!-- SSL for localhost support -->
+            <connector implementation="org.eclipse.jetty.server.ssl.SslSelectChannelConnector">
+              <port>8443</port>
+              <keystore>src/test/resources/jetty-ssl.keystore</keystore>
+              <password>jetty6</password>
+              <keyPassword>jetty6</keyPassword>
+            </connector>
+          </connectors>
+          <!-- The client requires an instance of the MBM platform to be running as well -->
+          <contextHandlers implementation="org.eclipse.jetty.server.handler.ContextHandlerCollection">
+            <!-- MBM platform -->
+            <contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
+              <war>${settings.localRepository}/org/multibit/merchant/mbm/${mbm.version}/mbm-${mbm.version}.war</war>
+              <contextPath>/mbm</contextPath>
+            </contextHandler>
+          </contextHandlers>
+        </configuration>
+        <dependencies>
+          <!-- MBM platform -->
+          <dependency>
+            <groupId>org.multibit.merchant</groupId>
+            <artifactId>mbm</artifactId>
+            <version>${mbm.version}</version>
+            <scope>compile</scope>
+            <type>war</type>
+          </dependency>
+          <!-- Provide H2 database for Jetty connections to use -->
+          <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.3.157</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+    <!-- Spring Transactions for JTA -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-tx</artifactId>
+    </dependency>
+    <!-- Spring Core -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+    </dependency>
+    <!-- Spring Context -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+    </dependency>
+    <!-- Spring Beans for bean factory -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-beans</artifactId>
+      <!-- Spring JDBC for direct database queries -->
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jdbc</artifactId>
+    </dependency>
+    <!-- Spring JPA for ORM -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-orm</artifactId>
+    </dependency>
+    <!-- Spring OXM for XML/JSON -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-oxm</artifactId>
+    </dependency>
+    <!-- Spring AOP for aspects via annotations -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-aop</artifactId>
+    </dependency>
+    <!-- Spring Web for general HTTP request handling -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+    </dependency>
+    <!-- Spring Web MVC -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+    </dependency>
+    <!-- Spring Security (Web, OpenId) -->
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-openid</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-config</artifactId>
+    </dependency>
+
+    <!-- Spring Social (Twitter, Facebook) -->
+    <dependency>
+      <groupId>org.springframework.social</groupId>
+      <artifactId>spring-social-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.social</groupId>
+      <artifactId>spring-social-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.social</groupId>
+      <artifactId>spring-social-twitter</artifactId>
+    </dependency>
+
+    <!-- Jackson JSON Mapper -->
+    <dependency>
+      <groupId>org.codehaus.jackson</groupId>
+      <artifactId>jackson-mapper-asl</artifactId>
+    </dependency>
+
+    <!-- Hibernate for persistence -->
+    <dependency>
+      <groupId>org.hibernate.java-persistence</groupId>
+      <artifactId>jpa-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-entitymanager</artifactId>
+    </dependency>
+
+    <!-- SLF4J for logging API -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+    <!-- Logback for implementation -->
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+    </dependency>
+    <!-- Java Commons Logging through SLF4J -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jcl-over-slf4j</artifactId>
+    </dependency>
+
+    <!-- All time handling is through Joda -->
+    <dependency>
+      <groupId>joda-time</groupId>
+      <artifactId>joda-time</artifactId>
+    </dependency>
+
+    <!-- H2 database -->
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+    </dependency>
+
+    <!-- Servlet API (2.5 does not introduce startup delays) -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+    </dependency>
+    <!-- JSP support -->
+    <dependency>
+      <groupId>javax.servlet.jsp</groupId>
+      <artifactId>jsp-api</artifactId>
+    </dependency>
+    <!-- JSTL support -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>jstl</artifactId>
+    </dependency>
+
+    <!-- JUnit with JMockit, Hamcrest, Spring test, OpenPojo -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>mockit</groupId>
+      <artifactId>jmockit</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-library</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+    </dependency>
+
+    <!-- CGLIB2 for AOP (ensures main classpath) -->
+    <dependency>
+      <groupId>cglib</groupId>
+      <artifactId>cglib</artifactId>
+    </dependency>
+
+    <!-- Atmosphere for push broadcast -->
+    <dependency>
+      <groupId>org.atmosphere</groupId>
+      <artifactId>atmosphere-runtime</artifactId>
+    </dependency>
+
+    <!-- OpenPojo to verify getters/setters -->
+    <dependency>
+      <groupId>com.googlecode.openpojo</groupId>
+      <artifactId>openpojo</artifactId>
+    </dependency>
+
+    <!-- BitCoinJ for Bitcoin in the service layer -->
+    <dependency>
+      <groupId>com.google</groupId>
+      <artifactId>bitcoinj</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.bouncycastle</groupId>
+      <artifactId>bcprov-jdk15</artifactId>
+    </dependency>
+
+    <!-- ZXing (Zebra Crossing) used for Bitcoin swatches -->
+    <dependency>
+      <groupId>com.google.zxing</groupId>
+      <artifactId>javase</artifactId>
+    </dependency>
+
+    <!-- Guava for handy utilities -->
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+    </dependency>
+
+    <!-- Findbugs annotations for the avoidance of doubt -->
+    <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>annotations</artifactId>
+    </dependency>
+
+  </dependencies>
+
+  <properties>
+    <mbm.version>1.0.0-SNAPSHOT</mbm.version>
+  </properties>
+
+</project>
