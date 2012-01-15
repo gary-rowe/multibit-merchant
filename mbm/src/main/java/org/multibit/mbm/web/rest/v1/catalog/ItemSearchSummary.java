@@ -5,6 +5,10 @@ import org.multibit.mbm.catalog.dto.ItemField;
 import org.multibit.mbm.util.DateUtils;
 import org.multibit.mbm.web.rest.v1.search.SearchSummary;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+
 /**
  *  <p>Value object to provide the following to {@link org.multibit.mbm.web.rest.v1.search.SearchResults}:</p>
  *  <ul>
@@ -14,19 +18,36 @@ import org.multibit.mbm.web.rest.v1.search.SearchSummary;
  * @since 1.0.0
  *         
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ItemSearchSummary implements SearchSummary{
-  private final String id;
-  private final String title;
-  private final String summary;
-  private final String imgThumbnailUri;
+
+  @XmlElement
+  private String id;
+  @XmlElement
+  private String title;
+  @XmlElement
+  private String summary;
+  @XmlElement
+  private String imgThumbnailUri;
+  @XmlElement
   private String slug;
+  @XmlElement
   private String offeredDeliveryDate=DateUtils.formatFriendlyDate(DateUtils.nowUtc().plusDays(2));
+  @XmlElement
   private String btcPrice="3.6";
+  @XmlElement
   private String localPrice="1.4";
+  @XmlElement
   private String localSymbol="&euro;";
 
   /**
-   * TODO Widen the mandatory fields to include pricing, stock and delivery
+   * Default constructor for marshaling
+   */
+  public ItemSearchSummary() {
+  }
+
+  /**
+   * Utility constructor
    * @param item The Item
    */
   public ItemSearchSummary(Item item) {

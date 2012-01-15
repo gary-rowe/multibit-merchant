@@ -33,7 +33,9 @@ public class CatalogController {
    *
    * @return A batch of matching results
    */
-  @RequestMapping(value = "/catalog/item/search", method = RequestMethod.GET)
+  @RequestMapping(
+    value = "/catalog/item/search",
+    method = RequestMethod.GET)
   @ResponseBody
   public SearchResults<ItemSearchSummary> search(@RequestParam(value = "q", required = false) String query) {
 

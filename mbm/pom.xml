@@ -89,6 +89,14 @@
     </plugins>
   </build>
   <dependencies>
+
+    <!-- Provides HTTP client for RestTemplate -->
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>4.1</version>
+    </dependency>
+
     <!-- Spring Transactions for JTA -->
     <dependency>
       <groupId>org.springframework</groupId>
