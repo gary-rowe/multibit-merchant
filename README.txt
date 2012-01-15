@@ -4,7 +4,7 @@ A free and open source Bitcoin online shop.
 
 *** WARNING ***
 
-MultiBit Merchant is currently at pre-alpha development. 
+MultiBit Merchant is currently at pre-alpha development.
 This means that unless you're a developer it's probably not in a workable state for you.
 
 *** WARNING ***
