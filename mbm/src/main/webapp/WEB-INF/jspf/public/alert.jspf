@@ -1,2 +1,0 @@
-<%@include file="taglibs.jspf" %>
-<div id="alert" class="alert ui-widget-header"></div>
