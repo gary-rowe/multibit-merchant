@@ -1,0 +1,12 @@
+MultiBit Merchant Contributors
+==============================
+The following people have made contributions to the source code of MultiBit Merchant,
+either on the platform code or within the clients.
+
+Development
+-----------
+Gary Rowe (Lead developer)
+Jim Burton
+
+Translation services
+--------------------

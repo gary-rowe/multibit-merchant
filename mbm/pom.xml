@@ -54,14 +54,14 @@
         <groupId>org.mortbay.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
         <!-- Jetty 7.3+ requires Maven 3+ -->
-        <version>${jetty.version}</version>
+        <version>7.6.0.RC1</version>
         <configuration>
           <stopKey>STOP</stopKey>
           <stopPort>8009</stopPort>
           <scanIntervalSeconds>10</scanIntervalSeconds>
           <!--<jettyXml>src/test/resources/jetty.xml</jettyXml>-->
           <webAppConfig>
-            <contextPath>/mbm-client</contextPath>
+            <contextPath>/mbm</contextPath>
             <configurationDiscovered>false</configurationDiscovered>
           </webAppConfig>
           <connectors>
@@ -294,8 +294,6 @@
   </dependencies>
 
   <properties>
-    <!-- Keep with Jetty 7.5.4 to avoid startup delays -->
-    <jetty.version>7.5.4.v20111024</jetty.version>
   </properties>
 
 </project>
