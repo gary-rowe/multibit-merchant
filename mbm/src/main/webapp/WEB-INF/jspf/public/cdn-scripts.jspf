@@ -1,9 +1,0 @@
-<%@include file="taglibs.jspf" %>
-<!-- TODO Make these configurable (OK for server, not offline development)
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
-<script type="text/javascript" src="http://jqueryui.com/themeroller/themeswitchertool/"></script>
--->
-
-<!-- OK for offline development -->
-<script type="text/javascript" src="<c:url value="/js/jquery/1.6.4/jquery.min.js" />"></script>
