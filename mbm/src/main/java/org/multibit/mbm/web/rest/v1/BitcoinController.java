@@ -26,8 +26,10 @@ import java.security.Principal;
  * </ul>
  */
 @Controller
-@RequestMapping(value = "/v1/bitcoin")
+@RequestMapping(value = "/v1")
 public class BitcoinController {
+
+  // Define the resource paths for this controller so they can be shared by the functional tests
 
   private static final Logger log = LoggerFactory.getLogger(BitcoinController.class);
 
