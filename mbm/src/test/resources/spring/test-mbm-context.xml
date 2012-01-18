@@ -14,6 +14,9 @@
        http://www.springframework.org/schema/jdbc
        http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
+  <!-- Integration tests require a database loader -->
+  <bean id="databaseLoader" class="org.multibit.demo.DatabaseLoader" init-method="initialise" />
+
   <!-- Requires a configured TransactionManager -->
   <import resource="classpath:/spring/mbm-hibernate-service.xml" />
 

@@ -1,16 +1,15 @@
 package org.multibit.mbm.catalog.dao;
 
 import org.junit.Test;
-import org.multibit.demo.DatabaseLoader;
 import org.multibit.mbm.catalog.builder.ItemBuilder;
 import org.multibit.mbm.catalog.dto.Item;
 import org.multibit.mbm.catalog.dto.ItemField;
 import org.multibit.mbm.catalog.dto.ItemFieldDetail;
 import org.multibit.mbm.customer.dao.CustomerDao;
 import org.multibit.mbm.i18n.dto.LocalisedText;
+import org.multibit.mbm.test.BaseIntegrationTests;
 import org.multibit.mbm.web.rest.v1.catalog.ItemPagedQuery;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -22,7 +21,7 @@ import static org.junit.Assert.assertThat;
  * Integration test to verify the Hibernate annotations of the DTOs against a generated schema
  */
 @ContextConfiguration(locations = {"/spring/test-mbm-context.xml"})
-public class HibernateItemDaoIntegrationTest extends AbstractTransactionalJUnit4SpringContextTests {
+public class HibernateItemDaoIntegrationTest extends BaseIntegrationTests {
 
   @Resource(name= "hibernateCustomerDao")
   CustomerDao customerDao;
@@ -39,20 +38,23 @@ public class HibernateItemDaoIntegrationTest extends AbstractTransactionalJUnit4
     String sku="abc123";
     String gtin="def456";
 
-    Item expected = new Item();
-    expected.setSKU(sku);
-    expected.setGTIN(gtin);
+    Item expected = ItemBuilder
+      .getInstance()
+      .setSKU(sku)
+      .setGTIN(gtin)
+      .build();
 
     // Persist with insert
     int originalItemRows = countRowsInTable("items");
     int originalItemFieldDetailRows = countRowsInTable("item_field_details");
     int originalItemFieldDetailSecondaryRows = countRowsInTable("item_field_secondary_details");
     testObject.saveOrUpdate(expected);
+    testObject.flush();
 
     // Session flush: Expect an insert in items only
     int updatedItemRows = countRowsInTable("items");
-    int updatedItemFieldDetailRows = countRowsInTable("contact_method_details");
-    int updatedItemFieldDetailSecondaryRows = countRowsInTable("contact_method_secondary_details");
+    int updatedItemFieldDetailRows = countRowsInTable("item_field_details");
+    int updatedItemFieldDetailSecondaryRows = countRowsInTable("item_field_secondary_details");
     assertThat("Expected session flush for first insert", updatedItemRows, equalTo(originalItemRows+1));
     assertThat("Unexpected data in contact_method_details", updatedItemFieldDetailRows, equalTo(originalItemFieldDetailRows));
     assertThat("Unexpected data in contact_method_secondary_details", updatedItemFieldDetailSecondaryRows, equalTo(originalItemFieldDetailSecondaryRows));
@@ -120,11 +122,6 @@ public class HibernateItemDaoIntegrationTest extends AbstractTransactionalJUnit4
   @Test
   public void testGetPagedItems() {
 
-    // Provide a standard test database (make sure to flush the session)
-    DatabaseLoader loader = new DatabaseLoader();
-    loader.setCustomerDao(customerDao);
-    loader.setItemDao(testObject);
-    loader.initialise();
     testObject.flush();
 
     // All items (check against inefficient joins)
@@ -167,7 +164,7 @@ public class HibernateItemDaoIntegrationTest extends AbstractTransactionalJUnit4
     // Search in the primary TITLE field
     Item example = ItemBuilder
       .getInstance()
-      .addPrimaryFieldDetail(ItemField.TITLE, "Central Heating","en")
+      .addPrimaryFieldDetail(ItemField.TITLE, "Central Heating", "en")
       .build();
     itemPagedQuery = new ItemPagedQuery(0,5,example);
     items = testObject.getPagedItems(itemPagedQuery);
@@ -178,8 +175,8 @@ public class HibernateItemDaoIntegrationTest extends AbstractTransactionalJUnit4
     // Search in both primary TITLE and SUMMARY field (only SUMMARY will succeed)
     example = ItemBuilder
       .getInstance()
-      .addPrimaryFieldDetail(ItemField.TITLE, "aardvark","en")
-      .addPrimaryFieldDetail(ItemField.SUMMARY, "trust me","en")
+      .addPrimaryFieldDetail(ItemField.TITLE, "aardvark", "en")
+      .addPrimaryFieldDetail(ItemField.SUMMARY, "trust me", "en")
       .build();
     itemPagedQuery = new ItemPagedQuery(0,5,example);
     items = testObject.getPagedItems(itemPagedQuery);
