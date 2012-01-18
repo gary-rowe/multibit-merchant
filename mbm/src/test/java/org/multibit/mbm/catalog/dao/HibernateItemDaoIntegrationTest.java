@@ -2,6 +2,7 @@ package org.multibit.mbm.catalog.dao;
 
 import org.junit.Test;
 import org.multibit.demo.DatabaseLoader;
+import org.multibit.mbm.catalog.builder.ItemBuilder;
 import org.multibit.mbm.catalog.dto.Item;
 import org.multibit.mbm.catalog.dto.ItemField;
 import org.multibit.mbm.catalog.dto.ItemFieldDetail;
@@ -62,6 +63,7 @@ public class HibernateItemDaoIntegrationTest extends AbstractTransactionalJUnit4
     summary_en.setLocaleKey("en");
     summary_en.setContent("test Summary_en");
     summary.setPrimaryDetail(summary_en);
+    summary.setItemField(ItemField.SUMMARY);
 
     expected.setItemFieldDetail(ItemField.SUMMARY, summary);
     expected=testObject.saveOrUpdate(expected);
@@ -126,9 +128,10 @@ public class HibernateItemDaoIntegrationTest extends AbstractTransactionalJUnit4
     testObject.flush();
 
     // All items (check against inefficient joins)
-    ItemPagedQuery itemPagedQuery = new ItemPagedQuery(0,10,null,null, "en");
+    ItemPagedQuery itemPagedQuery = new ItemPagedQuery(0,10,null);
     List<Item> items = testObject.getPagedItems(itemPagedQuery);
 
+    // TODO Examine the transaction boundaries for these tests
     assertThat("Unexpected data in Item page 1", items.size(), equalTo(5));
     assertThat("Unexpected data ordering in Item [0,1]", items.get(0).getId(), equalTo(1L));
     assertThat("Unexpected data ordering in Item [1,1]", items.get(1).getId(), equalTo(2L));
@@ -137,7 +140,7 @@ public class HibernateItemDaoIntegrationTest extends AbstractTransactionalJUnit4
     assertThat("Unexpected data ordering in Item [4,1]", items.get(4).getId(), equalTo(5L));
 
     // Page 1
-    itemPagedQuery = new ItemPagedQuery(0,2,null,null, "en");
+    itemPagedQuery = new ItemPagedQuery(0,2,null);
     items = testObject.getPagedItems(itemPagedQuery);
     
     assertThat("Unexpected data in Item page 1", items.size(), equalTo(2));
@@ -145,7 +148,7 @@ public class HibernateItemDaoIntegrationTest extends AbstractTransactionalJUnit4
     assertThat("Unexpected data ordering in Item [1,1]", items.get(1).getId(), equalTo(2L));
 
     // Page 2
-    itemPagedQuery = new ItemPagedQuery(2,2,null,null, "en");
+    itemPagedQuery = new ItemPagedQuery(2,2,null);
     items = testObject.getPagedItems(itemPagedQuery);
 
     assertThat("Unexpected data in Item page 2", items.size(), equalTo(2));
@@ -153,27 +156,36 @@ public class HibernateItemDaoIntegrationTest extends AbstractTransactionalJUnit4
     assertThat("Unexpected data ordering in Item [1,2]", items.get(1).getId(), equalTo(4L));
 
     // Page 3
-    itemPagedQuery = new ItemPagedQuery(4,2,null,null, "en");
+    itemPagedQuery = new ItemPagedQuery(4,2,null);
     items = testObject.getPagedItems(itemPagedQuery);
 
     assertThat("Unexpected data in Item page 3", items.size(), equalTo(1));
     assertThat("Unexpected data ordering in Item [0,3]", items.get(0).getId(), equalTo(5L));
 
     // Predicated searches
-    // Internal text in title
-    itemPagedQuery = new ItemPagedQuery(0,5,"Central Heating",null, "en");
+
+    // Search in the primary TITLE field
+    Item example = ItemBuilder
+      .getInstance()
+      .addPrimaryFieldDetail(ItemField.TITLE, "Central Heating","en")
+      .build();
+    itemPagedQuery = new ItemPagedQuery(0,5,example);
     items = testObject.getPagedItems(itemPagedQuery);
 
     assertThat("Unexpected data in Item page 1 (title)", items.size(), equalTo(1));
     assertThat("Unexpected data ordering in Item (title) [0,1]", items.get(0).getId(), equalTo(3L));
 
-    // Predicated searches
-    // Internal text
-    itemPagedQuery = new ItemPagedQuery(0,5,null,null, "en");
+    // Search in both primary TITLE and SUMMARY field (only SUMMARY will succeed)
+    example = ItemBuilder
+      .getInstance()
+      .addPrimaryFieldDetail(ItemField.TITLE, "aardvark","en")
+      .addPrimaryFieldDetail(ItemField.SUMMARY, "trust me","en")
+      .build();
+    itemPagedQuery = new ItemPagedQuery(0,5,example);
     items = testObject.getPagedItems(itemPagedQuery);
 
-    assertThat("Unexpected data in Item page 1 (title)", items.size(), equalTo(1));
-    assertThat("Unexpected data ordering in Item (title) [0,1]", items.get(0).getId(), equalTo(3L));
+    assertThat("Unexpected data in Item page 1 (summary)", items.size(), equalTo(1));
+    assertThat("Unexpected data ordering in Item (summary) [0,1]", items.get(0).getId(), equalTo(1L));
 
   }
 

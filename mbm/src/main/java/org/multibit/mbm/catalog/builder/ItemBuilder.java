@@ -69,13 +69,14 @@ public class ItemBuilder {
   }
 
   /**
+   *
    * @param itemField The item field (e.g. SUMMARY)
-   * @param localeKey The locale key (e.g. "en")
    * @param content   The locale specific content (e.g. "Hello", "Bonjour" etc)
    *
+   * @param localeKey The locale key (e.g. "en")
    * @return The builder
    */
-  public ItemBuilder addPrimaryFieldDetail(ItemField itemField, String localeKey, String content) {
+  public ItemBuilder addPrimaryFieldDetail(ItemField itemField, String content, String localeKey) {
 
     validateState();
 
@@ -86,13 +87,14 @@ public class ItemBuilder {
 
 
   /**
+   *
    * @param itemField The item field (e.g. SUMMARY)
-   * @param localeKey The locale key (e.g. "en")
    * @param content   The locale specific content (e.g. "Hello", "Bonjour" etc)
    *
+   * @param localeKey The locale key (e.g. "en")
    * @return The builder
    */
-  public ItemBuilder addSecondaryFieldDetail(ItemField itemField, String localeKey, String content) {
+  public ItemBuilder addSecondaryFieldDetail(ItemField itemField, String content, String localeKey) {
 
     validateState();
 

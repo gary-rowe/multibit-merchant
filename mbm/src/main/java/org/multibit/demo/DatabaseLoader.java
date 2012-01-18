@@ -53,45 +53,45 @@ public class DatabaseLoader {
   private void buildCatalogBooks() {
     Item book1 = ItemBuilder.getInstance()
       .setSKU("0099410672")
-      .addPrimaryFieldDetail(ItemField.TITLE,"en","Cryptonomicon, by Neal Stephenson")
-      .addPrimaryFieldDetail(ItemField.SUMMARY,"en","'A brilliant patchwork of code-breaking mathematicians and their descendants who are striving to create a data haven in the Philippines...trust me on this one' Guardian")
-      .addPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI,"en","/mbm/images/catalog/items/2/thumbnail2.png")
+      .addPrimaryFieldDetail(ItemField.TITLE, "Cryptonomicon, by Neal Stephenson", "en")
+      .addPrimaryFieldDetail(ItemField.SUMMARY, "'A brilliant patchwork of code-breaking mathematicians and their descendants who are striving to create a data haven in the Philippines...trust me on this one' Guardian", "en")
+      .addPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/2/thumbnail2.png", "en")
       .build();
 
     itemDao.saveOrUpdate(book1);
 
     Item book2 = ItemBuilder.getInstance()
       .setSKU("0140296034")
-      .addPrimaryFieldDetail(ItemField.TITLE,"en","A Year In Provence, by Peter Mayle")
-      .addPrimaryFieldDetail(ItemField.SUMMARY,"en","Enjoy an irresistible feast of humour and discover the joys of French rural living with Peter Mayle's bestselling, much-loved account of 'A Year In Provence'.")
-      .addPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI,"en","/mbm/images/catalog/items/1/thumbnail1.png")
+      .addPrimaryFieldDetail(ItemField.TITLE, "A Year In Provence, by Peter Mayle", "en")
+      .addPrimaryFieldDetail(ItemField.SUMMARY, "Enjoy an irresistible feast of humour and discover the joys of French rural living with Peter Mayle's bestselling, much-loved account of 'A Year In Provence'.", "en")
+      .addPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/1/thumbnail1.png", "en")
       .build();
 
     itemDao.saveOrUpdate(book2);
 
     Item book3 = ItemBuilder.getInstance()
       .setSKU("186126173X")
-      .addPrimaryFieldDetail(ItemField.TITLE,"en","Plumbing and Central Heating, by Mike Lawrence")
-      .addPrimaryFieldDetail(ItemField.SUMMARY,"en","This guide begins with the basic skills of plumbing, which once mastered, can be applied to any situation, from mending a leaking tap to installing a new shower unit.")
-      .addPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI,"en","/mbm/images/catalog/items/3/thumbnail3.png")
+      .addPrimaryFieldDetail(ItemField.TITLE, "Plumbing and Central Heating, by Mike Lawrence", "en")
+      .addPrimaryFieldDetail(ItemField.SUMMARY, "This guide begins with the basic skills of plumbing, which once mastered, can be applied to any situation, from mending a leaking tap to installing a new shower unit.", "en")
+      .addPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/3/thumbnail3.png", "en")
       .build();
 
     itemDao.saveOrUpdate(book3);
 
     Item book4 = ItemBuilder.getInstance()
       .setSKU("0575088893")
-      .addPrimaryFieldDetail(ItemField.TITLE,"en","The Quantum Thief, by Hannu Rajaniemi")
-      .addPrimaryFieldDetail(ItemField.SUMMARY,"en","The most exciting SF debut of the last five years - a star to stand alongside Alistair Reynolds and Richard Morgan.")
-      .addPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI,"en","/mbm/images/catalog/items/4/thumbnail4.png")
+      .addPrimaryFieldDetail(ItemField.TITLE, "The Quantum Thief, by Hannu Rajaniemi", "en")
+      .addPrimaryFieldDetail(ItemField.SUMMARY, "The most exciting SF debut of the last five years - a star to stand alongside Alistair Reynolds and Richard Morgan.", "en")
+      .addPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/4/thumbnail4.png", "en")
       .build();
 
     itemDao.saveOrUpdate(book4);
 
     Item book5 = ItemBuilder.getInstance()
       .setSKU("0316184136")
-      .addPrimaryFieldDetail(ItemField.TITLE,"en","The Complete Works of Emily Dickinson, edited by Thomas H Johnson")
-      .addPrimaryFieldDetail(ItemField.SUMMARY,"en","The Complete Poems of Emily Dickinson is the only one-volume edition containing all Emily Dickinson's poems.")
-      .addPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI,"en","/mbm/images/catalog/items/5/thumbnail5.png")
+      .addPrimaryFieldDetail(ItemField.TITLE, "The Complete Works of Emily Dickinson, edited by Thomas H Johnson", "en")
+      .addPrimaryFieldDetail(ItemField.SUMMARY, "The Complete Poems of Emily Dickinson is the only one-volume edition containing all Emily Dickinson's poems.", "en")
+      .addPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/5/thumbnail5.png", "en")
       .build();
 
     itemDao.saveOrUpdate(book5);

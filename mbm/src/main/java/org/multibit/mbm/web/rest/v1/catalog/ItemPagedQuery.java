@@ -1,6 +1,6 @@
 package org.multibit.mbm.web.rest.v1.catalog;
 
-import java.util.Locale;
+import org.multibit.mbm.catalog.dto.Item;
 
 /**
  * Parameter object to provide query state for Items
@@ -8,45 +8,38 @@ import java.util.Locale;
 public class ItemPagedQuery {
   private final int firstResult;
   private final int maxResults;
-  private final String title;
-  private final String summary;
-  private final String localeKey;
+  private final Item item;
 
   /**
-   * REFACTOR to use builder inner class
-   * TODO Add support for ordering through a comparator
-   *
+   * 
    * @param firstResult The first result position (0-based)
    * @param maxResults The max results limit
-   * @param title The title field text to match 
-   * @param summary The summary field text to match 
-   * @param localeKey The localeKey (null implies using default)
+   * @param item An example Item that will be used as the basis for selection
    */
-  public ItemPagedQuery(int firstResult, int maxResults, String title, String summary, String localeKey) {
+  public ItemPagedQuery(int firstResult, int maxResults, Item item) {
     this.firstResult = firstResult;
     this.maxResults = maxResults;
-    this.title = title;
-    this.summary = summary;
-    this.localeKey = localeKey == null ? Locale.getDefault().toString() : localeKey;
+    this.item = item;
   }
 
+  /**
+   * @return The zero-based index of the first result
+   */
   public int getFirstResult() {
     return firstResult;
   }
 
+  /**
+   * @return The maximum number of results to return (limited to > 0 and <= 50)
+   */
   public int getMaxResults() {
-    return maxResults;
+    return maxResults > 50 ? 50: (maxResults < 0 ? 0: maxResults );
   }
 
-  public String getTitle() {
-    return title;
-  }
-
-  public String getSummary() {
-    return summary;
-  }
-
-  public String getLocaleKey() {
-    return localeKey;
+  /**
+   * @return The example Item
+   */
+  public Item getItem() {
+    return item;
   }
 }
