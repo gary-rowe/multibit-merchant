@@ -2,6 +2,7 @@ package org.multibit.mbm.web.rest.v1.usecase.authentication;
 
 import org.multibit.mbm.web.rest.v1.usecase.BaseUseCase;
 import org.multibit.mbm.web.rest.v1.usecase.UseCaseParameter;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
 
@@ -15,8 +16,9 @@ import java.util.Map;
  *         
  */
 public class BasicAuthenticationLogin extends BaseUseCase {
+
   @Override
-  public void perform(Map<UseCaseParameter, Object> useCaseParameterMap) {
+  protected void doExecute(Map<UseCaseParameter, Object> useCaseParameterMap, RestTemplate restTemplate) {
     //To change body of implemented methods use File | Settings | File Templates.
   }
 }

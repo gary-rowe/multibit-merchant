@@ -35,7 +35,7 @@ public abstract class BaseUseCase implements UseCase {
    *
    * @return A configured RestTemplate with appropriate HTTP headers (cookies, authentication etc)
    */
-  protected RestTemplate getConfiguredRestTemplate(Map<UseCaseParameter, Object> useCaseParameterMap) {
+  private RestTemplate getConfiguredRestTemplate(Map<UseCaseParameter, Object> useCaseParameterMap) {
 
 
     HttpHost targetHost = new HttpHost(HOST, PORT, "http");
@@ -44,6 +44,8 @@ public abstract class BaseUseCase implements UseCase {
 
     // Set accept headers
 
+    // Check for authentication
+    if (useCaseParameterMap.containsKey(UseCaseParameter.HTTP_AUTHENTICATE_BASIC))
     httpClient.getCredentialsProvider().setCredentials(
       new AuthScope(targetHost.getHostName(), targetHost.getPort()),
       new UsernamePasswordCredentials("username", "password"));
@@ -75,5 +77,17 @@ public abstract class BaseUseCase implements UseCase {
   protected String buildResourceUri(String resource) {
     return API_PREFIX + resource;
   }
+  
+  public final void execute(Map<UseCaseParameter, Object> useCaseParameterMap) {
+    RestTemplate restTemplate=getConfiguredRestTemplate(useCaseParameterMap);
+    doExecute(useCaseParameterMap, null);
+  }
+
+  /**
+   * Use case specific implementation details (not generally visible)
+   * @param useCaseParameterMap The shared parameter map
+   * @param restTemplate A suitably configured {@link RestTemplate}
+   */
+  protected abstract void doExecute(Map<UseCaseParameter, Object> useCaseParameterMap, RestTemplate restTemplate);
 
 }

@@ -79,5 +79,4 @@ public enum ItemField {
   // End of enum
   ;
 
-
 }

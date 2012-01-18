@@ -3,11 +3,11 @@ package org.multibit.mbm.web.rest.v1;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.junit.Ignore;
+import org.multibit.mbm.web.rest.v1.usecase.authentication.AnonymousLogin;
 import org.multibit.mbm.web.rest.v1.usecase.authentication.BasicAuthenticationLogin;
 import org.multibit.mbm.web.rest.v1.usecase.UseCase;
 import org.multibit.mbm.web.rest.v1.usecase.UseCaseParameter;
-import org.multibit.mbm.web.rest.v1.usecase.authentication.TokenRequest;
-import org.multibit.mbm.web.rest.v1.usecase.catalog.LatestPromotions;
+import org.multibit.mbm.web.rest.v1.usecase.catalog.ListItems;
 
 import java.util.List;
 import java.util.Map;
@@ -36,8 +36,8 @@ public class FunctionalTestExecutor {
     FunctionalTestExecutor executor = new FunctionalTestExecutor();
 
     // Add the use cases
-    executor.addUseCase(new LatestPromotions());
-    executor.addUseCase(new TokenRequest());
+    executor.addUseCase(new ListItems());
+    executor.addUseCase(new AnonymousLogin());
     executor.addUseCase(new BasicAuthenticationLogin());
 
     executor.execute();
@@ -55,7 +55,7 @@ public class FunctionalTestExecutor {
     // Perform each use case - sharing state as required
     for (UseCase useCase : useCases) {
       System.out.print("Executing "+useCase.getClass().getSimpleName()+"...");
-      useCase.perform(useCaseParameterMap);
+      useCase.execute(useCaseParameterMap);
       System.out.println("OK");
     }
 

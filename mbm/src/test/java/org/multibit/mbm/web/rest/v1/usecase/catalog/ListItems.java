@@ -3,11 +3,12 @@ package org.multibit.mbm.web.rest.v1.usecase.catalog;
 import org.multibit.mbm.web.rest.v1.search.SearchResults;
 import org.multibit.mbm.web.rest.v1.usecase.BaseUseCase;
 import org.multibit.mbm.web.rest.v1.usecase.UseCaseParameter;
-import org.springframework.http.HttpHeaders;
-import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
 
 /**
  *  <p>UseCase to provide the following to {@link org.multibit.mbm.web.rest.v1.usecase.UseCase}:</p>
@@ -18,20 +19,16 @@ import java.util.Map;
  * @since 1.0.0
  *         
  */
-public class LatestPromotions extends BaseUseCase {
+public class ListItems extends BaseUseCase {
   @Override
-  public void perform(Map<UseCaseParameter, Object> useCaseParameterMap) {
-    RestTemplate restTemplate = getConfiguredRestTemplate(useCaseParameterMap);
-
-    HttpHeaders headers = new HttpHeaders();
-    headers.set("Accept", "application/json");
+  protected void doExecute(Map<UseCaseParameter, Object> useCaseParameterMap, RestTemplate restTemplate) {
 
     SearchResults searchSummary = restTemplate.getForObject(
-      buildResourceUri("/catalog/item/search"),
+      buildResourceUri("/items"),
       SearchResults.class);
 
-    Assert.notNull(searchSummary,"Unexpected null");
-    
+    assertThat("Unexpected data for /items", searchSummary.getResults().size(), equalTo(5));
+
   }
 
 }

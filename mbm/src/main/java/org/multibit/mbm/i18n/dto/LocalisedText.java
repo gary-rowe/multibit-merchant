@@ -75,6 +75,6 @@ public class LocalisedText implements Serializable {
 
   @Override
   public String toString() {
-    return String.format("LocalisedText[id=%s, localeKey='%s']]", content, localeKey);
+    return String.format("LocalisedText[content='%s', localeKey='%s']]", content, localeKey);
   }
 }
