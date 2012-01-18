@@ -16,12 +16,12 @@ public class ItemTest {
     // Use the builder
     Item testObject=ItemBuilder.getInstance()
       .setSKU("abc123")
-      .addPrimaryFieldDetail(ItemField.SUMMARY,"en","English")
-      .addSecondaryFieldDetail(ItemField.SUMMARY,"fr_FR","French french")
-      .addSecondaryFieldDetail(ItemField.SUMMARY,"en_GB","British english")
-      .addSecondaryFieldDetail(ItemField.SUMMARY,"th_TH_TH","Thai with native script")
-      .addPrimaryFieldDetail(ItemField.TITLE,"en","English title")
-      .addSecondaryFieldDetail(ItemField.TITLE,"fr_FR","French title")
+      .addPrimaryFieldDetail(ItemField.SUMMARY, "English", "en")
+      .addSecondaryFieldDetail(ItemField.SUMMARY, "French french", "fr_FR")
+      .addSecondaryFieldDetail(ItemField.SUMMARY, "British english", "en_GB")
+      .addSecondaryFieldDetail(ItemField.SUMMARY, "Thai with native script", "th_TH_TH")
+      .addPrimaryFieldDetail(ItemField.TITLE, "English title", "en")
+      .addSecondaryFieldDetail(ItemField.TITLE, "French title", "fr_FR")
       .build();
    
     // Verify the results

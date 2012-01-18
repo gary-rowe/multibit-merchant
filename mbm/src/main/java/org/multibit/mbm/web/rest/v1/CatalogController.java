@@ -49,7 +49,7 @@ public class CatalogController {
     List<Item> items = Lists.newArrayList();
     if (query == null) {
       // Broad search of front page items
-      items = catalogService.getPagedItems(new ItemPagedQuery(firstResult, maxResults, title, summary, "en"));
+      items = catalogService.getPagedItems(new ItemPagedQuery(firstResult, maxResults, null));
     } else {
       // Assume SKU search at present
       Item item = catalogService.getBySKU(query);

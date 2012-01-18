@@ -4,14 +4,17 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.multibit.mbm.catalog.dto.Item;
 import org.multibit.mbm.catalog.dto.ItemField;
+import org.multibit.mbm.catalog.dto.ItemFieldDetail;
 import org.multibit.mbm.web.rest.v1.catalog.ItemPagedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 @Repository("hibernateItemDao")
 public class HibernateItemDao implements ItemDao {
@@ -54,24 +57,14 @@ public class HibernateItemDao implements ItemDao {
   @SuppressWarnings("unchecked")
   @Override
   public List<Item> getPagedItems(final ItemPagedQuery itemPagedQuery) {
+    Assert.notNull(itemPagedQuery, "itemPagedQuery cannot be null");
 
     return hibernateTemplate.executeFind(new HibernateCallback() {
       public Object doInHibernate(Session session) throws HibernateException, SQLException {
 
-        // TODO Consider a HQL query builder for Item
-        // All this string manipulation is just wrong
-
-        String hql = "select i from Item i ";
-        if (itemPagedQuery.getTitle() != null || itemPagedQuery.getSummary() != null) {
-          // Inner join on the item field map
-          hql += "inner join i.itemFieldMap ifm ";
-        }
-
-        if (itemPagedQuery.getTitle() != null ) {
-          // Compare against the TITLE field
-          hql += "where ifm.itemField = "+ItemField.TITLE.ordinal()+" and lower(ifm.primaryDetail.content) like lower('%"+itemPagedQuery.getTitle()+"%') ";
-        }
-
+        // Examine the example object to determine the query
+        String hql = buildHql(itemPagedQuery);
+        
         // Do the work now that the HQL is created
         return (List<Item>) session
           .createQuery(hql)
@@ -79,6 +72,45 @@ public class HibernateItemDao implements ItemDao {
           .setMaxResults(itemPagedQuery.getMaxResults())
           .list();
       }
+
+      /**
+       * @param itemPagedQuery The query containing an example entity
+       * @return The HQL required to locate matching entities
+       */
+      private String buildHql(ItemPagedQuery itemPagedQuery) {
+        Assert.notNull(itemPagedQuery, "itemPagedQuery cannot be null");
+
+        // The basic starting point
+        String hql = "select i from Item i ";
+        Item item = itemPagedQuery.getItem();
+        
+        if (item != null) {
+          // Check for simple inline fields (if applicable)
+          
+          // Check for complex joined fields (if applicable)
+          if (!item.getItemFieldMap().isEmpty()) {
+            // Potential for a complex query
+            // Require an inner join on the item field map since there is at least one entry using it
+            hql += "inner join i.itemFieldMap ifm where ";
+            
+            // Currently restrict searching against primary field entries (makes code and query simpler)
+            boolean first=true;
+            for (Map.Entry<ItemField, ItemFieldDetail> entry: item.getItemFieldMap().entrySet()) {
+              ItemFieldDetail itemFieldDetail = entry.getValue();
+              // Compare against the ItemField ordinal and apply a wildcard using a disjunction (OR) between fields
+              if (!first) {
+                hql += "or ";
+              }
+              hql += "(ifm.itemField = "+ itemFieldDetail.getItemField().ordinal();
+              hql += " and lower(ifm.primaryDetail.content) like lower('%"+itemFieldDetail.getPrimaryDetail().getContent()+"%')) ";
+              first=false;
+            }
+          }
+        }
+
+        return hql;
+      }
+
     });
 
   }
