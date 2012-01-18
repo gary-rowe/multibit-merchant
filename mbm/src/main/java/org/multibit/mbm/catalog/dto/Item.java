@@ -44,7 +44,7 @@ public class Item implements Serializable {
    * This collection is effectively the fields for the Item so must be eager
    */
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-  @MapKeyEnumerated()
+  @MapKeyEnumerated
   private Map<ItemField, ItemFieldDetail> itemFieldMap = Maps.newLinkedHashMap();
 
   

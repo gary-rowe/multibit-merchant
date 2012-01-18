@@ -45,6 +45,7 @@
   <!--<logger name="org.hibernate" level="DEBUG" />-->
   <!--<logger name="org.hibernate.tool.hbm2ddl" level="DEBUG" />-->
   <!--<logger name="org.hibernate.jdbc" level="DEBUG" />-->
+  <logger name="org.hibernate.SQL" level="DEBUG" />
   <!--<logger name="org.springframework" level="INFO" />-->
   <!--<logger name="org.springframework.transaction" level="DEBUG" />-->
   <!--<logger name="org.springframework.beans.factory.config" level="DEBUG" />-->

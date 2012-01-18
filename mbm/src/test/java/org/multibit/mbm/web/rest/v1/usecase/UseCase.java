@@ -12,5 +12,9 @@ import java.util.Map;
  *         
  */
 public interface UseCase {
-  void perform(Map<UseCaseParameter, Object> useCaseParameterMap);
+  /**
+   * Execute the given use case
+   * @param useCaseParameterMap The shared parameter map
+   */
+  void execute(Map<UseCaseParameter, Object> useCaseParameterMap);
 }

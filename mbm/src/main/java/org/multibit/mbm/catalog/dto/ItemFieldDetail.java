@@ -25,6 +25,11 @@ public class ItemFieldDetail {
   @Embedded
   private LocalisedText primaryDetail;
 
+  // This mirroring of the map key is essential to make the queries work
+  @Column(name = "item_detail", nullable = false)
+  @Enumerated(EnumType.ORDINAL)
+  private ItemField itemField;
+  
   @ElementCollection
   @CollectionTable(
     name = "item_field_secondary_details",
@@ -42,6 +47,17 @@ public class ItemFieldDetail {
 
   public void setId(Long id) {
     this.id = id;
+  }
+
+  /**
+   * @return The {@link ItemField} used as the key
+   */
+  public ItemField getItemField() {
+    return itemField;
+  }
+
+  public void setItemField(ItemField itemField) {
+    this.itemField = itemField;
   }
 
   /**

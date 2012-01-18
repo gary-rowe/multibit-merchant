@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import org.multibit.mbm.catalog.dto.Item;
 import org.multibit.mbm.catalog.service.CatalogService;
 import org.multibit.mbm.web.rest.v1.catalog.ItemDetail;
+import org.multibit.mbm.web.rest.v1.catalog.ItemPagedQuery;
 import org.multibit.mbm.web.rest.v1.catalog.ItemSearchSummary;
 import org.multibit.mbm.web.rest.v1.search.SearchResults;
 import org.springframework.stereotype.Controller;
@@ -24,25 +25,31 @@ public class CatalogController {
 
   /**
    * Search service for locating Items
-   * TODO Make this a generic search facility against items
-   * Consider support for named parameters (e.g. category:, reference: etc)
-   * Consider caching strategies (e.g. DAO against ItemFieldDetail with word index)
-   * Consider a Lucene or Hibernate Search implementation
    *
-   * @param query The query to decode
+   * @param query       The query to decode
+   * @param firstResult The first result index
+   * @param maxResults  The maximum number of results
+   * @param title       The title field
+   * @param summary     The summary field
    *
-   * @return A batch of matching results
+   * @return A batch of matching results with the given size limit
    */
   @RequestMapping(
-    value = "/catalog/item/search",
+    value = "/items",
     method = RequestMethod.GET)
   @ResponseBody
-  public SearchResults<ItemSearchSummary> search(@RequestParam(value = "q", required = false) String query) {
+  public SearchResults<ItemSearchSummary> search(
+    @RequestParam(value = "q", required = false) String query,
+    @RequestParam(value = "firstResult", required = false) int firstResult,
+    @RequestParam(value = "maxResults", required = false) int maxResults,
+    @RequestParam(value = "title", required = false) String title,
+    @RequestParam(value = "summary", required = false) String summary
+  ) {
 
     List<Item> items = Lists.newArrayList();
     if (query == null) {
       // Broad search of front page items
-      items = catalogService.getAllItems();
+      items = catalogService.getPagedItems(new ItemPagedQuery(firstResult, maxResults, title, summary, "en"));
     } else {
       // Assume SKU search at present
       Item item = catalogService.getBySKU(query);
@@ -60,8 +67,6 @@ public class CatalogController {
     return results;
   }
 
-  // /mbm/api/v1/catalog/item/{id}/{slug}
-
   /**
    * Retrieve a single Item
    * Consider support for named parameters (e.g. category:, reference: etc)
@@ -73,9 +78,12 @@ public class CatalogController {
    *
    * @return A batch of matching results
    */
-  @RequestMapping(value = "/catalog/item/{id}/{slug}", method = RequestMethod.GET)
+  @RequestMapping(value = "/item/{id}/{slug}", method = RequestMethod.GET)
   @ResponseBody
-  public ItemDetail findById(@PathVariable(value = "id") Long id, @PathVariable(value = "slug") String slug) {
+  public ItemDetail findById(
+    @PathVariable(value = "id") Long id,
+    @PathVariable(value = "slug") String slug
+  ) {
 
     // Broad search of front page items
     Item item = catalogService.getById(id);

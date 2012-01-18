@@ -1,6 +1,7 @@
 package org.multibit.mbm.catalog.dao;
 
 import org.multibit.mbm.catalog.dto.Item;
+import org.multibit.mbm.web.rest.v1.catalog.ItemPagedQuery;
 
 import java.util.List;
 
@@ -30,10 +31,10 @@ public interface ItemDao {
   Item getByGTIN(String gtin);
 
   /**
-   * TODO Remove this once the main search solution is in place since it does not scale
-   * @return All items
+   * @param itemPagedQuery The query parameters
+   * @return The matching items, or an empty list (never null)
    */
-  List<Item> getAllItems();
+  List<Item> getPagedItems(ItemPagedQuery itemPagedQuery);
 
   /**
    * Persist the given Item

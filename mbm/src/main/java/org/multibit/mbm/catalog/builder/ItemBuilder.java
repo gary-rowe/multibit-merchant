@@ -45,9 +45,7 @@ public class ItemBuilder {
     // Item is a DTO so requires a public default constructor
     Item item = new Item();
 
-    if (sku == null) {
-      throw new IllegalStateException("SKU is a mandatory field");
-    }
+    // TODO Change SKU to an optional one-to-many collection
     item.setSKU(sku);
 
     item.setGTIN(gtin);
@@ -145,7 +143,7 @@ public class ItemBuilder {
       itemFieldDetail.setPrimaryDetail(localisedText);
 
       item.setItemFieldDetail(itemField, itemFieldDetail);
-
+      itemFieldDetail.setItemField(itemField);
     }
   }
 
@@ -180,6 +178,7 @@ public class ItemBuilder {
       itemFieldDetail.getSecondaryDetails().add(localisedText);
 
       item.setItemFieldDetail(itemField, itemFieldDetail);
+      itemFieldDetail.setItemField(itemField);
 
     }
   }

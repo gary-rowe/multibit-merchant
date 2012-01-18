@@ -12,6 +12,7 @@ package org.multibit.mbm.web.rest.v1.usecase;
 public enum UseCaseParameter {
   // HTTP specific parameters
   HTTP_ACCEPT_HEADER,
+  HTTP_AUTHENTICATE_BASIC,
   // MBM specific parameters
   MBM_TOKEN,
   MBM_USER_NAME,
