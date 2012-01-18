@@ -18,65 +18,76 @@ public enum ItemField {
   /**
    * Appears in the item title
    */
-  TITLE,
+  TITLE("title", "titles"),
   /**
    * Appears in search engine results under the title (single sentence with no buzzwords)
    */
-  META_SUMMARY,
+  META_SUMMARY("meta_summary", "meta_summaries"),
   /**
    * Short summary of the item that appears in local search results (short paragraph)
    */
-  SUMMARY,
+  SUMMARY("summary", "summaries"),
   /**
    * URI to a thumbnail image associated with the item (typically appears in search results)
    */
-  IMAGE_THUMBNAIL_URI,
+  IMAGE_THUMBNAIL_URI("image_thumbnail_uri", "image_thumbnail_uris"),
   /**
    * URI to a video associated with the item
    */
-  VIDEO_URI,
+  VIDEO_URI("video_uri", "video_uris"),
   /**
    * URI to audio associated with the item
    */
-  AUDIO_URI,
+  AUDIO_URI("audio_uri", "audio_uris"),
   /**
    * Describes the main features of the item (max 50 words)
    */
-  FEATURES,
+  FEATURES("feature", "features"),
   /**
    * Describes the benefits that the user will get from purchasing the item (max 100 words)
    */
-  BENEFITS,
+  BENEFITS("benefit", "benefits"),
   /**
    * Describes the experience that the user will get as a result of purchasing the item (max 150 words)
    */
-  EXPERIENCE,
+  EXPERIENCE("experience", "experiences"),
   /**
    * Detailed technical specifications (put all relevant technical information)
    */
-  SPECIFICATION,
+  SPECIFICATION("specification", "specifications"),
   /**
    * An entertaining story associated with the item
    */
-  BACK_STORY,
+  BACK_STORY("back_story", "back_stories"),
   /**
    * Detailed instructions for use
    */
-  INSTRUCTIONS,
+  INSTRUCTIONS("instruction", "instructions"),
   /**
    * Dimensions of item associated with length, breadth and width
    */
-  DIMENSIONS_SIZE,
+  SIZE("size", "sizes"),
   /**
    * Dimensions of item associated with weight (useful for shipping cost calculations)
    */
-  DIMENSIONS_WEIGHT,
+  WEIGHT("weight", "weights"),
+  /**
+   * Dimensions of item associated with weight (useful for shipping cost calculations)
+   */
+  VOLUME("volume", "volumes"),
   /**
    * Dimensions of item associated with time (length of video material)
    */
-  DIMENSIONS_DURATION,
+  DURATION("duration", "durations"),
 
   // End of enum
   ;
+  
+  private final String singularResource;
+  private final String pluralResource;
 
+  private ItemField(String singularResource, String pluralResource) {
+    this.pluralResource = pluralResource;
+    this.singularResource = singularResource;
+  }
 }

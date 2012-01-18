@@ -1,15 +1,14 @@
 package org.multibit.mbm.cart.dao;
 
 import org.junit.Test;
-import org.multibit.demo.DatabaseLoader;
 import org.multibit.mbm.cart.dto.Cart;
 import org.multibit.mbm.catalog.dao.ItemDao;
 import org.multibit.mbm.catalog.dto.Item;
 import org.multibit.mbm.customer.builder.CustomerBuilder;
 import org.multibit.mbm.customer.dao.CustomerDao;
 import org.multibit.mbm.customer.dto.Customer;
+import org.multibit.mbm.test.BaseIntegrationTests;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 
 import javax.annotation.Resource;
 
@@ -20,7 +19,7 @@ import static org.junit.Assert.*;
  * Integration test to verify the Hibernate annotations of the DTOs against a generated schema
  */
 @ContextConfiguration(locations = {"/spring/test-mbm-context.xml"})
-public class HibernateCartDaoIntegrationTest extends AbstractTransactionalJUnit4SpringContextTests {
+public class HibernateCartDaoIntegrationTest extends BaseIntegrationTests {
 
   @Resource(name = "hibernateCartDao")
   private CartDao testObject;
@@ -33,12 +32,6 @@ public class HibernateCartDaoIntegrationTest extends AbstractTransactionalJUnit4
 
   @Test
   public void testPersist() {
-
-    // Configure a standard set of data (transactional)
-    DatabaseLoader databaseLoader = new DatabaseLoader();
-    databaseLoader.setCustomerDao(customerDao);
-    databaseLoader.setItemDao(itemDao);
-    databaseLoader.initialise();
 
     Customer customer = customerDao.getCustomerByUUID("abc123");
 
@@ -125,7 +118,7 @@ public class HibernateCartDaoIntegrationTest extends AbstractTransactionalJUnit4
     Customer customer = CustomerBuilder.getInstance()
       .setUUID("abc123")
       .build();
-    
+
     customer = customerDao.saveOrUpdate(customer);
 
     Cart actualCart = testObject.getInitialisedCartByCustomer(customer);

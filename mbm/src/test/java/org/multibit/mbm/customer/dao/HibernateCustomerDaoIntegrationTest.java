@@ -5,8 +5,8 @@ import org.multibit.mbm.customer.builder.CustomerBuilder;
 import org.multibit.mbm.customer.dto.ContactMethod;
 import org.multibit.mbm.customer.dto.ContactMethodDetail;
 import org.multibit.mbm.customer.dto.Customer;
+import org.multibit.mbm.test.BaseIntegrationTests;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 
 import javax.annotation.Resource;
 
@@ -17,7 +17,7 @@ import static org.junit.Assert.assertThat;
  * Integration test to verify the Hibernate annotations of the DTOs against a generated schema
  */
 @ContextConfiguration(locations = {"/spring/test-mbm-context.xml"})
-public class HibernateCustomerDaoIntegrationTest extends AbstractTransactionalJUnit4SpringContextTests {
+public class HibernateCustomerDaoIntegrationTest extends BaseIntegrationTests {
 
   @Resource(name= "hibernateCustomerDao")
   CustomerDao testObject;
