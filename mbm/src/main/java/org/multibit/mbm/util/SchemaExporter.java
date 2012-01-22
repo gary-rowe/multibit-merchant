@@ -70,6 +70,7 @@ public class SchemaExporter {
       "org.multibit.mbm.catalog.dto",
       "org.multibit.mbm.customer.dto",
       "org.multibit.mbm.i18n.dto",
+      "org.multibit.mbm.security.dto",
       "");
 
     SchemaExporter schemaExporter = new SchemaExporter(packages);

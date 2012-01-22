@@ -23,15 +23,6 @@ public class HibernateCustomerDao implements CustomerDao {
   }
 
   @Override
-  public Customer getCustomerByUUID(String uuid) {
-    List customers = hibernateTemplate.find("from Customer c where c.uuid = ?", uuid);
-    if (customers==null || customers.isEmpty()) {
-      throw new CustomerNotFoundException();
-    }
-    return (Customer) customers.get(0);
-  }
-
-  @Override
   public Customer saveOrUpdate(Customer customer) {
     hibernateTemplate.saveOrUpdate(customer);
     return customer;

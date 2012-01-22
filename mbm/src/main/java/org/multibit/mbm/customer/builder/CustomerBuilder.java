@@ -1,11 +1,6 @@
 package org.multibit.mbm.customer.builder;
 
-import com.google.common.collect.Lists;
-import org.multibit.mbm.customer.dto.ContactMethod;
-import org.multibit.mbm.customer.dto.ContactMethodDetail;
 import org.multibit.mbm.customer.dto.Customer;
-
-import java.util.List;
 
 /**
  *  <p>Builder to provide the following to {@link Customer}:</p>
@@ -17,10 +12,6 @@ import java.util.List;
  *         
  */
 public class CustomerBuilder {
-
-  private String openId;
-  private String uuid;
-  private List<AddContactMethod> addContactMethods = Lists.newArrayList();
 
   private boolean isBuilt= false;
 
@@ -40,16 +31,7 @@ public class CustomerBuilder {
     // Customer is a DTO and so requires a default constructor
     Customer customer = new Customer();
 
-    customer.setOpenId(openId);
-
-    if (uuid == null) {
-      throw new IllegalStateException("UUID cannot be null");
-    }
-    customer.setUUID(uuid);
-
-    for (AddContactMethod addContactMethod: addContactMethods) {
-      addContactMethod.applyTo(customer);
-    }
+    // TODO Add support for building Carts etc otherwise this builder has no purpose
 
     isBuilt = true;
     
@@ -62,50 +44,12 @@ public class CustomerBuilder {
    */
   public CustomerBuilder setOpenId(String openId) {
     validateState();
-    this.openId=openId;
-    return this;  
-  }
-
-  /**
-   * @param uuid The UUID (e.g. "1234-5678")
-   * @return The builder
-   */
-  public CustomerBuilder setUUID(String uuid) {
-    validateState();
-    this.uuid=uuid;
-    return this;
-  }
-
-  public CustomerBuilder addContactMethod(ContactMethod contactMethod, String detail) {
-    addContactMethods.add(new AddContactMethod(contactMethod,detail));
-
     return this;
   }
 
   private void validateState() {
     if (isBuilt) {
       throw new IllegalStateException("The entity has been built");
-    }
-  }
-
-  /**
-   * Handles adding a new contact method to the customer
-   */
-  private class AddContactMethod {
-    private final ContactMethod contactMethod;
-    private final String detail;
-    
-    private AddContactMethod(ContactMethod contactMethod, String detail) {
-      this.contactMethod = contactMethod;
-      this.detail = detail;
-    }
-
-    void applyTo(Customer customer) {
-      ContactMethodDetail contactMethodDetail = new ContactMethodDetail();
-      contactMethodDetail.setPrimaryDetail(detail);
-
-      customer.setContactMethodDetail(contactMethod,contactMethodDetail);
-
     }
   }
 

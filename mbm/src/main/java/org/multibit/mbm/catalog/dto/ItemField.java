@@ -83,11 +83,46 @@ public enum ItemField {
   // End of enum
   ;
   
-  private final String singularResource;
-  private final String pluralResource;
+  private final String singular;
+  private final String plural;
 
-  private ItemField(String singularResource, String pluralResource) {
-    this.pluralResource = pluralResource;
-    this.singularResource = singularResource;
+  private ItemField(String singular, String plural) {
+    this.plural = plural;
+    this.singular = singular;
   }
+
+  public String getPlural() {
+    return plural;
+  }
+
+  public String getSingular() {
+    return singular;
+  }
+
+  /**
+   * @param singular The singular form for the resource name
+   * @return The matching ItemField, or null
+   */
+  public ItemField findBySingular(String singular) {
+    for (ItemField itemField: ItemField.values()) {
+      if (itemField.getSingular().equals(singular)) {
+        return itemField;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * @param plural The plural form for the resource name
+   * @return The matching ItemField, or null
+   */
+  public ItemField findByPlural(String plural) {
+    for (ItemField itemField: ItemField.values()) {
+      if (itemField.getPlural().equals(plural)) {
+        return itemField;
+      }
+    }
+    return null;
+  }
+  
 }

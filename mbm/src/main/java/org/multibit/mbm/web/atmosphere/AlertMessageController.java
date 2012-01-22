@@ -2,8 +2,8 @@ package org.multibit.mbm.web.atmosphere;
 
 import org.atmosphere.cpr.AtmosphereResource;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.multibit.mbm.customer.service.CustomerService;
-import org.multibit.mbm.customer.dto.Customer;
+import org.multibit.mbm.security.dto.User;
+import org.multibit.mbm.security.service.SecurityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -31,7 +31,7 @@ public class AlertMessageController {
   private static final Logger log = LoggerFactory.getLogger(AlertMessageController.class);
 
   @Resource
-  private CustomerService customerService;
+  private SecurityService securityService;
 
   /**
    * Send out a regular alert
@@ -43,20 +43,20 @@ public class AlertMessageController {
 
     final ObjectMapper mapper = new ObjectMapper();
 
-    // Suspend the underlying connection for the client to alow Reverse Ajax
+    // Suspend the underlying connection for the client to allow Reverse Ajax
     event.suspend();
 
     // 
     log.debug("Principal is {}",principal);
 
 
-    Customer customer = customerService.getCustomerByPrincipal(principal);
+    User user = securityService.getUserByPrincipal(principal);
 
-    if (customer==null) {
+    if (user==null) {
       log.info("Alert subscription without OpenId");
       return;
     } else {
-      BroadcastService.INSTANCE.addBroadcaster(customer.getId(), event.getBroadcaster());
+      BroadcastService.INSTANCE.addBroadcaster(user.getId(), event.getBroadcaster());
     }
   }
 

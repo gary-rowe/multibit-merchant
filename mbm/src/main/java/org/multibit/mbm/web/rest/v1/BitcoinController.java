@@ -1,9 +1,9 @@
 package org.multibit.mbm.web.rest.v1;
 
 import org.multibit.mbm.bitcoin.service.BitcoinService;
-import org.multibit.mbm.customer.service.CustomerService;
-import org.multibit.mbm.customer.dto.Customer;
 import org.multibit.mbm.qrcode.SwatchGenerator;
+import org.multibit.mbm.security.dto.User;
+import org.multibit.mbm.security.service.SecurityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -36,8 +36,8 @@ public class BitcoinController {
   @Resource(name="defaultBitcoinService")
   BitcoinService bitcoinService;
 
-  @Resource()
-  CustomerService customerService;
+  @Resource(name="securityService")
+  SecurityService securityService;
 
   // TODO Reinstate this annotation
 //  @Resource
@@ -81,12 +81,12 @@ public class BitcoinController {
   @RequestMapping(value = "/new-address", method = RequestMethod.POST)
   @ResponseBody
   public String newAddress(Principal principal) {
-    Customer customer = customerService.getCustomerByPrincipal(principal);
-    if (customer == null) {
+    User user = securityService.getUserByPrincipal(principal);
+    if (user == null) {
       // TODO Should this be an authorisation failure?
       return null;
     }
-    String newBitcoinAddress = bitcoinService.getNextAddress(customer.getId());
+    String newBitcoinAddress = bitcoinService.getNextAddress(user.getId());
     log.debug("New bitcoin address requested '{}'", newBitcoinAddress);
     return newBitcoinAddress;
   }

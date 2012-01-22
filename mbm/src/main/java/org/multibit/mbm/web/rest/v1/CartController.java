@@ -3,6 +3,8 @@ package org.multibit.mbm.web.rest.v1;
 import org.multibit.mbm.catalog.service.CatalogService;
 import org.multibit.mbm.customer.dto.Customer;
 import org.multibit.mbm.customer.service.CustomerService;
+import org.multibit.mbm.security.dto.User;
+import org.multibit.mbm.security.service.SecurityService;
 import org.multibit.mbm.util.CookieUtils;
 import org.multibit.mbm.web.rest.v1.cart.CartSummary;
 import org.slf4j.Logger;
@@ -27,10 +29,13 @@ public class CartController extends BaseController {
 
   private static final Logger log = LoggerFactory.getLogger(CartController.class);
 
+  @Resource(name="securityService")
+  private SecurityService securityService = null;
+
   @Resource(name = "catalogService")
   private CatalogService catalogService = null;
 
-  @Resource(name = "customerService")
+  @Resource(name="customerService")
   private CustomerService customerService = null;
 
   /**
@@ -50,7 +55,7 @@ public class CartController extends BaseController {
 
     // TODO Generalise this behaviour (possibly into the CustomerController)
     // Ensure that a limit on the creation of Customers from a given IP address is enforced
-    Customer customer;
+    User user;
     if (principal == null || principal instanceof AnonymousAuthenticationToken) {
       log.debug("Looking for UUID in cookie");
       // Require a UUID to proceed
@@ -62,14 +67,14 @@ public class CartController extends BaseController {
           throw new UUIDNotFoundException();
         }
       }
-      log.debug("Persisting anonymous Customer with UUID '{}'", uuid);
-      customer = customerService.persistAnonymousCustomer(uuid);
+      log.debug("Persisting anonymous User with UUID '{}'", uuid);
+      user = securityService.persistAnonymousUser(uuid);
     } else {
-      log.debug("Persisting authenticated Customer");
-      customer = customerService.getCustomerByPrincipal(principal);
+      log.debug("Persisting authenticated User");
+      user = securityService.getUserByPrincipal(principal);
     }
 
-    customer = customerService.setCartItemQuantity(customer, itemId, quantity);
+    Customer customer = customerService.setCartItemQuantity(user.getCustomer(), itemId, quantity);
 
     return new CartSummary(customer.getCart());
 

@@ -13,13 +13,6 @@ public interface CustomerDao {
   Customer getCustomerByOpenId(String openId) throws CustomerNotFoundException;
 
   /**
-   * Attempt to locate the Customer by a UUID
-   * @param uuid The UUID that acts as a unique identifier when Open ID is not available
-   * @return A matching customer
-   */
-  Customer getCustomerByUUID(String uuid);
-
-  /**
    * Persist the given Customer
    * @param customer A Customer (either new or updated)
    * @return The persisted Customer

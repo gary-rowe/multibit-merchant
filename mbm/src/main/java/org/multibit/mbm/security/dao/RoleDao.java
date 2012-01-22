@@ -1,0 +1,36 @@
+package org.multibit.mbm.security.dao;
+
+import org.multibit.mbm.security.dto.Role;
+
+public interface RoleDao {
+
+  /**
+   * Attempt to locate the Role
+   * @param openId The OpenId token
+   * @return A matching Role
+   * @throws org.multibit.mbm.security.dao.RoleNotFoundException If something goes wrong
+   */
+  Role getRoleByOpenId(String openId) throws RoleNotFoundException;
+
+  /**
+   * Attempt to locate the Role by a UUID
+   * @param uuid The UUID that acts as a unique identifier when Open ID is not available
+   * @return A matching Role
+   */
+  Role getRoleByUUID(String uuid);
+
+  /**
+   * Persist the given Role
+   * @param Role A Role (either new or updated)
+   * @return The persisted Role
+   */
+  Role saveOrUpdate(Role Role);
+
+  /**
+   * <p>Force an immediate in-transaction flush</p>
+   * <p>Normally, this is only used in test code but must be on the interface to ensure
+   * that injection works as expected</p>
+   */
+  void flush();
+
+}
