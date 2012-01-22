@@ -38,15 +38,6 @@ public class CustomerBuilder {
     return customer;
   }
 
-  /**
-   * @param openId The openId (e.g. "abc123")
-   * @return The builder
-   */
-  public CustomerBuilder setOpenId(String openId) {
-    validateState();
-    return this;
-  }
-
   private void validateState() {
     if (isBuilt) {
       throw new IllegalStateException("The entity has been built");

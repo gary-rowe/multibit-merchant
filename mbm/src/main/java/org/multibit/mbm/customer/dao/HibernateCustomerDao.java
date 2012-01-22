@@ -1,16 +1,16 @@
 package org.multibit.mbm.customer.dao;
 
 import org.multibit.mbm.customer.dto.Customer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 @Repository("hibernateCustomerDao")
 public class HibernateCustomerDao implements CustomerDao {
 
-  @Autowired
+  @Resource(name="hibernateTemplate")
   private HibernateTemplate hibernateTemplate = null;
 
   @Override

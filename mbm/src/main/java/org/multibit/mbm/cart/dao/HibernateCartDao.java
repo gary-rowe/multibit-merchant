@@ -8,12 +8,13 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 @Repository("hibernateCartDao")
 public class HibernateCartDao implements CartDao {
 
-  @Autowired
+  @Resource(name="hibernateTemplate")
   private HibernateTemplate hibernateTemplate = null;
 
   @Override

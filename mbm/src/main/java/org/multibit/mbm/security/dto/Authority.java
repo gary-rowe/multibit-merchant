@@ -20,7 +20,7 @@ public enum Authority {
   // Subjects are based on outward looking relationships (OWN, OTHERS)
   // Entities are based on primary entities (USER, CUSTOMER, CART, ITEM, INVOICE)
 
-  // Security
+  // Users
   CHANGE_OWN_PASSWORD(false),
 
   // Invoices
@@ -30,12 +30,24 @@ public enum Authority {
   DELETE_INVOICES(true),
 
   // Orders
-  
-  // Carts
+  CREATE_ORDERS(true),
+  RETRIEVE_ORDERS(false),
+  UPDATE_ORDERS(true),
+  DELETE_ORDERS(true),
   
   // Customers
-  
+  CREATE_CUSTOMERS(true),
+  RETRIEVE_CUSTOMERS(true),
+  UPDATE_CUSTOMERS(true),
+  DELETE_CUSTOMERS(true),
 
+  // Items
+  CREATE_ITEMS(true),
+  RETRIEVE_ITEMS(false),
+  UPDATE_ITEMS(true),
+  DELETE_ITEMS(true),
+  
+  
   ; // End of enum
 
   /**

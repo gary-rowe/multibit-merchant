@@ -1,16 +1,16 @@
 package org.multibit.mbm.security.dao;
 
 import org.multibit.mbm.security.dto.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 @Repository("hibernateUserDao")
 public class HibernateUserDao implements UserDao {
 
-  @Autowired
+  @Resource(name="hibernateTemplate")
   private HibernateTemplate hibernateTemplate = null;
 
   @Override
