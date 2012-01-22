@@ -6,18 +6,11 @@ public interface RoleDao {
 
   /**
    * Attempt to locate the Role
-   * @param openId The OpenId token
+   * @param name The name (e.g. "ROLE_ADMIN")
    * @return A matching Role
    * @throws org.multibit.mbm.security.dao.RoleNotFoundException If something goes wrong
    */
-  Role getRoleByOpenId(String openId) throws RoleNotFoundException;
-
-  /**
-   * Attempt to locate the Role by a UUID
-   * @param uuid The UUID that acts as a unique identifier when Open ID is not available
-   * @return A matching Role
-   */
-  Role getRoleByUUID(String uuid);
+  Role getRoleByName(String name) throws RoleNotFoundException;
 
   /**
    * Persist the given Role

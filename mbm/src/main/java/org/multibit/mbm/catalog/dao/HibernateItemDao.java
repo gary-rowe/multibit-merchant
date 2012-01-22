@@ -6,12 +6,12 @@ import org.multibit.mbm.catalog.dto.Item;
 import org.multibit.mbm.catalog.dto.ItemField;
 import org.multibit.mbm.catalog.dto.ItemFieldDetail;
 import org.multibit.mbm.web.rest.v1.catalog.ItemPagedQuery;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
+import javax.annotation.Resource;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +19,7 @@ import java.util.Map;
 @Repository("hibernateItemDao")
 public class HibernateItemDao implements ItemDao {
 
-  @Autowired
+  @Resource(name="hibernateTemplate")
   private HibernateTemplate hibernateTemplate = null;
 
   @Override

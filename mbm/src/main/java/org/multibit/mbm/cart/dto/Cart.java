@@ -93,7 +93,7 @@ public class Cart implements Serializable {
   /**
    * @param item The Item to search for
    *
-   * @return The CartItem that contains the Item
+   * @return The CartItem that contains the Item, or null
    */
   @Transient
   public CartItem getCartItemByItem(Item item) {

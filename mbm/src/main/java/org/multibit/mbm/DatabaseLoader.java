@@ -4,10 +4,15 @@ import org.multibit.mbm.catalog.builder.ItemBuilder;
 import org.multibit.mbm.catalog.dao.ItemDao;
 import org.multibit.mbm.catalog.dto.Item;
 import org.multibit.mbm.catalog.dto.ItemField;
+import org.multibit.mbm.customer.builder.CustomerBuilder;
 import org.multibit.mbm.customer.dao.CustomerDao;
+import org.multibit.mbm.customer.dto.Customer;
+import org.multibit.mbm.security.builder.RoleBuilder;
 import org.multibit.mbm.security.builder.UserBuilder;
+import org.multibit.mbm.security.dao.RoleDao;
 import org.multibit.mbm.security.dao.UserDao;
 import org.multibit.mbm.security.dto.ContactMethod;
+import org.multibit.mbm.security.dto.Role;
 import org.multibit.mbm.security.dto.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +42,13 @@ public class DatabaseLoader {
   @Resource(name = "hibernateUserDao")
   private UserDao userDao;
 
+  @Resource(name = "hibernateRoleDao")
+  private RoleDao roleDao;
+
+  private Role adminRole = null;
+
+  private Role customerRole = null;
+
   /**
    * Handles the process of initialising the database using the DAOs
    */
@@ -44,10 +56,33 @@ public class DatabaseLoader {
 
     log.info("Populating database");
 
+    buildRolesAndAuthorities();
     buildUsers();
     buildCatalogBooks();
 
     log.info("Complete");
+
+  }
+
+  private void buildRolesAndAuthorities() {
+
+    // Build the administration Role and Authorities
+    adminRole = RoleBuilder.getInstance()
+      .setName("ROLE_ADMIN")
+      .setDescription("Administration role")
+      .addAdminAuthorities()
+      .build();
+    adminRole = roleDao.saveOrUpdate(adminRole);
+
+    // Build the customer Role and Authorities
+    customerRole = RoleBuilder.getInstance()
+      .setName("ROLE_CUSTOMER")
+      .setDescription("Customer role")
+      .addCustomerAuthorities()
+      .build();
+    customerRole = roleDao.saveOrUpdate(customerRole);
+
+    roleDao.flush();
 
   }
 
@@ -111,38 +146,45 @@ public class DatabaseLoader {
       .setUsername("trent")
       .setPassword("trent")
       .addContactMethod(ContactMethod.FIRST_NAME, "Trent")
-      .addContactMethod(ContactMethod.EMAIL,"admin@example.org")
-      .configureAsAdmin()
+      .addContactMethod(ContactMethod.EMAIL, "admin@example.org")
+      .addRole(adminRole)
       .build();
 
     userDao.saveOrUpdate(admin);
 
-    // TODO Introduce various staff roles
+    // TODO Introduce various staff roles (dispatch, sales etc)
 
     // Customers
     // Alice
-    User alice = UserBuilder.getInstance()
+    Customer aliceCustomer = CustomerBuilder.getInstance()
+      .build();
+
+    User aliceUser = UserBuilder.getInstance()
       .setUUID("alice123")
       .setUsername("alice")
       .setPassword("alice")
       .addContactMethod(ContactMethod.FIRST_NAME, "Alice")
       .addContactMethod(ContactMethod.LAST_NAME, "Customer")
-      .addContactMethod(ContactMethod.EMAIL,"alice@example.org")
-      .configureAsCustomer()
+      .addContactMethod(ContactMethod.EMAIL, "alice@example.org")
+      .addRole(customerRole)
+      .addCustomer(aliceCustomer)
       .build();
 
 
-    userDao.saveOrUpdate(alice);
+    userDao.saveOrUpdate(aliceUser);
 
     // Bob
+    Customer bobCustomer = CustomerBuilder.getInstance()
+      .build();
+
     User bob = UserBuilder.getInstance()
       .setUUID("bob123")
       .setUsername("bob")
       .setPassword("bob")
       .addContactMethod(ContactMethod.FIRST_NAME, "Bob")
       .addContactMethod(ContactMethod.LAST_NAME, "Customer")
-      .addContactMethod(ContactMethod.EMAIL,"bob@example.org")
-      .configureAsCustomer()
+      .addContactMethod(ContactMethod.EMAIL, "bob@example.org")
+      .addRole(customerRole)
       .build();
 
     userDao.saveOrUpdate(bob);

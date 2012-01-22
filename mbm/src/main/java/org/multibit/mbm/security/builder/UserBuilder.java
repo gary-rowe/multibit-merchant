@@ -1,11 +1,8 @@
 package org.multibit.mbm.security.builder;
 
 import com.google.common.collect.Lists;
-import org.multibit.mbm.customer.builder.CustomerBuilder;
 import org.multibit.mbm.customer.dto.Customer;
-import org.multibit.mbm.security.dto.ContactMethod;
-import org.multibit.mbm.security.dto.ContactMethodDetail;
-import org.multibit.mbm.security.dto.User;
+import org.multibit.mbm.security.dto.*;
 
 import java.util.List;
 
@@ -23,6 +20,7 @@ public class UserBuilder {
   private String openId;
   private String uuid;
   private List<AddContactMethod> addContactMethods = Lists.newArrayList();
+  private List<AddRole> addRoles = Lists.newArrayList();
   private String username;
   private String password;
   private Customer customer;
@@ -56,6 +54,10 @@ public class UserBuilder {
     user.setPassword(password);
     user.setCustomer(customer);
 
+    for (AddRole addRole: addRoles) {
+      addRole.applyTo(user);
+    }
+
     for (AddContactMethod addContactMethod: addContactMethods) {
       addContactMethod.applyTo(user);
     }
@@ -86,7 +88,15 @@ public class UserBuilder {
   }
 
   public UserBuilder addContactMethod(ContactMethod contactMethod, String detail) {
+
     addContactMethods.add(new AddContactMethod(contactMethod, detail));
+
+    return this;
+  }
+
+  public UserBuilder addRole(Role role) {
+
+    addRoles.add(new AddRole(role));
 
     return this;
   }
@@ -108,27 +118,12 @@ public class UserBuilder {
   }
 
   /**
-   * Configure the various supporting structure to make this user into an administrator
+   * Add the Customer to the User (one permitted)
    * @return The builder
    */
-  public UserBuilder configureAsAdmin() {
+  public UserBuilder addCustomer(Customer customer) {
 
-    // TODO Add in suitable Roles and Authorities
-
-    return this;
-  }
-
-  /**
-   * Configure the various supporting structure to make this user into an administrator
-   * @return The builder
-   */
-  public UserBuilder configureAsCustomer() {
-
-    // TODO Add in suitable Roles and Authorities
-
-    customer = CustomerBuilder.
-      getInstance()
-      .build(); 
+    this.customer = customer;
     return this;
   }
 
@@ -149,6 +144,31 @@ public class UserBuilder {
       contactMethodDetail.setPrimaryDetail(detail);
 
       user.setContactMethodDetail(contactMethod,contactMethodDetail);
+
+    }
+  }
+
+  /**
+   * Handles adding a new contact method to the user
+   */
+  private class AddRole {
+    private final Role role;
+
+    private AddRole(Role role) {
+      this.role = role;
+    }
+
+    void applyTo(User user) {
+
+      UserRole userRole = new UserRole();
+
+      UserRole.UserRolePk userRolePk = new UserRole.UserRolePk();
+      userRolePk.setUser(user);
+      userRolePk.setRole(role);
+
+      userRole.setPrimaryKey(userRolePk);
+
+      user.getUserRoles().add(userRole);
 
     }
   }
