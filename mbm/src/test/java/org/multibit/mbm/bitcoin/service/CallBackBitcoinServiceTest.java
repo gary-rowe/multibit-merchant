@@ -2,7 +2,6 @@ package org.multibit.mbm.bitcoin.service;
 
 import com.google.bitcoin.core.*;
 import org.junit.Test;
-import org.multibit.mbm.qrcode.SwatchGenerator;
 
 import java.awt.image.BufferedImage;
 import java.math.BigInteger;
@@ -36,7 +35,7 @@ public class CallBackBitcoinServiceTest{
     addressBucket.add(address3);
     
     CallBackBitcoinService testObject = new CallBackBitcoinService();
-    testObject.setSwatchGenerator(new SwatchGenerator());
+    //testObject.setSwatchGenerator(new SwatchGenerator());
 
     assertNotNull(testObject);
     
@@ -70,7 +69,7 @@ public class CallBackBitcoinServiceTest{
     addressBucket.add(address2);
        
     CallBackBitcoinService testObject = new CallBackBitcoinService();
-    testObject.setSwatchGenerator(new SwatchGenerator());
+    //testObject.setSwatchGenerator(new SwatchGenerator());
    
     assertNotNull(testObject);
     
@@ -109,7 +108,7 @@ public class CallBackBitcoinServiceTest{
     addressBucket.add(address2);
        
     CallBackBitcoinService testObject = new CallBackBitcoinService();
-    testObject.setSwatchGenerator(new SwatchGenerator());
+    //testObject.setSwatchGenerator(new SwatchGenerator());
 
     assertNotNull(testObject);
     
