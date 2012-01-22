@@ -55,6 +55,7 @@ public class Cart implements Serializable {
    * Mandatory field constructor required for builders
    */
   public Cart(Customer customer) {
+    Assert.notNull(customer,"customer cannot be null");
     this.customer = customer;
     customer.setCart(this);
   }
@@ -107,8 +108,6 @@ public class Cart implements Serializable {
   }
 
   /**
-   * Required
-   *
    * @return The internal unique ID
    */
   public Long getId() {

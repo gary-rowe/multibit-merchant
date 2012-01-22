@@ -1,4 +1,4 @@
-package org.multibit.mbm.customer.dto;
+package org.multibit.mbm.security.dto;
 
 import com.google.common.collect.Sets;
 import org.multibit.mbm.util.ObjectUtils;

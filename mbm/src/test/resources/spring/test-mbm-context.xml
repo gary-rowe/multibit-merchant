@@ -15,7 +15,7 @@
        http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
   <!-- Integration tests require a database loader -->
-  <bean id="databaseLoader" class="org.multibit.demo.DatabaseLoader" init-method="initialise" />
+  <bean id="databaseLoader" class="org.multibit.mbm.DatabaseLoader" init-method="initialise" />
 
   <!-- Requires a configured TransactionManager -->
   <import resource="classpath:/spring/mbm-hibernate-service.xml" />
@@ -37,6 +37,7 @@
         <value>org.multibit.mbm.catalog</value>
         <value>org.multibit.mbm.customer</value>
         <value>org.multibit.mbm.i18n</value>
+        <value>org.multibit.mbm.security.dto</value>
       </list>
       </property>
     <property name="dataSource" ref="dataSource"/>

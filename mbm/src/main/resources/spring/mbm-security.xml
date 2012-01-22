@@ -34,6 +34,8 @@
     <!-- Sign in form -->
     <form-login login-page='/authenticate.html'/>
 
+    <http-basic />
+
     <!-- After sign out -->
     <logout logout-success-url="/index.html"/>
 

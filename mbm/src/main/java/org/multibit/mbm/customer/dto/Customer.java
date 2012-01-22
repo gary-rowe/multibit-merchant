@@ -1,12 +1,10 @@
 package org.multibit.mbm.customer.dto;
 
-import com.google.common.collect.Maps;
 import org.multibit.mbm.cart.dto.Cart;
 import org.multibit.mbm.util.ObjectUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Map;
 
 /**
  * <p>DTO to provide the following to the application</p>
@@ -28,15 +26,6 @@ public class Customer implements Serializable {
   @Column(name = "id", unique = true, nullable = false)
   private Long id = null;
 
-  @Column(name = "open_id", nullable = true)
-  private String openId = null;
-
-  @Column(name = "uuid", nullable = false)
-  private String uuid= null;
-
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-  @MapKeyEnumerated()
-  private Map<ContactMethod, ContactMethodDetail> contactMethodMap = Maps.newLinkedHashMap();
 
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name="cart_fk")
@@ -56,14 +45,6 @@ public class Customer implements Serializable {
     this.id = id;
   }
 
-  public String getOpenId() {
-    return openId;
-  }
-
-  public void setOpenId(String openId) {
-    this.openId = openId;
-  }
-
   /**
    * @return The shopping Cart associated with this Customer (if present)
    */
@@ -73,45 +54,6 @@ public class Customer implements Serializable {
 
   public void setCart(Cart cart) {
     this.cart = cart;
-  }
-
-  /**
-   * @return The {@link ContactMethod} map
-   */
-  public Map<ContactMethod, ContactMethodDetail> getContactMethodMap() {
-    return contactMethodMap;
-  }
-
-  public void setContactMethodMap(Map<ContactMethod, ContactMethodDetail> contactMethodMap) {
-    this.contactMethodMap = contactMethodMap;
-  }
-
-  /**
-   * @return The UUID associated with this Customer
-   */
-  public String getUUID() {
-    return uuid;
-  }
-
-  public void setUUID(String uuid) {
-    this.uuid = uuid;
-  }
-  /**
-   * @param contactMethod The contact method (e.g. "EMAIL", "VOIP")
-   * @return The {@link ContactMethodDetail} providing the information, or null if none available
-   */
-  @Transient
-  public ContactMethodDetail getContactMethodDetail(ContactMethod contactMethod) {
-    return contactMethodMap.get(contactMethod);
-  }
-
-  /**
-   * @param contactMethod The contact method (e.g. "EMAIL", "VOIP")
-   * @param contactMethodDetail The contact method details providing the email address, or VOIP address etc
-   */
-  @Transient
-  public void setContactMethodDetail(ContactMethod contactMethod, ContactMethodDetail contactMethodDetail) {
-    contactMethodMap.put(contactMethod, contactMethodDetail);
   }
 
   @Override
@@ -125,19 +67,18 @@ public class Customer implements Serializable {
     final Customer other = (Customer) obj;
 
     return ObjectUtils.isEqual(
-      id, other.id,
-      openId, other.openId
+      id, other.id
     );
   }
 
   @Override
   public int hashCode() {
-    return ObjectUtils.getHashCode(id, openId);
+    return ObjectUtils.getHashCode(id);
   }
 
   @Override
   public String toString() {
-    return String.format("Customer[id=%s, openId='%s']]", id, openId);
+    return String.format("Customer[id=%s]]", id);
   }
 
 }

@@ -4,9 +4,10 @@ import org.junit.Test;
 import org.multibit.mbm.cart.dto.Cart;
 import org.multibit.mbm.catalog.dao.ItemDao;
 import org.multibit.mbm.catalog.dto.Item;
-import org.multibit.mbm.customer.builder.CustomerBuilder;
 import org.multibit.mbm.customer.dao.CustomerDao;
 import org.multibit.mbm.customer.dto.Customer;
+import org.multibit.mbm.security.dao.UserDao;
+import org.multibit.mbm.security.dto.User;
 import org.multibit.mbm.test.BaseIntegrationTests;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -30,12 +31,16 @@ public class HibernateCartDaoIntegrationTest extends BaseIntegrationTests {
   @Resource(name = "hibernateItemDao")
   private ItemDao itemDao;
 
+  @Resource(name = "hibernateUserDao")
+  private UserDao userDao;
+
   @Test
   public void testPersist() {
 
-    Customer customer = customerDao.getCustomerByUUID("abc123");
+    User user = userDao.getUserByUUID("alice123");
+    assertNotNull("Unexpected missing user",user);
 
-    Cart expectedCart = new Cart(customer);
+    Cart expectedCart = new Cart(user.getCustomer());
 
     // Persist with insert (new cart)
     int originalCartRows = countRowsInTable("carts");
@@ -115,9 +120,9 @@ public class HibernateCartDaoIntegrationTest extends BaseIntegrationTests {
   @Test
   public void testGetInitialisedCartByCustomer() {
 
-    Customer customer = CustomerBuilder.getInstance()
-      .setUUID("abc123")
-      .build();
+    User user = userDao.getUserByUUID("alice123");
+
+    Customer customer = user.getCustomer();
 
     customer = customerDao.saveOrUpdate(customer);
 

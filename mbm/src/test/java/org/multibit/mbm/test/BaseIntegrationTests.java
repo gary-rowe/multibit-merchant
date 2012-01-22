@@ -1,7 +1,7 @@
 package org.multibit.mbm.test;
 
 import org.junit.Ignore;
-import org.multibit.demo.DatabaseLoader;
+import org.multibit.mbm.DatabaseLoader;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 
 import javax.annotation.Resource;

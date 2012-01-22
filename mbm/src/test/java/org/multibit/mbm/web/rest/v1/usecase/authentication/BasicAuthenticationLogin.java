@@ -1,10 +1,14 @@
 package org.multibit.mbm.web.rest.v1.usecase.authentication;
 
+import org.multibit.mbm.web.rest.v1.search.SearchResults;
 import org.multibit.mbm.web.rest.v1.usecase.BaseUseCase;
 import org.multibit.mbm.web.rest.v1.usecase.UseCaseParameter;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
 
 /**
  *  <p>UseCase to provide the following to {@link org.multibit.mbm.web.rest.v1.usecase.UseCase}:</p>
@@ -19,6 +23,11 @@ public class BasicAuthenticationLogin extends BaseUseCase {
 
   @Override
   protected void doExecute(Map<UseCaseParameter, Object> useCaseParameterMap, RestTemplate restTemplate) {
-    //To change body of implemented methods use File | Settings | File Templates.
+
+    SearchResults searchSummary = restTemplate.getForObject(
+      buildResourceUri("/items"),
+      SearchResults.class);
+
+    assertThat("Unexpected data for /items", searchSummary.getResults().size(), equalTo(5));
   }
 }

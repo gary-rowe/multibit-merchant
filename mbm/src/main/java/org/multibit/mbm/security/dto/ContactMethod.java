@@ -1,4 +1,4 @@
-package org.multibit.mbm.customer.dto;
+package org.multibit.mbm.security.dto;
 
 /**
  *  <p>Enum to provide the following to Customer:<br>

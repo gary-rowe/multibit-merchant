@@ -1,13 +1,14 @@
-package org.multibit.demo;
+package org.multibit.mbm;
 
 import org.multibit.mbm.catalog.builder.ItemBuilder;
 import org.multibit.mbm.catalog.dao.ItemDao;
 import org.multibit.mbm.catalog.dto.Item;
 import org.multibit.mbm.catalog.dto.ItemField;
-import org.multibit.mbm.customer.builder.CustomerBuilder;
 import org.multibit.mbm.customer.dao.CustomerDao;
-import org.multibit.mbm.customer.dto.ContactMethod;
-import org.multibit.mbm.customer.dto.Customer;
+import org.multibit.mbm.security.builder.UserBuilder;
+import org.multibit.mbm.security.dao.UserDao;
+import org.multibit.mbm.security.dto.ContactMethod;
+import org.multibit.mbm.security.dto.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -33,6 +34,9 @@ public class DatabaseLoader {
   @Resource(name = "hibernateCustomerDao")
   private CustomerDao customerDao;
 
+  @Resource(name = "hibernateUserDao")
+  private UserDao userDao;
+
   /**
    * Handles the process of initialising the database using the DAOs
    */
@@ -40,7 +44,7 @@ public class DatabaseLoader {
 
     log.info("Populating database");
 
-    buildCustomerAdmin();
+    buildUsers();
     buildCatalogBooks();
 
     log.info("Complete");
@@ -96,15 +100,55 @@ public class DatabaseLoader {
 
     itemDao.saveOrUpdate(book5);
 
+    itemDao.flush();
   }
 
-  private void buildCustomerAdmin() {
-    Customer admin = CustomerBuilder.getInstance()
-      .setUUID("abc123")
+  private void buildUsers() {
+    // Admin
+
+    User admin = UserBuilder.getInstance()
+      .setUUID("trent123")
+      .setUsername("trent")
+      .setPassword("trent")
+      .addContactMethod(ContactMethod.FIRST_NAME, "Trent")
       .addContactMethod(ContactMethod.EMAIL,"admin@example.org")
+      .configureAsAdmin()
       .build();
 
-    customerDao.saveOrUpdate(admin);
+    userDao.saveOrUpdate(admin);
+
+    // TODO Introduce various staff roles
+
+    // Customers
+    // Alice
+    User alice = UserBuilder.getInstance()
+      .setUUID("alice123")
+      .setUsername("alice")
+      .setPassword("alice")
+      .addContactMethod(ContactMethod.FIRST_NAME, "Alice")
+      .addContactMethod(ContactMethod.LAST_NAME, "Customer")
+      .addContactMethod(ContactMethod.EMAIL,"alice@example.org")
+      .configureAsCustomer()
+      .build();
+
+
+    userDao.saveOrUpdate(alice);
+
+    // Bob
+    User bob = UserBuilder.getInstance()
+      .setUUID("bob123")
+      .setUsername("bob")
+      .setPassword("bob")
+      .addContactMethod(ContactMethod.FIRST_NAME, "Bob")
+      .addContactMethod(ContactMethod.LAST_NAME, "Customer")
+      .addContactMethod(ContactMethod.EMAIL,"bob@example.org")
+      .configureAsCustomer()
+      .build();
+
+    userDao.saveOrUpdate(bob);
+
+    userDao.flush();
+
   }
 
   public void setCustomerDao(CustomerDao customerDao) {
