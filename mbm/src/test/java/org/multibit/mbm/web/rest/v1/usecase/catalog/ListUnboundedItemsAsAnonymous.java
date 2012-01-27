@@ -23,8 +23,6 @@ public class ListUnboundedItemsAsAnonymous extends BaseUseCase {
   @Override
   protected void doExecute(Map<UseCaseParameter, Object> useCaseParameterMap, RestTemplate restTemplate) {
 
-    ItemSearchResponse is= new ItemSearchResponse();
-
     // Perform a default search of all promotional items
     ItemSearchResponse itemSearchResponse = restTemplate.getForObject(
       buildResourceUri("/items"),
