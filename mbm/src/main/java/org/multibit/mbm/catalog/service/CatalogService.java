@@ -2,7 +2,7 @@ package org.multibit.mbm.catalog.service;
 
 import org.multibit.mbm.catalog.dao.ItemDao;
 import org.multibit.mbm.catalog.dto.Item;
-import org.multibit.mbm.web.rest.v1.catalog.ItemPagedQuery;
+import org.multibit.mbm.web.rest.v1.client.catalog.ItemPagedQueryResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,11 +49,11 @@ public class CatalogService {
   /**
    * Attempts return a list of Items
    * @return An Item or null if not found
-   * @param itemPagedQuery The query parameters
+   * @param itemPagedQueryResponse The query parameters
    */
   @Transactional(propagation = Propagation.REQUIRED)
-  public List<Item> getPagedItems(ItemPagedQuery itemPagedQuery) {
-    return itemDao.getPagedItems(itemPagedQuery);
+  public List<Item> getPagedItems(ItemPagedQueryResponse itemPagedQueryResponse) {
+    return itemDao.getPagedItems(itemPagedQueryResponse);
   }
 
   /**

@@ -5,7 +5,7 @@ import org.hibernate.Session;
 import org.multibit.mbm.catalog.dto.Item;
 import org.multibit.mbm.catalog.dto.ItemField;
 import org.multibit.mbm.catalog.dto.ItemFieldDetail;
-import org.multibit.mbm.web.rest.v1.catalog.ItemPagedQuery;
+import org.multibit.mbm.web.rest.v1.client.catalog.ItemPagedQueryResponse;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
@@ -56,33 +56,33 @@ public class HibernateItemDao implements ItemDao {
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<Item> getPagedItems(final ItemPagedQuery itemPagedQuery) {
-    Assert.notNull(itemPagedQuery, "itemPagedQuery cannot be null");
+  public List<Item> getPagedItems(final ItemPagedQueryResponse itemPagedQueryResponse) {
+    Assert.notNull(itemPagedQueryResponse, "itemPagedQueryResponse cannot be null");
 
     return hibernateTemplate.executeFind(new HibernateCallback() {
       public Object doInHibernate(Session session) throws HibernateException, SQLException {
 
         // Examine the example object to determine the query
-        String hql = buildHql(itemPagedQuery);
+        String hql = buildHql(itemPagedQueryResponse);
         
         // Do the work now that the HQL is created
         return (List<Item>) session
           .createQuery(hql)
-          .setFirstResult(itemPagedQuery.getFirstResult())
-          .setMaxResults(itemPagedQuery.getMaxResults())
+          .setFirstResult(itemPagedQueryResponse.getFirstResult())
+          .setMaxResults(itemPagedQueryResponse.getMaxResults())
           .list();
       }
 
       /**
-       * @param itemPagedQuery The query containing an example entity
+       * @param itemPagedQueryResponse The query containing an example entity
        * @return The HQL required to locate matching entities
        */
-      private String buildHql(ItemPagedQuery itemPagedQuery) {
-        Assert.notNull(itemPagedQuery, "itemPagedQuery cannot be null");
+      private String buildHql(ItemPagedQueryResponse itemPagedQueryResponse) {
+        Assert.notNull(itemPagedQueryResponse, "itemPagedQueryResponse cannot be null");
 
         // The basic starting point
         String hql = "select i from Item i ";
-        Item item = itemPagedQuery.getItem();
+        Item item = itemPagedQueryResponse.getItem();
         
         if (item != null) {
           // Check for simple inline fields (if applicable)

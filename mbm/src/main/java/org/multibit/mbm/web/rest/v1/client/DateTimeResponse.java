@@ -1,4 +1,4 @@
-package org.multibit.mbm.web.rest.v1;
+package org.multibit.mbm.web.rest.v1.client;
 
 import org.joda.time.DateTime;
 
@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name = "time")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class DateTimeSummary {
+public class DateTimeResponse {
 
   @XmlElement
   private final int year;
@@ -37,7 +37,7 @@ public class DateTimeSummary {
   @XmlElement
   private final String timeZone;
 
-  public DateTimeSummary(DateTime now) {
+  public DateTimeResponse(DateTime now) {
     this.year = now.getYear();
     this.month = now.getMonthOfYear();
     this.day = now.getDayOfMonth();

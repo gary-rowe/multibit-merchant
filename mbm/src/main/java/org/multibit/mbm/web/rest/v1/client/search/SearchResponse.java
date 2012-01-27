@@ -1,4 +1,4 @@
-package org.multibit.mbm.web.rest.v1.search;
+package org.multibit.mbm.web.rest.v1.client.search;
 
 /**
  *  <p>Signature interface to provide the following to {@link SearchResults}:</p>
@@ -9,5 +9,5 @@ package org.multibit.mbm.web.rest.v1.search;
  * @since 1.0.0
  *         
  */
-public interface SearchSummary {
+public interface SearchResponse {
 }

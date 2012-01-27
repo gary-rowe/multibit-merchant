@@ -8,7 +8,7 @@ import org.multibit.mbm.catalog.dto.ItemFieldDetail;
 import org.multibit.mbm.customer.dao.CustomerDao;
 import org.multibit.mbm.i18n.dto.LocalisedText;
 import org.multibit.mbm.test.BaseIntegrationTests;
-import org.multibit.mbm.web.rest.v1.catalog.ItemPagedQuery;
+import org.multibit.mbm.web.rest.v1.client.catalog.ItemPagedQueryResponse;
 import org.springframework.test.context.ContextConfiguration;
 
 import javax.annotation.Resource;
@@ -125,8 +125,8 @@ public class HibernateItemDaoIntegrationTest extends BaseIntegrationTests {
     testObject.flush();
 
     // All items (check against inefficient joins)
-    ItemPagedQuery itemPagedQuery = new ItemPagedQuery(0,10,null);
-    List<Item> items = testObject.getPagedItems(itemPagedQuery);
+    ItemPagedQueryResponse itemPagedQueryResponse = new ItemPagedQueryResponse(0,10,null);
+    List<Item> items = testObject.getPagedItems(itemPagedQueryResponse);
 
     // TODO Examine the transaction boundaries for these tests
     assertThat("Unexpected data in Item page 1", items.size(), equalTo(5));
@@ -137,24 +137,24 @@ public class HibernateItemDaoIntegrationTest extends BaseIntegrationTests {
     assertThat("Unexpected data ordering in Item [4,1]", items.get(4).getId(), equalTo(5L));
 
     // Page 1
-    itemPagedQuery = new ItemPagedQuery(0,2,null);
-    items = testObject.getPagedItems(itemPagedQuery);
+    itemPagedQueryResponse = new ItemPagedQueryResponse(0,2,null);
+    items = testObject.getPagedItems(itemPagedQueryResponse);
     
     assertThat("Unexpected data in Item page 1", items.size(), equalTo(2));
     assertThat("Unexpected data ordering in Item [0,1]", items.get(0).getId(), equalTo(1L));
     assertThat("Unexpected data ordering in Item [1,1]", items.get(1).getId(), equalTo(2L));
 
     // Page 2
-    itemPagedQuery = new ItemPagedQuery(2,2,null);
-    items = testObject.getPagedItems(itemPagedQuery);
+    itemPagedQueryResponse = new ItemPagedQueryResponse(2,2,null);
+    items = testObject.getPagedItems(itemPagedQueryResponse);
 
     assertThat("Unexpected data in Item page 2", items.size(), equalTo(2));
     assertThat("Unexpected data ordering in Item [0,2]", items.get(0).getId(), equalTo(3L));
     assertThat("Unexpected data ordering in Item [1,2]", items.get(1).getId(), equalTo(4L));
 
     // Page 3
-    itemPagedQuery = new ItemPagedQuery(4,2,null);
-    items = testObject.getPagedItems(itemPagedQuery);
+    itemPagedQueryResponse = new ItemPagedQueryResponse(4,2,null);
+    items = testObject.getPagedItems(itemPagedQueryResponse);
 
     assertThat("Unexpected data in Item page 3", items.size(), equalTo(1));
     assertThat("Unexpected data ordering in Item [0,3]", items.get(0).getId(), equalTo(5L));
@@ -166,8 +166,8 @@ public class HibernateItemDaoIntegrationTest extends BaseIntegrationTests {
       .getInstance()
       .addPrimaryFieldDetail(ItemField.TITLE, "Central Heating", "en")
       .build();
-    itemPagedQuery = new ItemPagedQuery(0,5,example);
-    items = testObject.getPagedItems(itemPagedQuery);
+    itemPagedQueryResponse = new ItemPagedQueryResponse(0,5,example);
+    items = testObject.getPagedItems(itemPagedQueryResponse);
 
     assertThat("Unexpected data in Item page 1 (title)", items.size(), equalTo(1));
     assertThat("Unexpected data ordering in Item (title) [0,1]", items.get(0).getId(), equalTo(3L));
@@ -178,8 +178,8 @@ public class HibernateItemDaoIntegrationTest extends BaseIntegrationTests {
       .addPrimaryFieldDetail(ItemField.TITLE, "aardvark", "en")
       .addPrimaryFieldDetail(ItemField.SUMMARY, "trust me", "en")
       .build();
-    itemPagedQuery = new ItemPagedQuery(0,5,example);
-    items = testObject.getPagedItems(itemPagedQuery);
+    itemPagedQueryResponse = new ItemPagedQueryResponse(0,5,example);
+    items = testObject.getPagedItems(itemPagedQueryResponse);
 
     assertThat("Unexpected data in Item page 1 (summary)", items.size(), equalTo(1));
     assertThat("Unexpected data ordering in Item (summary) [0,1]", items.get(0).getId(), equalTo(1L));

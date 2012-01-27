@@ -45,21 +45,23 @@ public abstract class BaseUseCase implements UseCase {
     // Set accept headers
 
     // Check for authentication
-    if (useCaseParameterMap.containsKey(UseCaseParameter.HTTP_AUTHENTICATE_BASIC))
-    httpClient.getCredentialsProvider().setCredentials(
-      new AuthScope(targetHost.getHostName(), targetHost.getPort()),
-      new UsernamePasswordCredentials("username", "password"));
+    if (useCaseParameterMap.containsKey(UseCaseParameter.HTTP_AUTHENTICATE_BASIC)) {
+      httpClient.getCredentialsProvider().setCredentials(
+        new AuthScope(targetHost.getHostName(), targetHost.getPort()),
+        new UsernamePasswordCredentials("username", "password"));
 
-    // Create AuthCache instance
-    AuthCache authCache = new BasicAuthCache();
+      // Create AuthCache instance
+      AuthCache authCache = new BasicAuthCache();
 
-    // Generate BASIC scheme object and add it to the local auth cache
-    BasicScheme basicAuth = new BasicScheme();
-    authCache.put(targetHost, basicAuth);
+      // Generate BASIC scheme object and add it to the local auth cache
+      BasicScheme basicAuth = new BasicScheme();
+      authCache.put(targetHost, basicAuth);
 
-    // Add AuthCache to the execution context
-    BasicHttpContext httpContext = new BasicHttpContext();
-    httpContext.setAttribute(ClientContext.AUTH_CACHE, authCache);
+      // Add AuthCache to the execution context
+      BasicHttpContext httpContext = new BasicHttpContext();
+      httpContext.setAttribute(ClientContext.AUTH_CACHE, authCache);
+
+    }
 
     // Use the HTTP client for REST requests
     HttpComponentsClientHttpRequestFactory commons = new HttpComponentsClientHttpRequestFactory(httpClient);
@@ -80,7 +82,7 @@ public abstract class BaseUseCase implements UseCase {
   
   public final void execute(Map<UseCaseParameter, Object> useCaseParameterMap) {
     RestTemplate restTemplate=getConfiguredRestTemplate(useCaseParameterMap);
-    doExecute(useCaseParameterMap, null);
+    doExecute(useCaseParameterMap, restTemplate);
   }
 
   /**
