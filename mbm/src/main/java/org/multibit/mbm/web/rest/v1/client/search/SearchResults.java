@@ -1,4 +1,4 @@
-package org.multibit.mbm.web.rest.v1.search;
+package org.multibit.mbm.web.rest.v1.client.search;
 
 /**
  *  <p>Value object to provide the following to RESTful controllers:</p>
@@ -11,7 +11,7 @@ package org.multibit.mbm.web.rest.v1.search;
  */
 
 import com.google.common.collect.Lists;
-import org.multibit.mbm.web.rest.v1.catalog.ItemSearchSummary;
+import org.multibit.mbm.web.rest.v1.client.catalog.ItemSummary;
 
 import javax.xml.bind.annotation.*;
 import java.util.List;
@@ -21,11 +21,11 @@ import java.util.List;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
-@XmlSeeAlso(ItemSearchSummary.class)
-public class SearchResults<T extends SearchSummary> {
+@XmlSeeAlso(ItemSummary.class)
+public class SearchResults<T extends SearchResponse> {
   
   @XmlElementWrapper(name = "results")
-  @XmlElement(name = "item", type = ItemSearchSummary.class)
+  @XmlElement(name = "item", type = ItemSummary.class)
   private List<T> results= Lists.newArrayList();
 
   @XmlElement

@@ -3,7 +3,7 @@ package org.multibit.mbm.web.rest.v1.usecase;
 import java.util.Map;
 
 /**
- *  <p>Interface to provide the following to {@link org.multibit.mbm.web.rest.v1.FunctionalTestExecutor}:</p>
+ *  <p>Interface to provide the following to {@link FunctionalTestExecutor}:</p>
  *  <ul>
  *  <li>Provision of standard execution methods</li>
  *  </ul>

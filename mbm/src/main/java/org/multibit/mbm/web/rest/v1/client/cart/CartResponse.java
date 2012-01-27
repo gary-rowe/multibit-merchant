@@ -1,30 +1,40 @@
-package org.multibit.mbm.web.rest.v1.cart;
+package org.multibit.mbm.web.rest.v1.client.cart;
 
 import com.google.common.collect.Lists;
 import org.multibit.mbm.cart.dto.Cart;
 import org.multibit.mbm.cart.dto.CartItem;
+import org.multibit.mbm.web.rest.v1.client.BaseRequest;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 /**
- *  <p>Value object to provide the following to {@link org.multibit.mbm.web.rest.v1.CartController}:</p>
+ *  <p>Response to provide the following to {@link org.multibit.mbm.web.rest.v1.controller.CartController}:</p>
  *  <ul>
- *  <li>Provision of state information for the contents of a Cart</li>
+ *  <li>Provides the contents of a Cart</li>
  *  </ul>
  *
  * @since 1.0.0
  *         
  */
-public class CartSummary {
+public class CartResponse extends BaseRequest {
 
   private List<CartItemSummary> cartItemSummaries = Lists.newArrayList();
   private String btcTotal = "";
   private String localTotal = "";
   private String localSymbol = "&euro;";
 
-  public CartSummary(Cart cart) {
+  /**
+   * Default constructor
+   */
+  public CartResponse() {
+  }
+
+  /**
+   * @param cart The Cart to base the summary upon
+   */
+  public CartResponse(Cart cart) {
     // Populate the items (keeping a running total)
     double btcSubTotal = 0;
     double localSubTotal = 0;

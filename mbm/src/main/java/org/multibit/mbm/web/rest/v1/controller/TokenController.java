@@ -1,4 +1,4 @@
-package org.multibit.mbm.web.rest.v1;
+package org.multibit.mbm.web.rest.v1.controller;
 
 import org.multibit.mbm.util.CookieUtils;
 import org.springframework.stereotype.Controller;

@@ -1,44 +1,60 @@
-package org.multibit.mbm.web.rest.v1.cart;
+package org.multibit.mbm.web.rest.v1.client.catalog;
 
-import org.multibit.mbm.cart.dto.CartItem;
 import org.multibit.mbm.catalog.dto.Item;
 import org.multibit.mbm.catalog.dto.ItemField;
 import org.multibit.mbm.util.DateUtils;
+import org.multibit.mbm.web.rest.v1.client.search.SearchResponse;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 
 /**
- *  <p>Value object to provide the following to {@link org.multibit.mbm.web.rest.v1.CartController}:</p>
+ *  <p>Response to provide the following to {@link org.multibit.mbm.web.rest.v1.client.search.SearchResults}:</p>
  *  <ul>
- *  <li>Provision of detailed state information for a Cart</li>
+ *  <li>Minimal fields of an Item suitable for use in a search result list</li>
  *  </ul>
  *
  * @since 1.0.0
  *         
  */
-public class CartItemSummary {
+@XmlAccessorType(XmlAccessType.FIELD)
+public class ItemSummary implements SearchResponse {
 
-  private final String id;
-  private final String title;
-  private final String summary;
-  private final String imgThumbnailUri;
-  private final int quantity;
+  @XmlElement
+  private String id;
+  @XmlElement
+  private String title;
+  @XmlElement
+  private String summary;
+  @XmlElement
+  private String imgThumbnailUri;
+  @XmlElement
   private String slug;
-  private String offeredDeliveryDate= DateUtils.formatFriendlyDate(DateUtils.nowUtc().plusDays(2));
+  @XmlElement
+  private String offeredDeliveryDate=DateUtils.formatFriendlyDate(DateUtils.nowUtc().plusDays(2));
+  @XmlElement
   private String btcPrice="3.6";
+  @XmlElement
   private String localPrice="1.4";
+  @XmlElement
   private String localSymbol="&euro;";
-  private String uom="each";
 
   /**
-   * TODO Widen the mandatory fields to include pricing, stock status and delivery
-   * @param cartItem The Item
+   * Default constructor for marshaling
    */
-  public CartItemSummary(CartItem cartItem) {
-    Item item = cartItem.getItem();
+  public ItemSummary() {
+  }
+
+  /**
+   * Utility constructor
+   * @param item The Item
+   */
+  public ItemSummary(Item item) {
     this.id = item.getId().toString();
     this.title = item.getItemFieldContent(ItemField.TITLE);
     this.summary = item.getItemFieldContent(ItemField.SUMMARY);
     this.imgThumbnailUri = item.getItemFieldContent(ItemField.IMAGE_THUMBNAIL_URI);
-    this.quantity = cartItem.getQuantity();
     this.slug = title.replaceAll(" ","-").toLowerCase();
   }
 
@@ -78,15 +94,4 @@ public class CartItemSummary {
     return localSymbol;
   }
 
-  public int getQuantity() {
-    return quantity;
-  }
-
-  public String getUom() {
-    return uom;
-  }
-
-  public void setUom(String uom) {
-    this.uom = uom;
-  }
 }

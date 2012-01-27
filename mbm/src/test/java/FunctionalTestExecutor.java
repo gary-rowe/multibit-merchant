@@ -1,13 +1,10 @@
-package org.multibit.mbm.web.rest.v1;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.junit.Ignore;
-import org.multibit.mbm.web.rest.v1.usecase.authentication.AnonymousLogin;
-import org.multibit.mbm.web.rest.v1.usecase.authentication.BasicAuthenticationLogin;
 import org.multibit.mbm.web.rest.v1.usecase.UseCase;
 import org.multibit.mbm.web.rest.v1.usecase.UseCaseParameter;
-import org.multibit.mbm.web.rest.v1.usecase.catalog.ListItems;
+import org.multibit.mbm.web.rest.v1.usecase.cart.AddItemToAnonymousCart;
+import org.multibit.mbm.web.rest.v1.usecase.catalog.ListUnboundedItemsAsAnonymous;
 
 import java.util.List;
 import java.util.Map;
@@ -36,9 +33,10 @@ public class FunctionalTestExecutor {
     FunctionalTestExecutor executor = new FunctionalTestExecutor();
 
     // Add the use cases
-    executor.addUseCase(new ListItems());
-    executor.addUseCase(new AnonymousLogin());
-    executor.addUseCase(new BasicAuthenticationLogin());
+    executor.addUseCase(new ListUnboundedItemsAsAnonymous());
+    executor.addUseCase(new AddItemToAnonymousCart());
+    // TODO executor.addUseCase(new AnonymousLogin());
+    // TODO executor.addUseCase(new BasicAuthenticationLogin());
 
     executor.execute();
   }

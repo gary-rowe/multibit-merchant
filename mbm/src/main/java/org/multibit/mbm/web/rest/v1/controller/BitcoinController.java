@@ -1,4 +1,4 @@
-package org.multibit.mbm.web.rest.v1;
+package org.multibit.mbm.web.rest.v1.controller;
 
 import org.multibit.mbm.bitcoin.service.BitcoinService;
 import org.multibit.mbm.qrcode.SwatchGenerator;
