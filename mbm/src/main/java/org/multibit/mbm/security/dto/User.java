@@ -102,7 +102,7 @@ public class User implements Serializable {
   @MapKeyEnumerated
   private Map<UserField, UserFieldDetail> userFieldMap = Maps.newLinkedHashMap();
 
-  @OneToMany(targetEntity = UserRole.class, cascade = {CascadeType.ALL}, mappedBy = "primaryKey.user")
+  @OneToMany(targetEntity = UserRole.class, cascade = {CascadeType.ALL}, mappedBy = "primaryKey.user", fetch = FetchType.EAGER)
   @Cascade({org.hibernate.annotations.CascadeType.DELETE_ORPHAN})
   private Set<UserRole> userRoles = Sets.newLinkedHashSet();
 

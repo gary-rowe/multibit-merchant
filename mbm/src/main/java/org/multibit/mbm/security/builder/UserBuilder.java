@@ -1,6 +1,7 @@
 package org.multibit.mbm.security.builder;
 
 import com.google.common.collect.Lists;
+import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.multibit.mbm.customer.dto.Customer;
 import org.multibit.mbm.security.dto.*;
 
@@ -25,7 +26,7 @@ public class UserBuilder {
   private String password;
   private Customer customer;
 
-  private boolean isBuilt= false;
+  private boolean isBuilt = false;
 
   /**
    * @return A new instance of the builder
@@ -39,7 +40,7 @@ public class UserBuilder {
    */
   public User build() {
     validateState();
-    
+
     // User is a DTO and so requires a default constructor
     User user = new User();
 
@@ -49,41 +50,49 @@ public class UserBuilder {
       throw new IllegalStateException("UUID cannot be null");
     }
     user.setUUID(uuid);
-    
+
     user.setUsername(username);
-    user.setPassword(password);
+
+    if (password != null) {
+      // Digest the plain password
+      String encryptedPassword = new StrongPasswordEncryptor().encryptPassword(password);
+      user.setPassword(encryptedPassword);
+    }
+
     user.setCustomer(customer);
 
-    for (AddRole addRole: addRoles) {
+    for (AddRole addRole : addRoles) {
       addRole.applyTo(user);
     }
 
-    for (AddContactMethod addContactMethod: addContactMethods) {
+    for (AddContactMethod addContactMethod : addContactMethods) {
       addContactMethod.applyTo(user);
     }
 
     isBuilt = true;
-    
+
     return user;
   }
 
   /**
    * @param openId The openId (e.g. "abc123")
+   *
    * @return The builder
    */
   public UserBuilder setOpenId(String openId) {
     validateState();
-    this.openId=openId;
-    return this;  
+    this.openId = openId;
+    return this;
   }
 
   /**
    * @param uuid The UUID (e.g. "1234-5678")
+   *
    * @return The builder
    */
   public UserBuilder setUUID(String uuid) {
     validateState();
-    this.uuid=uuid;
+    this.uuid = uuid;
     return this;
   }
 
@@ -119,6 +128,7 @@ public class UserBuilder {
 
   /**
    * Add the Customer to the User (one permitted)
+   *
    * @return The builder
    */
   public UserBuilder addCustomer(Customer customer) {
@@ -133,7 +143,7 @@ public class UserBuilder {
   private class AddContactMethod {
     private final ContactMethod contactMethod;
     private final String detail;
-    
+
     private AddContactMethod(ContactMethod contactMethod, String detail) {
       this.contactMethod = contactMethod;
       this.detail = detail;
@@ -143,7 +153,7 @@ public class UserBuilder {
       ContactMethodDetail contactMethodDetail = new ContactMethodDetail();
       contactMethodDetail.setPrimaryDetail(detail);
 
-      user.setContactMethodDetail(contactMethod,contactMethodDetail);
+      user.setContactMethodDetail(contactMethod, contactMethodDetail);
 
     }
   }

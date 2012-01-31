@@ -20,13 +20,20 @@ import static org.junit.Assert.assertThat;
 /**
  *  <p>UseCase to provide the following to {@link org.multibit.mbm.web.rest.v1.usecase.UseCase}:</p>
  *  <ul>
- *  <li>Adds an Item to an anonymous cart</li>
+ *  <li>Adds an Item to an authenticated cart</li>
  *  </ul>
  *
  * @since 1.0.0
  *         
  */
-public class AddItemToAnonymousCart extends BaseUseCase {
+public class AddItemToAuthenticatedCart extends BaseUseCase {
+
+  @Override
+  protected void doConfiguration(Map<UseCaseParameter, Object> useCaseParameterMap) {
+    // Configure the RestTemplate to use Basic authentication
+    useCaseParameterMap.put(UseCaseParameter.HTTP_AUTHENTICATE_BASIC,new String[] {"alice","alice"});
+  }
+
   @Override
   protected void doExecute(Map<UseCaseParameter, Object> useCaseParameterMap, RestTemplate restTemplate) {
 
