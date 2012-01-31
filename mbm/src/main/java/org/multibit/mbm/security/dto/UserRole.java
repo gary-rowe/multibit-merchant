@@ -95,7 +95,7 @@ public class UserRole implements Serializable {
     /**
      * @return returns the role
      */
-    @ManyToOne(targetEntity = Role.class)
+    @ManyToOne(targetEntity = Role.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
     public Role getRole() {
       return role;

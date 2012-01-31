@@ -9,6 +9,7 @@ import org.multibit.mbm.security.dto.User;
 import org.multibit.mbm.util.OpenIdUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.openid.OpenIDAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -86,6 +87,8 @@ public class SecurityService {
   /**
    * <p>Attempt to locate the User using the security Principal</p>
    *
+   * TODO Rethink how this is done to keep things DRY
+   *
    * @param principal The security principal (if null then null is returned)
    *
    * @return A User or null if not found
@@ -119,6 +122,16 @@ public class SecurityService {
         contactMethodDetail.setPrimaryDetail(emailAddress);
         user = userDao.saveOrUpdate(user);
       }
+    }
+
+    if (principal instanceof UsernamePasswordAuthenticationToken) {
+      // Extract information from the Basic authentication principal (this will be the UUID)
+      UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) principal;
+      String uuid = token.getPrincipal().toString();
+
+      // Attempt to locate the User
+      user = userDao.getUserByUUID(uuid);
+
     }
 
     return user;

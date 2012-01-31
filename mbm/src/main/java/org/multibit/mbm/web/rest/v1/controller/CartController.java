@@ -70,7 +70,7 @@ public class CartController extends BaseController {
     }
 
     // Ensure the new Cart can be found
-    addLocationHeader("/cart"+customer.getCart().getId(),request,response);
+    addLocationHeader("/cart/"+customer.getCart().getId(),request,response);
 
     // Provide the entire Cart as a shortcut for lazy clients
     return new CartResponse(customer.getCart());

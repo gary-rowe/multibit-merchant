@@ -12,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -72,15 +71,13 @@ public class CatalogController {
    * Consider a Lucene or Hibernate Search implementation
    *
    * @param id   The id to locate
-   * @param slug The slug (ignored but helps with SEO)
    *
    * @return A batch of matching results
    */
-  @RequestMapping(value = "/item/{id}/{slug}", method = RequestMethod.GET)
+  @RequestMapping(value = "/item/{id}", method = RequestMethod.GET)
   @ResponseBody
   public ItemSearchResponse findById(
-    @PathVariable(value = "id") Long id,
-    @PathVariable(value = "slug") String slug
+    @PathVariable(value = "id") Long id
   ) {
 
     // Broad search of front page items

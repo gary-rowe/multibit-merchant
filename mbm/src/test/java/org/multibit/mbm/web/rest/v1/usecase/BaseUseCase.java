@@ -26,9 +26,12 @@ import java.util.Map;
 public abstract class BaseUseCase implements UseCase {
 
   public static final String HOST = "localhost";
-  public static final int PORT = 8080;
+  public static final int PORT = 8443;
 
-  public static final String API_PREFIX = String.format("http://%s:%d/mbm/api/v1", HOST, PORT);
+  public static final String API_PREFIX = String.format("https://%s:%d/mbm/api/v1", HOST, PORT);
+  private final HttpHost targetHost = new HttpHost(HOST, PORT, "https");
+  private final DefaultHttpClient httpClient = new DefaultHttpClient();
+  private boolean isAuthenticated=false;
 
   /**
    * @param useCaseParameterMap The shared state map
@@ -37,29 +40,28 @@ public abstract class BaseUseCase implements UseCase {
    */
   private RestTemplate getConfiguredRestTemplate(Map<UseCaseParameter, Object> useCaseParameterMap) {
 
-
-    HttpHost targetHost = new HttpHost(HOST, PORT, "http");
-
-    DefaultHttpClient httpClient = new DefaultHttpClient();
-
-    // Set accept headers
-
     // Check for authentication
-    if (useCaseParameterMap.containsKey(UseCaseParameter.HTTP_AUTHENTICATE_BASIC)) {
+    if (!isAuthenticated && useCaseParameterMap.containsKey(UseCaseParameter.HTTP_AUTHENTICATE_BASIC)) {
+
+      // Require preemptive Basic authentication
+      String[] credentials = (String[]) useCaseParameterMap.get(UseCaseParameter.HTTP_AUTHENTICATE_BASIC);
+
       httpClient.getCredentialsProvider().setCredentials(
         new AuthScope(targetHost.getHostName(), targetHost.getPort()),
-        new UsernamePasswordCredentials("username", "password"));
+        new UsernamePasswordCredentials(credentials[0], credentials[1]));
 
       // Create AuthCache instance
       AuthCache authCache = new BasicAuthCache();
 
-      // Generate BASIC scheme object and add it to the local auth cache
+      // Generate Basic scheme object and add it to the local auth cache
       BasicScheme basicAuth = new BasicScheme();
       authCache.put(targetHost, basicAuth);
 
       // Add AuthCache to the execution context
       BasicHttpContext httpContext = new BasicHttpContext();
       httpContext.setAttribute(ClientContext.AUTH_CACHE, authCache);
+
+      isAuthenticated = true;
 
     }
 
@@ -81,9 +83,16 @@ public abstract class BaseUseCase implements UseCase {
   }
   
   public final void execute(Map<UseCaseParameter, Object> useCaseParameterMap) {
+    doConfiguration(useCaseParameterMap);
     RestTemplate restTemplate=getConfiguredRestTemplate(useCaseParameterMap);
     doExecute(useCaseParameterMap, restTemplate);
   }
+
+  /**
+   * Use case specific configuration details (occurs before RestTemplate is created)
+   * @param useCaseParameterMap The shared parameter map
+   */
+  protected abstract void doConfiguration(Map<UseCaseParameter, Object> useCaseParameterMap);
 
   /**
    * Use case specific implementation details (not generally visible)

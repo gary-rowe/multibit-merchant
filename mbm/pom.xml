@@ -161,6 +161,13 @@
       <artifactId>spring-security-config</artifactId>
     </dependency>
 
+    <!-- OAuth2 support -->
+    <!--<dependency>-->
+      <!--<groupId>org.codehaus.spring-security-oauth</groupId>-->
+      <!--<artifactId>spring-security-oauth</artifactId>-->
+      <!--<version>3.17.SS3</version>-->
+    <!--</dependency>-->
+
     <!-- Spring Social (Twitter, Facebook) -->
     <dependency>
       <groupId>org.springframework.social</groupId>
@@ -297,6 +304,13 @@
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
       <artifactId>annotations</artifactId>
+    </dependency>
+
+    <!-- Jasypt for password protection -->
+    <dependency>
+      <groupId>org.jasypt</groupId>
+      <artifactId>jasypt</artifactId>
+      <version>1.9.0</version>
     </dependency>
 
   </dependencies>

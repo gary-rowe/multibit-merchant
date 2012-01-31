@@ -7,37 +7,30 @@
            http://www.springframework.org/schema/security
            http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
-  <http>
+  <http use-expressions="true" >
 
-    <!-- Anonymous (public) access -->
-    <intercept-url pattern="/" access="ROLE_ANONYMOUS"/>
-    <intercept-url pattern="/authenticate.html" access="ROLE_ANONYMOUS"/>
-    <intercept-url pattern="/api-demo.html" access="ROLE_ANONYMOUS"/>
-    <intercept-url pattern="/contact.html" access="ROLE_ANONYMOUS"/>
-    <intercept-url pattern="/delivery.html" access="ROLE_ANONYMOUS"/>
-    <intercept-url pattern="/favicon.ico" access="ROLE_ANONYMOUS"/>
-    <intercept-url pattern="/feedback.html" access="ROLE_ANONYMOUS"/>
-    <intercept-url pattern="/help.html" access="ROLE_ANONYMOUS"/>
-    <intercept-url pattern="/index.html" access="ROLE_ANONYMOUS"/>
-    <intercept-url pattern="/api/v1/**" access="ROLE_ANONYMOUS"/>
+    <!-- Item access (items etc) -->
+    <intercept-url method="GET" pattern="/api/v1/item/**" access="permitAll"/>
+    <intercept-url method="POST" pattern="/api/v1/item/**" access="hasRole('ROLE_ADMIN')"/>
+    <intercept-url method="PUT" pattern="/api/v1/item/**" access="hasRole('ROLE_ADMIN')"/>
+    <intercept-url method="DELETE" pattern="/api/v1/item/**" access="hasRole('ROLE_ADMIN')"/>
 
-    <!-- Customer access (cart, payment and account processing) -->
-    <intercept-url pattern="/css/mbm/payment/**" access="ROLE_USER"/>
-    <intercept-url pattern="/js/mbm/payment/**" access="ROLE_USER"/>
-    <intercept-url pattern="/payment.html" access="ROLE_USER"/>
+    <!-- Cart access -->
+    <intercept-url method="GET" pattern="/api/v1/cart/**" access="isRememberMe()"/>
+    <intercept-url method="POST" pattern="/api/v1/cart/**" access="isAuthenticated()"/>
+    <intercept-url method="PUT" pattern="/api/v1/cart/**" access="isRememberMe()"/>
+    <intercept-url method="DELETE" pattern="/api/v1/cart/**" access="isRememberMe()"/>
 
-    <!-- Admin access -->
-    <intercept-url pattern="/css/mbm/admin/**" access="ROLE_ADMIN"/>
-    <intercept-url pattern="/js/mbm/admin/**" access="ROLE_ADMIN"/>
-    <intercept-url pattern="/admin/**" access="ROLE_ADMIN"/>
+    <!-- Admin access (accounting etc) -->
+    <intercept-url pattern="/api/v1/admin/**" access="hasRole('ROLE_ADMIN')"/>
 
-    <!-- Sign in form -->
-    <form-login login-page='/authenticate.html'/>
+    <!-- Support for Basic authentication (must be over HTTPS) -->
+    <http-basic  />
 
-    <http-basic />
-
-    <!-- After sign out -->
-    <logout logout-success-url="/index.html"/>
+    <!-- Support for Remember Me authentication -->
+    <remember-me key="mbm-remember-me-token"
+                 token-validity-seconds="864000"
+                 user-service-ref="userService" />
 
     <!-- Determine which credentials need visibility -->
     <openid-login user-service-ref="userService">
@@ -45,16 +38,22 @@
         <openid-attribute name="email" type="http://axschema.org/contact/email" required="true"/>
       </attribute-exchange>
     </openid-login>
+
+    <!-- After sign out -->
+    <logout logout-success-url="/index.html"/>
+
   </http>
 
-  <!-- Namespacing required since security is the default -->
-  <beans:bean id="openIdProvider" class="org.springframework.security.openid.OpenIDAuthenticationProvider">
-    <beans:property name="userDetailsService" ref="userService"/>
-  </beans:bean>
+  <!--&lt;!&ndash; OpenId authentication &ndash;&gt;-->
+  <!--<beans:bean id="openIdProvider" class="org.springframework.security.openid.OpenIDAuthenticationProvider">-->
+    <!--<beans:property name="userDetailsService" ref="userService"/>-->
+  <!--</beans:bean>-->
 
-  <!-- All authentication through OpenId -->
+  <beans:bean id="authenticateAllUsers" class="org.multibit.mbm.security.service.AuthenticateAllUsers" />
+
   <authentication-manager>
-    <authentication-provider ref="openIdProvider"/>
+    <authentication-provider ref="authenticateAllUsers"/>
   </authentication-manager>
+
 
 </beans:beans>

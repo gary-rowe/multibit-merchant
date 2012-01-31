@@ -20,6 +20,14 @@ public interface UserDao {
   User getUserByUUID(String uuid);
 
   /**
+   * Attempt to locate the User by a UUID
+   * @param username The username
+   * @param password The password (as provided by the security token)
+   * @return A matching User with Roles and Authorities initialised
+   */
+  User getUserByCredentials(String username, String password);
+
+  /**
    * Persist the given User
    * @param User A User (either new or updated)
    * @return The persisted User

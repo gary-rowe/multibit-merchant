@@ -62,7 +62,7 @@ public class Role implements Serializable {
   /**
    * The authorities associated with this Role
    */
-  @ElementCollection(targetClass = Authority.class)
+  @ElementCollection(targetClass = Authority.class, fetch = FetchType.EAGER)
   @CollectionTable(name = "authorities",
     joinColumns = @JoinColumn(name = "role_id"))
   @Column(name = "auth_id")

@@ -18,7 +18,12 @@ import java.util.Map;
  */
 public class AnonymousLogin extends BaseUseCase {
   @Override
+  protected void doConfiguration(Map<UseCaseParameter, Object> useCaseParameterMap) {
+    // TODO Implement this
+  }
+
+  @Override
   protected void doExecute(Map<UseCaseParameter, Object> useCaseParameterMap, RestTemplate restTemplate) {
-    //To change body of implemented methods use File | Settings | File Templates.
+    // TODO Implement this
   }
 }

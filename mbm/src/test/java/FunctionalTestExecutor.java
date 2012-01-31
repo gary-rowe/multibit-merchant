@@ -3,7 +3,8 @@ import com.google.common.collect.Maps;
 import org.junit.Ignore;
 import org.multibit.mbm.web.rest.v1.usecase.UseCase;
 import org.multibit.mbm.web.rest.v1.usecase.UseCaseParameter;
-import org.multibit.mbm.web.rest.v1.usecase.cart.AddItemToAnonymousCart;
+import org.multibit.mbm.web.rest.v1.usecase.authentication.LoginAsAliceUsingBasicAuthentication;
+import org.multibit.mbm.web.rest.v1.usecase.cart.AddItemToAuthenticatedCart;
 import org.multibit.mbm.web.rest.v1.usecase.catalog.ListUnboundedItemsAsAnonymous;
 
 import java.util.List;
@@ -34,9 +35,8 @@ public class FunctionalTestExecutor {
 
     // Add the use cases
     executor.addUseCase(new ListUnboundedItemsAsAnonymous());
-    executor.addUseCase(new AddItemToAnonymousCart());
-    // TODO executor.addUseCase(new AnonymousLogin());
-    // TODO executor.addUseCase(new BasicAuthenticationLogin());
+    executor.addUseCase(new LoginAsAliceUsingBasicAuthentication());
+    executor.addUseCase(new AddItemToAuthenticatedCart());
 
     executor.execute();
   }
