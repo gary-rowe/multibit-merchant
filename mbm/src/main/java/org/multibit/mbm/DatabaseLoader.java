@@ -11,6 +11,7 @@ import org.multibit.mbm.security.builder.RoleBuilder;
 import org.multibit.mbm.security.builder.UserBuilder;
 import org.multibit.mbm.security.dao.RoleDao;
 import org.multibit.mbm.security.dao.UserDao;
+import org.multibit.mbm.security.dto.Authority;
 import org.multibit.mbm.security.dto.ContactMethod;
 import org.multibit.mbm.security.dto.Role;
 import org.multibit.mbm.security.dto.User;
@@ -68,15 +69,15 @@ public class DatabaseLoader {
 
     // Build the administration Role and Authorities
     adminRole = RoleBuilder.getInstance()
-      .setName("ROLE_ADMIN")
+      .setName(Authority.ROLE_ADMIN.name())
       .setDescription("Administration role")
       .addAdminAuthorities()
       .build();
     adminRole = roleDao.saveOrUpdate(adminRole);
 
-    // Build the customer Role and Authorities
+    // Build the Customer Role and Authorities
     customerRole = RoleBuilder.getInstance()
-      .setName("ROLE_CUSTOMER")
+      .setName(Authority.ROLE_CUSTOMER.name())
       .setDescription("Customer role")
       .addCustomerAuthorities()
       .build();
@@ -139,6 +140,7 @@ public class DatabaseLoader {
   }
 
   private void buildUsers() {
+
     // Admin
 
     User admin = UserBuilder.getInstance()

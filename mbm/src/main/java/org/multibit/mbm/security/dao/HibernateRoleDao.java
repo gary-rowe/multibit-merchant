@@ -1,5 +1,6 @@
 package org.multibit.mbm.security.dao;
 
+import org.multibit.mbm.security.dto.Authority;
 import org.multibit.mbm.security.dto.Role;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
@@ -12,6 +13,11 @@ public class HibernateRoleDao implements RoleDao {
 
   @Resource(name = "hibernateTemplate")
   private HibernateTemplate hibernateTemplate = null;
+
+  @Override
+  public Role getRoleByAuthority(Authority authority) throws RoleNotFoundException {
+    return getRoleByName(authority.name());
+  }
 
   @Override
   public Role getRoleByName(String name) throws RoleNotFoundException {

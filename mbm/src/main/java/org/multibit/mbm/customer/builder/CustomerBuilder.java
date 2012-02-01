@@ -1,5 +1,6 @@
 package org.multibit.mbm.customer.builder;
 
+import org.multibit.mbm.cart.dto.Cart;
 import org.multibit.mbm.customer.dto.Customer;
 
 /**
@@ -31,7 +32,7 @@ public class CustomerBuilder {
     // Customer is a DTO and so requires a default constructor
     Customer customer = new Customer();
 
-    // TODO Add support for building Carts etc otherwise this builder has no purpose
+    customer.setCart(new Cart());
 
     isBuilt = true;
     

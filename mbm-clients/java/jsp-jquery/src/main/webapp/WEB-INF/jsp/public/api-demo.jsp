@@ -143,7 +143,7 @@
         <td><code>$("#cart-add").bind("click", function(event) {
           $.post('/mbm/api/v1/cart',
           function(data) {
-            var cartItems = data.cartItemSummaries;
+            var cartItems = data.cartItems;
             $('#cart-items').html("");
             for (var i = 0; i < cartItems.length; i++) {
             $('#cart-items').append($("#cartItemTemplate").tmpl(cartItems[i]));

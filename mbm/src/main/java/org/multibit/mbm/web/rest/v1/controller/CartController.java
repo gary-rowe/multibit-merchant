@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -33,6 +34,30 @@ public class CartController extends BaseController {
   @Resource(name = "customerService")
   private CustomerService customerService = null;
 
+
+  /**
+   * Retrieves the  Cart for the authenticated User
+   * @param principal The security principal (injected)
+   * @param request The originating request (injected)
+   * @return The response
+   */
+  @RequestMapping(
+    method = RequestMethod.GET,
+    value = "/cart"
+  )
+  @ResponseBody
+  public CartResponse retrieveCart(
+    Principal principal,
+    HttpServletRequest request) {
+
+    User user = getUserFromRequest(principal, request, null);
+
+    // Validate the expected form of the data
+    Assert.notNull(user);
+    Assert.notNull(user.getCustomer());
+
+    return new CartResponse(user.getCustomer().getCart());
+  }
 
   /**
    * Creates a new Cart for the User
@@ -69,8 +94,8 @@ public class CartController extends BaseController {
       customer = customerService.setCartItemQuantity(customer, itemId, quantity);
     }
 
-    // Ensure the new Cart can be found
-    addLocationHeader("/cart/"+customer.getCart().getId(),request,response);
+    // Ensure the new Cart can be found (one Cart per User)
+    addLocationHeader("/cart",request,response);
 
     // Provide the entire Cart as a shortcut for lazy clients
     return new CartResponse(customer.getCart());

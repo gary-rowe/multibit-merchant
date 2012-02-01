@@ -61,11 +61,14 @@ public class Role implements Serializable {
 
   /**
    * The authorities associated with this Role
+   * Note the use of the String enumeration rather than ordinal. As the database grows the enum ordinals
+   * may change which will make mapping them rather hard between database versions.
    */
+  @Enumerated(value = EnumType.STRING)
   @ElementCollection(targetClass = Authority.class, fetch = FetchType.EAGER)
   @CollectionTable(name = "authorities",
     joinColumns = @JoinColumn(name = "role_id"))
-  @Column(name = "auth_id")
+  @Column(name = "auth_name" )
   private Set<Authority> authorities = new LinkedHashSet<Authority>();
 
   /**
