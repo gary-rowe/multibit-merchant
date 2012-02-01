@@ -6,6 +6,7 @@ import org.multibit.mbm.customer.dto.Customer;
 import org.multibit.mbm.security.dto.*;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  *  <p>Builder to provide the following to {@link org.multibit.mbm.security.dto.User}:</p>
@@ -19,7 +20,7 @@ import java.util.List;
 public class UserBuilder {
 
   private String openId;
-  private String uuid;
+  private String uuid= UUID.randomUUID().toString();
   private List<AddContactMethod> addContactMethods = Lists.newArrayList();
   private List<AddRole> addRoles = Lists.newArrayList();
   private String username;
@@ -106,6 +107,14 @@ public class UserBuilder {
   public UserBuilder addRole(Role role) {
 
     addRoles.add(new AddRole(role));
+    return this;
+  }
+
+  public UserBuilder addRoles(List<Role> roles) {
+
+    for (Role role : roles) {
+      addRoles.add(new AddRole(role));
+    }
 
     return this;
   }

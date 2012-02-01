@@ -20,34 +20,57 @@ public enum Authority {
   // Subjects are based on outward looking relationships (OWN, OTHERS)
   // Entities are based on primary entities (USER, CUSTOMER, CART, ITEM, INVOICE)
 
-  // Users
-  CHANGE_OWN_PASSWORD(false),
+  // Roles (act as EnumSets from the fine grained authorities defined later)
+  // Internal roles
+  ROLE_ADMIN(true),
+  ROLE_SALES(true),
+  ROLE_SALES_MANAGER(true),
+  ROLE_MARKETING(true),
+  ROLE_MARKETING_MANAGER(true),
+  ROLE_FINANCE(true),
+  ROLE_FINANCE_MANAGER(true),
+  ROLE_STORES(true),
+  ROLE_STORES_MANAGER(true),
+  ROLE_DELIVERY(true),
+  ROLE_DELIVERY_MANAGER(true),
 
-  // Invoices
+  // External roles
+  ROLE_CUSTOMER(false),
+
+  // Granted authorities
+  // Users
+  CHANGE_OWN_PASSWORD(false), // Customers can change their password
+
+  // Invoices (finance)
   CREATE_INVOICES(true),
   RETRIEVE_INVOICES(true),
   UPDATE_INVOICES(true),
   DELETE_INVOICES(true),
 
-  // Orders
+  // Orders (sales, stores, finance, delivery)
   CREATE_ORDERS(true),
-  RETRIEVE_ORDERS(false),
+  RETRIEVE_ORDERS(false), // Customers can view their orders
   UPDATE_ORDERS(true),
   DELETE_ORDERS(true),
   
-  // Customers
+  // Customers (sales, finance)
   CREATE_CUSTOMERS(true),
   RETRIEVE_CUSTOMERS(true),
   UPDATE_CUSTOMERS(true),
   DELETE_CUSTOMERS(true),
 
-  // Items
+  // Items (sales, stores)
   CREATE_ITEMS(true),
-  RETRIEVE_ITEMS(false),
+  RETRIEVE_ITEMS(false), // Customers can view items
   UPDATE_ITEMS(true),
   DELETE_ITEMS(true),
-  
-  
+
+  // Prices (sales, finance)
+  CREATE_PRICES(true),
+  RETRIEVE_PRICES(true),
+  UPDATE_PRICES(true),
+  DELETE_PRICES(true),
+
   ; // End of enum
 
   /**

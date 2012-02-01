@@ -9,6 +9,16 @@
 
   <http use-expressions="true" >
 
+    <!-- Some public access -->
+
+    <!-- User access (registration, login etc) -->
+    <intercept-url method="GET" pattern="/api/v1/user" access="permitAll"/>
+    <intercept-url method="GET" pattern="/api/v1/user/**" access="hasAnyRole('ROLE_CUSTOMER','ROLE_ADMIN')"/>
+    <intercept-url method="POST" pattern="/api/v1/user" access="permitAll"/>
+    <intercept-url method="POST" pattern="/api/v1/user/**" access="hasRole('ROLE_ADMIN')"/>
+    <intercept-url method="PUT" pattern="/api/v1/user/**" access="hasRole('ROLE_ADMIN')"/>
+    <intercept-url method="DELETE" pattern="/api/v1/user/**" access="hasRole('ROLE_ADMIN')"/>
+
     <!-- Item access (items etc) -->
     <intercept-url method="GET" pattern="/api/v1/item/**" access="permitAll"/>
     <intercept-url method="POST" pattern="/api/v1/item/**" access="hasRole('ROLE_ADMIN')"/>
@@ -16,12 +26,14 @@
     <intercept-url method="DELETE" pattern="/api/v1/item/**" access="hasRole('ROLE_ADMIN')"/>
 
     <!-- Cart access -->
-    <intercept-url method="GET" pattern="/api/v1/cart/**" access="isRememberMe()"/>
+    <intercept-url method="GET" pattern="/api/v1/cart/**" access="isAuthenticated()"/>
     <intercept-url method="POST" pattern="/api/v1/cart/**" access="isAuthenticated()"/>
-    <intercept-url method="PUT" pattern="/api/v1/cart/**" access="isRememberMe()"/>
-    <intercept-url method="DELETE" pattern="/api/v1/cart/**" access="isRememberMe()"/>
+    <intercept-url method="PUT" pattern="/api/v1/cart/**" access="isAuthenticated()"/>
+    <intercept-url method="DELETE" pattern="/api/v1/cart/**" access="denyAll"/>
 
-    <!-- Admin access (accounting etc) -->
+    <!-- Private access -->
+
+    <!-- Admin access (accounting, internal operations etc) -->
     <intercept-url pattern="/api/v1/admin/**" access="hasRole('ROLE_ADMIN')"/>
 
     <!-- Support for Basic authentication (must be over HTTPS) -->
@@ -54,6 +66,5 @@
   <authentication-manager>
     <authentication-provider ref="authenticateAllUsers"/>
   </authentication-manager>
-
 
 </beans:beans>

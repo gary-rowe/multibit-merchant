@@ -52,8 +52,9 @@ public class SchemaExporter {
     SchemaExport export = new SchemaExport(cfg);
     export.setDelimiter(";");
     export.setOutputFile(patchSchema.getAbsolutePath());
+    // Generates alter table drops which should be removed at version 0
     export.execute(true, false, false, false);
-    
+
     log.info("Schema export complete. Results in '{}'",patchSchema.getAbsolutePath());
   }
 

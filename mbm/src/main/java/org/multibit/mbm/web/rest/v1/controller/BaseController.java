@@ -4,6 +4,7 @@ import org.multibit.mbm.security.dto.User;
 import org.multibit.mbm.security.service.SecurityService;
 import org.multibit.mbm.util.CookieUtils;
 import org.multibit.mbm.web.rest.v1.UUIDNotFoundException;
+import org.multibit.mbm.web.rest.v1.client.BaseResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -48,8 +49,12 @@ public abstract class BaseController {
   @ExceptionHandler(UUIDNotFoundException.class)
   @ResponseStatus(value = HttpStatus.BAD_REQUEST)
   @ResponseBody
-  public String handleUUIDNotFoundException(UUIDNotFoundException exception) {
-    return "The API token was not found in the request. Use /api/v1/token to obtain one.";
+  public BaseResponse handleUUIDNotFoundException(UUIDNotFoundException exception) {
+    log.debug("HTTP {} returned", HttpStatus.BAD_REQUEST.name(), exception);
+    BaseResponse baseResponse = new BaseResponse();
+    baseResponse.setErrorCode(HttpStatus.BAD_REQUEST.value());
+    baseResponse.setErrorDescription("The sessionId was not found in a request that requires it. See API documentation for details.");
+    return baseResponse;
   }
 
   /**
@@ -62,8 +67,12 @@ public abstract class BaseController {
   @ExceptionHandler(RuntimeException.class)
   @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
   @ResponseBody
-  public String handleRuntimeException(RuntimeException exception) {
-    return "Plik! The server has encountered an internal error.";
+  public BaseResponse handleRuntimeException(RuntimeException exception) {
+    log.error("HTTP {} returned", HttpStatus.INTERNAL_SERVER_ERROR.name(), exception);
+    BaseResponse baseResponse = new BaseResponse();
+    baseResponse.setErrorCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+    baseResponse.setErrorDescription("An internal error has occurred. We apologise for the inconvenience and will take care of it.");
+    return baseResponse;
   }
 
   /**
@@ -114,6 +123,9 @@ public abstract class BaseController {
    * @return The associated User (never null)
    */
   protected User getUserFromRequest(Principal principal, HttpServletRequest request, String sessionId) {
+
+    // TODO Restrict the creation of new Users to a specific registration process
+
     // Ensure that a limit on the creation of Customers from a given IP address is enforced
     User user;
     if (principal == null || principal instanceof AnonymousAuthenticationToken) {
@@ -127,10 +139,9 @@ public abstract class BaseController {
           throw new UUIDNotFoundException();
         }
       }
-      log.debug("Persisting anonymous User with UUID '{}'", sessionId);
-      user = securityService.persistAnonymousUser(sessionId);
+      user=null;
     } else {
-      log.debug("Persisting authenticated User");
+      log.debug("Retrieving authenticated User");
       user = securityService.getUserByPrincipal(principal);
     }
     return user;

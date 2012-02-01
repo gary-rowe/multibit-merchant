@@ -64,7 +64,7 @@ public class AddItemToAuthenticatedCart extends BaseUseCase {
       createCartRequest,
       CartResponse.class);
 
-    assertThat("Unexpected response for POST /cart[item.id=1, quantity=1]", responseCartResponse.getCartItemSummaries().get(0).getQuantity(), equalTo(1));
+    assertThat("Unexpected response for POST /cart[item.id=1, quantity=1]", responseCartResponse.getCartItems().get(0).getQuantity(), equalTo(1));
 
   }
 

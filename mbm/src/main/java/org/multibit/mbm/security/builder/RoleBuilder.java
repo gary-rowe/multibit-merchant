@@ -85,15 +85,139 @@ public class RoleBuilder {
   }
 
   /**
-   * Configure the various supporting structure to make this Role into an administrator
+   * <p>Admin are staff members associated with maintaining the application</p>
    * @return The builder
    */
   public RoleBuilder addAdminAuthorities() {
 
-    // Assume that an admin has all authorities
+    // TODO Currently assume that an admin has all authorities for convenience - this will change
     for (Authority authority: Authority.values()) {
       addAuthority(authority);
     }
+
+    return this;
+  }
+
+  /**
+   * <p>Sales are staff members associated with dealing directly with customers</p> 
+   * @return The builder
+   */
+  public RoleBuilder addSalesAuthorities() {
+
+    // Apply a pick list
+    addAuthority(Authority.ROLE_SALES);
+    addAuthority(Authority.RETRIEVE_INVOICES);
+    addAuthority(Authority.RETRIEVE_ORDERS);
+
+    return this;
+  }
+
+  /**
+   * <p>Sales are staff members associated with dealing directly with customers</p> 
+   * <p>Manager has more authorities within this group</p>
+   * @return The builder
+   */
+  public RoleBuilder addSalesManagerAuthorities() {
+
+    // Apply a pick list
+    addAuthority(Authority.ROLE_SALES);
+    addAuthority(Authority.RETRIEVE_INVOICES);
+    addAuthority(Authority.UPDATE_INVOICES);
+    addAuthority(Authority.RETRIEVE_ORDERS);
+    addAuthority(Authority.UPDATE_ORDERS);
+
+
+    return this;
+  }
+
+  /**
+   * <p>Marketing are staff members associated with raising awareness of items through campaigns and writing copy</p> 
+   * @return The builder
+   */
+  public RoleBuilder addMarketingAuthorities() {
+
+    // TODO Apply a pick list
+
+    return this;
+  }
+
+  /**
+   * <p>Marketing are staff members associated with raising awareness of items through campaigns and writing copy</p> 
+   * <p>Manager has more authorities within this group</p>
+   * @return The builder
+   */
+  public RoleBuilder addMarketingManagerAuthorities() {
+
+    // TODO Apply a pick list
+
+    return this;
+  }
+
+  /**
+   * <p>Stores are staff members associated with inventory</p> 
+   * @return The builder
+   */
+  public RoleBuilder addStoresAuthorities() {
+
+    // TODO Apply a pick list
+
+    return this;
+  }
+
+  /**
+   * <p>Stores are staff members associated with inventory</p> 
+   * <p>Manager has more authorities within this group</p>
+   * @return The builder
+   */
+  public RoleBuilder addStoresManagerAuthorities() {
+
+    // TODO Apply a pick list
+
+    return this;
+  }
+
+  /**
+   * <p>Finance are staff members associated with accounting and financial reporting</p> 
+   * @return The builder
+   */
+  public RoleBuilder addFinanceAuthorities() {
+
+    // TODO Apply a pick list
+
+    return this;
+  }
+
+  /**
+   * <p>Finance are staff members associated with accounting and financial reporting</p> 
+   * <p>Manager has more authorities within this group</p>
+   * @return The builder
+   */
+  public RoleBuilder addFinanceManagerAuthorities() {
+
+    // TODO Apply a pick list
+
+    return this;
+  }
+
+  /**
+   * <p>Delivery are staff members associated with getting inventory to the customer</p>
+   * @return The builder
+   */
+  public RoleBuilder addDeliveryAuthorities() {
+
+    // TODO Apply a pick list
+
+    return this;
+  }
+
+  /**
+   * <p>Delivery are staff members associated with getting inventory to the customer</p>
+   * <p>Manager has more authorities within this group</p>
+   * @return The builder
+   */
+  public RoleBuilder addDeliveryManagerAuthorities() {
+
+    // TODO Apply a pick list
 
     return this;
   }
@@ -104,7 +228,7 @@ public class RoleBuilder {
    */
   public RoleBuilder addCustomerAuthorities() {
 
-    // Assume that a Customer has all external authorities
+    // TODO Assume that a Customer has all external authorities - this may change with Affiliate concept
     for (Authority authority: Authority.values()) {
       if (!authority.isInternal()) {
         addAuthority(authority);

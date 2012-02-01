@@ -313,6 +313,13 @@
       <version>1.9.0</version>
     </dependency>
 
+    <!-- ReCAPTCHA support -->
+    <dependency>
+      <groupId>net.tanesha.recaptcha4j</groupId>
+      <artifactId>recaptcha4j</artifactId>
+      <version>0.0.7</version>
+    </dependency>
+
   </dependencies>
 
   <properties>

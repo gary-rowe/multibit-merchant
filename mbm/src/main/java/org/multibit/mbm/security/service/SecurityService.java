@@ -1,12 +1,15 @@
 package org.multibit.mbm.security.service;
 
+import com.google.common.collect.Lists;
+import org.multibit.mbm.customer.builder.CustomerBuilder;
+import org.multibit.mbm.customer.dto.Customer;
 import org.multibit.mbm.security.builder.UserBuilder;
+import org.multibit.mbm.security.dao.RoleDao;
 import org.multibit.mbm.security.dao.UserDao;
 import org.multibit.mbm.security.dao.UserNotFoundException;
-import org.multibit.mbm.security.dto.ContactMethod;
-import org.multibit.mbm.security.dto.ContactMethodDetail;
-import org.multibit.mbm.security.dto.User;
+import org.multibit.mbm.security.dto.*;
 import org.multibit.mbm.util.OpenIdUtils;
+import org.multibit.mbm.web.rest.v1.client.security.CreateUserRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,6 +27,7 @@ import java.util.UUID;
  * <p>Service to provide the following to Controllers:</p>
  * <ul>
  * <li>Interaction with the User entity</li>
+ * <li>Interaction with the Role entity</li>
  * </ul>
  *
  * @since 1.0.0
@@ -37,6 +41,9 @@ public class SecurityService {
 
   @Resource(name = "hibernateUserDao")
   private UserDao userDao;
+
+  @Resource(name = "hibernateRoleDao")
+  private RoleDao roleDao;
 
   /**
    * <p>Attempts to insert new Users into the database in response to a successful login</p>
@@ -161,6 +168,43 @@ public class SecurityService {
   }
 
   /**
+   * @return A collection of security roles appropriate for a Customer
+   */
+  public List<Role> getCustomerRoles() {
+    List<Role> customerRoles = Lists.newArrayList();
+    customerRoles.add(roleDao.getRoleByAuthority(Authority.ROLE_CUSTOMER));
+    return customerRoles;
+  }
+
+  /**
+   * Create a User as a Customer
+   * @param createUserRequest The information required to create and configure the User
+   * @return The User
+   */
+  @Transactional(propagation = Propagation.REQUIRED)
+  public User createUserAsCustomer(CreateUserRequest createUserRequest) {
+
+    // Build the supporting objects
+    Customer customer = CustomerBuilder.getInstance()
+      .build();
+
+    // Require the standard Customer Roles
+    List<Role> customerRoles = getCustomerRoles();
+
+    // Build the User including the supporting objects
+    User newUser = UserBuilder.getInstance()
+      .setOpenId(createUserRequest.getOpenId())
+      .setUsername(createUserRequest.getUsername())
+      .setPassword(createUserRequest.getPassword())
+      .addCustomer(customer)
+      .addRoles(customerRoles)
+      .build();
+
+    // Persist the user
+    return persist(newUser);
+  }
+
+  /**
    * Package local to allow testing
    *
    * @return The User DAO
@@ -172,4 +216,5 @@ public class SecurityService {
   public void setUserDao(UserDao userDao) {
     this.userDao = userDao;
   }
+
 }
