@@ -93,6 +93,18 @@
       <artifactId>bitcoinj</artifactId>
     </dependency>
 
+    <!-- XChange for currency operations -->
+    <dependency>
+      <groupId>com.xeiam.xchange</groupId>
+      <artifactId>xchange</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.xeiam.xchange</groupId>
+      <artifactId>xchange-mtgox</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+
     <!-- All time handling is through Joda -->
     <dependency>
       <groupId>joda-time</groupId>

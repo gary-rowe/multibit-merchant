@@ -1,6 +1,6 @@
 package org.multibit.mbm.rest.v1.controller;
 
-import org.multibit.mbm.resources.UUIDNotFoundException;
+import org.multibit.mbm.persistence.dao.UUIDNotFoundException;
 import org.multibit.mbm.persistence.dto.User;
 import org.multibit.mbm.services.SecurityService;
 import org.multibit.mbm.util.CookieUtils;
