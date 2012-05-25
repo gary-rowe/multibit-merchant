@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
+<!-- TODO Allow the output directories to be configured through DB -->
 <configuration>
 
   <!-- Standard console appender for checking activity (short on detail) -->
