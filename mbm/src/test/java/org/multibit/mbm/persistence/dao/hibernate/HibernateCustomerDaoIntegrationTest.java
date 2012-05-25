@@ -1,7 +1,7 @@
 package org.multibit.mbm.persistence.dao.hibernate;
 
 import org.junit.Test;
-import org.multibit.mbm.customer.builder.CustomerBuilder;
+import org.multibit.mbm.persistence.dto.CustomerBuilder;
 import org.multibit.mbm.persistence.dto.Customer;
 import org.multibit.mbm.persistence.dao.CustomerDao;
 import org.multibit.mbm.test.BaseIntegrationTests;

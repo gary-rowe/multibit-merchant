@@ -1,9 +1,6 @@
-package org.multibit.mbm.cart.builder;
+package org.multibit.mbm.persistence.dto;
 
 import com.google.common.collect.Lists;
-import org.multibit.mbm.persistence.dto.Cart;
-import org.multibit.mbm.persistence.dto.CartItem;
-import org.multibit.mbm.persistence.dto.Item;
 
 import java.util.List;
 

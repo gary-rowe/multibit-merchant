@@ -1,7 +1,7 @@
 package org.multibit.mbm.persistence.dao.hibernate;
 
 import org.junit.Test;
-import org.multibit.mbm.security.builder.UserBuilder;
+import org.multibit.mbm.persistence.dto.UserBuilder;
 import org.multibit.mbm.persistence.dao.UserDao;
 import org.multibit.mbm.persistence.dto.ContactMethod;
 import org.multibit.mbm.persistence.dto.ContactMethodDetail;

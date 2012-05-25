@@ -2,7 +2,7 @@ package org.multibit.mbm.resources;
 
 import com.yammer.dropwizard.testing.ResourceTest;
 import org.junit.Test;
-import org.multibit.mbm.customer.builder.CustomerBuilder;
+import org.multibit.mbm.persistence.dto.CustomerBuilder;
 import org.multibit.mbm.persistence.dto.Customer;
 import org.multibit.mbm.services.CustomerService;
 

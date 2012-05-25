@@ -1,7 +1,4 @@
-package org.multibit.mbm.customer.builder;
-
-import org.multibit.mbm.persistence.dto.Cart;
-import org.multibit.mbm.persistence.dto.Customer;
+package org.multibit.mbm.persistence.dto;
 
 /**
  *  <p>Builder to provide the following to {@link Customer}:</p>
