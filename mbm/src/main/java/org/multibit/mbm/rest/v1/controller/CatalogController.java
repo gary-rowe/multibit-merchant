@@ -1,6 +1,6 @@
 package org.multibit.mbm.rest.v1.controller;
 
-import org.multibit.mbm.catalog.builder.ItemBuilder;
+import org.multibit.mbm.persistence.dto.ItemBuilder;
 import org.multibit.mbm.persistence.dto.Item;
 import org.multibit.mbm.persistence.dto.ItemField;
 import org.multibit.mbm.services.CatalogService;

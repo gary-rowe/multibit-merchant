@@ -1,8 +1,6 @@
-package org.multibit.mbm.security.builder;
+package org.multibit.mbm.persistence.dto;
 
 import com.google.common.collect.Lists;
-import org.multibit.mbm.persistence.dto.Authority;
-import org.multibit.mbm.persistence.dto.Role;
 import org.springframework.util.Assert;
 
 import java.util.List;

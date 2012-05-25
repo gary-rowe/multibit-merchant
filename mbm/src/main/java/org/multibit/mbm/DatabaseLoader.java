@@ -1,14 +1,14 @@
 package org.multibit.mbm;
 
-import org.multibit.mbm.catalog.builder.ItemBuilder;
+import org.multibit.mbm.persistence.dto.ItemBuilder;
 import org.multibit.mbm.persistence.dao.ItemDao;
 import org.multibit.mbm.persistence.dto.Item;
 import org.multibit.mbm.persistence.dto.ItemField;
-import org.multibit.mbm.customer.builder.CustomerBuilder;
+import org.multibit.mbm.persistence.dto.CustomerBuilder;
 import org.multibit.mbm.persistence.dao.CustomerDao;
 import org.multibit.mbm.persistence.dto.Customer;
-import org.multibit.mbm.security.builder.RoleBuilder;
-import org.multibit.mbm.security.builder.UserBuilder;
+import org.multibit.mbm.persistence.dto.RoleBuilder;
+import org.multibit.mbm.persistence.dto.UserBuilder;
 import org.multibit.mbm.persistence.dao.RoleDao;
 import org.multibit.mbm.persistence.dao.UserDao;
 import org.multibit.mbm.persistence.dto.Authority;

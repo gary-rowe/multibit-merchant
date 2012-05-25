@@ -1,8 +1,7 @@
-package org.multibit.mbm.security.builder;
+package org.multibit.mbm.persistence.dto;
 
 import com.google.common.collect.Lists;
 import org.jasypt.util.password.StrongPasswordEncryptor;
-import org.multibit.mbm.persistence.dto.*;
 
 import java.util.List;
 import java.util.UUID;

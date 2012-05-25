@@ -1,7 +1,7 @@
 package org.multibit.mbm.persistence.dao.hibernate;
 
 import org.junit.Test;
-import org.multibit.mbm.security.builder.RoleBuilder;
+import org.multibit.mbm.persistence.dto.RoleBuilder;
 import org.multibit.mbm.persistence.dao.RoleDao;
 import org.multibit.mbm.persistence.dto.Authority;
 import org.multibit.mbm.persistence.dto.Role;

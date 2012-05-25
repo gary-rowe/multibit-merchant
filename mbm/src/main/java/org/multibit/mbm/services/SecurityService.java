@@ -1,10 +1,10 @@
 package org.multibit.mbm.services;
 
 import com.google.common.collect.Lists;
-import org.multibit.mbm.customer.builder.CustomerBuilder;
+import org.multibit.mbm.persistence.dto.CustomerBuilder;
 import org.multibit.mbm.persistence.dto.*;
 import org.multibit.mbm.rest.v1.client.security.CreateUserRequest;
-import org.multibit.mbm.security.builder.UserBuilder;
+import org.multibit.mbm.persistence.dto.UserBuilder;
 import org.multibit.mbm.persistence.dao.RoleDao;
 import org.multibit.mbm.persistence.dao.UserDao;
 import org.multibit.mbm.persistence.dao.UserNotFoundException;

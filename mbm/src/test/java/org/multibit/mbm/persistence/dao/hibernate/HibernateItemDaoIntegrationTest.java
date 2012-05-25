@@ -1,7 +1,7 @@
 package org.multibit.mbm.persistence.dao.hibernate;
 
 import org.junit.Test;
-import org.multibit.mbm.catalog.builder.ItemBuilder;
+import org.multibit.mbm.persistence.dto.ItemBuilder;
 import org.multibit.mbm.persistence.dto.Item;
 import org.multibit.mbm.persistence.dto.ItemField;
 import org.multibit.mbm.persistence.dto.ItemFieldDetail;

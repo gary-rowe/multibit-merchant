@@ -2,7 +2,6 @@ package org.multibit.mbm.persistence.dto;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.multibit.mbm.catalog.builder.ItemBuilder;
 
 import static org.junit.Assert.assertEquals;
 
