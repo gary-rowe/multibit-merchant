@@ -1,6 +1,6 @@
 package org.multibit.mbm.rest.v1.client.cart;
 
-import org.multibit.mbm.cart.dto.Cart;
+import org.multibit.mbm.persistence.dto.Cart;
 
 /**
  *  <p>Request to provide the following to {@link org.multibit.mbm.rest.v1.controller.CartController}:</p>

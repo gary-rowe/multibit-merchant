@@ -1,7 +1,7 @@
 package org.multibit.mbm.rest.v1.controller;
 
-import org.multibit.mbm.customer.dto.Customer;
-import org.multibit.mbm.customer.service.CustomerService;
+import org.multibit.mbm.persistence.dto.Customer;
+import org.multibit.mbm.services.CustomerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -12,6 +12,7 @@ import javax.annotation.Resource;
  */
 @Controller
 @RequestMapping(value = "/v1")
+@Deprecated
 public class CustomerController {
 
   Customer customer;

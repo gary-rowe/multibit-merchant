@@ -1,9 +1,9 @@
 package org.multibit.mbm.catalog.builder;
 
 import com.google.common.collect.Lists;
-import org.multibit.mbm.catalog.dto.Item;
-import org.multibit.mbm.catalog.dto.ItemField;
-import org.multibit.mbm.catalog.dto.ItemFieldDetail;
+import org.multibit.mbm.persistence.dto.Item;
+import org.multibit.mbm.persistence.dto.ItemField;
+import org.multibit.mbm.persistence.dto.ItemFieldDetail;
 import org.multibit.mbm.i18n.dto.LocalisedText;
 
 import java.util.List;

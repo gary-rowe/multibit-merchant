@@ -2,14 +2,13 @@ package org.multibit.mbm.security.builder;
 
 import com.google.common.collect.Lists;
 import org.jasypt.util.password.StrongPasswordEncryptor;
-import org.multibit.mbm.customer.dto.Customer;
-import org.multibit.mbm.security.dto.*;
+import org.multibit.mbm.persistence.dto.*;
 
 import java.util.List;
 import java.util.UUID;
 
 /**
- *  <p>Builder to provide the following to {@link org.multibit.mbm.security.dto.User}:</p>
+ *  <p>Builder to provide the following to {@link org.multibit.mbm.persistence.dto.User}:</p>
  *  <ul>
  *  <li>Provide a fluent interface to facilitate building the entity</li>
  *  </ul>

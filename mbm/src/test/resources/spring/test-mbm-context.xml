@@ -34,11 +34,7 @@
   <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
     <property name="packagesToScan">
       <list>
-        <value>org.multibit.mbm.cart</value>
-        <value>org.multibit.mbm.catalog</value>
-        <value>org.multibit.mbm.customer</value>
-        <value>org.multibit.mbm.i18n</value>
-        <value>org.multibit.mbm.security.dto</value>
+        <value>org.multibit.mbm.persistence.dto</value>
       </list>
       </property>
     <property name="dataSource" ref="dataSource"/>

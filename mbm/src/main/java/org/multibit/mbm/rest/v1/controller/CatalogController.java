@@ -1,9 +1,9 @@
 package org.multibit.mbm.rest.v1.controller;
 
 import org.multibit.mbm.catalog.builder.ItemBuilder;
-import org.multibit.mbm.catalog.dto.Item;
-import org.multibit.mbm.catalog.dto.ItemField;
-import org.multibit.mbm.catalog.service.CatalogService;
+import org.multibit.mbm.persistence.dto.Item;
+import org.multibit.mbm.persistence.dto.ItemField;
+import org.multibit.mbm.services.CatalogService;
 import org.multibit.mbm.rest.v1.client.BaseResponse;
 import org.multibit.mbm.rest.v1.client.catalog.CreateItemRequest;
 import org.multibit.mbm.rest.v1.client.catalog.ItemPagedQueryResponse;

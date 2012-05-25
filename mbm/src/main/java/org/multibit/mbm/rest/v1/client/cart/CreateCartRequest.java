@@ -8,7 +8,7 @@ import java.util.List;
 /**
  *  <p>Request to provide the following to {@link org.multibit.mbm.rest.v1.controller.CartController}:</p>
  *  <ul>
- *  <li>Provision of client state to create a {@link org.multibit.mbm.cart.dto.Cart}</li>
+ *  <li>Provision of client state to create a {@link org.multibit.mbm.persistence.dto.Cart}</li>
  *  </ul>
  *
  * @since 1.0.0

@@ -1,7 +1,7 @@
 package org.multibit.mbm.rest.v1.client.security;
 
 import org.multibit.mbm.rest.v1.client.BaseResponse;
-import org.multibit.mbm.security.dto.User;
+import org.multibit.mbm.persistence.dto.User;
 import org.springframework.util.Assert;
 
 /**

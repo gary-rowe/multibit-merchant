@@ -1,7 +1,7 @@
 package org.multibit.mbm.rest.v1.client.catalog;
 
 import com.google.common.collect.Lists;
-import org.multibit.mbm.catalog.dto.Item;
+import org.multibit.mbm.persistence.dto.Item;
 import org.multibit.mbm.rest.v1.client.search.BasePagedQueryResponse;
 
 import java.util.List;
