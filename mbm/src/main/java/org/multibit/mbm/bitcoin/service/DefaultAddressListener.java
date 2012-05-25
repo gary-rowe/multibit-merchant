@@ -2,8 +2,8 @@ package org.multibit.mbm.bitcoin.service;
 
 import com.google.bitcoin.core.Address;
 import com.google.bitcoin.core.Transaction;
-import org.multibit.mbm.web.atmosphere.BroadcastService;
-import org.multibit.mbm.web.atmosphere.AlertMessage;
+import org.multibit.mbm.resources.atmosphere.AlertMessage;
+import org.multibit.mbm.resources.atmosphere.BroadcastService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

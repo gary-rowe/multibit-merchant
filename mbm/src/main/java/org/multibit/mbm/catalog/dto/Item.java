@@ -27,7 +27,7 @@ public class Item implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", unique = true, nullable = false)
+  @Column(name = "id", nullable = false)
   private Long id = null;
 
   @Column(name = "sku", nullable = false)

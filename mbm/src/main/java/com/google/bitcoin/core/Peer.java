@@ -121,7 +121,7 @@ public class Peer {
     /**
      * Connects to the peer.
      *
-     * @throws PeerException when there is a temporary problem with the peer and we should retry later
+     * @throws com.google.bitcoin.core.PeerException when there is a temporary problem with the peer and we should retry later
      */
     public synchronized void connect() throws PeerException {
         try {
@@ -143,7 +143,7 @@ public class Peer {
      *
      * <p>connect() must be called first
      *
-     * @throws PeerException when there is a temporary problem with the peer and we should retry later
+     * @throws com.google.bitcoin.core.PeerException when there is a temporary problem with the peer and we should retry later
      */
     public void run() throws PeerException {
         // This should be called in the network loop thread for this peer
@@ -297,7 +297,7 @@ public class Peer {
      * whether it's done later.
      *
      * @param blockHash Hash of the block you wareare requesting.
-     * @throws IOException
+     * @throws java.io.IOException
      */
     public Future<Block> getBlock(Sha256Hash blockHash) throws IOException {
         GetDataMessage getdata = new GetDataMessage(params);
@@ -369,8 +369,8 @@ public class Peer {
 
     /**
      * Send the given Transaction, ie, make a payment with BitCoins. To create a transaction you can broadcast, use
-     * a {@link Wallet}. After the broadcast completes, confirm the send using the wallet confirmSend() method.
-     * @throws IOException
+     * a {@link com.google.bitcoin.core.Wallet}. After the broadcast completes, confirm the send using the wallet confirmSend() method.
+     * @throws java.io.IOException
      */
     void broadcastTransaction(Transaction tx) throws IOException {
         conn.writeMessage(tx);

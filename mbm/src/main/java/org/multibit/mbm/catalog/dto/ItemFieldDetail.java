@@ -19,7 +19,7 @@ public class ItemFieldDetail {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", unique = true, nullable = false)
+  @Column(name = "id", nullable = false)
   private Long id = null;
 
   @Embedded

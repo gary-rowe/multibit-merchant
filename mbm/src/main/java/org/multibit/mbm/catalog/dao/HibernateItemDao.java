@@ -5,7 +5,7 @@ import org.hibernate.Session;
 import org.multibit.mbm.catalog.dto.Item;
 import org.multibit.mbm.catalog.dto.ItemField;
 import org.multibit.mbm.catalog.dto.ItemFieldDetail;
-import org.multibit.mbm.web.rest.v1.client.catalog.ItemPagedQueryResponse;
+import org.multibit.mbm.rest.v1.client.catalog.ItemPagedQueryResponse;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
