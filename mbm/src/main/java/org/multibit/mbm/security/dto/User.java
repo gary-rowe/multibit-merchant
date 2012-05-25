@@ -33,7 +33,7 @@ public class User implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", unique = true, nullable = false)
+  @Column(name = "id", nullable = false)
   private Long id = null;
 
   @Column(name = "open_id", nullable = true)

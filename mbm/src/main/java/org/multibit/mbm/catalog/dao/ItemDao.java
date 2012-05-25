@@ -1,7 +1,7 @@
 package org.multibit.mbm.catalog.dao;
 
 import org.multibit.mbm.catalog.dto.Item;
-import org.multibit.mbm.web.rest.v1.client.catalog.ItemPagedQueryResponse;
+import org.multibit.mbm.rest.v1.client.catalog.ItemPagedQueryResponse;
 
 import java.util.List;
 

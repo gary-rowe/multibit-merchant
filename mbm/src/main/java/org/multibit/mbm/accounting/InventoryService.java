@@ -1,7 +1,5 @@
 package org.multibit.mbm.accounting;
 
-import org.springframework.stereotype.Service;
-
 /**
  * <p>Service to provide the following to Controllers:</p>
  * <ul>
@@ -11,7 +9,6 @@ import org.springframework.stereotype.Service;
  * @since 1.0.0
  *         
  */
-@Service
 public class InventoryService {
 
 }

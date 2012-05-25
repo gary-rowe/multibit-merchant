@@ -3,7 +3,6 @@ package org.multibit.mbm.cart.dao;
 import org.multibit.mbm.cart.dto.Cart;
 import org.multibit.mbm.customer.dao.CustomerNotFoundException;
 import org.multibit.mbm.customer.dto.Customer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
