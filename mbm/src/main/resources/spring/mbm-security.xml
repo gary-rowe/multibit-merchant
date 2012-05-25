@@ -61,7 +61,7 @@
     <!--<beans:property name="userDetailsService" ref="userService"/>-->
   <!--</beans:bean>-->
 
-  <beans:bean id="authenticateAllUsers" class="org.multibit.mbm.security.service.AuthenticateAllUsers" />
+  <beans:bean id="authenticateAllUsers" class="org.multibit.mbm.services.AuthenticateAllUsers" />
 
   <authentication-manager>
     <authentication-provider ref="authenticateAllUsers"/>

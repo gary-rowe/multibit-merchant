@@ -1,10 +1,10 @@
 package org.multibit.mbm.rest.v1.controller;
 
-import org.multibit.mbm.catalog.service.CatalogService;
-import org.multibit.mbm.customer.dto.Customer;
-import org.multibit.mbm.customer.service.CustomerService;
+import org.multibit.mbm.services.CatalogService;
+import org.multibit.mbm.persistence.dto.Customer;
+import org.multibit.mbm.services.CustomerService;
 import org.multibit.mbm.rest.v1.client.cart.CartItemSummary;
-import org.multibit.mbm.security.dto.User;
+import org.multibit.mbm.persistence.dto.User;
 import org.multibit.mbm.rest.v1.client.cart.CartResponse;
 import org.multibit.mbm.rest.v1.client.cart.CreateCartRequest;
 import org.slf4j.Logger;

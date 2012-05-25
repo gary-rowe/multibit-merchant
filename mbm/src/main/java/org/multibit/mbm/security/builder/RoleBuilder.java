@@ -1,14 +1,14 @@
 package org.multibit.mbm.security.builder;
 
 import com.google.common.collect.Lists;
-import org.multibit.mbm.security.dto.Authority;
-import org.multibit.mbm.security.dto.Role;
+import org.multibit.mbm.persistence.dto.Authority;
+import org.multibit.mbm.persistence.dto.Role;
 import org.springframework.util.Assert;
 
 import java.util.List;
 
 /**
- *  <p>Builder to provide the following to {@link org.multibit.mbm.security.dto.Role}:</p>
+ *  <p>Builder to provide the following to {@link org.multibit.mbm.persistence.dto.Role}:</p>
  *  <ul>
  *  <li>Provide a fluent interface to facilitate building the entity</li>
  *  </ul>

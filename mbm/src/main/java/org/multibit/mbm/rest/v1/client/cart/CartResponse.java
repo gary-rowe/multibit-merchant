@@ -1,8 +1,8 @@
 package org.multibit.mbm.rest.v1.client.cart;
 
 import com.google.common.collect.Lists;
-import org.multibit.mbm.cart.dto.Cart;
-import org.multibit.mbm.cart.dto.CartItem;
+import org.multibit.mbm.persistence.dto.Cart;
+import org.multibit.mbm.persistence.dto.CartItem;
 import org.multibit.mbm.rest.v1.client.BaseResponse;
 
 import java.util.Collections;

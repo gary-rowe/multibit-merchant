@@ -1,14 +1,14 @@
 package org.multibit.mbm.cart.builder;
 
 import com.google.common.collect.Lists;
-import org.multibit.mbm.cart.dto.Cart;
-import org.multibit.mbm.cart.dto.CartItem;
-import org.multibit.mbm.catalog.dto.Item;
+import org.multibit.mbm.persistence.dto.Cart;
+import org.multibit.mbm.persistence.dto.CartItem;
+import org.multibit.mbm.persistence.dto.Item;
 
 import java.util.List;
 
 /**
- *  <p>Builder to provide the following to {@link org.multibit.mbm.catalog.dto.Item}:</p>
+ *  <p>Builder to provide the following to {@link org.multibit.mbm.persistence.dto.Item}:</p>
  *  <ul>
  *  <li>Provide a fluent interface to facilitate building the entity</li>
  *  </ul>

@@ -1,8 +1,8 @@
 package org.multibit.mbm.rest.v1.controller;
 
-import org.multibit.mbm.rest.v1.UUIDNotFoundException;
-import org.multibit.mbm.security.dto.User;
-import org.multibit.mbm.security.service.SecurityService;
+import org.multibit.mbm.resources.UUIDNotFoundException;
+import org.multibit.mbm.persistence.dto.User;
+import org.multibit.mbm.services.SecurityService;
 import org.multibit.mbm.util.CookieUtils;
 import org.multibit.mbm.rest.v1.client.BaseResponse;
 import org.slf4j.Logger;

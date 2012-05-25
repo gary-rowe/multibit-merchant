@@ -2,8 +2,8 @@ package org.multibit.mbm.rest.v1.controller;
 
 import org.multibit.mbm.rest.v1.client.security.CreateUserRequest;
 import org.multibit.mbm.rest.v1.client.security.UserResponse;
-import org.multibit.mbm.security.dto.User;
-import org.multibit.mbm.security.service.SecurityService;
+import org.multibit.mbm.persistence.dto.User;
+import org.multibit.mbm.services.SecurityService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

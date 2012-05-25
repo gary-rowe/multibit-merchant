@@ -1,6 +1,6 @@
 package org.multibit.mbm.rest.v1.client.catalog;
 
-import org.multibit.mbm.catalog.dto.Item;
+import org.multibit.mbm.persistence.dto.Item;
 import org.multibit.mbm.rest.v1.client.search.BasePagedQueryResponse;
 
 /**

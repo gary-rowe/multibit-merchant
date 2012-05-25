@@ -1,8 +1,8 @@
 package org.multibit.mbm.rest.v1.client.cart;
 
-import org.multibit.mbm.cart.dto.CartItem;
-import org.multibit.mbm.catalog.dto.Item;
-import org.multibit.mbm.catalog.dto.ItemField;
+import org.multibit.mbm.persistence.dto.CartItem;
+import org.multibit.mbm.persistence.dto.Item;
+import org.multibit.mbm.persistence.dto.ItemField;
 import org.multibit.mbm.util.DateUtils;
 
 /**

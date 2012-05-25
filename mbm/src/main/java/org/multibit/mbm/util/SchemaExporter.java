@@ -67,11 +67,7 @@ public class SchemaExporter {
     int revision = 0;
 
     List<String> packages = Lists.newArrayList(
-      "org.multibit.mbm.cart.dto",
-      "org.multibit.mbm.catalog.dto",
-      "org.multibit.mbm.customer.dto",
-      "org.multibit.mbm.i18n.dto",
-      "org.multibit.mbm.security.dto",
+      "org.multibit.mbm.persistence.dto",
       "");
 
     SchemaExporter schemaExporter = new SchemaExporter(packages);
