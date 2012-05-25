@@ -56,6 +56,7 @@ public class CartResource {
     // Validate the expected form of the data
     Assert.notNull(user.getCustomer());
 
+
     return new CartResponse(user.getCustomer().getCart());
   }
 

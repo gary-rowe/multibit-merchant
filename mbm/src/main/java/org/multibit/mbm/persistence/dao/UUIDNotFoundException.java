@@ -1,4 +1,4 @@
-package org.multibit.mbm.resources;
+package org.multibit.mbm.persistence.dao;
 
 /**
  *  <p>Exception to provide the following to web tier:</p>
