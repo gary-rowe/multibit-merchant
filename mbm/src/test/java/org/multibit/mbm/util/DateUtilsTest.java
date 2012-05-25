@@ -1,4 +1,4 @@
-package org.multibit.mbm.utils;
+package org.multibit.mbm.util;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeUtils;

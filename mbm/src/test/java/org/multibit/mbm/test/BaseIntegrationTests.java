@@ -1,10 +1,7 @@
 package org.multibit.mbm.test;
 
 import org.junit.Ignore;
-import org.multibit.mbm.DatabaseLoader;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
-
-import javax.annotation.Resource;
 
 /**
  *  <p>Abstract base class to provide the following to database integration tests:</p>
@@ -18,7 +15,7 @@ import javax.annotation.Resource;
 @Ignore
 public class BaseIntegrationTests extends AbstractTransactionalJUnit4SpringContextTests {
 
-  @Resource(name = "databaseLoader")
-  private DatabaseLoader databaseLoader;
+  //@Resource(name = "databaseLoader")
+  //private DatabaseLoader databaseLoader;
 
 }

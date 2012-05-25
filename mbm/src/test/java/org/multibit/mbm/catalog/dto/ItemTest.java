@@ -1,5 +1,6 @@
 package org.multibit.mbm.catalog.dto;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.multibit.mbm.catalog.builder.ItemBuilder;
 
@@ -26,14 +27,14 @@ public class ItemTest {
    
     // Verify the results
     // SUMMARY
-    assertEquals("Primary failed","English", testObject.getItemFieldContent(ItemField.SUMMARY));
-    assertEquals("Specific locale (UK) failed","British english", testObject.getItemFieldContent(ItemField.SUMMARY, "en_GB"));
-    assertEquals("Specific locale (FRANCE) failed","French french", testObject.getItemFieldContent(ItemField.SUMMARY, "fr_FR"));
-    assertEquals("Specific locale (THAILAND) failed","Thai with native script", testObject.getItemFieldContent(ItemField.SUMMARY, "th_TH_TH"));
+    Assert.assertEquals("Primary failed", "English", testObject.getItemFieldContent(ItemField.SUMMARY));
+    Assert.assertEquals("Specific locale (UK) failed", "British english", testObject.getItemFieldContent(ItemField.SUMMARY, "en_GB"));
+    Assert.assertEquals("Specific locale (FRANCE) failed", "French french", testObject.getItemFieldContent(ItemField.SUMMARY, "fr_FR"));
+    Assert.assertEquals("Specific locale (THAILAND) failed", "Thai with native script", testObject.getItemFieldContent(ItemField.SUMMARY, "th_TH_TH"));
 
     // TITLE
-    assertEquals("Primary failed","English title", testObject.getItemFieldContent(ItemField.TITLE));
-    assertEquals("Specific locale (FRANCE) failed","French title", testObject.getItemFieldContent(ItemField.TITLE, "fr_FR"));
+    Assert.assertEquals("Primary failed", "English title", testObject.getItemFieldContent(ItemField.TITLE));
+    Assert.assertEquals("Specific locale (FRANCE) failed", "French title", testObject.getItemFieldContent(ItemField.TITLE, "fr_FR"));
 
   }
 }

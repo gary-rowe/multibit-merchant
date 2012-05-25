@@ -7,8 +7,8 @@ import org.multibit.mbm.catalog.dto.ItemField;
 import org.multibit.mbm.catalog.dto.ItemFieldDetail;
 import org.multibit.mbm.customer.dao.CustomerDao;
 import org.multibit.mbm.i18n.dto.LocalisedText;
+import org.multibit.mbm.rest.v1.client.catalog.ItemPagedQueryResponse;
 import org.multibit.mbm.test.BaseIntegrationTests;
-import org.multibit.mbm.web.rest.v1.client.catalog.ItemPagedQueryResponse;
 import org.springframework.test.context.ContextConfiguration;
 
 import javax.annotation.Resource;
