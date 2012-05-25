@@ -5,13 +5,13 @@
   <parent>
     <groupId>org.multibit.merchant</groupId>
     <artifactId>mbm-parent</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>0.0.1-SNAPSHOT</version>
     <relativePath>../../../pom.xml</relativePath>
   </parent>
 
   <groupId>org.multibit.merchant.client.java</groupId>
   <artifactId>mbm-jquery</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>MultiBit Merchant Java Client (jQuery)</name>
@@ -78,7 +78,7 @@
   </build>
 
   <properties>
-    <mbm.version>1.0.0-SNAPSHOT</mbm.version>
+    <mbm.version>0.0.1-SNAPSHOT</mbm.version>
   </properties>
 
 </project>

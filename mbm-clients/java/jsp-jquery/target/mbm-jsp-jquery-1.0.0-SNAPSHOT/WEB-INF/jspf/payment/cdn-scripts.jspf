@@ -1,0 +1,2 @@
+<%@include file="taglibs.jspf" %>
+<script type="text/javascript" src="<c:url value="/js/mbm/payment/jquery/1.6.4/jquery.min.js"/>"></script>
