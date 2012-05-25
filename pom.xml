@@ -4,7 +4,7 @@
 
   <groupId>org.multibit.merchant</groupId>
   <artifactId>mbm-parent</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>MultiBit Merchant Parent</name>
@@ -307,19 +307,32 @@
         <version>1.6</version>
       </dependency>
 
-      <!-- Guava for handy utilities -->
-      <dependency>
-        <groupId>com.google.guava</groupId>
-        <artifactId>guava</artifactId>
-        <version>10.0.1</version>
-      </dependency>
-
       <!-- Findbugs annotations for the avoidance of doubt -->
       <dependency>
         <groupId>com.google.code.findbugs</groupId>
         <artifactId>annotations</artifactId>
         <version>1.3.9</version>
       </dependency>
+
+      <!-- Dropwizard framework -->
+      <dependency>
+        <groupId>com.yammer.dropwizard</groupId>
+        <artifactId>dropwizard-core</artifactId>
+        <version>${dropwizard.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.yammer.dropwizard</groupId>
+        <artifactId>dropwizard-auth</artifactId>
+        <version>${dropwizard.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.yammer.dropwizard</groupId>
+        <artifactId>dropwizard-testing</artifactId>
+        <version>${dropwizard.version}</version>
+      </dependency>
+
 
     </dependencies>
 
@@ -381,12 +394,13 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <atmosphere.version>0.8.0-RC3</atmosphere.version>
+    <dropwizard.version>0.4.0</dropwizard.version>
     <resteasy.version>2.2.3.GA</resteasy.version>
     <spring.version>3.1.0.M2</spring.version>
     <spring-social.version>1.0.0.RELEASE</spring-social.version>
     <slf4j.version>1.6.1</slf4j.version>
     <!-- Keep with Jetty 7.5.4 to avoid startup delays -->
-    <jetty.version>7.5.4.v20111024</jetty.version>
+    <!--<jetty.version>7.5.4.v20111024</jetty.version>-->
     <bitcoinj.version>0.3</bitcoinj.version>
   </properties>
 

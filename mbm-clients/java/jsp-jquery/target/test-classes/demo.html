@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+  <title>MultiBit Merchant Demonstrator</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="author" content="MultiBit.org">
+  <meta name="copyright" content="Copyright (c) 2011 MultiBit">
+  <meta name="description" content="MultiBit Merchant">
+  <link rel="stylesheet" type="text/css"
+        href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/flick/jquery-ui.css"/>
+</head>
+<body>
+<div id="tabs" class="hidden">
+  <ul>
+    <li><a href="#tab-1">Introduction</a></li>
+    <li><a href="#tab-2">Getting started</a></li>
+    <li><a href="#tab-3">Visit</a></li>
+  </ul>
+  <div id="tab-1">
+    <h2>Introduction</h2>
+
+    <p>MultiBit Merchant is a production-quality Bitcoin online shop offering the following features:</p>
+    <ul>
+      <li>Customer tracking through OpenId</li>
+      <li>Catalog upload using simple Excel file</li>
+      <li>Shopping cart</li>
+      <li>Drag and drop payment mechanism through Bitcoin</li>
+      <li>... and much more</li>
+    </ul>
+  </div>
+  <div id="tab-2">
+    <h2>Before you start</h2>
+
+    <p>This demonstrator is intended for Java developers who have experience with Maven. If you simply want to try out
+      the
+      application, double click the WAR file <a href="http://localhost:8080">and click here</a>.</p>
+
+
+    <p>To get SSL working, make sure that you've installed the localhost SSL certificate into your JDK trust store. Do
+      the
+      following as a one-off configuration operation</p>
+    <ol>
+      <li><code>mvn clean jetty:run</code></li>
+      <li><code>cd src/test/java</code></li>
+      <li><code>javac ./InstallCert.java</code></li>
+      <li><code>sudo java InstallCert localhost:8443</code></li>
+    </ol>
+  </div>
+  <div id="tab-3">
+    <h2>How to login</h2>
+
+    <p>MultiBitMerchant uses OpenID to manage logins, which means that it does not have to store any personal details
+      about you.</p>
+
+    <p><a href="http://localhost:8080/mbm/index.html">Visit the catalog without any login requirement</a></p>
+
+    <p><a href="https://localhost:8443/mbm/account.html">Visit your customer account page securely using an OpenId</a>
+
+    <p><a href="http://localhost:8080/mbm/api-demo.html">Visit the developer API pages</a>
+    </p>
+  </div>
+</div>
+<!-- Script in the footer using Google CDN where possible. Order is important. -->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js"></script>
+<script type="text/javascript">
+
+  $(document).ready(function() {
+    // Apply jQueryUI tabs
+    $("#tabs").tabs();
+
+  });
+
+</script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="web" name="Web">
+      <configuration>
+        <descriptors>
+          <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/src/main/webapp/WEB-INF/web.xml" />
+        </descriptors>
+        <webroots>
+          <root url="file://$MODULE_DIR$/src/main/webapp" relative="/" />
+        </webroots>
+        <sourceRoots>
+          <root url="file://$MODULE_DIR$/src/main/java" />
+          <root url="file://$MODULE_DIR$/src/main/resources" />
+          <root url="file://$MODULE_DIR$/target/generated-sources/annotations" />
+        </sourceRoots>
+      </configuration>
+    </facet>
+    <facet type="Spring" name="Spring">
+      <configuration>
+        <fileset id="fileset1" name="My Fileset" removed="false">
+          <file>file://$MODULE_DIR$/src/main/resources/spring/mbm-context.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/spring/mbm-data.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/spring/mbm-security.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/spring/mbm-rest.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/spring/mbm-hibernate-service.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/spring/mbm-hibernate-dao.xml</file>
+        </fileset>
+        <fileset id="fileset2" name="My Fileset1" removed="false">
+          <file>file://$MODULE_DIR$/src/main/resources/spring/mbm-rest.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/spring/mbm-context.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/spring/mbm-data.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/spring/mbm-security.xml</file>
+        </fileset>
+      </configuration>
+    </facet>
+    <facet type="jpa" name="JPA">
+      <configuration>
+        <setting name="validation-enabled" value="true" />
+        <setting name="provider-name" value="" />
+        <datasource-mapping>
+          <factory-entry name="mbmPU" />
+        </datasource-mapping>
+        <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/src/main/java/org/multibit/mbm/domain/Customer.java" />
+      </configuration>
+    </facet>
+  </component>
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/target/classes" />
+    <output-test url="file://$MODULE_DIR$/target/test-classes" />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/target" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
+
