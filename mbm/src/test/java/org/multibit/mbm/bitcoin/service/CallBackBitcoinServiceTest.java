@@ -1,6 +1,7 @@
 package org.multibit.mbm.bitcoin.service;
 
 import com.google.bitcoin.core.*;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.awt.image.BufferedImage;
@@ -45,9 +46,9 @@ public class CallBackBitcoinServiceTest{
     
     testObject.setAddressBucket(addressBucket);
     
-    assertEquals(address1.toString(), testObject.getNextAddress(1L));
-    assertEquals(address2.toString(), testObject.getNextAddress(1L));
-    assertEquals(address3.toString(), testObject.getNextAddress(1L));
+    Assert.assertEquals(address1.toString(), testObject.getNextAddress(1L));
+    Assert.assertEquals(address2.toString(), testObject.getNextAddress(1L));
+    Assert.assertEquals(address3.toString(), testObject.getNextAddress(1L));
     
     // no more addresses available
     assertNull(testObject.getNextAddress(1L));

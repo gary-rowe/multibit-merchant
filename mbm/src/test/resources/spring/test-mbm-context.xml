@@ -14,9 +14,6 @@
        http://www.springframework.org/schema/jdbc
        http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
-  <!-- Integration tests require a database loader -->
-  <bean id="databaseLoader" class="org.multibit.mbm.DatabaseLoader" init-method="initialise" />
-
   <!-- Requires a configured TransactionManager -->
   <import resource="classpath:/spring/mbm-hibernate-service.xml" />
 
@@ -28,6 +25,10 @@
 
   <!-- Exception translation bean post processor -->
   <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
+
+  <bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+    <property name="sessionFactory" ref="sessionFactory"/>
+  </bean>
 
   <!-- Hibernate persistence configuration -->
   <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
@@ -54,11 +55,10 @@
     </property>
   </bean>
 
-  <bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
-    <property name="sessionFactory" ref="sessionFactory"/>
-  </bean>
+  <!-- Configure an empty simple HSQL connection as an embedded DataSource with no schema patch SQL -->
+  <jdbc:embedded-database id="dataSource" />
 
-  <!-- Configure a simple H2 connection as an embedded DataSource with no schema patch SQL -->
-  <jdbc:embedded-database type="H2" id="dataSource" />
+  <!-- Integration tests require a database loader -->
+  <bean id="databaseLoader" class="org.multibit.mbm.DatabaseLoader" init-method="initialise" />
 
 </beans>
