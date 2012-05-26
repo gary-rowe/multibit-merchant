@@ -37,3 +37,7 @@ Advanced exploration
 If you are keen to explore the API without visual feedback, you can use curl to perform the necessary HTTP requests as
 shown below for the various use cases.
 
+Startup Graphic
+---------------
+The ASCII art for the startup banner was created using the online tool available at
+http://www.webestools.com/ascii-text-generator-ascii-art-code-online-txt2ascii-text2ascii-maker-free-text-to-ascii-converter.html

@@ -1,10 +1,14 @@
-M     M BBBBB  M     M
-MM   MM B    B MM   MM
-M M M M B    B M M M M
-M  M  M BBBBB  M  M  M
-M     M B    B M     M
-M     M B    B M     M
-M     M BBBBB  M     M
 
-MultiBit Merchant
-Trading, Reinvented
+  MMBMM       MMBMM MMBMMBMMBM    BMMBM       BMMBM
+  BMMBM       BMMBM BMMBMMBMMBM   MBMMB       MBMMB
+    MMBM      MBM   MBMMB   MMB     BMMB      MMB
+    BMMBM    BMMB     BMM   BMM     MBMMB    MBMM
+    MBMMB    M MM     MBMMBMMBM     MMBMM    M BM
+    MMBMMB  BM BM     MMBMMBMMBM    BMMBMM  MB MB
+    BM BMMB MB MB     BMMBMMBMMBM   MB MBMM MM MM
+    MB MBMMBM  MMB    MBM    BMMB   MM MMBMMB  BMM
+    MMB MBMMB MBMM    MMBMMBMMBMM   BMM MMBMM MMBM
+  MMBMMB MBM BMMBMM MMBMMBMMBMMB  BMMBMM MMB MBMMBM
+   MMBMM MM  MBMMBM BMMBMMBMMBM    BMMBM BM  MMBMMB
+
+  MultiBit Merchant - Trading, Reinvented
