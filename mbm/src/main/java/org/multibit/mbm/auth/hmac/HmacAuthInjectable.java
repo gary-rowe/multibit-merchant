@@ -26,7 +26,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 class HmacAuthInjectable<T> extends AbstractHttpContextInjectable<T> {
-  private static final String PREFIX = "HMAC";
+  private static final String PREFIX = "HmacSHA1";
   private static final String HEADER_VALUE = PREFIX + " realm=\"%s\"";
 
   private final Authenticator<HmacCredentials, T> authenticator;
@@ -66,6 +66,7 @@ class HmacAuthInjectable<T> extends AbstractHttpContextInjectable<T> {
           throw new WebApplicationException(Response.Status.BAD_REQUEST);
         }
 
+        final String algorithm = authTokens[0];
         final String apiKey = authTokens[1];
         final String signature = authTokens[2];
         final String contents;
@@ -82,7 +83,7 @@ class HmacAuthInjectable<T> extends AbstractHttpContextInjectable<T> {
           contents = c.getRequest().getEntity(String.class);
         }
 
-        final HmacCredentials credentials = new HmacCredentials(apiKey, signature, contents);
+        final HmacCredentials credentials = new HmacCredentials(algorithm, apiKey, signature, contents);
 
         final Optional<T> result = authenticator.authenticate(credentials);
         if (result.isPresent()) {

@@ -20,18 +20,28 @@ public class HmacCredentials {
   private final String apiKey;
   private final String digest;
   private final String contents;
+  private final String algorithm;
 
   /**
    * Creates a new {@link org.multibit.mbm.auth.hmac.HmacCredentials} with the given username and password.
    *
+   * @param algorithm   The algorithm used for computing the digest (e.g. "HmacSHA1", "HmacSHA256", "HmacSHA512")
    * @param apiKey   The API key used for looking up the shared secret key associated with the user
    * @param digest   The digest of (contents + shared secret key)
    * @param contents The contents that were signed
    */
-  public HmacCredentials(String apiKey, String digest, String contents) {
+  public HmacCredentials(String algorithm, String apiKey, String digest, String contents) {
+    this.algorithm = checkNotNull(algorithm);
     this.apiKey = checkNotNull(apiKey);
     this.digest = checkNotNull(digest);
     this.contents = checkNotNull(contents);
+  }
+
+  /**
+   * @return The name of the algorithm used to compute the digest
+   */
+  public String getAlgorithm() {
+    return algorithm;
   }
 
   /**

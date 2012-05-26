@@ -4,6 +4,7 @@ import com.xeiam.xchange.utils.CryptoUtils;
 import com.xeiam.xchange.utils.HttpTemplate;
 import com.yammer.dropwizard.auth.Authenticator;
 import org.junit.Test;
+import org.multibit.mbm.auth.hmac.HmacAuthProvider;
 import org.multibit.mbm.auth.hmac.HmacAuthenticator;
 import org.multibit.mbm.auth.hmac.HmacCredentials;
 import org.multibit.mbm.core.Saying;
@@ -39,7 +40,7 @@ public class HelloWorldResourceTest extends BaseResourceTest {
 
     Authenticator<HmacCredentials, User> authenticator = new HmacAuthenticator();
 
-    addProvider(authenticator);
+    addProvider(new HmacAuthProvider<User>(authenticator,"REST"));
   }
 
   @Test
@@ -59,9 +60,11 @@ public class HelloWorldResourceTest extends BaseResourceTest {
   @Test
   public void hmacResourceTest() throws Exception {
 
-    // TODO Make this a standard test utility
+    // TODO Make this a standard test utility in the base class
     String body = "nonce=" + CryptoUtils.getNumericalNonce(); // Not applicable to GET
-    String authorization = URLEncoder.encode(apiKey, HttpTemplate.CHARSET_UTF_8) + " " + CryptoUtils.computeSignature("HmacSHA1", body, secretKey);
+    String authorization = String.format("HmacSHA1 %s %s",
+      URLEncoder.encode(apiKey, HttpTemplate.CHARSET_UTF_8),
+      CryptoUtils.computeSignature("HmacSHA1", body, secretKey));
 
     Saying actual = client()
       .resource("/secret")
