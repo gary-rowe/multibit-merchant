@@ -19,18 +19,14 @@ import com.sun.jersey.api.core.HttpContext;
 import com.sun.jersey.server.impl.inject.AbstractHttpContextInjectable;
 import com.yammer.dropwizard.auth.AuthenticationException;
 import com.yammer.dropwizard.auth.Authenticator;
-import org.eclipse.jetty.util.B64Code;
-import org.eclipse.jetty.util.StringUtil;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.UnsupportedEncodingException;
 
 class HmacAuthInjectable<T> extends AbstractHttpContextInjectable<T> {
-  private static final String PREFIX = "Hmac";
-  private static final String HEADER_NAME = "Authorization";
+  private static final String PREFIX = "HMAC";
   private static final String HEADER_VALUE = PREFIX + " realm=\"%s\"";
 
   private final Authenticator<HmacCredentials, T> authenticator;
@@ -57,31 +53,39 @@ class HmacAuthInjectable<T> extends AbstractHttpContextInjectable<T> {
 
   @Override
   public T getValue(HttpContext c) {
-    final String header = c.getRequest().getHeaderValue(HttpHeaders.AUTHORIZATION);
+
+    final Optional<String> header = Optional.of(c.getRequest().getHeaderValue(HttpHeaders.AUTHORIZATION));
+    final String[] authTokens = header.get().split(" ");
+
+    if (authTokens.length != 3) {
+      // Malformed
+      HmacAuthProvider.LOG.debug("Error decoding credentials (length is {})", authTokens.length);
+      throw new WebApplicationException(Response.Status.BAD_REQUEST);
+    }
+
+    final String apiKey = authTokens[1];
+    final String signature = authTokens[2];
+    final String contents;
+
+    // Determine which part of the request will be used for the content
+    final String method = c.getRequest().getMethod().toUpperCase();
+    if ("GET".equals(method) ||
+      "HEAD".equals(method) ||
+      "DELETE".equals(method)) {
+      // No entity so use the URI
+      contents = c.getRequest().getRequestUri().toString();
+    } else {
+      // Potentially have an entity (even in OPTIONS) so use that
+      contents = c.getRequest().getEntity(String.class);
+    }
+
+    final HmacCredentials credentials = new HmacCredentials(apiKey, signature, contents);
+
     try {
-      if (header != null) {
-        final int space = header.indexOf(' ');
-        if (space > 0) {
-          final String method = header.substring(0, space);
-          if (PREFIX.equalsIgnoreCase(method)) {
-            final String decoded = B64Code.decode(header.substring(space + 1),
-              StringUtil.__ISO_8859_1);
-            final int i = decoded.indexOf(':');
-            if (i > 0) {
-              final String username = decoded.substring(0, i);
-              final String password = decoded.substring(i + 1);
-              final HmacCredentials credentials = new HmacCredentials(username,
-                password);
-              final Optional<T> result = authenticator.authenticate(credentials);
-              if (result.isPresent()) {
-                return result.get();
-              }
-            }
-          }
-        }
+      final Optional<T> result = authenticator.authenticate(credentials);
+      if (result.isPresent()) {
+        return result.get();
       }
-    } catch (UnsupportedEncodingException e) {
-      HmacAuthProvider.LOG.debug(e, "Error decoding credentials");
     } catch (IllegalArgumentException e) {
       HmacAuthProvider.LOG.debug(e, "Error decoding credentials");
     } catch (AuthenticationException e) {
@@ -91,7 +95,7 @@ class HmacAuthInjectable<T> extends AbstractHttpContextInjectable<T> {
 
     if (required) {
       throw new WebApplicationException(Response.status(Response.Status.UNAUTHORIZED)
-        .header(HEADER_NAME,
+        .header(HttpHeaders.AUTHORIZATION,
           String.format(HEADER_VALUE, realm))
         .entity("Credentials are required to access this resource.")
         .type(MediaType.TEXT_PLAIN_TYPE)

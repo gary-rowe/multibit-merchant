@@ -1,19 +1,13 @@
 package org.multibit.mbm.auth.hmac;
 
 /**
- * <p>[Pattern] to provide the following to {@link Object}:</p>
+ * <p>Authentication provider to provide the following to Jersey:</p>
  * <ul>
- * <li></li>
+ * <li>Bridge between Dropwizard and Jersey for HMAC authentication</li>
  * </ul>
- * <p>Example:</p>
- * <pre>
- * </pre>
  *
- * A Jersey provider for Basic HTTP authentication.
  * @param <T>    the principal type.
  * @since 0.0.1
- * TODO Requires implementation
- * http://rc3.org/2011/12/02/using-hmac-to-authenticate-web-service-requests/ 
  */
 
 import com.sun.jersey.api.model.Parameter;
@@ -34,9 +28,9 @@ public class HmacAuthProvider<T> implements InjectableProvider<Auth, Parameter> 
   /**
    * Creates a new {@link org.multibit.mbm.auth.hmac.HmacAuthProvider} with the given {@link com.yammer.dropwizard.auth.Authenticator} and realm.
    *
-   * @param authenticator    the authenticator which will take the {@link HmacCredentials} and
-   *                         convert them into instances of {@code T}
-   * @param realm            the name of the authentication realm
+   * @param authenticator the authenticator which will take the {@link HmacCredentials} and
+   *                      convert them into instances of {@code T}
+   * @param realm         the name of the authentication realm
    */
   public HmacAuthProvider(Authenticator<HmacCredentials, T> authenticator, String realm) {
     this.authenticator = authenticator;

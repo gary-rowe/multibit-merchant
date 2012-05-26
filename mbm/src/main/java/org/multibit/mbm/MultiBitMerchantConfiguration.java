@@ -25,7 +25,7 @@ public class MultiBitMerchantConfiguration extends Configuration {
 
   @NotEmpty
   @JsonProperty
-  private String authenticationCachePolicy;
+  private String authenticationCachePolicy="maximumSize=10000, expireAfterAccess=10m";
 
   public String getTemplate() {
     return template;

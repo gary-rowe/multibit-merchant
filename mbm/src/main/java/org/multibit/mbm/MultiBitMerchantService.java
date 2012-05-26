@@ -4,12 +4,13 @@ import com.google.common.cache.CacheBuilderSpec;
 import com.yammer.dropwizard.Service;
 import com.yammer.dropwizard.auth.Authenticator;
 import com.yammer.dropwizard.auth.CachingAuthenticator;
-import com.yammer.dropwizard.auth.oauth.OAuthProvider;
 import com.yammer.dropwizard.config.Environment;
+import org.multibit.mbm.auth.hmac.HmacAuthProvider;
+import org.multibit.mbm.auth.hmac.HmacAuthenticator;
+import org.multibit.mbm.auth.hmac.HmacCredentials;
 import org.multibit.mbm.health.TemplatePropertyHealthCheck;
+import org.multibit.mbm.persistence.dto.User;
 import org.multibit.mbm.resources.HelloWorldResource;
-import org.multibit.mbm.security.SimpleOAuth2Authenticator;
-import org.multibit.mbm.security.SimpleUser;
 
 /**
  * <p>Service to provide the following to application:</p>
@@ -27,7 +28,7 @@ public class MultiBitMerchantService extends Service<MultiBitMerchantConfigurati
   }
 
   private MultiBitMerchantService() {
-    super("multibit-merchant");
+    super("mbm");
   }
 
   @Override
@@ -39,8 +40,8 @@ public class MultiBitMerchantService extends Service<MultiBitMerchantConfigurati
     final String defaultName = configuration.getDefaultName();
 
     // Configure authenticator
-    Authenticator<String, SimpleUser> authenticator = new SimpleOAuth2Authenticator();
-    CachingAuthenticator<String, SimpleUser> cachingAuthenticator = CachingAuthenticator.wrap(authenticator, CacheBuilderSpec.parse(configuration.getAuthenticationCachePolicy()));
+    Authenticator<HmacCredentials, User> authenticator = new HmacAuthenticator();
+    CachingAuthenticator<HmacCredentials, User> cachingAuthenticator = CachingAuthenticator.wrap(authenticator, CacheBuilderSpec.parse(configuration.getAuthenticationCachePolicy()));
 
     // Configure environment accordingly
     // Resources
@@ -48,6 +49,7 @@ public class MultiBitMerchantService extends Service<MultiBitMerchantConfigurati
     // Health checks
     environment.addHealthCheck(new TemplatePropertyHealthCheck(template));
     // Providers
-    environment.addProvider(new OAuthProvider<SimpleUser>(cachingAuthenticator,"Secured realm"));}
+    environment.addProvider(new HmacAuthProvider<User>(cachingAuthenticator,"REST"));}
+
 
 }

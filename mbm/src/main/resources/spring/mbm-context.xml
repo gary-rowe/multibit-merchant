@@ -14,9 +14,6 @@
   <!-- Enables annotation scanning (DAOs, Services, Transactions, Security) -->
   <context:component-scan base-package="org.multibit.mbm"/>
 
-  <!-- Security configuration for HTTP requests -->
-  <import resource="classpath:/src/main/resources/spring/mbm-security.xml"/>
-
   <!-- Supporting transactional services -->
   <import resource="classpath:/src/main/resources/spring/mbm-hibernate-service.xml"/>
 
@@ -25,8 +22,5 @@
 
   <!-- Twitter messaging -->
   <!--<import resource="classpath:/spring/mbm-twitter.xml"/>-->
-
-  <!-- Database loader -->
-  <import resource="classpath:/src/main/resources/spring/mbm-catalog.xml"/>
 
 </beans>

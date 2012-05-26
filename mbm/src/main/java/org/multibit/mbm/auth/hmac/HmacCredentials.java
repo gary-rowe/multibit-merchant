@@ -1,19 +1,6 @@
 package org.multibit.mbm.auth.hmac;
 
-/**
- * <p>[Pattern] to provide the following to {@link Object}:</p>
- * <ul>
- * <li></li>
- * </ul>
- * <p>Example:</p>
- * <pre>
- * </pre>
- *
- * A set of user-provided Basic Authentication credentials, consisting of a username and a password.
- * @since 0.0.1
- * TODO Requires implementation
- * http://rc3.org/2011/12/02/using-hmac-to-authenticate-web-service-requests/ 
- */
+
 import com.google.common.base.Charsets;
 import com.google.common.base.Objects;
 
@@ -21,60 +8,79 @@ import java.security.MessageDigest;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+/**
+ * <p>Value object to provide the following to {@link HmacAuthenticator}:</p>
+ * <ul>
+ * <li>Storage of the necessary credentials for HMAC authentication</li>
+ * </ul>
+ *
+ * @since 0.0.1
+ */
 public class HmacCredentials {
-  private final String username;
-  private final String password;
+  private final String apiKey;
+  private final String digest;
+  private final String contents;
 
   /**
    * Creates a new {@link org.multibit.mbm.auth.hmac.HmacCredentials} with the given username and password.
    *
-   * @param username    the username
-   * @param password    the password
+   * @param apiKey   The API key used for looking up the shared secret key associated with the user
+   * @param digest   The digest of (contents + shared secret key)
+   * @param contents The contents that were signed
    */
-  public HmacCredentials(String username, String password) {
-    this.username = checkNotNull(username);
-    this.password = checkNotNull(password);
+  public HmacCredentials(String apiKey, String digest, String contents) {
+    this.apiKey = checkNotNull(apiKey);
+    this.digest = checkNotNull(digest);
+    this.contents = checkNotNull(contents);
   }
 
   /**
-   * Returns the credentials' username.
-   *
-   * @return the credentials' username
+   * @return The public API key (allows look up of shared secret key)
    */
-  public String getUsername() {
-    return username;
+  public String getApiKey() {
+    return apiKey;
   }
 
   /**
-   * Returns the credentials' password.
-   *
-   * @return the credentials' password
+   * @return The digest of the request content and shared secret key
    */
-  public String getPassword() {
-    return password;
+  public String getDigest() {
+    return digest;
+  }
+
+  /**
+   * @return The request content to which the digest applies (either entity or URI)
+   */
+  public String getContents() {
+    return contents;
   }
 
   @Override
   public boolean equals(Object obj) {
-    if (this == obj) { return true; }
-    if ((obj == null) || (getClass() != obj.getClass())) { return false; }
+    if (this == obj) {
+      return true;
+    }
+    if ((obj == null) || (getClass() != obj.getClass())) {
+      return false;
+    }
     final HmacCredentials that = (HmacCredentials) obj;
     // N.B.: Do a constant-time comparison here to prevent timing attacks.
-    final byte[] thisBytes = password.getBytes(Charsets.UTF_8);
-    final byte[] thatBytes = that.password.getBytes(Charsets.UTF_8);
-    return username.equals(that.username) && MessageDigest.isEqual(thisBytes, thatBytes);
+    final byte[] thisBytes = digest.getBytes(Charsets.UTF_8);
+    final byte[] thatBytes = that.digest.getBytes(Charsets.UTF_8);
+    return apiKey.equals(that.apiKey) && MessageDigest.isEqual(thisBytes, thatBytes);
   }
 
   @Override
   public int hashCode() {
-    return (31 * username.hashCode()) + password.hashCode();
+    return (31 * apiKey.hashCode()) + digest.hashCode();
   }
 
   @Override
   public String toString() {
     return Objects.toStringHelper(this)
-      .add("username", username)
-      .add("password", "**********")
+      .add("apiKey", apiKey)
+      .add("digest", digest)
+      .add("contents", contents)
       .toString();
   }
 }
