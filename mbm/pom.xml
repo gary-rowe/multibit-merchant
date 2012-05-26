@@ -23,6 +23,20 @@
     <dependency>
       <groupId>com.yammer.dropwizard</groupId>
       <artifactId>dropwizard-core</artifactId>
+      <exclusions>
+        <exclusion>
+          <artifactId>logback-classic</artifactId>
+          <groupId>ch.qos.logback</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>logback-core</artifactId>
+          <groupId>ch.qos.logback</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>asm</artifactId>
+          <groupId>asm</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
@@ -45,6 +59,12 @@
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-openid</artifactId>
+      <exclusions>
+        <exclusion>
+          <artifactId>commons-codec</artifactId>
+          <groupId>commons-codec</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <!-- Spring JPA for ORM -->
     <dependency>
@@ -68,9 +88,12 @@
       <groupId>org.hibernate.java-persistence</groupId>
       <artifactId>jpa-api</artifactId>
     </dependency>
+    <!-- Must match Dropwizard's entry but must be present
+         to allow unit tests -->
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-entitymanager</artifactId>
+      <version>3.6.0.Final</version>
     </dependency>
 
     <!-- HSQLDB database -->
@@ -98,6 +121,13 @@
       <groupId>com.xeiam.xchange</groupId>
       <artifactId>xchange</artifactId>
       <version>1.0.0</version>
+      <!-- TODO XChange should not demand logback -->
+      <exclusions>
+        <exclusion>
+          <artifactId>logback-classic</artifactId>
+          <groupId>ch.qos.logback</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.xeiam.xchange</groupId>

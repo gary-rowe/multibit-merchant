@@ -4,9 +4,12 @@ import com.google.common.base.Optional;
 import com.yammer.dropwizard.auth.Auth;
 import com.yammer.metrics.annotation.Timed;
 import org.multibit.mbm.core.Saying;
-import org.multibit.mbm.security.SimpleUser;
+import org.multibit.mbm.persistence.dto.User;
 
-import javax.ws.rs.*;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -34,7 +37,7 @@ public class HelloWorldResource {
   @GET
   @Timed
   @Path("/secret")
-  public Saying saySecuredHello(@Auth SimpleUser user) {
+  public Saying saySecuredHello(@Auth User user) {
     return new Saying(counter.incrementAndGet(),
       "You cracked the code!");
   }

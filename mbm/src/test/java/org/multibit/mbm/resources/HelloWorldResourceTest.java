@@ -1,9 +1,17 @@
 package org.multibit.mbm.resources;
 
-import com.yammer.dropwizard.testing.ResourceTest;
-import org.junit.Ignore;
+import com.xeiam.xchange.utils.CryptoUtils;
+import com.xeiam.xchange.utils.HttpTemplate;
+import com.yammer.dropwizard.auth.Authenticator;
 import org.junit.Test;
+import org.multibit.mbm.auth.hmac.HmacAuthenticator;
+import org.multibit.mbm.auth.hmac.HmacCredentials;
 import org.multibit.mbm.core.Saying;
+import org.multibit.mbm.persistence.dto.User;
+import org.multibit.mbm.test.BaseResourceTest;
+
+import javax.ws.rs.core.HttpHeaders;
+import java.net.URLEncoder;
 
 import static org.junit.Assert.assertEquals;
 
@@ -19,12 +27,19 @@ import static org.junit.Assert.assertEquals;
  * @since 0.0.1
  *         
  */
-public class HelloWorldResourceTest extends ResourceTest {
+public class HelloWorldResourceTest extends BaseResourceTest {
+
+  private final String apiKey = "abc123";
+  private final String secretKey = "def456";
+
 
   @Override
   protected void setUpResources() {
     addResource(new HelloWorldResource("Hello, %s!","Stranger"));
 
+    Authenticator<HmacCredentials, User> authenticator = new HmacAuthenticator();
+
+    addProvider(authenticator);
   }
 
   @Test
@@ -41,15 +56,16 @@ public class HelloWorldResourceTest extends ResourceTest {
   }
 
 
-  // TODO Fix the authentication processing in requests
-  // Study the MtGox approach with HMAC signing and shared secret
-  // Possible write your own version (maybe offer a pull request)
-  @Ignore
-  public void oauthResourceTest() throws Exception {
+  @Test
+  public void hmacResourceTest() throws Exception {
+
+    // TODO Make this a standard test utility
+    String body = "nonce=" + CryptoUtils.getNumericalNonce(); // Not applicable to GET
+    String authorization = URLEncoder.encode(apiKey, HttpTemplate.CHARSET_UTF_8) + " " + CryptoUtils.computeSignature("HmacSHA1", body, secretKey);
 
     Saying actual = client()
       .resource("/secret")
-      .header("Authorization","Bearer secret")
+      .header(HttpHeaders.AUTHORIZATION, authorization)
       .get(Saying.class);
 
     assertEquals("GET secret returns unauthorized","You cracked the code!", actual.getContent());
