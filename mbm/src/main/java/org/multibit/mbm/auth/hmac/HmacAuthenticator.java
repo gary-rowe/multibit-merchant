@@ -12,7 +12,7 @@ import org.multibit.mbm.persistence.dto.User;
  * </ul>
  *
  * @since 0.0.1
- *         
+ * TODO Consider how different HMAC digests will be used        
  */
 public class HmacAuthenticator implements Authenticator<HmacCredentials, User> {
   @Override

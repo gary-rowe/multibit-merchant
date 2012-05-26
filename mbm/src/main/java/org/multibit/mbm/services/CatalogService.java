@@ -21,6 +21,8 @@ import java.util.List;
  */
 @Service
 @Transactional(readOnly = true)
+// TODO Rename to Handler
+// Refer to http://dropwizard.codahale.com/manual/core/#organizing-your-project
 public class CatalogService {
 
   @Resource(name = "hibernateItemDao")
