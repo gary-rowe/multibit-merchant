@@ -54,37 +54,40 @@ class HmacAuthInjectable<T> extends AbstractHttpContextInjectable<T> {
   @Override
   public T getValue(HttpContext c) {
 
-    final Optional<String> header = Optional.of(c.getRequest().getHeaderValue(HttpHeaders.AUTHORIZATION));
-    final String[] authTokens = header.get().split(" ");
-
-    if (authTokens.length != 3) {
-      // Malformed
-      HmacAuthProvider.LOG.debug("Error decoding credentials (length is {})", authTokens.length);
-      throw new WebApplicationException(Response.Status.BAD_REQUEST);
-    }
-
-    final String apiKey = authTokens[1];
-    final String signature = authTokens[2];
-    final String contents;
-
-    // Determine which part of the request will be used for the content
-    final String method = c.getRequest().getMethod().toUpperCase();
-    if ("GET".equals(method) ||
-      "HEAD".equals(method) ||
-      "DELETE".equals(method)) {
-      // No entity so use the URI
-      contents = c.getRequest().getRequestUri().toString();
-    } else {
-      // Potentially have an entity (even in OPTIONS) so use that
-      contents = c.getRequest().getEntity(String.class);
-    }
-
-    final HmacCredentials credentials = new HmacCredentials(apiKey, signature, contents);
-
     try {
-      final Optional<T> result = authenticator.authenticate(credentials);
-      if (result.isPresent()) {
-        return result.get();
+      final String header = c.getRequest().getHeaderValue(HttpHeaders.AUTHORIZATION);
+      if (header != null) {
+
+        final String[] authTokens = header.split(" ");
+
+        if (authTokens.length != 3) {
+          // Malformed
+          HmacAuthProvider.LOG.debug("Error decoding credentials (length is {})", authTokens.length);
+          throw new WebApplicationException(Response.Status.BAD_REQUEST);
+        }
+
+        final String apiKey = authTokens[1];
+        final String signature = authTokens[2];
+        final String contents;
+
+        // Determine which part of the request will be used for the content
+        final String method = c.getRequest().getMethod().toUpperCase();
+        if ("GET".equals(method) ||
+          "HEAD".equals(method) ||
+          "DELETE".equals(method)) {
+          // No entity so use the URI
+          contents = c.getRequest().getRequestUri().toString();
+        } else {
+          // Potentially have an entity (even in OPTIONS) so use that
+          contents = c.getRequest().getEntity(String.class);
+        }
+
+        final HmacCredentials credentials = new HmacCredentials(apiKey, signature, contents);
+
+        final Optional<T> result = authenticator.authenticate(credentials);
+        if (result.isPresent()) {
+          return result.get();
+        }
       }
     } catch (IllegalArgumentException e) {
       HmacAuthProvider.LOG.debug(e, "Error decoding credentials");
