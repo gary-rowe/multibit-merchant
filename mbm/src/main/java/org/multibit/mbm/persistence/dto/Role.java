@@ -1,6 +1,5 @@
 package org.multibit.mbm.persistence.dto;
 
-import org.hibernate.annotations.Cascade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,8 +54,7 @@ public class Role implements Serializable {
   @Column(name = "internal", nullable = false)
   private boolean internal = true;
 
-  @OneToMany(targetEntity = UserRole.class, cascade = {CascadeType.ALL}, mappedBy = "primaryKey.role")
-  @Cascade({org.hibernate.annotations.CascadeType.DELETE_ORPHAN})
+  @OneToMany(targetEntity = UserRole.class, cascade = {CascadeType.ALL}, mappedBy = "primaryKey.role", orphanRemoval = true)
   private Set<UserRole> userRoles = new LinkedHashSet<UserRole>();
 
   /**

@@ -2,7 +2,6 @@ package org.multibit.mbm.persistence.dto;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import org.hibernate.annotations.Cascade;
 import org.multibit.mbm.util.ObjectUtils;
 
 import javax.persistence.*;
@@ -34,8 +33,7 @@ public class Item implements Serializable {
   @Column(name = "gtin", nullable = true)
   private String gtin = null;
 
-  @OneToMany(targetEntity=CartItem.class, cascade = {CascadeType.ALL}, mappedBy = "primaryKey.item")
-  @Cascade({org.hibernate.annotations.CascadeType.DELETE_ORPHAN})
+  @OneToMany(targetEntity=CartItem.class, cascade = {CascadeType.ALL}, mappedBy = "primaryKey.item", orphanRemoval = true)
   private Set<CartItem> cartItems = Sets.newLinkedHashSet();
   
   /**

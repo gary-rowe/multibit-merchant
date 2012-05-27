@@ -1,0 +1,168 @@
+13:53:01.720 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+13:53:02.164 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+13:53:02.165 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+13:53:02.165 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+13:53:02.166 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Balance recalculated as 2 
+13:53:02.911 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+13:53:02.911 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+13:53:02.912 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+13:53:02.912 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+13:53:02.912 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+13:53:02.912 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+13:53:02.912 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+13:53:02.912 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+13:53:03.240 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+13:53:03.240 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+13:53:03.269 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+13:53:03.409 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+13:53:03.410 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+13:53:03.416 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+13:53:03.416 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+13:53:03.422 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+13:53:03.422 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+13:53:03.960 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+13:53:03.960 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+13:53:03.960 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+13:53:03.961 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+13:53:03.961 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+13:53:03.961 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+13:53:03.961 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+13:53:04.032 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+13:53:04.033 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+13:53:29.330 study.local [main] WARN  org.hibernate.mapping.RootClass - composite-id class does not override equals(): org.multibit.mbm.persistence.dto.UserRole$UserRolePk 
+13:53:29.356 study.local [main] WARN  org.hibernate.mapping.RootClass - composite-id class does not override hashCode(): org.multibit.mbm.persistence.dto.UserRole$UserRolePk 
+13:53:36.859 study.local [main] INFO  org.multibit.mbm.DatabaseLoader - Populating database 
+13:53:38.502 study.local [main] INFO  org.multibit.mbm.DatabaseLoader - Complete 
+13:53:39.434 study.local [main] DEBUG o.multibit.mbm.persistence.dto.Cart - Insert new CartItem with quantity 1 
+13:53:39.434 study.local [main] DEBUG o.multibit.mbm.persistence.dto.Cart - Insert new CartItem with quantity 2 
+13:53:39.446 study.local [main] DEBUG org.multibit.mbm.util.ObjectUtils - Objects are equal 
+13:53:39.446 study.local [main] DEBUG org.multibit.mbm.util.ObjectUtils - Objects are equal 
+13:53:39.446 study.local [main] DEBUG org.multibit.mbm.util.ObjectUtils - Objects are equal 
+13:53:39.447 study.local [main] DEBUG o.multibit.mbm.persistence.dto.Cart - Update quantity to 4 
+13:53:39.447 study.local [main] DEBUG org.multibit.mbm.util.ObjectUtils - Objects are equal 
+13:53:39.447 study.local [main] DEBUG o.multibit.mbm.persistence.dto.Cart - Update quantity to 5 
+13:53:39.452 study.local [main] DEBUG org.multibit.mbm.util.ObjectUtils - Objects are equal 
+13:53:39.452 study.local [main] DEBUG org.multibit.mbm.util.ObjectUtils - Objects are equal 
+13:53:39.452 study.local [main] DEBUG org.multibit.mbm.util.ObjectUtils - Objects are equal 
+13:53:39.469 study.local [main] DEBUG org.multibit.mbm.util.ObjectUtils - Objects are equal 
+13:53:39.536 study.local [main] DEBUG org.multibit.mbm.util.ObjectUtils - Objects are equal 
+13:53:39.538 study.local [main] DEBUG org.multibit.mbm.util.ObjectUtils - Objects are equal 
+13:53:39.779 study.local [main] DEBUG org.multibit.mbm.util.ObjectUtils - Objects are equal 
+13:53:45.683 study.local [main] DEBUG org.multibit.mbm.util.ObjectUtils - Objects are equal 
+13:53:49.886 study.local [main] WARN  org.hibernate.mapping.RootClass - composite-id class does not override equals(): org.multibit.mbm.persistence.dto.UserRole$UserRolePk 
+13:53:49.886 study.local [main] WARN  org.hibernate.mapping.RootClass - composite-id class does not override hashCode(): org.multibit.mbm.persistence.dto.UserRole$UserRolePk 
+13:53:51.052 study.local [main] INFO  org.multibit.mbm.DatabaseLoader - Populating database 
+13:53:51.418 study.local [main] INFO  org.multibit.mbm.DatabaseLoader - Complete 
+13:53:51.567 study.local [main] DEBUG o.m.mbm.services.SecurityService - Inserting new authenticated user 
+16:54:34.985 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+16:54:35.031 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+16:54:35.031 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+16:54:35.031 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+16:54:35.032 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Balance recalculated as 2 
+16:54:35.138 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+16:54:35.138 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+16:54:35.138 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+16:54:35.138 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+16:54:35.138 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+16:54:35.138 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+16:54:35.139 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+16:54:35.139 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+16:54:35.148 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+16:54:35.148 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+16:54:35.203 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+16:54:35.233 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+16:54:35.233 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+16:54:35.234 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+16:54:35.234 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+16:54:35.234 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+16:54:35.234 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+16:54:35.242 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+16:54:35.243 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+16:54:35.243 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+16:54:35.271 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+16:54:35.272 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+16:54:35.272 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+16:54:35.273 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+16:54:35.304 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+16:54:35.304 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+16:55:01.359 study.local [main] WARN  org.hibernate.mapping.RootClass - composite-id class does not override equals(): org.multibit.mbm.persistence.dto.UserRole$UserRolePk 
+16:55:01.378 study.local [main] WARN  org.hibernate.mapping.RootClass - composite-id class does not override hashCode(): org.multibit.mbm.persistence.dto.UserRole$UserRolePk 
+16:55:03.558 study.local [main] INFO  org.multibit.mbm.DatabaseLoader - Populating database 
+16:55:04.281 study.local [main] INFO  org.multibit.mbm.DatabaseLoader - Complete 
+16:55:05.184 study.local [main] DEBUG o.multibit.mbm.persistence.dto.Cart - Insert new CartItem with quantity 1 
+16:55:05.185 study.local [main] DEBUG o.multibit.mbm.persistence.dto.Cart - Insert new CartItem with quantity 2 
+16:55:05.194 study.local [main] DEBUG org.multibit.mbm.util.ObjectUtils - Objects are equal 
+16:55:05.195 study.local [main] DEBUG org.multibit.mbm.util.ObjectUtils - Objects are equal 
+16:55:05.195 study.local [main] DEBUG org.multibit.mbm.util.ObjectUtils - Objects are equal 
+16:55:05.195 study.local [main] DEBUG o.multibit.mbm.persistence.dto.Cart - Update quantity to 4 
+16:55:05.195 study.local [main] DEBUG org.multibit.mbm.util.ObjectUtils - Objects are equal 
+16:55:05.195 study.local [main] DEBUG o.multibit.mbm.persistence.dto.Cart - Update quantity to 5 
+16:55:05.200 study.local [main] DEBUG org.multibit.mbm.util.ObjectUtils - Objects are equal 
+16:55:05.200 study.local [main] DEBUG org.multibit.mbm.util.ObjectUtils - Objects are equal 
+16:55:05.200 study.local [main] DEBUG org.multibit.mbm.util.ObjectUtils - Objects are equal 
+16:55:05.227 study.local [main] DEBUG org.multibit.mbm.util.ObjectUtils - Objects are equal 
+16:55:05.300 study.local [main] DEBUG org.multibit.mbm.util.ObjectUtils - Objects are equal 
+16:55:05.302 study.local [main] DEBUG org.multibit.mbm.util.ObjectUtils - Objects are equal 
+16:55:05.457 study.local [main] DEBUG org.multibit.mbm.util.ObjectUtils - Objects are equal 
+16:55:07.848 study.local [main] DEBUG org.multibit.mbm.util.ObjectUtils - Objects are equal 
+16:55:09.876 study.local [main] WARN  org.hibernate.mapping.RootClass - composite-id class does not override equals(): org.multibit.mbm.persistence.dto.UserRole$UserRolePk 
+16:55:09.876 study.local [main] WARN  org.hibernate.mapping.RootClass - composite-id class does not override hashCode(): org.multibit.mbm.persistence.dto.UserRole$UserRolePk 
+16:55:13.040 study.local [main] INFO  org.multibit.mbm.DatabaseLoader - Populating database 
+16:55:13.498 study.local [main] INFO  org.multibit.mbm.DatabaseLoader - Complete 
+16:55:13.675 study.local [main] DEBUG o.m.mbm.services.SecurityService - Inserting new authenticated user 
+17:24:54.745 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+17:24:54.749 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+17:24:54.749 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+17:24:54.749 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+17:24:54.750 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Balance recalculated as 2 
+17:24:54.775 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+17:24:54.783 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+17:24:54.784 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+17:24:54.785 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+17:24:54.786 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+17:24:54.786 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+17:24:54.787 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+17:24:54.787 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+17:24:54.797 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+17:24:54.797 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+17:24:54.806 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+17:24:54.807 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+17:24:54.807 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+17:24:54.808 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+17:24:54.808 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+17:24:54.808 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+17:24:54.808 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+17:24:54.816 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+17:24:54.816 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+17:24:54.817 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+17:24:54.818 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+17:24:54.818 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+17:24:54.818 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+17:24:54.818 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+17:24:54.828 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+17:24:54.829 study.local [main] DEBUG org.multibit.mbm.accounting.Account - Posting rules notified 
+17:25:01.384 study.local [main] WARN  org.hibernate.mapping.RootClass - composite-id class does not override equals(): org.multibit.mbm.persistence.dto.UserRole$UserRolePk 
+17:25:01.385 study.local [main] WARN  org.hibernate.mapping.RootClass - composite-id class does not override hashCode(): org.multibit.mbm.persistence.dto.UserRole$UserRolePk 
+17:25:02.962 study.local [main] INFO  org.multibit.mbm.DatabaseLoader - Populating database 
+17:25:03.532 study.local [main] INFO  org.multibit.mbm.DatabaseLoader - Complete 
+17:25:04.121 study.local [main] DEBUG o.multibit.mbm.persistence.dto.Cart - Insert new CartItem with quantity 1 
+17:25:04.121 study.local [main] DEBUG o.multibit.mbm.persistence.dto.Cart - Insert new CartItem with quantity 2 
+17:25:04.131 study.local [main] DEBUG org.multibit.mbm.util.ObjectUtils - Objects are equal 
+17:25:04.132 study.local [main] DEBUG org.multibit.mbm.util.ObjectUtils - Objects are equal 
+17:25:04.132 study.local [main] DEBUG org.multibit.mbm.util.ObjectUtils - Objects are equal 
+17:25:04.132 study.local [main] DEBUG o.multibit.mbm.persistence.dto.Cart - Update quantity to 4 
+17:25:04.132 study.local [main] DEBUG org.multibit.mbm.util.ObjectUtils - Objects are equal 
+17:25:04.132 study.local [main] DEBUG o.multibit.mbm.persistence.dto.Cart - Update quantity to 5 
+17:25:04.136 study.local [main] DEBUG org.multibit.mbm.util.ObjectUtils - Objects are equal 
+17:25:04.137 study.local [main] DEBUG org.multibit.mbm.util.ObjectUtils - Objects are equal 
+17:25:04.137 study.local [main] DEBUG org.multibit.mbm.util.ObjectUtils - Objects are equal 
+17:25:04.146 study.local [main] DEBUG org.multibit.mbm.util.ObjectUtils - Objects are equal 
+17:25:04.236 study.local [main] DEBUG org.multibit.mbm.util.ObjectUtils - Objects are equal 
+17:25:04.239 study.local [main] DEBUG org.multibit.mbm.util.ObjectUtils - Objects are equal 
+17:25:04.375 study.local [main] DEBUG org.multibit.mbm.util.ObjectUtils - Objects are equal 
+17:25:05.774 study.local [main] DEBUG org.multibit.mbm.util.ObjectUtils - Objects are equal 
+17:25:07.592 study.local [main] WARN  org.hibernate.mapping.RootClass - composite-id class does not override equals(): org.multibit.mbm.persistence.dto.UserRole$UserRolePk 
+17:25:07.593 study.local [main] WARN  org.hibernate.mapping.RootClass - composite-id class does not override hashCode(): org.multibit.mbm.persistence.dto.UserRole$UserRolePk 
+17:25:08.589 study.local [main] INFO  org.multibit.mbm.DatabaseLoader - Populating database 
+17:25:08.946 study.local [main] INFO  org.multibit.mbm.DatabaseLoader - Complete 
+17:25:09.102 study.local [main] DEBUG o.m.mbm.services.SecurityService - Inserting new authenticated user 

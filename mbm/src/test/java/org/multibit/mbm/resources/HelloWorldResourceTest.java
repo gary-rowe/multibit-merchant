@@ -1,7 +1,5 @@
 package org.multibit.mbm.resources;
 
-import com.xeiam.xchange.utils.CryptoUtils;
-import com.xeiam.xchange.utils.HttpTemplate;
 import org.junit.Test;
 import org.multibit.mbm.auth.hmac.HmacAuthProvider;
 import org.multibit.mbm.auth.hmac.HmacAuthenticator;
@@ -12,7 +10,6 @@ import org.multibit.mbm.persistence.dto.UserBuilder;
 import org.multibit.mbm.test.BaseResourceTest;
 
 import javax.ws.rs.core.HttpHeaders;
-import java.net.URLEncoder;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -31,9 +28,6 @@ import static org.mockito.Mockito.when;
  *         
  */
 public class HelloWorldResourceTest extends BaseResourceTest {
-
-  private final String apiKey = "abc123";
-  private final String secretKey = "def456";
 
 
   @Override
@@ -73,11 +67,7 @@ public class HelloWorldResourceTest extends BaseResourceTest {
   @Test
   public void hmacResourceTest() throws Exception {
 
-    // TODO Make this a standard test utility in the base class
-    String contents = "/secret";
-    String authorization = String.format("HmacSHA1 %s %s",
-      URLEncoder.encode(apiKey, HttpTemplate.CHARSET_UTF_8),
-      CryptoUtils.computeSignature("HmacSHA1", contents, secretKey));
+    String authorization = buildHmacAuthorization("/secret", "abc123", "def456");
 
     Saying actual = client()
       .resource("/secret")

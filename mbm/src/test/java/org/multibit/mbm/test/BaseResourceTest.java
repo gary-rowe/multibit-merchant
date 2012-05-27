@@ -6,6 +6,7 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.test.framework.AppDescriptor;
 import com.sun.jersey.test.framework.JerseyTest;
 import com.sun.jersey.test.framework.LowLevelAppDescriptor;
+import com.xeiam.xchange.utils.CryptoUtils;
 import com.yammer.dropwizard.bundles.JavaBundle;
 import com.yammer.dropwizard.jersey.DropwizardResourceConfig;
 import com.yammer.dropwizard.jersey.JacksonMessageBodyProvider;
@@ -14,6 +15,8 @@ import org.codehaus.jackson.map.Module;
 import org.junit.After;
 import org.junit.Before;
 
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.Set;
 
@@ -79,5 +82,13 @@ public abstract class BaseResourceTest {
     if (test != null) {
       test.tearDown();
     }
+  }
+
+  /**
+   * @param contents The content to sign with the default HMAC process (POST body, GET resource path)
+   * @return
+   */
+  protected String buildHmacAuthorization(String contents, String apiKey, String secretKey) throws UnsupportedEncodingException, GeneralSecurityException {
+    return String.format("HmacSHA1 %s %s",apiKey, CryptoUtils.computeSignature("HmacSHA1", contents, secretKey));
   }
 }

@@ -1,7 +1,7 @@
 package org.multibit.mbm.util;
 
 import com.google.common.collect.Lists;
-import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.dialect.H2Dialect;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.slf4j.Logger;
@@ -17,10 +17,10 @@ public class SchemaExporter {
   
   private static final Logger log = LoggerFactory.getLogger(SchemaExporter.class);
   
-  private AnnotationConfiguration cfg;
+  private Configuration cfg;
 
   public SchemaExporter(List<String> packageNames) throws ClassNotFoundException {
-    cfg = new AnnotationConfiguration();
+    cfg = new Configuration();
     cfg.setProperty("hibernate.hbm2ddl.auto", "create");
 
     for (String packageName : packageNames) {
