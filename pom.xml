@@ -172,7 +172,7 @@
       <dependency>
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-entitymanager</artifactId>
-        <version>3.5.0-Beta-2</version>
+        <version>3.6.0.Final</version>
         <exclusions>
           <exclusion>
             <artifactId>hsqldb</artifactId>
@@ -207,14 +207,6 @@
         <groupId>joda-time</groupId>
         <artifactId>joda-time</artifactId>
         <version>1.6.2</version>
-      </dependency>
-
-      <!-- H2 database -->
-      <dependency>
-        <groupId>com.h2database</groupId>
-        <artifactId>h2</artifactId>
-        <version>1.3.157</version>
-        <scope>runtime</scope>
       </dependency>
 
       <!-- Servlet API (2.5 does not introduce startup delays) -->
@@ -332,6 +324,7 @@
         <artifactId>dropwizard-testing</artifactId>
         <version>${dropwizard.version}</version>
       </dependency>
+
 
 
     </dependencies>
