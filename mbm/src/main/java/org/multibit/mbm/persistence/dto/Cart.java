@@ -1,7 +1,6 @@
 package org.multibit.mbm.persistence.dto;
 
 import com.google.common.collect.Sets;
-import org.hibernate.annotations.Cascade;
 import org.multibit.mbm.util.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,8 +38,7 @@ public class Cart implements Serializable {
   @OneToOne(mappedBy = "cart")
   private Customer customer = null;
 
-  @OneToMany(targetEntity = CartItem.class, cascade = {CascadeType.ALL}, mappedBy = "primaryKey.cart")
-  @Cascade({org.hibernate.annotations.CascadeType.DELETE_ORPHAN})
+  @OneToMany(targetEntity = CartItem.class, cascade = {CascadeType.ALL}, mappedBy = "primaryKey.cart", orphanRemoval = true)
   private Set<CartItem> cartItems = Sets.newLinkedHashSet();
 
   /*

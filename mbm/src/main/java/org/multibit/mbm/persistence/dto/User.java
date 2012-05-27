@@ -2,7 +2,6 @@ package org.multibit.mbm.persistence.dto;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import org.hibernate.annotations.Cascade;
 import org.joda.time.DateTime;
 import org.multibit.mbm.util.ObjectUtils;
 import org.slf4j.Logger;
@@ -116,8 +115,7 @@ public class User implements Serializable {
   @MapKeyEnumerated
   private Map<UserField, UserFieldDetail> userFieldMap = Maps.newLinkedHashMap();
 
-  @OneToMany(targetEntity = UserRole.class, cascade = {CascadeType.ALL}, mappedBy = "primaryKey.user", fetch = FetchType.EAGER)
-  @Cascade({org.hibernate.annotations.CascadeType.DELETE_ORPHAN})
+  @OneToMany(targetEntity = UserRole.class, cascade = {CascadeType.ALL}, mappedBy = "primaryKey.user", fetch = FetchType.EAGER, orphanRemoval = true)
   private Set<UserRole> userRoles = Sets.newLinkedHashSet();
 
   /**
