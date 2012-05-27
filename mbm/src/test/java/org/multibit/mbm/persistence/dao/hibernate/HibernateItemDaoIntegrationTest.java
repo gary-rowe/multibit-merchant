@@ -6,7 +6,7 @@ import org.multibit.mbm.persistence.dto.Item;
 import org.multibit.mbm.persistence.dto.ItemField;
 import org.multibit.mbm.persistence.dto.ItemFieldDetail;
 import org.multibit.mbm.persistence.dao.CustomerDao;
-import org.multibit.mbm.i18n.dto.LocalisedText;
+import org.multibit.mbm.persistence.dto.LocalisedText;
 import org.multibit.mbm.persistence.dao.ItemDao;
 import org.multibit.mbm.rest.v1.client.catalog.ItemPagedQueryResponse;
 import org.multibit.mbm.test.BaseIntegrationTests;

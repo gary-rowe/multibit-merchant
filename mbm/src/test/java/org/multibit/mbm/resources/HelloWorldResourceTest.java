@@ -2,19 +2,21 @@ package org.multibit.mbm.resources;
 
 import com.xeiam.xchange.utils.CryptoUtils;
 import com.xeiam.xchange.utils.HttpTemplate;
-import com.yammer.dropwizard.auth.Authenticator;
 import org.junit.Test;
 import org.multibit.mbm.auth.hmac.HmacAuthProvider;
 import org.multibit.mbm.auth.hmac.HmacAuthenticator;
-import org.multibit.mbm.auth.hmac.HmacCredentials;
 import org.multibit.mbm.core.Saying;
+import org.multibit.mbm.persistence.dao.UserDao;
 import org.multibit.mbm.persistence.dto.User;
+import org.multibit.mbm.persistence.dto.UserBuilder;
 import org.multibit.mbm.test.BaseResourceTest;
 
 import javax.ws.rs.core.HttpHeaders;
 import java.net.URLEncoder;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * <p>[Pattern] to provide the following to {@link Object}:</p>
@@ -38,9 +40,20 @@ public class HelloWorldResourceTest extends BaseResourceTest {
   protected void setUpResources() {
     addResource(new HelloWorldResource("Hello, %s!","Stranger"));
 
-    Authenticator<HmacCredentials, User> authenticator = new HmacAuthenticator();
+    User user = UserBuilder
+      .getInstance()
+      .setUUID("abc123")
+      .setSecretKey("def456")
+      .build();
 
-    addProvider(new HmacAuthProvider<User>(authenticator,"REST"));
+    //
+    UserDao userDao = mock(UserDao.class);
+    when(userDao.getUserByUUID("abc123")).thenReturn(user);
+
+    HmacAuthenticator authenticator = new HmacAuthenticator();
+    authenticator.setUserDao(userDao);
+
+    addProvider(new HmacAuthProvider<User>(authenticator, "REST"));
   }
 
   @Test
@@ -61,10 +74,10 @@ public class HelloWorldResourceTest extends BaseResourceTest {
   public void hmacResourceTest() throws Exception {
 
     // TODO Make this a standard test utility in the base class
-    String body = "nonce=" + CryptoUtils.getNumericalNonce(); // Not applicable to GET
+    String contents = "/secret";
     String authorization = String.format("HmacSHA1 %s %s",
       URLEncoder.encode(apiKey, HttpTemplate.CHARSET_UTF_8),
-      CryptoUtils.computeSignature("HmacSHA1", body, secretKey));
+      CryptoUtils.computeSignature("HmacSHA1", contents, secretKey));
 
     Saying actual = client()
       .resource("/secret")

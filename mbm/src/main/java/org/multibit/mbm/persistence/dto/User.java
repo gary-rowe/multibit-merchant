@@ -30,6 +30,9 @@ public class User implements Serializable {
   @Transient
   private static final Logger log = LoggerFactory.getLogger(User.class);
 
+  /**
+   * Numerical ID to allow faster indexing (for internal use)
+   */
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false)
@@ -38,8 +41,20 @@ public class User implements Serializable {
   @Column(name = "open_id", nullable = true)
   private String openId = null;
 
+  /**
+   * <p>UUID to allow public User reference without
+   * revealing a sequential ID that could be guessed.
+   * Typically used as an API key</p>
+   */
   @Column(name = "uuid", nullable = false)
   private String uuid = null;
+
+  /**
+   * <p>Used as a shared secret between this user and the application. Typically
+   * part of an HMAC authentication scheme.</p>
+   */
+  @Column(name = "secret_key", nullable = true)
+  private String secretKey = null;
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @MapKeyEnumerated()
@@ -128,6 +143,17 @@ public class User implements Serializable {
 
   public void setOpenId(String openId) {
     this.openId = openId;
+  }
+
+  /**
+   * @return A base64 encoded String representing the shared secret key
+   */
+  public String getSecretKey() {
+    return secretKey;
+  }
+
+  public void setSecretKey(String secretKey) {
+    this.secretKey  = secretKey;
   }
 
   /**

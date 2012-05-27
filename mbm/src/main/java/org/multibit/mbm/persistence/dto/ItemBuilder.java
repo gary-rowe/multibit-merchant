@@ -1,7 +1,6 @@
 package org.multibit.mbm.persistence.dto;
 
 import com.google.common.collect.Lists;
-import org.multibit.mbm.i18n.dto.LocalisedText;
 
 import java.util.List;
 

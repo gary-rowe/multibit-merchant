@@ -1,4 +1,4 @@
-package org.multibit.mbm.i18n.dto;
+package org.multibit.mbm.persistence.dto;
 
 import org.multibit.mbm.util.ObjectUtils;
 
