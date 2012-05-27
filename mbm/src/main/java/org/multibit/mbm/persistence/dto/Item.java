@@ -3,7 +3,6 @@ package org.multibit.mbm.persistence.dto;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.hibernate.annotations.Cascade;
-import org.multibit.mbm.i18n.dto.LocalisedText;
 import org.multibit.mbm.util.ObjectUtils;
 
 import javax.persistence.*;

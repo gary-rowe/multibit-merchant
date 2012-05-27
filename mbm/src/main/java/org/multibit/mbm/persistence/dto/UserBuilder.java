@@ -19,6 +19,7 @@ public class UserBuilder {
 
   private String openId;
   private String uuid= UUID.randomUUID().toString();
+  private String secretKey;
   private List<AddContactMethod> addContactMethods = Lists.newArrayList();
   private List<AddRole> addRoles = Lists.newArrayList();
   private String username;
@@ -50,6 +51,7 @@ public class UserBuilder {
     }
     user.setUUID(uuid);
 
+    user.setSecretKey(secretKey);
     user.setUsername(username);
 
     if (password != null) {
@@ -92,6 +94,17 @@ public class UserBuilder {
   public UserBuilder setUUID(String uuid) {
     validateState();
     this.uuid = uuid;
+    return this;
+  }
+
+  /**
+   * @param secretKey The secretKey (base64 encoded)
+   *
+   * @return The builder
+   */
+  public UserBuilder setSecretKey(String secretKey) {
+    validateState();
+    this.secretKey = secretKey;
     return this;
   }
 
