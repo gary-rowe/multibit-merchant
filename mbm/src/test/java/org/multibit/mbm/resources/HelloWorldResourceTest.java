@@ -1,19 +1,12 @@
 package org.multibit.mbm.resources;
 
 import org.junit.Test;
-import org.multibit.mbm.auth.hmac.HmacAuthProvider;
-import org.multibit.mbm.auth.hmac.HmacAuthenticator;
 import org.multibit.mbm.core.Saying;
-import org.multibit.mbm.persistence.dao.UserDao;
-import org.multibit.mbm.persistence.dto.User;
-import org.multibit.mbm.persistence.dto.UserBuilder;
 import org.multibit.mbm.test.BaseResourceTest;
 
 import javax.ws.rs.core.HttpHeaders;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * <p>[Pattern] to provide the following to {@link Object}:</p>
@@ -34,20 +27,7 @@ public class HelloWorldResourceTest extends BaseResourceTest {
   protected void setUpResources() {
     addResource(new HelloWorldResource("Hello, %s!","Stranger"));
 
-    User user = UserBuilder
-      .getInstance()
-      .setUUID("abc123")
-      .setSecretKey("def456")
-      .build();
-
-    //
-    UserDao userDao = mock(UserDao.class);
-    when(userDao.getUserByUUID("abc123")).thenReturn(user);
-
-    HmacAuthenticator authenticator = new HmacAuthenticator();
-    authenticator.setUserDao(userDao);
-
-    addProvider(new HmacAuthProvider<User>(authenticator, "REST"));
+    setUpAuthenticator();
   }
 
   @Test
