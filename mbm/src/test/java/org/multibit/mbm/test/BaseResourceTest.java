@@ -14,11 +14,19 @@ import com.yammer.dropwizard.json.Json;
 import org.codehaus.jackson.map.Module;
 import org.junit.After;
 import org.junit.Before;
+import org.multibit.mbm.auth.hmac.HmacAuthProvider;
+import org.multibit.mbm.auth.hmac.HmacAuthenticator;
+import org.multibit.mbm.persistence.dao.UserDao;
+import org.multibit.mbm.persistence.dto.User;
+import org.multibit.mbm.persistence.dto.UserBuilder;
 
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.Set;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * A base test class for testing Dropwizard resources.
@@ -90,5 +98,22 @@ public abstract class BaseResourceTest {
    */
   protected String buildHmacAuthorization(String contents, String apiKey, String secretKey) throws UnsupportedEncodingException, GeneralSecurityException {
     return String.format("HmacSHA1 %s %s",apiKey, CryptoUtils.computeSignature("HmacSHA1", contents, secretKey));
+  }
+
+  protected void setUpAuthenticator() {
+    User user = UserBuilder
+      .getInstance()
+      .setUUID("abc123")
+      .setSecretKey("def456")
+      .build();
+
+    //
+    UserDao userDao = mock(UserDao.class);
+    when(userDao.getUserByUUID("abc123")).thenReturn(user);
+
+    HmacAuthenticator authenticator = new HmacAuthenticator();
+    authenticator.setUserDao(userDao);
+
+    addProvider(new HmacAuthProvider<User>(authenticator, "REST"));
   }
 }

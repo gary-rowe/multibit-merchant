@@ -1,15 +1,23 @@
 package org.multibit.mbm.resources;
 
-import com.yammer.dropwizard.testing.ResourceTest;
-import org.multibit.mbm.persistence.dto.CustomerBuilder;
 import org.multibit.mbm.persistence.dto.Customer;
+import org.multibit.mbm.persistence.dto.CustomerBuilder;
+import org.multibit.mbm.rest.v1.client.cart.CreateCartRequest;
 import org.multibit.mbm.services.CustomerService;
+import org.multibit.mbm.test.BaseResourceTest;
 
+import javax.ws.rs.core.HttpHeaders;
+import javax.xml.ws.Response;
+
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
+
+import static junit.framework.Assert.assertEquals;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class CartResourceTest extends ResourceTest {
+public class CartResourceTest extends BaseResourceTest {
 
   private final CustomerService customerService=mock(CustomerService.class);
 
@@ -17,6 +25,7 @@ public class CartResourceTest extends ResourceTest {
     .getInstance()
     .build();
 
+  private final CartResource testObject=new CartResource();
 
 
   @Override
@@ -26,10 +35,30 @@ public class CartResourceTest extends ResourceTest {
     when(customerService.findByOpenId(anyString())).thenReturn(expectedCustomer);
 
     // Configure the test object
-    CartResource testObject = new CartResource();
     testObject.setCustomerService(customerService);
 
+    setUpAuthenticator();
+
+    // Configure resources
     addResource(testObject);
+
+  }
+
+  public void testCreateCart() throws Exception {
+
+    String contents = "";
+    String authorization = buildHmacAuthorization(contents, "abc123", "def456");
+
+    CreateCartRequest request = new CreateCartRequest();
+
+    Response actual = client()
+      .resource("/v1/cart")
+      .header(HttpHeaders.AUTHORIZATION, authorization)
+      .post(Response.class, request);
+
+    assertEquals("POST create cart",response, actual);
+
+
 
   }
 

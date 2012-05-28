@@ -17,7 +17,6 @@ public abstract class BaseRequest {
    */
   private String sessionId=null;
 
-  // TODO Consider adding support for application secrets
 
   // TODO Consider error reporting through JSON
 

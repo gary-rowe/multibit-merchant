@@ -72,9 +72,6 @@ public class CartResource {
     @Context UriInfo uriInfo) {
 
     // TODO Validate the request
-
-    String sessionId = createCartRequest.getSessionId();
-
     Customer customer = user.getCustomer();
 
     for (CartItemSummary cartItemSummary: createCartRequest.getCartItemSummaries()) {
