@@ -1,10 +1,10 @@
 package org.multibit.mbm.resources;
 
 import com.yammer.dropwizard.auth.Auth;
+import org.multibit.mbm.api.response.CartItemResponse;
 import org.multibit.mbm.services.CatalogService;
 import org.multibit.mbm.db.dto.Customer;
 import org.multibit.mbm.services.CustomerService;
-import org.multibit.mbm.api.CartItemSummary;
 import org.multibit.mbm.api.response.CartResponse;
 import org.multibit.mbm.api.request.CreateCartRequest;
 import org.multibit.mbm.db.dto.User;
@@ -74,7 +74,7 @@ public class CartResource {
     // TODO Validate the request
     Customer customer = user.getCustomer();
 
-    for (CartItemSummary cartItemSummary: createCartRequest.getCartItemSummaries()) {
+    for (CartItemResponse cartItemSummary: createCartRequest.getCartItemSummaries()) {
       Long itemId = cartItemSummary.getId();
       int quantity = cartItemSummary.getQuantity();
       customer = customerService.setCartItemQuantity(customer, itemId, quantity);

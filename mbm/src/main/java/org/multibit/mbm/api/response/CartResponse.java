@@ -1,28 +1,35 @@
 package org.multibit.mbm.api.response;
 
 import com.google.common.collect.Lists;
+import org.codehaus.jackson.annotate.JsonProperty;
 import org.multibit.mbm.db.dto.Cart;
 import org.multibit.mbm.db.dto.CartItem;
-import org.multibit.mbm.api.CartItemSummary;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 /**
- *  <p>Response to provide the following to {@link org.multibit.mbm.resources.CartController}:</p>
- *  <ul>
- *  <li>Provides the contents of a Cart</li>
- *  </ul>
+ * <p>Response to provide the following to {@link org.multibit.mbm.resources.CartController}:</p>
+ * <ul>
+ * <li>Provides the contents of a Cart</li>
+ * </ul>
  *
  * @since 0.0.1
  *         
  */
 public class CartResponse extends BaseResponse {
 
-  private List<CartItemSummary> cartItems = Lists.newArrayList();
+  @JsonProperty
+  private List<CartItemResponse> cartItems = Lists.newArrayList();
+
+  @JsonProperty
   private String btcTotal = "";
+
+  @JsonProperty
   private String localTotal = "";
+
+  @JsonProperty
   private String localSymbol = "&euro;";
 
   /**
@@ -39,28 +46,28 @@ public class CartResponse extends BaseResponse {
     double btcSubTotal = 0;
     double localSubTotal = 0;
     for (CartItem cartItem : cart.getCartItems()) {
-      cartItems.add(new CartItemSummary(cartItem));
+      cartItems.add(new CartItemResponse(cartItem));
       btcSubTotal += (cartItem.getQuantity() * 36);
       localSubTotal += (cartItem.getQuantity() * 14);
     }
     // Provide a simple totalling system (needs a lot more work!)
-    btcTotal = String.format("%.4f",btcSubTotal/10);
-    localTotal = String.format("%.2f",localSubTotal/10);
+    btcTotal = String.format("%.4f", btcSubTotal / 10);
+    localTotal = String.format("%.2f", localSubTotal / 10);
 
     // Provide a simple ordering scheme
-    Collections.sort(cartItems, new Comparator<CartItemSummary>() {
+    Collections.sort(cartItems, new Comparator<CartItemResponse>() {
       @Override
-      public int compare(CartItemSummary c1, CartItemSummary c2) {
+      public int compare(CartItemResponse c1, CartItemResponse c2) {
         return c1.getTitle().compareTo(c2.getTitle());
       }
     });
   }
 
-  public List<CartItemSummary> getCartItems() {
+  public List<CartItemResponse> getCartItems() {
     return cartItems;
   }
 
-  public void setCartItems(List<CartItemSummary> cartItems) {
+  public void setCartItems(List<CartItemResponse> cartItems) {
     this.cartItems = cartItems;
   }
 

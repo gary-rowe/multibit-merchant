@@ -1,10 +1,12 @@
 package org.multibit.mbm.api.request;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 /**
- *  <p>Request to provide the following to controllers:</p>
- *  <ul>
- *  <li>Provision of client state to create an initial bare bones User</li>
- *  </ul>
+ * <p>Request to provide the following to controllers:</p>
+ * <ul>
+ * <li>Provision of client state to create an initial bare bones User</li>
+ * </ul>
  * <p>Note that subsequent updates to the User can set more detail into the User as required</p>
  *
  * @since 0.0.1
@@ -12,10 +14,17 @@ package org.multibit.mbm.api.request;
  */
 public class CreateUserRequest extends BaseRequest {
 
+  @JsonProperty
   private String username;
+
+  @JsonProperty
   private String password;
+
+  @JsonProperty
   private String openId;
-  private boolean oneTimeUse=false;
+
+  @JsonProperty
+  private boolean oneTimeUse = false;
 
   /**
    * @return True if this User will not have any identifying credentials other than a server-provided session UUID

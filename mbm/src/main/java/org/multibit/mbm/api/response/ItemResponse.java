@@ -1,61 +1,65 @@
-package org.multibit.mbm.api;
+package org.multibit.mbm.api.response;
 
+import org.codehaus.jackson.annotate.JsonProperty;
 import org.multibit.mbm.db.dto.Item;
 import org.multibit.mbm.db.dto.ItemField;
-import org.multibit.mbm.api.response.SearchResponse;
 import org.multibit.mbm.util.DateUtils;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-
 /**
- *  <p>Response to provide the following to {@link SearchResults}:</p>
- *  <ul>
- *  <li>Minimal fields of an Item suitable for use in a search result list</li>
- *  </ul>
+ * <p>Response to provide the following to {@link org.multibit.mbm.api.SearchResults}:</p>
+ * <ul>
+ * <li>Minimal fields of an Item suitable for use in a search result list</li>
+ * </ul>
  *
  * @since 0.0.1
  *         
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-public class ItemSummary implements SearchResponse {
+public class ItemResponse implements SearchResponse {
 
-  @XmlElement
+  @JsonProperty
   private String id;
-  @XmlElement
+
+  @JsonProperty
   private String title;
-  @XmlElement
+
+  @JsonProperty
   private String summary;
-  @XmlElement
+
+  @JsonProperty
   private String imgThumbnailUri;
-  @XmlElement
+
+  @JsonProperty
   private String slug;
-  @XmlElement
-  private String offeredDeliveryDate=DateUtils.formatFriendlyDate(DateUtils.nowUtc().plusDays(2));
-  @XmlElement
-  private String btcPrice="3.6";
-  @XmlElement
-  private String localPrice="1.4";
-  @XmlElement
-  private String localSymbol="&euro;";
+
+  @JsonProperty
+  private String offeredDeliveryDate = DateUtils.formatFriendlyDate(DateUtils.nowUtc().plusDays(2));
+
+  @JsonProperty
+  private String btcPrice = "3.6";
+
+  @JsonProperty
+  private String localPrice = "1.4";
+
+  @JsonProperty
+  private String localSymbol = "&euro;";
 
   /**
    * Default constructor for marshaling
    */
-  public ItemSummary() {
+  public ItemResponse() {
   }
 
   /**
    * Utility constructor
+   *
    * @param item The Item
    */
-  public ItemSummary(Item item) {
+  public ItemResponse(Item item) {
     this.id = item.getId().toString();
     this.title = item.getItemFieldContent(ItemField.TITLE);
     this.summary = item.getItemFieldContent(ItemField.SUMMARY);
     this.imgThumbnailUri = item.getItemFieldContent(ItemField.IMAGE_THUMBNAIL_URI);
-    this.slug = title.replaceAll(" ","-").toLowerCase();
+    this.slug = title.replaceAll(" ", "-").toLowerCase();
   }
 
   public String getId() {

@@ -11,6 +11,7 @@ package org.multibit.mbm.api;
  */
 
 import com.google.common.collect.Lists;
+import org.multibit.mbm.api.response.ItemResponse;
 import org.multibit.mbm.api.response.SearchResponse;
 
 import javax.xml.bind.annotation.*;
@@ -21,11 +22,11 @@ import java.util.List;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
-@XmlSeeAlso(ItemSummary.class)
+@XmlSeeAlso(ItemResponse.class)
 public class SearchResults<T extends SearchResponse> {
   
   @XmlElementWrapper(name = "results")
-  @XmlElement(name = "item", type = ItemSummary.class)
+  @XmlElement(name = "item", type = ItemResponse.class)
   private List<T> results= Lists.newArrayList();
 
   @XmlElement
