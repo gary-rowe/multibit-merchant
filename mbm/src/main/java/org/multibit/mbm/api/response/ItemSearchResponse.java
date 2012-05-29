@@ -1,8 +1,8 @@
 package org.multibit.mbm.api.response;
 
 import com.google.common.collect.Lists;
+import org.codehaus.jackson.annotate.JsonProperty;
 import org.multibit.mbm.db.dto.Item;
-import org.multibit.mbm.api.ItemSummary;
 
 import java.util.List;
 
@@ -17,7 +17,8 @@ import java.util.List;
  */
 public class ItemSearchResponse extends BasePagedQueryResponse {
 
-  private List<ItemSummary> itemSummaries=Lists.newArrayList();
+  @JsonProperty
+  private List<ItemResponse> itemSummaries=Lists.newArrayList();
 
   /**
    * Default constructor
@@ -35,7 +36,7 @@ public class ItemSearchResponse extends BasePagedQueryResponse {
     super(maxResults, firstResult);
 
     for (Item item : items) {
-      ItemSummary itemSummary = new ItemSummary(item);
+      ItemResponse itemSummary = new ItemResponse(item);
       itemSummaries.add(itemSummary);
     }
     
@@ -43,16 +44,16 @@ public class ItemSearchResponse extends BasePagedQueryResponse {
 
   public ItemSearchResponse(int firstResult, int maxResults, Item item) {
     super(firstResult, maxResults);
-    ItemSummary itemSummary = new ItemSummary(item);
+    ItemResponse itemSummary = new ItemResponse(item);
     itemSummaries.add(itemSummary);
   }
 
 
-  public List<ItemSummary> getItemSummaries() {
+  public List<ItemResponse> getItemSummaries() {
     return itemSummaries;
   }
 
-  public void setItemSummaries(List<ItemSummary> itemSummaries) {
+  public void setItemSummaries(List<ItemResponse> itemSummaries) {
     this.itemSummaries = itemSummaries;
   }
 }

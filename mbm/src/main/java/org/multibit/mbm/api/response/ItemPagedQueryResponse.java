@@ -1,11 +1,14 @@
 package org.multibit.mbm.api.response;
 
+import org.codehaus.jackson.annotate.JsonProperty;
 import org.multibit.mbm.db.dto.Item;
 
 /**
  * Parameter object to provide query state for Items
  */
 public class ItemPagedQueryResponse extends BasePagedQueryResponse {
+
+  @JsonProperty
   private final Item item;
 
   /**

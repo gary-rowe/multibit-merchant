@@ -1,40 +1,37 @@
 package org.multibit.mbm.api.response;
 
+import org.codehaus.jackson.annotate.JsonProperty;
 import org.joda.time.DateTime;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-
 /**
- *  <p>[Pattern] to provide the following to [related classes]:<br>
- *  <ul>
- *  <li></li>
- *  </ul>
- *  Example:<br>
- *  <pre>
- *  </pre>
- *  </p>
- *  
+ * <p>Response to provide the following to Resources:</p>
+ * <ul>
+ * <li>Provision of a simple date time encoding</li>
+ * </ul>
+ *
+ * @since 0.0.1  
  */
-@XmlRootElement(name = "time")
-@XmlAccessorType(XmlAccessType.FIELD)
 public class DateTimeResponse {
 
-  @XmlElement
+  @JsonProperty
   private final int year;
-  @XmlElement
+
+  @JsonProperty
   private final int month;
-  @XmlElement
+
+  @JsonProperty
   private final int day;
-  @XmlElement
+
+  @JsonProperty
   private final int hour;
-  @XmlElement
+
+  @JsonProperty
   private final int minute;
-  @XmlElement
+
+  @JsonProperty
   private final int second;
-  @XmlElement
+
+  @JsonProperty
   private final String timeZone;
 
   public DateTimeResponse(DateTime now) {

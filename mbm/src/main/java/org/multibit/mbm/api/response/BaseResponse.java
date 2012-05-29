@@ -3,15 +3,15 @@ package org.multibit.mbm.api.response;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
- *<p>Base response to provide the following to Resources:</p>
- *<ul>
- *<li>Response entity common to all </li>
- *</ul>
+ * <p>Base response to provide the following to Resources:</p>
+ * <ul>
+ * <li>Response entity common to all responses</li>
+ * </ul>
  *
  * @since 0.0.1
  *         
  */
-public class BaseResponse {
+public abstract class BaseResponse {
   @JsonProperty
   private String sessionId;
 
@@ -22,7 +22,7 @@ public class BaseResponse {
   private String errorDescription;
 
   /**
-   * @return
+   * @return The temporary session ID
    */
   public String getSessionId() {
     return sessionId;
