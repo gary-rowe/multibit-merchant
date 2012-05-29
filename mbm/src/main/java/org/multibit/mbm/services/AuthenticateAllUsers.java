@@ -1,11 +1,11 @@
 package org.multibit.mbm.services;
 
 import com.google.common.collect.Lists;
-import org.multibit.mbm.persistence.dao.UserDao;
-import org.multibit.mbm.persistence.dao.UserNotFoundException;
-import org.multibit.mbm.persistence.dto.Authority;
-import org.multibit.mbm.persistence.dto.Role;
-import org.multibit.mbm.persistence.dto.UserRole;
+import org.multibit.mbm.db.dao.UserDao;
+import org.multibit.mbm.db.dao.UserNotFoundException;
+import org.multibit.mbm.db.dto.Authority;
+import org.multibit.mbm.db.dto.Role;
+import org.multibit.mbm.db.dto.UserRole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -33,7 +33,7 @@ import java.util.List;
  * <li>Digest authentication ()</li>
  * <li>OpenId authentication (shared token from third-party)</li>
  * </ul>
- * <p>Typically, a User presents credentials which are matched against the database and then get {@link org.multibit.mbm.persistence.dto.Role}s assigned.</p>
+ * <p>Typically, a User presents credentials which are matched against the database and then get {@link org.multibit.mbm.db.dto.Role}s assigned.</p>
  * <p>This is the Spring "userService" component since it does not get proxied.</p>
  */
 @Component("userService")
@@ -79,7 +79,7 @@ public class AuthenticateAllUsers implements UserDetailsService, AuthenticationP
         String username = authentication.getPrincipal().toString();
         String password = authentication.getCredentials().toString();
 
-        org.multibit.mbm.persistence.dto.User user = userDao.getUserByCredentials(username, password);
+        org.multibit.mbm.db.dto.User user = userDao.getUserByCredentials(username, password);
 
         grantedAuthorities = getGrantedAuthorities(user);
 
@@ -109,7 +109,7 @@ public class AuthenticateAllUsers implements UserDetailsService, AuthenticationP
    *
    * @return The list of granted authorities based on all the User's Roles
    */
-  private List<GrantedAuthority> getGrantedAuthorities(org.multibit.mbm.persistence.dto.User user) {
+  private List<GrantedAuthority> getGrantedAuthorities(org.multibit.mbm.db.dto.User user) {
     List<GrantedAuthority> grantedAuthorities = Lists.newArrayList();
     for (UserRole userRole : user.getUserRoles()) {
       Role role = userRole.getRole();

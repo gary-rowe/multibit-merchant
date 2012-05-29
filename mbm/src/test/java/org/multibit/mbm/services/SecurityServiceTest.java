@@ -1,8 +1,8 @@
 package org.multibit.mbm.services;
 
 import org.junit.Test;
-import org.multibit.mbm.persistence.dao.UserDao;
-import org.multibit.mbm.persistence.dto.User;
+import org.multibit.mbm.db.dao.UserDao;
+import org.multibit.mbm.db.dto.User;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

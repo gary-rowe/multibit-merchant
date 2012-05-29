@@ -9,7 +9,7 @@ import org.multibit.mbm.auth.hmac.HmacAuthProvider;
 import org.multibit.mbm.auth.hmac.HmacAuthenticator;
 import org.multibit.mbm.auth.hmac.HmacCredentials;
 import org.multibit.mbm.health.TemplatePropertyHealthCheck;
-import org.multibit.mbm.persistence.dto.User;
+import org.multibit.mbm.db.dto.User;
 import org.multibit.mbm.resources.HelloWorldResource;
 
 /**

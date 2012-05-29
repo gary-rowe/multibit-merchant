@@ -15,7 +15,7 @@ import java.util.Locale;
  * <li>Provision of standard Joda time formatters and parsers</li>
  * </ul>
  * <p>All times use the UTC time zone unless otherwise specified</p>
- * @since 1.0.0
+ * @since 0.0.1
  *         
  */
 public class DateUtils {

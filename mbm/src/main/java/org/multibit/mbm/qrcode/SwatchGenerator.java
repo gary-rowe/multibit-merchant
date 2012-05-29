@@ -41,7 +41,7 @@ import javax.swing.JFrame;
  * <li>Parse bitcoin uri to components</li>
  * </p>
  *
- * @since 1.0.0
+ * @since 0.0.1
  */
 // TODO Reinstate these annotations
 //@Component

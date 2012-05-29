@@ -163,7 +163,7 @@
         <version>1.9.2</version>
       </dependency>
 
-      <!-- Hibernate for persistence -->
+      <!-- Hibernate for db -->
       <dependency>
         <groupId>org.hibernate.java-persistence</groupId>
         <artifactId>jpa-api</artifactId>

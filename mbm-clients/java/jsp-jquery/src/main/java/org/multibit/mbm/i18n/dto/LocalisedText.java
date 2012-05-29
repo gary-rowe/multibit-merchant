@@ -11,7 +11,7 @@ import java.io.Serializable;
  *  <li>Provision of language co-ordinates and text content for a text field</li>
  *  </ul>
  *
- * @since 1.0.0
+ * @since 0.0.1
  *         
  */
 @Embeddable

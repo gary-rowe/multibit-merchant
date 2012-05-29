@@ -2,12 +2,12 @@ package org.multibit.mbm.resources;
 
 import com.yammer.dropwizard.auth.Auth;
 import org.multibit.mbm.services.CatalogService;
-import org.multibit.mbm.persistence.dto.Customer;
+import org.multibit.mbm.db.dto.Customer;
 import org.multibit.mbm.services.CustomerService;
-import org.multibit.mbm.rest.v1.client.cart.CartItemSummary;
-import org.multibit.mbm.rest.v1.client.cart.CartResponse;
-import org.multibit.mbm.rest.v1.client.cart.CreateCartRequest;
-import org.multibit.mbm.persistence.dto.User;
+import org.multibit.mbm.api.CartItemSummary;
+import org.multibit.mbm.api.response.CartResponse;
+import org.multibit.mbm.api.request.CreateCartRequest;
+import org.multibit.mbm.db.dto.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
@@ -24,7 +24,7 @@ import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 
 /**
- * <p>Resource to provide the following to {@link org.multibit.mbm.persistence.dto.Cart}:</p>
+ * <p>Resource to provide the following to {@link org.multibit.mbm.db.dto.Cart}:</p>
  * <ul>
  * <li>Provision of REST endpoints</li>
  * </ul>

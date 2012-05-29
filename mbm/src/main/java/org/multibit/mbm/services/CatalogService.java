@@ -1,8 +1,8 @@
 package org.multibit.mbm.services;
 
-import org.multibit.mbm.persistence.dao.ItemDao;
-import org.multibit.mbm.persistence.dto.Item;
-import org.multibit.mbm.rest.v1.client.catalog.ItemPagedQueryResponse;
+import org.multibit.mbm.db.dao.ItemDao;
+import org.multibit.mbm.db.dto.Item;
+import org.multibit.mbm.api.response.ItemPagedQueryResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +16,7 @@ import java.util.List;
  * <li>Transactional collection of Item entries</li>
  * </ul>
  *
- * @since 1.0.0
+ * @since 0.0.1
  *         
  */
 @Service

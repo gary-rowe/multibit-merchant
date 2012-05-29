@@ -11,7 +11,7 @@ import org.multibit.mbm.accounting.Transaction;
  * another. This is logged in an Account, using InventoryEntry instances
  * which are associated with a particular ItemType.</p>
  *
- * @since 1.0.0
+ * @since 0.0.1
  *         
  */
 public class Transfer<T extends InventoryEntry> extends Transaction<InventoryEntry> {

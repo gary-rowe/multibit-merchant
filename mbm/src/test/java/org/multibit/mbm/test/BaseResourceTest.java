@@ -16,9 +16,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.multibit.mbm.auth.hmac.HmacAuthProvider;
 import org.multibit.mbm.auth.hmac.HmacAuthenticator;
-import org.multibit.mbm.persistence.dao.UserDao;
-import org.multibit.mbm.persistence.dto.User;
-import org.multibit.mbm.persistence.dto.UserBuilder;
+import org.multibit.mbm.db.dao.UserDao;
+import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.db.dto.UserBuilder;
 
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;

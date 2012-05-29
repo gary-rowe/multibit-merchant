@@ -13,7 +13,7 @@ import com.google.bitcoin.core.Address;
  * <li>Registration of addresses for notification of receipt of relevant Transactions</li>
  * </p>
  *
- * @since 1.0.0
+ * @since 0.0.1
  */
 public interface BitcoinService {
 

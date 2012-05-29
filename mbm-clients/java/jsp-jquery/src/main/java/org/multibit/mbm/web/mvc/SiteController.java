@@ -10,7 +10,7 @@ import java.security.Principal;
  * <p>Controller for public site pages</p>
  * <p>Each entry is explicit to avoid letting random page entries resolve</p>
  *
- * @since 1.0.0
+ * @since 0.0.1
  */
 @Controller
 public class SiteController extends BaseMVCController {

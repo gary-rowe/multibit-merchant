@@ -7,7 +7,7 @@ package org.multibit.mbm.accounting.inventory;
  * </ul>
  * <p>An ItemType provides a unique classification against an Item</p>
  *
- * @since 1.0.0
+ * @since 0.0.1
  *         
  */
 public enum ItemType {
