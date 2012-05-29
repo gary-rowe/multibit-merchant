@@ -1,11 +1,11 @@
 package org.multibit.mbm.services;
 
-import org.multibit.mbm.persistence.dao.CartDao;
-import org.multibit.mbm.persistence.dto.Cart;
-import org.multibit.mbm.persistence.dao.ItemDao;
-import org.multibit.mbm.persistence.dto.Item;
-import org.multibit.mbm.persistence.dao.CustomerDao;
-import org.multibit.mbm.persistence.dto.Customer;
+import org.multibit.mbm.db.dao.CartDao;
+import org.multibit.mbm.db.dto.Cart;
+import org.multibit.mbm.db.dao.ItemDao;
+import org.multibit.mbm.db.dto.Item;
+import org.multibit.mbm.db.dao.CustomerDao;
+import org.multibit.mbm.db.dto.Customer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ import javax.annotation.Resource;
  * <li>Transactional collection of Customer entries</li>
  * </ul>
  *
- * @since 1.0.0
+ * @since 0.0.1
  *         
  */
 @Service

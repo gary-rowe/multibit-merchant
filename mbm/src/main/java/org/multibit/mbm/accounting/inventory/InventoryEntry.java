@@ -12,7 +12,7 @@ import org.multibit.mbm.accounting.Entry;
  * <p>An InventoryEntry would typically represent a physical or digital item that
  * is being moved from one account to another. </p>
  *
- * @since 1.0.0
+ * @since 0.0.1
  *         
  */
 public class InventoryEntry implements Entry<InventoryEntry> {

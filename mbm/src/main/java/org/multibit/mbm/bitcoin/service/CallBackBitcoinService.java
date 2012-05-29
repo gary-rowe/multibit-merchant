@@ -23,7 +23,7 @@ import java.util.Map;
  * <li>Registration of addresses for notification of relevant Transactions</li>
  * </p>
  * 
- * @since 1.0.0
+ * @since 0.0.1
  */
 @Component
 public class CallBackBitcoinService implements BitcoinService {

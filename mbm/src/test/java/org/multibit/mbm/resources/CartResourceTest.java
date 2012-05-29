@@ -1,9 +1,9 @@
 package org.multibit.mbm.resources;
 
 import org.junit.Ignore;
-import org.multibit.mbm.persistence.dto.Customer;
-import org.multibit.mbm.persistence.dto.CustomerBuilder;
-import org.multibit.mbm.rest.v1.client.cart.CreateCartRequest;
+import org.multibit.mbm.db.dto.Customer;
+import org.multibit.mbm.db.dto.CustomerBuilder;
+import org.multibit.mbm.api.request.CreateCartRequest;
 import org.multibit.mbm.services.CustomerService;
 import org.multibit.mbm.test.BaseResourceTest;
 

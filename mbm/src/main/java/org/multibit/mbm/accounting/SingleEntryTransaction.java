@@ -11,7 +11,7 @@ import org.multibit.mbm.util.ValidationUtils;
  * single Entry and therefore unbalanced. Only certain types of Account allow
  * unbalanced Entry instances, typically a MemoAccount.</p>
  *
- * @since 1.0.0
+ * @since 0.0.1
  *         
  */
 public class SingleEntryTransaction<T extends Entry<T>> extends Transaction<T> {

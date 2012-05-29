@@ -10,7 +10,7 @@ import org.multibit.mbm.accounting.*;
  * <p>A MemoPostingRule places a copy of an entry into another designated account.
  * The source account is unaware of this copy.</p>
  *
- * @since 1.0.0
+ * @since 0.0.1
  *         
  */
 public class MemoPostingRule<T extends Entry<T>> implements PostingRule<T> {

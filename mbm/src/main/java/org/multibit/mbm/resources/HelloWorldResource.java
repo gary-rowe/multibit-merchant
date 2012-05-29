@@ -4,7 +4,7 @@ import com.google.common.base.Optional;
 import com.yammer.dropwizard.auth.Auth;
 import com.yammer.metrics.annotation.Timed;
 import org.multibit.mbm.core.Saying;
-import org.multibit.mbm.persistence.dto.User;
+import org.multibit.mbm.db.dto.User;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

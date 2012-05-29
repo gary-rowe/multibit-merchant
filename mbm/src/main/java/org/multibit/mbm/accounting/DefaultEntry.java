@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
  * state of the Account over time. These changes of state usually represent
  * the movement of an item from one Account to another.</p>
  *
- * @since 1.0.0
+ * @since 0.0.1
  *         
  */
 public class DefaultEntry implements Entry<DefaultEntry> {

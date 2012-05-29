@@ -10,7 +10,7 @@ import com.google.bitcoin.core.Transaction;
  * <li>A transaction has been received for an address in the block chain</li>
  * </p>
  *
- * @since 1.0.0
+ * @since 0.0.1
  */
 public interface AddressListener {
   /**

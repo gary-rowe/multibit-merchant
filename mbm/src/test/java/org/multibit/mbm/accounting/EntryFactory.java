@@ -10,7 +10,7 @@ import org.multibit.mbm.accounting.inventory.ItemType;
  * <li>Creation of test Entry instances</li>
  * </ul>
  *
- * @since 1.0.0
+ * @since 0.0.1
  *         
  */
 public enum EntryFactory {

@@ -14,7 +14,7 @@ import org.multibit.mbm.accounting.SingleEntryTransaction;
  * after calculating a given percentage of the source entry.
  * The source account is unaware of this copy.</p>
  *
- * @since 1.0.0
+ * @since 0.0.1
  *         
  */
 public class PercentagePostingRule<T extends Entry<T>> implements PostingRule<T> {

@@ -13,7 +13,7 @@ import java.util.*;
  * </ul>
  * <p>An Account represents a collection of Entries </p>
  *
- * @since 1.0.0
+ * @since 0.0.1
  *         
  */
 public class Account<T extends Entry<T>> {

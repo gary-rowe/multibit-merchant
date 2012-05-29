@@ -12,7 +12,7 @@ import java.util.List;
  * <li>Access to various OpenId parameters</li>
  * </ul>
  *
- * @since 1.0.0
+ * @since 0.0.1
  *         
  */
 public class OpenIdUtils {

@@ -14,7 +14,7 @@ package org.multibit.mbm.accounting;
  * fraction of the original Entry then a PostingRule would be used
  * to accomplish this.</p>
  *
- * @since 1.0.0
+ * @since 0.0.1
  *         
  */
 public interface PostingRule<T extends Entry<T>> {

@@ -11,7 +11,7 @@ import org.multibit.mbm.util.ValidationUtils;
  * <p>The sum of all entries in a Transaction is zero to represent the
  * conservation of the underlying items.</p>
  *
- * @since 1.0.0
+ * @since 0.0.1
  *         
  */
 public class Transaction<T extends Entry<T>> {

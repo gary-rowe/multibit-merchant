@@ -9,7 +9,7 @@ package org.multibit.mbm.accounting.inventory;
  * This permits a Holding to work as a "receivable account" so that goods can be booked
  * in and out of it.</p>
  *
- * @since 1.0.0
+ * @since 0.0.1
  *         
  */
 public class Location {

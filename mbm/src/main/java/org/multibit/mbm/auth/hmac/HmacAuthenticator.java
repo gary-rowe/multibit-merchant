@@ -4,8 +4,8 @@ import com.google.common.base.Optional;
 import com.xeiam.xchange.utils.CryptoUtils;
 import com.yammer.dropwizard.auth.AuthenticationException;
 import com.yammer.dropwizard.auth.Authenticator;
-import org.multibit.mbm.persistence.dao.UserDao;
-import org.multibit.mbm.persistence.dto.User;
+import org.multibit.mbm.db.dao.UserDao;
+import org.multibit.mbm.db.dto.User;
 
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;

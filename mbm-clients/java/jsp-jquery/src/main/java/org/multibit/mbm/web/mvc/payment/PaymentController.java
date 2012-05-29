@@ -10,7 +10,7 @@ import java.security.Principal;
 /**
  * <p>Restricted Controller for Payment page</p>
  *
- * @since 1.0.0
+ * @since 0.0.1
  */
 @Controller
 public class PaymentController extends BaseMVCController {

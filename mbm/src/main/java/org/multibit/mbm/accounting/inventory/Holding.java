@@ -10,7 +10,7 @@ import org.multibit.mbm.accounting.Account;
  * <p>A Holding manages a set of InventoryEntry instances that
  * correspond to items.</p>
  *
- * @since 1.0.0
+ * @since 0.0.1
  *         
  */
 public class Holding extends Account<InventoryEntry> {

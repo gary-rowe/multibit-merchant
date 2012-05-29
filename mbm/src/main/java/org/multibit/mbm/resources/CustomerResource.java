@@ -3,7 +3,7 @@ package org.multibit.mbm.resources;
 import com.google.common.base.Optional;
 import com.yammer.dropwizard.jersey.caching.CacheControl;
 import com.yammer.metrics.annotation.Timed;
-import org.multibit.mbm.persistence.dto.Customer;
+import org.multibit.mbm.db.dto.Customer;
 import org.multibit.mbm.services.CustomerService;
 
 import javax.annotation.Resource;
@@ -15,7 +15,7 @@ import javax.ws.rs.core.MediaType;
 import java.util.concurrent.TimeUnit;
 
 /**
- * <p>Resource to provide the following to {@link org.multibit.mbm.persistence.dto.Customer}:</p>
+ * <p>Resource to provide the following to {@link org.multibit.mbm.db.dto.Customer}:</p>
  * <ul>
  * <li>Provision of REST endpoints</li>
  * </ul>

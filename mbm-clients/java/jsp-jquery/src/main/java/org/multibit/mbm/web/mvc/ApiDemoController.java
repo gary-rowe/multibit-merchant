@@ -7,7 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 /**
  * <p>Controller for RESTful API demonstrator</p>
  *
- * @since 1.0.0
+ * @since 0.0.1
  */
 @Controller
 public class ApiDemoController extends BaseMVCController {

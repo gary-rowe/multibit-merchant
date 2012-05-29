@@ -22,7 +22,7 @@ import java.util.Hashtable;
  * <li>Decode a QR code to a bitcoin uri</li>
  * </p>
  *
- * @since 1.0.0
+ * @since 0.0.1
  */
 public class QRCodeEncoderDecoder {
   private final Logger log = LoggerFactory.getLogger(QRCodeEncoderDecoder.class);

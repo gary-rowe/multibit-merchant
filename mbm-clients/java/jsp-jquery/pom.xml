@@ -161,7 +161,7 @@
       <artifactId>jackson-mapper-asl</artifactId>
     </dependency>
 
-    <!-- Hibernate for persistence -->
+    <!-- Hibernate for db -->
     <dependency>
       <groupId>org.hibernate.java-persistence</groupId>
       <artifactId>jpa-api</artifactId>

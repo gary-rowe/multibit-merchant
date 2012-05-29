@@ -30,11 +30,11 @@
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
 
-  <!-- Hibernate persistence configuration -->
+  <!-- Hibernate db configuration -->
   <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
     <property name="packagesToScan">
       <list>
-        <value>org.multibit.mbm.persistence.dto</value>
+        <value>org.multibit.mbm.db.dto</value>
       </list>
       </property>
     <property name="dataSource" ref="dataSource"/>
@@ -55,6 +55,6 @@
   <jdbc:embedded-database id="dataSource" />
 
   <!-- Integration tests require a database loader -->
-  <bean id="databaseLoader" class="org.multibit.mbm.DatabaseLoader" init-method="initialise" />
+  <bean id="databaseLoader" class="org.multibit.mbm.db.DatabaseLoader" init-method="initialise" />
 
 </beans>

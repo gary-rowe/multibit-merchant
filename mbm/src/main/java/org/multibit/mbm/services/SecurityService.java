@@ -1,13 +1,13 @@
 package org.multibit.mbm.services;
 
 import com.google.common.collect.Lists;
-import org.multibit.mbm.persistence.dto.CustomerBuilder;
-import org.multibit.mbm.persistence.dto.*;
-import org.multibit.mbm.rest.v1.client.security.CreateUserRequest;
-import org.multibit.mbm.persistence.dto.UserBuilder;
-import org.multibit.mbm.persistence.dao.RoleDao;
-import org.multibit.mbm.persistence.dao.UserDao;
-import org.multibit.mbm.persistence.dao.UserNotFoundException;
+import org.multibit.mbm.db.dto.CustomerBuilder;
+import org.multibit.mbm.db.dto.*;
+import org.multibit.mbm.api.request.CreateUserRequest;
+import org.multibit.mbm.db.dto.UserBuilder;
+import org.multibit.mbm.db.dao.RoleDao;
+import org.multibit.mbm.db.dao.UserDao;
+import org.multibit.mbm.db.dao.UserNotFoundException;
 import org.multibit.mbm.util.OpenIdUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +29,7 @@ import java.util.UUID;
  * <li>Interaction with the Role entity</li>
  * </ul>
  *
- * @since 1.0.0
+ * @since 0.0.1
  *         
  */
 @Service

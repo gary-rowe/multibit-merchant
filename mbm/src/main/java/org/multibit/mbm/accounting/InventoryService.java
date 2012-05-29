@@ -6,7 +6,7 @@ package org.multibit.mbm.accounting;
  * <li>Access to the inventory subsystem</li>
  * </ul>
  * TODO Fill this in
- * @since 1.0.0
+ * @since 0.0.1
  *         
  */
 public class InventoryService {
