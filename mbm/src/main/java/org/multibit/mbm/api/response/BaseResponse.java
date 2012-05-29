@@ -11,7 +11,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
  * @since 0.0.1
  *         
  */
-public abstract class BaseResponse {
+public class BaseResponse {
   @JsonProperty
   private String sessionId;
 
