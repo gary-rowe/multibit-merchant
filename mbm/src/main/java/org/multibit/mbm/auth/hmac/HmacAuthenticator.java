@@ -46,6 +46,8 @@ public class HmacAuthenticator implements Authenticator<HmacCredentials, User> {
       return Optional.absent();
     }
 
+    // Remove this
+
     return Optional.absent();
 
   }
