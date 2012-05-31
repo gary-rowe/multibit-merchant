@@ -9,9 +9,7 @@
 /mbm/target
 /mbm-clients/java/jsp-jquery/target
 
-mbm/log/mbm-detail-2012-05-26.0.log.gz
-
-mbm/log/mbm/mbm-detail.log
+mbm/log
 
 mbm/mbm.iml
 
