@@ -32,7 +32,7 @@ public class HmacAuthenticator implements Authenticator<HmacCredentials, User> {
     String secretKey = user.getSecretKey();
 
     try {
-      String computedSignature= CryptoUtils.computeSignature(
+      String computedSignature = CryptoUtils.computeSignature(
         credentials.getAlgorithm(),
         credentials.getContents(),
         secretKey);
@@ -45,8 +45,6 @@ public class HmacAuthenticator implements Authenticator<HmacCredentials, User> {
     } catch (UnsupportedEncodingException e) {
       return Optional.absent();
     }
-
-    // Remove this
 
     return Optional.absent();
 
