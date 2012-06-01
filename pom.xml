@@ -4,11 +4,12 @@
 
   <groupId>org.multibit.merchant</groupId>
   <artifactId>mbm-parent</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>develop-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>MultiBit Merchant Parent</name>
-  <description>The parent POM for MultiBit Merchant providing common dependencies and reactor build configuration</description>
+  <description>The parent POM for MultiBit Merchant providing common dependencies and reactor build configuration
+  </description>
   <inceptionYear>2012</inceptionYear>
 
   <modules>
@@ -324,7 +325,6 @@
         <artifactId>dropwizard-testing</artifactId>
         <version>${dropwizard.version}</version>
       </dependency>
-
 
 
     </dependencies>

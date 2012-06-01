@@ -18,7 +18,7 @@ mvn clean package
 
 Then run up the application as a standalone process with
 
-java -jar target/mbm-0.0.1-SNAPSHOT.jar server mbm.yml
+java -jar target/mbm-develop-SNAPSHOT.jar server mbm.yml
 
 Then navigate to
 
