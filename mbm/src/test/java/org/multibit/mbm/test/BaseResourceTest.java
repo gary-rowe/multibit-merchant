@@ -14,11 +14,10 @@ import com.yammer.dropwizard.json.Json;
 import org.codehaus.jackson.map.Module;
 import org.junit.After;
 import org.junit.Before;
-import org.multibit.mbm.auth.hmac.HmacAuthProvider;
 import org.multibit.mbm.auth.hmac.HmacAuthenticator;
+import org.multibit.mbm.auth.hmac.HmacRestrictedToProvider;
 import org.multibit.mbm.db.dao.UserDao;
-import org.multibit.mbm.db.dto.User;
-import org.multibit.mbm.db.dto.UserBuilder;
+import org.multibit.mbm.db.dto.*;
 
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
@@ -94,26 +93,35 @@ public abstract class BaseResourceTest {
 
   /**
    * @param contents The content to sign with the default HMAC process (POST body, GET resource path)
+   *
    * @return
    */
   protected String buildHmacAuthorization(String contents, String apiKey, String secretKey) throws UnsupportedEncodingException, GeneralSecurityException {
-    return String.format("HmacSHA1 %s %s",apiKey, CryptoUtils.computeSignature("HmacSHA1", contents, secretKey));
+    return String.format("HmacSHA1 %s %s", apiKey, CryptoUtils.computeSignature("HmacSHA1", contents, secretKey));
   }
 
   protected void setUpAuthenticator() {
+
+    // TODO Consider a shortcut for this in UserBuilder
+    Role customerRole = RoleBuilder.getInstance()
+      .setName(Authority.ROLE_CUSTOMER.name())
+      .setDescription("Customer role")
+      .addCustomerAuthorities()
+      .build();
+
     User user = UserBuilder
       .getInstance()
       .setUUID("abc123")
       .setSecretKey("def456")
+      .addRole(customerRole)
       .build();
 
-    //
     UserDao userDao = mock(UserDao.class);
     when(userDao.getUserByUUID("abc123")).thenReturn(user);
 
     HmacAuthenticator authenticator = new HmacAuthenticator();
     authenticator.setUserDao(userDao);
 
-    addProvider(new HmacAuthProvider<User>(authenticator, "REST"));
+    addProvider(new HmacRestrictedToProvider<User>(authenticator, "REST"));
   }
 }

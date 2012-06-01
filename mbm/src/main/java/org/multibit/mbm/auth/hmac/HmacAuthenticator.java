@@ -28,6 +28,11 @@ public class HmacAuthenticator implements Authenticator<HmacCredentials, User> {
     // Get the User referred to by the API key
     User user = userDao.getUserByUUID(credentials.getApiKey());
 
+    // Check that their authorities match their credentials
+    if (!user.hasAllAuthorities(credentials.getAuthorities())) {
+      return Optional.absent();
+    }
+
     // Locate their secret key
     String secretKey = user.getSecretKey();
 
