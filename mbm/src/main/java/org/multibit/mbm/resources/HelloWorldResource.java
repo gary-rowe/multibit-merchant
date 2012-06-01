@@ -1,9 +1,10 @@
 package org.multibit.mbm.resources;
 
 import com.google.common.base.Optional;
-import com.yammer.dropwizard.auth.Auth;
 import com.yammer.metrics.annotation.Timed;
+import org.multibit.mbm.auth.annotation.RestrictedTo;
 import org.multibit.mbm.core.Saying;
+import org.multibit.mbm.db.dto.Authority;
 import org.multibit.mbm.db.dto.User;
 
 import javax.ws.rs.GET;
@@ -37,7 +38,9 @@ public class HelloWorldResource {
   @GET
   @Timed
   @Path("/secret")
-  public Saying saySecuredHello(@Auth User user) {
+  public Saying saySecuredHello(
+    @RestrictedTo({Authority.ROLE_CUSTOMER})
+    User user) {
     return new Saying(counter.incrementAndGet(),
       "You cracked the code!");
   }
