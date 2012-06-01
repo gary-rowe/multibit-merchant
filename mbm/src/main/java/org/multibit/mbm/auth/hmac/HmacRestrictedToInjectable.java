@@ -1,17 +1,12 @@
 package org.multibit.mbm.auth.hmac;
 
 /**
- * <p>[Pattern] to provide the following to {@link Object}:</p>
+ * <p>Injectable to provide the following to {@link HmacRestrictedToProvider}:</p>
  * <ul>
- * <li></li>
+ * <li>Carries HMAC authentication data</li>
  * </ul>
- * <p>Example:</p>
- * <pre>
- * </pre>
  *
  * @since 0.0.1
- * TODO Requires implementation
- * http://rc3.org/2011/12/02/using-hmac-to-authenticate-web-service-requests/ 
  */
 
 import com.google.common.base.Optional;
@@ -19,24 +14,25 @@ import com.sun.jersey.api.core.HttpContext;
 import com.sun.jersey.server.impl.inject.AbstractHttpContextInjectable;
 import com.yammer.dropwizard.auth.AuthenticationException;
 import com.yammer.dropwizard.auth.Authenticator;
+import org.multibit.mbm.db.dto.Authority;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-class HmacAuthInjectable<T> extends AbstractHttpContextInjectable<T> {
+class HmacRestrictedToInjectable<T> extends AbstractHttpContextInjectable<T> {
   private static final String PREFIX = "HmacSHA1";
   private static final String HEADER_VALUE = PREFIX + " realm=\"%s\"";
 
   private final Authenticator<HmacCredentials, T> authenticator;
   private final String realm;
-  private final boolean required;
+  private final Authority[] authorities;
 
-  HmacAuthInjectable(Authenticator<HmacCredentials, T> authenticator, String realm, boolean required) {
+  HmacRestrictedToInjectable(Authenticator<HmacCredentials, T> authenticator, String realm, Authority[] authorities) {
     this.authenticator = authenticator;
     this.realm = realm;
-    this.required = required;
+    this.authorities = authorities;
   }
 
   public Authenticator<HmacCredentials, T> getAuthenticator() {
@@ -47,8 +43,8 @@ class HmacAuthInjectable<T> extends AbstractHttpContextInjectable<T> {
     return realm;
   }
 
-  public boolean isRequired() {
-    return required;
+  public Authority[] getAuthorities() {
+    return authorities;
   }
 
   @Override
@@ -62,7 +58,7 @@ class HmacAuthInjectable<T> extends AbstractHttpContextInjectable<T> {
 
         if (authTokens.length != 3) {
           // Malformed
-          HmacAuthProvider.LOG.debug("Error decoding credentials (length is {})", authTokens.length);
+          HmacRestrictedToProvider.LOG.debug("Error decoding credentials (length is {})", authTokens.length);
           throw new WebApplicationException(Response.Status.BAD_REQUEST);
         }
 
@@ -83,29 +79,29 @@ class HmacAuthInjectable<T> extends AbstractHttpContextInjectable<T> {
           contents = c.getRequest().getEntity(String.class);
         }
 
-        final HmacCredentials credentials = new HmacCredentials(algorithm, apiKey, signature, contents);
+        final HmacCredentials credentials = new HmacCredentials(algorithm, apiKey, signature, contents, authorities);
 
         final Optional<T> result = authenticator.authenticate(credentials);
         if (result.isPresent()) {
           return result.get();
+        } else {
+
         }
       }
     } catch (IllegalArgumentException e) {
-      HmacAuthProvider.LOG.debug(e, "Error decoding credentials");
+      HmacRestrictedToProvider.LOG.debug(e, "Error decoding credentials");
     } catch (AuthenticationException e) {
-      HmacAuthProvider.LOG.warn(e, "Error authenticating credentials");
+      HmacRestrictedToProvider.LOG.warn(e, "Error authenticating credentials");
       throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
     }
 
-    if (required) {
-      throw new WebApplicationException(Response.status(Response.Status.UNAUTHORIZED)
-        .header(HttpHeaders.AUTHORIZATION,
-          String.format(HEADER_VALUE, realm))
-        .entity("Credentials are required to access this resource.")
-        .type(MediaType.TEXT_PLAIN_TYPE)
-        .build());
-    }
-    return null;
+    // Must have failed to be here
+    throw new WebApplicationException(Response.status(Response.Status.UNAUTHORIZED)
+      .header(HttpHeaders.AUTHORIZATION,
+        String.format(HEADER_VALUE, realm))
+      .entity("Credentials are required to access this resource.")
+      .type(MediaType.TEXT_PLAIN_TYPE)
+      .build());
   }
 }
 

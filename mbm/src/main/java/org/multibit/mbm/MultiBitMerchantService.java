@@ -5,11 +5,11 @@ import com.yammer.dropwizard.Service;
 import com.yammer.dropwizard.auth.Authenticator;
 import com.yammer.dropwizard.auth.CachingAuthenticator;
 import com.yammer.dropwizard.config.Environment;
-import org.multibit.mbm.auth.hmac.HmacAuthProvider;
 import org.multibit.mbm.auth.hmac.HmacAuthenticator;
 import org.multibit.mbm.auth.hmac.HmacCredentials;
-import org.multibit.mbm.health.TemplatePropertyHealthCheck;
+import org.multibit.mbm.auth.hmac.HmacRestrictedToProvider;
 import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.health.TemplatePropertyHealthCheck;
 import org.multibit.mbm.resources.HelloWorldResource;
 
 /**
@@ -49,7 +49,8 @@ public class MultiBitMerchantService extends Service<MultiBitMerchantConfigurati
     // Health checks
     environment.addHealthCheck(new TemplatePropertyHealthCheck(template));
     // Providers
-    environment.addProvider(new HmacAuthProvider<User>(cachingAuthenticator,"REST"));}
+    environment.addProvider(new HmacRestrictedToProvider<User>(cachingAuthenticator, "REST"));
+  }
 
 
 }

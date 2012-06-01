@@ -4,11 +4,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 /**
- *<p>Enumeration to provide the following to {@link Role}:</p>
- *<ul>
- *<li>Provision of standard authorities grouped by Role</li>
- *</ul>
- *<p>An Authority exists to provide an enum key to be mapped into a Spring Security {@link GrantedAuthority}.</p>
+ * <p>Enumeration to provide the following to {@link Role}:</p>
+ * <ul>
+ * <li>Provision of standard authorities grouped by Role</li>
+ * </ul>
+ * <p>An Authority exists to provide an enum key to be mapped into a Spring Security {@link GrantedAuthority}.</p>
+ *
  * @since 0.0.1
  *         
  */
@@ -52,7 +53,7 @@ public enum Authority {
   RETRIEVE_ORDERS(false), // Customers can view their orders
   UPDATE_ORDERS(true),
   DELETE_ORDERS(true),
-  
+
   // Customers (sales, finance)
   CREATE_CUSTOMERS(true),
   RETRIEVE_CUSTOMERS(true),
@@ -69,9 +70,7 @@ public enum Authority {
   CREATE_PRICES(true),
   RETRIEVE_PRICES(true),
   UPDATE_PRICES(true),
-  DELETE_PRICES(true),
-
-  ; // End of enum
+  DELETE_PRICES(true),; // End of enum
 
   /**
    * True if the authority can only be applied to an internal User (staff)
@@ -79,7 +78,6 @@ public enum Authority {
   private boolean internal = false;
 
   /**
-   * 
    * @param internal
    */
   Authority(boolean internal) {
@@ -99,5 +97,6 @@ public enum Authority {
   public boolean isInternal() {
     return internal;
   }
+
 }
 
