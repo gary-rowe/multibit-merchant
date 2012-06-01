@@ -9,8 +9,16 @@
 /mbm/target
 /mbm-clients/java/jsp-jquery/target
 
-mbm/log/mbm-detail-2012-05-26.0.log.gz
-
-mbm/log/mbm/mbm-detail.log
+mbm/log
 
 mbm/mbm.iml
+
+mbm/mbm.iml
+
+mbm-clients/java/jsp-jquery/mbm-jsp-jquery.iml
+
+MultiBitMerchant.iml
+
+mbm-parent.iml
+
+multibit-merchant.iml
