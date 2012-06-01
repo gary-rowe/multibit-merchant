@@ -8,11 +8,14 @@ import java.lang.annotation.*;
  * <p>Annotation to provide the following to application:</p>
  * <ul>
  * <li>Concise type-safe reference to {@link org.multibit.mbm.db.dto.Authority}</li>
+ * <li>Binds to parameter to assist injection of User</li>
  * </ul>
  * <p>Example:</p>
  * <pre>
- *   @RestrictedTo({CREATE_INVOICES})
- *   public void doSomething()
+ *   public void doSomething(
+ *     @RestrictedTo({CREATE_INVOICES})
+ *     User user
+ *   )
  * </pre>
  *
  * @since 0.0.1
