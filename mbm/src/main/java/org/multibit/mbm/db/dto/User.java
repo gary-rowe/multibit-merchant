@@ -151,7 +151,7 @@ public class User implements Serializable {
   }
 
   public void setSecretKey(String secretKey) {
-    this.secretKey  = secretKey;
+    this.secretKey = secretKey;
   }
 
   /**
@@ -302,4 +302,20 @@ public class User implements Serializable {
     return String.format("Customer[id=%s, openId='%s', uuid='%s']]", id, openId, uuid);
   }
 
+  /**
+   * TODO Consider making this cacheable
+   *
+   * @param authorities The required authorities
+   *
+   * @return True if the user has all the required authorities
+   */
+  public boolean hasAllAuthorities(Authority[] authorities) {
+    Set<Authority> requiredAuthorities = Sets.newHashSet(authorities);
+    Set<Authority> grantedAuthorities = Sets.newHashSet();
+    for (UserRole userRole : userRoles) {
+      grantedAuthorities.addAll(userRole.getRole().getAuthorities());
+    }
+
+    return grantedAuthorities.containsAll(requiredAuthorities);
+  }
 }

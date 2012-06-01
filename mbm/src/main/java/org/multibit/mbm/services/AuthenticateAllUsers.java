@@ -36,6 +36,7 @@ import java.util.List;
  * <p>Typically, a User presents credentials which are matched against the database and then get {@link org.multibit.mbm.db.dto.Role}s assigned.</p>
  * <p>This is the Spring "userService" component since it does not get proxied.</p>
  */
+@Deprecated
 @Component("userService")
 public class AuthenticateAllUsers implements UserDetailsService, AuthenticationProvider {
 

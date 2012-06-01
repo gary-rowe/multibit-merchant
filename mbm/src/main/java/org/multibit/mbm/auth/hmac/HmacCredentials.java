@@ -3,6 +3,7 @@ package org.multibit.mbm.auth.hmac;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Objects;
+import org.multibit.mbm.db.dto.Authority;
 
 import java.security.MessageDigest;
 
@@ -21,20 +22,27 @@ public class HmacCredentials {
   private final String digest;
   private final String contents;
   private final String algorithm;
+  private final Authority[] authorities;
 
   /**
    * Creates a new {@link org.multibit.mbm.auth.hmac.HmacCredentials} with the given username and password.
    *
-   * @param algorithm   The algorithm used for computing the digest (e.g. "HmacSHA1", "HmacSHA256", "HmacSHA512")
-   * @param apiKey   The API key used for looking up the shared secret key associated with the user
-   * @param digest   The digest of (contents + shared secret key)
-   * @param contents The contents that were signed
+   * @param algorithm The algorithm used for computing the digest (e.g. "HmacSHA1", "HmacSHA256", "HmacSHA512")
+   * @param apiKey    The API key used for looking up the shared secret key associated with the user
+   * @param digest    The digest of (contents + shared secret key)
+   * @param contents  The contents that were signed
    */
-  public HmacCredentials(String algorithm, String apiKey, String digest, String contents) {
+  public HmacCredentials(
+    String algorithm,
+    String apiKey,
+    String digest,
+    String contents,
+    Authority[] authorities) {
     this.algorithm = checkNotNull(algorithm);
     this.apiKey = checkNotNull(apiKey);
     this.digest = checkNotNull(digest);
     this.contents = checkNotNull(contents);
+    this.authorities = checkNotNull(authorities);
   }
 
   /**
@@ -65,6 +73,13 @@ public class HmacCredentials {
     return contents;
   }
 
+  /**
+   * @return The authorities required to successfully authenticate
+   */
+  public Authority[] getAuthorities() {
+    return authorities;
+  }
+
   @Override
   public boolean equals(Object obj) {
     if (this == obj) {
@@ -74,7 +89,7 @@ public class HmacCredentials {
       return false;
     }
     final HmacCredentials that = (HmacCredentials) obj;
-    // N.B.: Do a constant-time comparison here to prevent timing attacks.
+
     final byte[] thisBytes = digest.getBytes(Charsets.UTF_8);
     final byte[] thatBytes = that.digest.getBytes(Charsets.UTF_8);
     return apiKey.equals(that.apiKey) && MessageDigest.isEqual(thisBytes, thatBytes);
@@ -91,6 +106,8 @@ public class HmacCredentials {
       .add("apiKey", apiKey)
       .add("digest", digest)
       .add("contents", contents)
+      .add("authorities", authorities)
       .toString();
   }
+
 }
