@@ -69,7 +69,7 @@ public class HalResponseBuilderTest {
     Result actual = TestUtils.newStringResult();
     marshaller.marshal(testObject, actual);
 
-    String expected = TestUtils.readStringFromStream(HalResponseBuilderTest.class.getResourceAsStream("/fixtures/hal/expected-hal-marshalling-simple.xml"));
+    String expected = TestUtils.readStringFromStream(HalResponseBuilderTest.class.getResourceAsStream("/fixtures/hal/expected-hal-marshalling-nested.xml"));
 
     assertEquals(expected, actual.toString());
   }
