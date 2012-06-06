@@ -1,30 +1,29 @@
 package org.multibit.mbm.api.hal;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Ordering;
 
 import java.net.URI;
 import java.util.List;
-import java.util.TreeMap;
 
 public class HalResponseBuilder {
 
-  private TreeMap<String, String> namespaces = Maps.newTreeMap(Ordering.usingToString());
   private List<Link> links = Lists.newArrayList();
+  private List<HalResponse> halResponses = Lists.newArrayList();
+  private List<Object> entities = Lists.newArrayList();
   private String baseHref;
 
   private boolean isBuilt = false;
 
+  /**
+   * Force use of static instance method
+   */
   private HalResponseBuilder() {
   }
-
-  ;
 
   /**
    * @return A new instance of the builder
    */
-  public static HalResponseBuilder getInstance() {
+  public static HalResponseBuilder newInstance() {
     return new HalResponseBuilder();
   }
 
@@ -40,6 +39,8 @@ public class HalResponseBuilder {
     HalResponse halResponse = new HalResponse();
     halResponse.setBaseHref(baseHref);
     halResponse.setLinks(links);
+    halResponse.setHalResponses(halResponses);
+    halResponse.setEntities(entities);
 
     isBuilt = true;
 
@@ -69,21 +70,7 @@ public class HalResponseBuilder {
   }
 
   /**
-   * @param namespace
-   * @param url
-   *
-   * @return
-   */
-  public HalResponseBuilder withNamespace(String namespace, String url) {
-    if (namespaces.containsKey(namespace)) {
-      throw new ResponseBuilderException(String.format("Duplicate namespace '%s' provided for response", namespace));
-    }
-    namespaces.put(namespace, url);
-    return this;
-  }
-
-  /**
-   * The minimum specification for a {@link Link}
+   * Add a minimally specified link (can be called multiple times)
    *
    * @param rel  The link relation
    * @param href The link URL
@@ -96,7 +83,7 @@ public class HalResponseBuilder {
   }
 
   /**
-   * The full specification for a {@link Link}
+   * Add a fully specified link (can be called multiple times)
    *
    * @param rel      The link relation
    * @param href     The link URL (a target IRI compliant with <a href="http://tools.ietf.org/html/rfc5988">RFC 5988</a>)
@@ -111,4 +98,27 @@ public class HalResponseBuilder {
     return this;
   }
 
+  /**
+   * Add a nested resource (can be called multiple times)
+   *
+   * @param halResponse The HalResponse to add as a nested resource
+   *
+   * @return The builder
+   */
+  public HalResponseBuilder withHalResponse(HalResponse halResponse) {
+    halResponses.add(halResponse);
+    return this;
+  }
+
+  /**
+   * Add a nested entity (can be called multiple times)
+   *
+   * @param entity The arbitrary entity (must be annotated for JAXB)
+   *
+   * @return The builder
+   */
+  public HalResponseBuilder withEntity(Object entity) {
+    entities.add(entity);
+    return this;
+  }
 }

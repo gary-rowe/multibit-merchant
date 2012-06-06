@@ -4,6 +4,11 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.multibit.mbm.db.dto.User;
 import org.springframework.util.Assert;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * <p>Response to provide the following to {@link org.multibit.mbm.resources.CartController}:</p>
  * <ul>
@@ -13,8 +18,11 @@ import org.springframework.util.Assert;
  * @since 0.0.1
  *         
  */
+@XmlRootElement(name = "user")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class UserResponse extends BaseResponse {
 
+  @XmlElement
   @JsonProperty
   private String username = "";
 

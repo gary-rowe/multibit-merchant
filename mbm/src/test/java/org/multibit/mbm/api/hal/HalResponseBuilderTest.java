@@ -1,6 +1,7 @@
 package org.multibit.mbm.api.hal;
 
 import org.junit.Test;
+import org.multibit.mbm.api.response.UserResponse;
 import org.multibit.mbm.test.TestUtils;
 
 import javax.xml.bind.JAXBContext;
@@ -15,7 +16,7 @@ public class HalResponseBuilderTest {
   public void testSimple() {
 
     HalResponse testObject = HalResponseBuilder
-      .getInstance()
+      .newInstance()
       .withBaseHref("http://localhost:8080")
       .withLink("customer", "/customer/124", "customer124", "Your account", "en")
       .build();
@@ -30,12 +31,11 @@ public class HalResponseBuilderTest {
   }
 
   @Test
-  public void testXmlMarshalling() throws Exception {
+  public void testXmlMarshalling_Simple() throws Exception {
 
     HalResponse testObject = HalResponseBuilder
-      .getInstance()
+      .newInstance()
       .withBaseHref("http://localhost:8080")
-      .withNamespace("http://example.org", "")
       .withLink("customer", "/customer/124", "customer124", "Your account", "en")
       .build();
 
@@ -45,7 +45,31 @@ public class HalResponseBuilderTest {
     Result actual = TestUtils.newStringResult();
     marshaller.marshal(testObject, actual);
 
-    String expected = TestUtils.readStringFromStream(HalResponseBuilderTest.class.getResourceAsStream("/fixtures/hal/expected-hal-marshalling.xml"));
+    String expected = TestUtils.readStringFromStream(HalResponseBuilderTest.class.getResourceAsStream("/fixtures/hal/expected-hal-marshalling-simple.xml"));
+
+    assertEquals(expected, actual.toString());
+  }
+
+  @Test
+  public void testXmlMarshalling_Nested() throws Exception {
+
+    UserResponse userResponse = new UserResponse();
+    userResponse.setUsername("user124");
+
+    HalResponse testObject = HalResponseBuilder
+      .newInstance()
+      .withBaseHref("http://localhost:8080")
+      .withLink("customer", "/customer/124", "customer124", "Your account", "en")
+      .withEntity(userResponse)
+      .build();
+
+    JAXBContext context = JAXBContext.newInstance(HalResponse.class, UserResponse.class);
+    Marshaller marshaller = context.createMarshaller();
+
+    Result actual = TestUtils.newStringResult();
+    marshaller.marshal(testObject, actual);
+
+    String expected = TestUtils.readStringFromStream(HalResponseBuilderTest.class.getResourceAsStream("/fixtures/hal/expected-hal-marshalling-simple.xml"));
 
     assertEquals(expected, actual.toString());
   }

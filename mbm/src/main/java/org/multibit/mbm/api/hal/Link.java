@@ -1,48 +1,55 @@
 package org.multibit.mbm.api.hal;
 
 import com.google.common.base.Objects;
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlType;
 import java.util.regex.Pattern;
 
 /**
  * A Link to an external resource.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "link", propOrder = {
+  "rel",
+  "href",
+  "name",
+  "title",
+  "hreflang",
+  "isTemplated"
+})
 public class Link {
   /**
    * Pattern that will hit an RFC 6570 URI template.
    */
   private static final Pattern URI_TEMPLATE_PATTERN = Pattern.compile("\\{.+\\}");
 
-  @XmlElement(name = "rel", defaultValue = "")
+  @XmlAttribute(name = "rel")
   @JsonProperty
   private String rel;
 
-  @XmlElement(name = "href", defaultValue = "")
+  @XmlAttribute(name = "href")
   @JsonProperty
   private String href;
 
-  @XmlElement(name = "name", defaultValue = "")
+  @XmlAttribute(name = "name")
   @JsonProperty
   private String name;
 
-  @XmlElement(name = "title", defaultValue = "")
+  @XmlAttribute(name = "title")
   @JsonProperty
   private String title;
 
-  @XmlElement(name = "hreflang", defaultValue = "")
+  @XmlAttribute(name = "hreflang")
   @JsonProperty
   private String hreflang;
 
-  @XmlTransient
-  @JsonIgnore
-  private boolean hasTemplate = false;
+  @XmlAttribute(name = "templated")
+  @JsonProperty
+  private boolean isTemplated = false;
 
   /**
    * Default constructor for JAXB
@@ -59,6 +66,7 @@ public class Link {
   public Link(String rel, String href) {
     this.rel = rel;
     this.href = href;
+    this.isTemplated = hasTemplate(href);
   }
 
   public Link(String rel, String href, String name, String title, String hreflang) {
@@ -68,8 +76,17 @@ public class Link {
     this.hreflang = hreflang;
   }
 
+  public void setHref(String href) {
+    this.href = href;
+    this.isTemplated = hasTemplate(href);
+  }
+
   public String getHref() {
     return href;
+  }
+
+  public void setRel(String rel) {
+    this.rel = rel;
   }
 
   public String getRel() {
@@ -100,16 +117,12 @@ public class Link {
     this.hreflang = hreflang;
   }
 
-  public boolean isHasTemplate() {
-    return hasTemplate;
+  public boolean isTemplated() {
+    return isTemplated;
   }
 
-  public void setHasTemplate(boolean hasTemplate) {
-    this.hasTemplate = hasTemplate;
-  }
-
-  public boolean hasTemplate() {
-    return hasTemplate;
+  public void setTemplated(boolean templated) {
+    this.isTemplated = templated;
   }
 
   /**
