@@ -1,23 +1,19 @@
 package org.multibit.mbm.api.hal;
 
+import com.google.common.collect.Lists;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.w3c.dom.Node;
 
 import javax.xml.bind.annotation.*;
 import java.util.List;
 
 /**
- * <p>[Pattern] to provide the following to {@link Object}:</p>
+ * <p>HAL response to provide the following to application:</p>
  * <ul>
- * <li></li>
+ * <li>Decorator for other response objects to provide linking information</li>
  * </ul>
- * <p>Example:</p>
- * <pre>
- * </pre>
  *
  * @since 0.0.1
- *        TODO Fill in documentation         
  */
 @XmlRootElement(name = "resource")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -32,10 +28,13 @@ public class HalResponse {
   @JsonProperty
   private List<Link> links;
 
-  private HalResponse response = null;
+  @XmlElement(name = "resource")
+  @JsonProperty
+  private List<HalResponse> halResponses = Lists.newArrayList();
 
   @XmlAnyElement
-  private List<Node> entity = null;
+  @XmlMixed
+  private List<Object> entities = null;
 
   public void setBaseHref(String baseHref) {
     this.baseHref = baseHref;
@@ -53,20 +52,20 @@ public class HalResponse {
     return links;
   }
 
-  public HalResponse getResponse() {
-    return response;
+  public List<HalResponse> getHalResponses() {
+    return halResponses;
   }
 
-  public void setResponse(HalResponse response) {
-    this.response = response;
+  public void setHalResponses(List<HalResponse> halResponses) {
+    this.halResponses = halResponses;
   }
 
-  public List<Node> getEntity() {
-    return entity;
+  public List<Object> getEntities() {
+    return entities;
   }
 
-  public void setEntity(List<Node> entity) {
-    this.entity = entity;
+  public void setEntities(List<Object> entities) {
+    this.entities = entities;
   }
 
   @Override
@@ -77,9 +76,9 @@ public class HalResponse {
     HalResponse that = (HalResponse) o;
 
     if (baseHref != null ? !baseHref.equals(that.baseHref) : that.baseHref != null) return false;
-    if (entity != null ? !entity.equals(that.entity) : that.entity != null) return false;
+    if (entities != null ? !entities.equals(that.entities) : that.entities != null) return false;
     if (links != null ? !links.equals(that.links) : that.links != null) return false;
-    if (response != null ? !response.equals(that.response) : that.response != null) return false;
+    if (halResponses != null ? !halResponses.equals(that.halResponses) : that.halResponses != null) return false;
 
     return true;
   }
@@ -89,8 +88,8 @@ public class HalResponse {
 
     int result = baseHref != null ? baseHref.hashCode() : 0;
     result = 31 * result + (links != null ? links.hashCode() : 0);
-    result = 31 * result + (response != null ? response.hashCode() : 0);
-    result = 31 * result + (entity != null ? entity.hashCode() : 0);
+    result = 31 * result + (halResponses != null ? halResponses.hashCode() : 0);
+    result = 31 * result + (entities != null ? entities.hashCode() : 0);
     return result;
   }
 }
