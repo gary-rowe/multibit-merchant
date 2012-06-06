@@ -74,4 +74,48 @@ public class HalResponseBuilderTest {
     assertEquals(expected, actual.toString());
   }
 
+  @Test
+  public void testXmlMarshalling_MultipleNested() throws Exception {
+
+    UserResponse userResponse1 = new UserResponse();
+    userResponse1.setUsername("user124");
+
+    UserResponse userResponse2 = new UserResponse();
+    userResponse2.setUsername("user125");
+
+    HalResponse nestedResponse1 = HalResponseBuilder
+      .newInstance()
+      .withBaseHref("http://localhost:8080")
+      .withLink("customer", "/customer/124", "customer124", "Your account", "en")
+      .withEntity(userResponse1)
+      .build();
+
+    HalResponse nestedResponse2 = HalResponseBuilder
+      .newInstance()
+      .withBaseHref("http://localhost:8080")
+      .withLink("customer", "/customer/125", "customer125", "Your account", "en")
+      .withEntity(userResponse2)
+      .build();
+
+    HalResponse testObject = HalResponseBuilder
+      .newInstance()
+      .withBaseHref("http://localhost:8080")
+      .withLink("customer", "/customer/124", "customer124", "Your account", "en")
+      .withHalResponse(nestedResponse1)
+      .withHalResponse(nestedResponse2)
+      .withEntity(userResponse1)
+      .withEntity(userResponse2)
+      .build();
+
+    JAXBContext context = JAXBContext.newInstance(HalResponse.class, UserResponse.class);
+    Marshaller marshaller = context.createMarshaller();
+
+    Result actual = TestUtils.newStringResult();
+    marshaller.marshal(testObject, actual);
+
+    String expected = TestUtils.readStringFromStream(HalResponseBuilderTest.class.getResourceAsStream("/fixtures/hal/expected-hal-marshalling-multiple-nested.xml"));
+
+    assertEquals(expected, actual.toString());
+  }
+
 }
