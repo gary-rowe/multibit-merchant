@@ -2,6 +2,8 @@ package org.multibit.mbm.test;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
+import com.theoryinpractise.halbuilder.spi.Resource;
+import org.multibit.mbm.api.hal.HalMediaType;
 
 import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
@@ -9,22 +11,23 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
 
+import static com.yammer.dropwizard.testing.JsonHelpers.jsonFixture;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+
 /**
- * <p>[Pattern] to provide the following to {@link Object}:</p>
+ * <p>Test utilities to provide the following to application:</p>
  * <ul>
- * <li></li>
+ * <li>Support methods to simplify common test patterns</li>
  * </ul>
- * <p>Example:</p>
- * <pre>
- * </pre>
  *
  * @since 0.0.1
- *        TODO Add documentation and consider introducing mbm-core library
  */
 public class TestUtils {
 
   /**
-   * Reads an input stream entirely into a string
+   * Reads an input stream entirely into a String then closes the input stream
    *
    * @param inputStream The input stream
    *
@@ -32,9 +35,11 @@ public class TestUtils {
    *
    * @throws IOException If something goes wrong
    */
-  public static String readStringFromStream(final InputStream inputStream) throws IOException {
+  public static String readFullyAndClose(final InputStream inputStream) throws IOException {
 
-    return CharStreams.toString(new InputStreamReader(inputStream, Charsets.UTF_8));
+    String result = CharStreams.toString(new InputStreamReader(inputStream, Charsets.UTF_8));
+    inputStream.close();
+    return result;
 
   }
 
@@ -52,5 +57,18 @@ public class TestUtils {
     sr.setWriter(new StringWriter());
 
     return sr;
+  }
+
+  /**
+   *
+   *
+   * @param reason The reason (e.g. "a Customer can be marshalled to JSON")
+   * @param resource The HAL resource
+   * @throws IOException If something goes wrong
+   */
+  public static void assertResourceMatchesJsonFixture(String reason, Resource resource) throws IOException {
+    assertThat(reason,
+      resource.renderContent(HalMediaType.APPLICATION_HAL_JSON),
+      is(equalTo(jsonFixture("fixtures/hal/expected-customer-simple.json"))));
   }
 }
