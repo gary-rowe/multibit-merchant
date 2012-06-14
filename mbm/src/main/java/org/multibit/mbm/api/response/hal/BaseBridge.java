@@ -1,10 +1,14 @@
 package org.multibit.mbm.api.response.hal;
 
+import com.google.common.base.Optional;
 import com.theoryinpractise.halbuilder.ResourceFactory;
 import com.theoryinpractise.halbuilder.spi.Resource;
 import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.api.hal.MinifiedJsonRenderer;
 import org.multibit.mbm.api.hal.MinifiedXmlRenderer;
+import org.multibit.mbm.db.dto.User;
+
+import javax.ws.rs.core.UriInfo;
 
 /**
  * <p>Abstract base class to provide the following to subclasses:</p>
@@ -17,18 +21,35 @@ import org.multibit.mbm.api.hal.MinifiedXmlRenderer;
  */
 public abstract class BaseBridge<T> {
 
+  private final UriInfo uriInfo;
+  private final Optional<User> user;
+
   /**
-   * @param href The base href value
+   * @param uriInfo The {@link UriInfo} containing the originating request information
+   * @param user An optional User to provide a security principal
+   */
+  public BaseBridge(UriInfo uriInfo, Optional<User> user) {
+    this.uriInfo = uriInfo;
+    this.user = user;
+  }
+  /**
    * @return A {@link ResourceFactory} configured for production use
    */
-  protected ResourceFactory getResourceFactory(String href) {
-    ResourceFactory resourceFactory = new ResourceFactory(href);
+  protected ResourceFactory getResourceFactory() {
+    ResourceFactory resourceFactory = new ResourceFactory(uriInfo.getBaseUri().toString());
     // Override the default configuration
     resourceFactory.withRenderer(HalMediaType.APPLICATION_HAL_JSON,
       MinifiedJsonRenderer.class);
     resourceFactory.withRenderer(HalMediaType.APPLICATION_HAL_XML,
       MinifiedXmlRenderer.class);
     return resourceFactory;
+  }
+
+  /**
+   * @return The optional {@link User} acting as the security principal for this request
+   */
+  protected Optional<User> getUser() {
+    return this.user;
   }
 
   /**

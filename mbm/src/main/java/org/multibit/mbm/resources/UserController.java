@@ -18,6 +18,7 @@ import java.security.Principal;
  */
 @Controller
 @RequestMapping(value = "/v1")
+@Deprecated
 public class UserController extends BaseController {
 
   @Resource(name="securityService")

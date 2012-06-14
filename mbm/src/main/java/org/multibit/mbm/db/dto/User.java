@@ -103,7 +103,7 @@ public class User implements Serializable {
   private boolean staffMember = false;
 
   /**
-   * A User may be linked to a Customer
+   * A User may be linked to a Customer (bi-directional)
    */
   @OneToOne(optional = true, cascade = CascadeType.ALL)
   private Customer customer = null;
