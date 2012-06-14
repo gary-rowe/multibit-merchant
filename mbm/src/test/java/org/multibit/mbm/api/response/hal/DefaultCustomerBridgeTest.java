@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.multibit.mbm.db.dto.Customer;
 import org.multibit.mbm.db.dto.CustomerBuilder;
 import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.db.dto.UserBuilder;
 import org.multibit.mbm.test.BaseResourceTest;
 import org.multibit.mbm.test.TestUtils;
 
@@ -22,17 +23,20 @@ public class DefaultCustomerBridgeTest extends BaseResourceTest {
     setUpHttpHeaders(Optional.<List<MediaType>>absent());
   }
 
+
   @Test
   public void representCustomerAsJson() throws Exception {
-
 
     Customer customer = CustomerBuilder
       .getInstance()
       .build();
 
-    Optional<User> user = Optional.absent();
+    User user = UserBuilder
+      .getInstance()
+      .addCustomer(customer)
+      .build();
 
-    DefaultCustomerBridge testObject = new DefaultCustomerBridge(uriInfo,user);
+    DefaultCustomerBridge testObject = new DefaultCustomerBridge(uriInfo,principal);
 
     Resource resource = testObject.toResource(customer);
 
@@ -47,13 +51,16 @@ public class DefaultCustomerBridgeTest extends BaseResourceTest {
       .getInstance()
       .build();
 
-    Optional<User> user = Optional.absent();
+    User user = UserBuilder
+      .getInstance()
+      .addCustomer(customer)
+      .build();
 
-    DefaultCustomerBridge testObject = new DefaultCustomerBridge(uriInfo,user);
+    DefaultCustomerBridge testObject = new DefaultCustomerBridge(uriInfo,principal);
 
     Resource resource = testObject.toResource(customer);
 
-    TestUtils.assertResourceMatchesXmlFixture("a Customer can be marshalled to JSON", resource, "fixtures/hal/customer/expected-customer-simple.xml");
+    TestUtils.assertResourceMatchesXmlFixture("a Customer can be marshalled to XML", resource, "fixtures/hal/customer/expected-customer-simple.xml");
 
   }
 

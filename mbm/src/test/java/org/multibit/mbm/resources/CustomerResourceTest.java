@@ -1,26 +1,35 @@
 package org.multibit.mbm.resources;
 
-import com.yammer.dropwizard.testing.ResourceTest;
+import com.yammer.dropwizard.testing.FixtureHelpers;
 import org.junit.Test;
-import org.multibit.mbm.db.dto.CustomerBuilder;
+import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.db.dto.Customer;
+import org.multibit.mbm.db.dto.CustomerBuilder;
+import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.db.dto.UserBuilder;
 import org.multibit.mbm.services.CustomerService;
+import org.multibit.mbm.test.BaseResourceIntegrationTest;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class CustomerResourceTest extends ResourceTest {
+public class CustomerResourceTest extends BaseResourceIntegrationTest {
 
   private final CustomerService customerService=mock(CustomerService.class);
   private final Customer expectedCustomer = CustomerBuilder
     .getInstance()
     .build();
-
+  private final User expectedUser = UserBuilder
+    .getInstance()
+    .addCustomer(expectedCustomer)
+    .build();
 
   @Override
-  protected void setUpResources() {
+  protected void setUpResources() throws Exception {
 
     // Apply mocks
     when(customerService.findByOpenId(anyString())).thenReturn(expectedCustomer);
@@ -36,12 +45,16 @@ public class CustomerResourceTest extends ResourceTest {
   @Test
   public void testGetByOpenId() throws Exception {
 
-    Customer actualCustomer = client()
-      .resource("/v1/customer")
+    String actualResponse = client()
+      .resource("/customer")
       .queryParam("openId", "abc123")
-      .get(Customer.class);
+      .accept(HalMediaType.APPLICATION_HAL_JSON)
+      .get(String.class);
 
-    assertEquals("GET hello-world returns a default",expectedCustomer,actualCustomer);
+    String expectedResponse= FixtureHelpers.fixture("fixtures/hal/customer/expected-customer-simple-jersey.json");
+
+    assertThat(actualResponse,is(equalTo(expectedResponse)));
+
 
   }
 

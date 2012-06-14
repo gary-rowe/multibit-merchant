@@ -8,7 +8,7 @@ import org.multibit.mbm.db.dto.User;
 import javax.ws.rs.core.UriInfo;
 
 /**
- * <p>Bridge to provide the following to {@link org.multibit.mbm.db.dto.User}:</p>
+ * <p>Bridge to provide the following to {@link User}:</p>
  * <ul>
  * <li>Creates {@link com.theoryinpractise.halbuilder.spi.Resource} representations</li>
  * </ul>
@@ -19,10 +19,10 @@ public class DefaultUserBridge extends BaseBridge<User> {
 
   /**
    * @param uriInfo The {@link javax.ws.rs.core.UriInfo} containing the originating request information
-   * @param user    An optional User to provide a security principal
+   * @param principal    An optional {@link User} to provide a security principal
    */
-  public DefaultUserBridge(UriInfo uriInfo, Optional<User> user) {
-    super(uriInfo, user);
+  public DefaultUserBridge(UriInfo uriInfo, Optional<User> principal) {
+    super(uriInfo, principal);
   }
 
   public Resource toResource(User user) {
