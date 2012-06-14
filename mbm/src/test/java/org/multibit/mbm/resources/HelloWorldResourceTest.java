@@ -2,7 +2,7 @@ package org.multibit.mbm.resources;
 
 import org.junit.Test;
 import org.multibit.mbm.core.Saying;
-import org.multibit.mbm.test.BaseResourceTest;
+import org.multibit.mbm.test.BaseResourceIntegrationTest;
 
 import javax.ws.rs.core.HttpHeaders;
 
@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
  * @since 0.0.1
  *         
  */
-public class HelloWorldResourceTest extends BaseResourceTest {
+public class HelloWorldResourceTest extends BaseResourceIntegrationTest {
 
 
   @Override
