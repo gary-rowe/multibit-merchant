@@ -11,7 +11,7 @@ import java.io.IOException;
 public class DefaultCustomerBridgeTest {
 
   @Test
-  public void representCustomer() throws IOException {
+  public void representCustomerAsJson() throws IOException {
 
     Customer customer = CustomerBuilder
       .getInstance()
@@ -21,7 +21,22 @@ public class DefaultCustomerBridgeTest {
 
     Resource resource = testObject.toResource(customer);
 
-    TestUtils.assertResourceMatchesJsonFixture("a Customer can be marshalled to JSON", resource);
+    TestUtils.assertResourceMatchesJsonFixture("a Customer can be marshalled to JSON", resource, "fixtures/hal/customer/expected-customer-simple.json");
+
+  }
+
+  @Test
+  public void representCustomerAsXml() throws IOException {
+
+    Customer customer = CustomerBuilder
+      .getInstance()
+      .build();
+
+    DefaultCustomerBridge testObject = new DefaultCustomerBridge("http://example.org");
+
+    Resource resource = testObject.toResource(customer);
+
+    TestUtils.assertResourceMatchesXmlFixture("a Customer can be marshalled to JSON", resource, "fixtures/hal/customer/expected-customer-simple.xml");
 
   }
 

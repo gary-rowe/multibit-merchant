@@ -38,7 +38,6 @@ public class MinifiedJsonRenderer implements Renderer<String> {
   public Optional<String> render(ReadableResource resource, Writer writer) {
 
     JsonFactory f = new JsonFactory();
-    //f.enable(JsonGenerator.Feature.QUOTE_FIELD_NAMES);
 
     try {
       JsonGenerator g = f.createJsonGenerator(writer);
