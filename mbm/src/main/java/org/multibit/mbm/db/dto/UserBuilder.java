@@ -18,7 +18,7 @@ import java.util.UUID;
 public class UserBuilder {
 
   private String openId;
-  private String uuid= UUID.randomUUID().toString();
+  private String uuid = UUID.randomUUID().toString();
   private String secretKey;
   private List<AddContactMethod> addContactMethods = Lists.newArrayList();
   private List<AddRole> addRoles = Lists.newArrayList();
@@ -60,7 +60,11 @@ public class UserBuilder {
       user.setPassword(encryptedPassword);
     }
 
-    user.setCustomer(customer);
+    // Bi-directional relationship
+    if (customer != null) {
+      user.setCustomer(customer);
+      customer.setUser(user);
+    }
 
     for (AddRole addRole : addRoles) {
       addRole.applyTo(user);
@@ -152,7 +156,6 @@ public class UserBuilder {
    * @return The builder
    */
   public UserBuilder addCustomer(Customer customer) {
-
     this.customer = customer;
     return this;
   }

@@ -1,11 +1,11 @@
-{  "_links":{
-"self":{
-"href":"http://example.org/customer"
-},
-"http://example.org/customer?q={query}":{
-"href":"search"
-},
-"http://example.org/description":{
-"href":"description"
-}
+{"_links":{
+  "self":{
+    "href":"http://example.org/user"
+  },
+  "http://example.org/description":{
+    "href":"description"
+  },
+  "http://example.org/user?q={query}":{
+    "href":"search"
+  }
 }}

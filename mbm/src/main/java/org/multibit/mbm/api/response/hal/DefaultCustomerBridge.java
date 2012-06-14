@@ -20,10 +20,10 @@ public class DefaultCustomerBridge extends BaseBridge<Customer> {
 
   /**
    * @param uriInfo The {@link javax.ws.rs.core.UriInfo} containing the originating request information
-   * @param user    An optional User to provide a security principal
+   * @param principal    An optional {@link User} to provide a security principal
    */
-  public DefaultCustomerBridge(UriInfo uriInfo, Optional<User> user) {
-    super(uriInfo, user);
+  public DefaultCustomerBridge(UriInfo uriInfo, Optional<User> principal) {
+    super(uriInfo, principal);
   }
 
   public Resource toResource(Customer customer) {

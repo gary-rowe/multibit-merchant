@@ -40,6 +40,12 @@ public abstract class BaseResourceIntegrationTest extends BaseResourceTest {
   private JerseyTest test;
   protected UriInfo uriInfo;
 
+  /**
+   * <p>Subclasses must use this to configure mocks of any objects that the
+   * test object depends on.</p>
+   *
+   * @throws Exception If something goes wrong
+   */
   protected abstract void setUpResources() throws Exception;
 
   protected void addResource(Object resource) {

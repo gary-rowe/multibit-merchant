@@ -22,15 +22,15 @@ import javax.ws.rs.core.UriInfo;
 public abstract class BaseBridge<T> {
 
   private final UriInfo uriInfo;
-  private final Optional<User> user;
+  private final Optional<User> principal;
 
   /**
    * @param uriInfo The {@link UriInfo} containing the originating request information
-   * @param user An optional User to provide a security principal
+   * @param principal An optional {@link User} to provide a security principal
    */
-  public BaseBridge(UriInfo uriInfo, Optional<User> user) {
+  public BaseBridge(UriInfo uriInfo, Optional<User> principal) {
     this.uriInfo = uriInfo;
-    this.user = user;
+    this.principal = principal;
   }
   /**
    * @return A {@link ResourceFactory} configured for production use
@@ -48,8 +48,8 @@ public abstract class BaseBridge<T> {
   /**
    * @return The optional {@link User} acting as the security principal for this request
    */
-  protected Optional<User> getUser() {
-    return this.user;
+  protected Optional<User> getPrincipal() {
+    return this.principal;
   }
 
   /**
