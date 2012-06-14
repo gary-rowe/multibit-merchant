@@ -25,10 +25,15 @@ public class Customer implements Serializable {
   @Column(name = "id", nullable = false)
   private Long id = null;
 
-
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name="cart_fk")
   private Cart cart;
+
+  /**
+   * A Customer has a single User
+   */
+  @OneToOne(mappedBy = "customer")
+  private User user = null;
 
   /*
   * Default constructor required for Hibernate
@@ -53,6 +58,17 @@ public class Customer implements Serializable {
 
   public void setCart(Cart cart) {
     this.cart = cart;
+  }
+
+  /**
+   * @return The User associated with this Customer
+   */
+  public User getUser() {
+    return user;
+  }
+
+  public void setUser(User user) {
+    this.user = user;
   }
 
   @Override

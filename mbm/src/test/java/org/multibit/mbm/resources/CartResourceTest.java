@@ -5,7 +5,7 @@ import org.multibit.mbm.db.dto.Customer;
 import org.multibit.mbm.db.dto.CustomerBuilder;
 import org.multibit.mbm.api.request.CreateCartRequest;
 import org.multibit.mbm.services.CustomerService;
-import org.multibit.mbm.test.BaseResourceTest;
+import org.multibit.mbm.test.BaseResourceIntegrationTest;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.xml.ws.Response;
@@ -14,7 +14,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class CartResourceTest extends BaseResourceTest {
+public class CartResourceTest extends BaseResourceIntegrationTest {
 
   private final CustomerService customerService=mock(CustomerService.class);
 

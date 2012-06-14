@@ -1,0 +1,11 @@
+{"_links":{
+  "self":{
+    "href":"http://localhost:9998/customer"
+  },
+  "http://localhost:9998/customer?q={query}":{
+    "href":"search"
+  },
+  "http://localhost:9998/description":{
+    "href":"description"
+  }
+}}
