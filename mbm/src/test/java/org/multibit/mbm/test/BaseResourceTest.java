@@ -1,127 +1,58 @@
 package org.multibit.mbm.test;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.test.framework.AppDescriptor;
-import com.sun.jersey.test.framework.JerseyTest;
-import com.sun.jersey.test.framework.LowLevelAppDescriptor;
-import com.xeiam.xchange.utils.CryptoUtils;
-import com.yammer.dropwizard.bundles.JavaBundle;
-import com.yammer.dropwizard.jersey.DropwizardResourceConfig;
-import com.yammer.dropwizard.jersey.JacksonMessageBodyProvider;
-import com.yammer.dropwizard.json.Json;
-import org.codehaus.jackson.map.Module;
-import org.junit.After;
-import org.junit.Before;
-import org.multibit.mbm.auth.hmac.HmacAuthenticator;
-import org.multibit.mbm.auth.hmac.HmacRestrictedToProvider;
-import org.multibit.mbm.db.dao.UserDao;
-import org.multibit.mbm.db.dto.*;
+import org.multibit.mbm.api.hal.HalMediaType;
+import org.multibit.mbm.db.dto.User;
 
-import java.io.UnsupportedEncodingException;
-import java.security.GeneralSecurityException;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.UriInfo;
+import java.net.URI;
 import java.util.List;
-import java.util.Set;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * A base test class for testing Dropwizard resources.
+ * A base test class for testing resources against a simulated container
  */
 public abstract class BaseResourceTest {
-  private final Set<Object> singletons = Sets.newHashSet();
-  private final Set<Object> providers = Sets.newHashSet();
-  private final List<Module> modules = Lists.newArrayList();
+  protected UriInfo uriInfo;
+  protected HttpHeaders httpHeaders;
+  protected Optional<User> principal=Optional.absent();
 
-  private JerseyTest test;
-
-  protected abstract void setUpResources() throws Exception;
-
-  protected void addResource(Object resource) {
-    singletons.add(resource);
-  }
-
-  public void addProvider(Object provider) {
-    providers.add(provider);
-  }
-
-  protected void addJacksonModule(Module module) {
-    modules.add(module);
-  }
-
-  protected Json getJson() {
-    return new Json();
-  }
-
-  protected Client client() {
-    return test.client();
-  }
-
-  @Before
-  public void setUpJersey() throws Exception {
-    setUpResources();
-    this.test = new JerseyTest() {
-      @Override
-      protected AppDescriptor configure() {
-        final DropwizardResourceConfig config = new DropwizardResourceConfig();
-        for (Object provider : JavaBundle.DEFAULT_PROVIDERS) { // sorry, Scala folks
-          config.getSingletons().add(provider);
-        }
-        for (Object provider : providers) {
-          config.getSingletons().add(provider);
-        }
-        Json json = getJson();
-        for (Module module : modules) {
-          json.registerModule(module);
-        }
-        config.getSingletons().add(new JacksonMessageBodyProvider(json));
-        config.getSingletons().addAll(singletons);
-        return new LowLevelAppDescriptor.Builder(config).build();
-      }
-    };
-    test.setUp();
-  }
-
-  @After
-  public void tearDownJersey() throws Exception {
-    if (test != null) {
-      test.tearDown();
+  /**
+   * @param baseHref Optional with default of "http://example.org"
+   * @throws Exception If the URI cannot be constructed
+   */
+  protected void setUpUriInfo(Optional<String> baseHref) throws Exception {
+    if (!baseHref.isPresent()) {
+      baseHref=Optional.of("http://example.org");
     }
+    final URI uri = new URI(baseHref.get());
+    uriInfo = mock(UriInfo.class);
+    when(uriInfo.getBaseUri()).thenReturn(uri);
   }
 
   /**
-   * @param contents The content to sign with the default HMAC process (POST body, GET resource path)
-   *
-   * @return
+   * @param acceptableMediaTypes An optional list of acceptable media types with default of HAL+JSON
    */
-  protected String buildHmacAuthorization(String contents, String apiKey, String secretKey) throws UnsupportedEncodingException, GeneralSecurityException {
-    return String.format("HmacSHA1 %s %s", apiKey, CryptoUtils.computeSignature("HmacSHA1", contents, secretKey));
+  protected void setUpHttpHeaders(Optional<List<MediaType>> acceptableMediaTypes) {
+    if (!acceptableMediaTypes.isPresent()) {
+      List<MediaType> defaultAcceptableMediaTypes= Lists.newArrayList();
+      defaultAcceptableMediaTypes.add(HalMediaType.APPLICATION_HAL_JSON_TYPE);
+      acceptableMediaTypes=Optional.of(defaultAcceptableMediaTypes);
+    }
+    httpHeaders = mock(HttpHeaders.class);
+    when(httpHeaders.getAcceptableMediaTypes()).thenReturn(acceptableMediaTypes.get());
   }
 
-  protected void setUpAuthenticator() {
-
-    // TODO Consider a shortcut for this in UserBuilder
-    Role customerRole = RoleBuilder.getInstance()
-      .setName(Authority.ROLE_CUSTOMER.name())
-      .setDescription("Customer role")
-      .addCustomerAuthorities()
-      .build();
-
-    User user = UserBuilder
-      .getInstance()
-      .setUUID("abc123")
-      .setSecretKey("def456")
-      .addRole(customerRole)
-      .build();
-
-    UserDao userDao = mock(UserDao.class);
-    when(userDao.getUserByUUID("abc123")).thenReturn(user);
-
-    HmacAuthenticator authenticator = new HmacAuthenticator();
-    authenticator.setUserDao(userDao);
-
-    addProvider(new HmacRestrictedToProvider<User>(authenticator, "REST"));
+  /**
+   * @param principal An optional {@link User} to be the security principal with a default of absent
+   */
+  protected void setUpPrincipal(Optional<User> principal) {
+    this.principal=principal;
   }
+
 }

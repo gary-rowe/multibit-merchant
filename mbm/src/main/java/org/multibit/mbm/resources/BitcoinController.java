@@ -27,6 +27,7 @@ import java.security.Principal;
  */
 @Controller
 @RequestMapping(value = "/v1")
+@Deprecated
 public class BitcoinController {
 
   // Define the resource paths for this controller so they can be shared by the functional tests

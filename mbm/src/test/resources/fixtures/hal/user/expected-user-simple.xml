@@ -1,0 +1,1 @@
+<resource href="http://example.org/user"><link rel="http://example.org/description" href="description" /><link rel="http://example.org/user?q={query}" href="search" /></resource>

@@ -1,0 +1,11 @@
+{"halResponses":[], "entities":[], "_links":[
+  {
+    "rel":"customer",
+    "href":"/customer/124",
+    "name":"customer124",
+    "title":"Your account",
+    "hreflang":"en",
+    "isTemplated":false,
+    "templated":false
+  }
+]}
