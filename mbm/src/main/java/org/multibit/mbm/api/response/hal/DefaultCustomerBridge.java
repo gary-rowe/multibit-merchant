@@ -2,8 +2,6 @@ package org.multibit.mbm.api.response.hal;
 
 import com.theoryinpractise.halbuilder.ResourceFactory;
 import com.theoryinpractise.halbuilder.spi.Resource;
-import org.multibit.mbm.api.hal.HalMediaType;
-import org.multibit.mbm.api.hal.MinifiedJsonRenderer;
 import org.multibit.mbm.db.dto.Customer;
 
 /**
@@ -13,9 +11,8 @@ import org.multibit.mbm.db.dto.Customer;
  * </ul>
  *
  * @since 0.0.1
- * TODO Consider a simple Bridge interface
  */
-public class DefaultCustomerBridge {
+public class DefaultCustomerBridge extends BaseBridge<Customer> {
 
   private final String href;
 
@@ -24,9 +21,7 @@ public class DefaultCustomerBridge {
   }
 
   public Resource toResource(Customer customer) {
-    ResourceFactory resourceFactory = new ResourceFactory(href);
-    resourceFactory.withRenderer(HalMediaType.APPLICATION_HAL_JSON,
-      MinifiedJsonRenderer.class);
+    ResourceFactory resourceFactory = getResourceFactory(href);
 
     return resourceFactory.newResource("/customer")
       .withLink("search", "?q={query}")
