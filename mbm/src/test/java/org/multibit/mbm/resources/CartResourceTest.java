@@ -1,20 +1,20 @@
 package org.multibit.mbm.resources;
 
 import org.junit.Ignore;
+import org.multibit.mbm.api.request.CreateCartRequest;
 import org.multibit.mbm.db.dto.Customer;
 import org.multibit.mbm.db.dto.CustomerBuilder;
-import org.multibit.mbm.api.request.CreateCartRequest;
 import org.multibit.mbm.services.CustomerService;
-import org.multibit.mbm.test.BaseResourceIntegrationTest;
+import org.multibit.mbm.test.BaseJerseyResourceTest;
 
-import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.HttpMethod;
 import javax.xml.ws.Response;
 
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class CartResourceTest extends BaseResourceIntegrationTest {
+public class CartResourceTest extends BaseJerseyResourceTest {
 
   private final CustomerService customerService=mock(CustomerService.class);
 
@@ -41,17 +41,15 @@ public class CartResourceTest extends BaseResourceIntegrationTest {
 
   }
 
+  // TODO Implement this
   @Ignore
   public void testCreateCart() throws Exception {
 
-    String contents = "";
-    String authorization = buildHmacAuthorization(contents, "abc123", "def456");
-
     CreateCartRequest request = new CreateCartRequest();
 
-    Response actual = client()
-      .resource("/v1/cart")
-      .header(HttpHeaders.AUTHORIZATION, authorization)
+    Response actual = authorize(HttpMethod.GET,
+      client()
+      .resource("/v1/cart"))
       .post(Response.class, request);
 
     //assertEquals("POST create cart",response, actual);

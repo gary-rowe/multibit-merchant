@@ -1,5 +1,15 @@
 package org.multibit.mbm.auth.hmac;
 
+
+
+import com.sun.jersey.api.model.Parameter;
+import com.sun.jersey.core.spi.component.ComponentContext;
+import com.sun.jersey.core.spi.component.ComponentScope;
+import com.sun.jersey.spi.inject.Injectable;
+import com.sun.jersey.spi.inject.InjectableProvider;
+import com.yammer.dropwizard.auth.Authenticator;
+import com.yammer.dropwizard.logging.Log;
+import org.multibit.mbm.auth.annotation.RestrictedTo;
 /**
  * <p>Authentication provider to provide the following to Jersey:</p>
  * <ul>
@@ -10,16 +20,6 @@ package org.multibit.mbm.auth.hmac;
  * @param <T>    the principal type.
  * @since 0.0.1
  */
-
-import com.sun.jersey.api.model.Parameter;
-import com.sun.jersey.core.spi.component.ComponentContext;
-import com.sun.jersey.core.spi.component.ComponentScope;
-import com.sun.jersey.spi.inject.Injectable;
-import com.sun.jersey.spi.inject.InjectableProvider;
-import com.yammer.dropwizard.auth.Authenticator;
-import com.yammer.dropwizard.logging.Log;
-import org.multibit.mbm.auth.annotation.RestrictedTo;
-
 public class HmacRestrictedToProvider<T> implements InjectableProvider<RestrictedTo, Parameter> {
   static final Log LOG = Log.forClass(HmacRestrictedToProvider.class);
 

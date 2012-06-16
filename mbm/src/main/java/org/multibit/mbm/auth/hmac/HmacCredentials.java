@@ -20,28 +20,26 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class HmacCredentials {
   private final String apiKey;
   private final String digest;
-  private final String contents;
+  private final String canonicalRepresentation;
   private final String algorithm;
   private final Authority[] authorities;
 
   /**
-   * Creates a new {@link org.multibit.mbm.auth.hmac.HmacCredentials} with the given username and password.
-   *
    * @param algorithm The algorithm used for computing the digest (e.g. "HmacSHA1", "HmacSHA256", "HmacSHA512")
    * @param apiKey    The API key used for looking up the shared secret key associated with the user
    * @param digest    The digest of (contents + shared secret key)
-   * @param contents  The contents that were signed
+   * @param canonicalRepresentation  The canonical representation of the request that was signed
    */
   public HmacCredentials(
     String algorithm,
     String apiKey,
     String digest,
-    String contents,
+    String canonicalRepresentation,
     Authority[] authorities) {
     this.algorithm = checkNotNull(algorithm);
     this.apiKey = checkNotNull(apiKey);
     this.digest = checkNotNull(digest);
-    this.contents = checkNotNull(contents);
+    this.canonicalRepresentation = checkNotNull(canonicalRepresentation);
     this.authorities = checkNotNull(authorities);
   }
 
@@ -67,10 +65,10 @@ public class HmacCredentials {
   }
 
   /**
-   * @return The request content to which the digest applies (either entity or URI)
+   * @return The canonical representation of the request that was signed
    */
-  public String getContents() {
-    return contents;
+  public String getCanonicalRepresentation() {
+    return canonicalRepresentation;
   }
 
   /**
@@ -105,7 +103,7 @@ public class HmacCredentials {
     return Objects.toStringHelper(this)
       .add("apiKey", apiKey)
       .add("digest", digest)
-      .add("contents", contents)
+      .add("contents", canonicalRepresentation)
       .add("authorities", authorities)
       .toString();
   }
