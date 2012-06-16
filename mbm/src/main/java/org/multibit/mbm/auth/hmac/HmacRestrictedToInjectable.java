@@ -1,15 +1,8 @@
 package org.multibit.mbm.auth.hmac;
 
-/**
- * <p>Injectable to provide the following to {@link HmacRestrictedToProvider}:</p>
- * <ul>
- * <li>Carries HMAC authentication data</li>
- * </ul>
- *
- * @since 0.0.1
- */
 
 import com.google.common.base.Optional;
+import com.google.common.collect.Sets;
 import com.sun.jersey.api.core.HttpContext;
 import com.sun.jersey.server.impl.inject.AbstractHttpContextInjectable;
 import com.yammer.dropwizard.auth.AuthenticationException;
@@ -19,11 +12,81 @@ import org.multibit.mbm.db.dto.Authority;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+/**
+ * <p>Injectable to provide the following to {@link HmacRestrictedToProvider}:</p>
+ * <ul>
+ * <li>Performs decode from HTTP request</li>
+ * <li>Carries HMAC authentication data</li>
+ * </ul>
+ *
+ * <ol>
+ * <li>Read the HTTP "Authorization" header</li>
+ * <li>Read the HTTP "Content-Type" header (optional)</li>
+ * <li>Read the HTTP "Content-MD5" header (optional)</li>
+ * <li>Read the HTTP "X-HMAC-Nonce" header (optional) - </li>
+ * <li>Read the HTTP "X-HMAC-Date" header (optional) - HTTP-Date format RFC1123 5.2.14 UTC</li>
+ * </ol>
+ * <p>Create the canonical representation of the request using the following algorithm:</p>
+ * <ul>
+ * <li>Start with the empty string ("").</li>
+ * <li>Add the HTTP-Verb for the request ("GET", "POST", ...) in capital letters, followed by a single newline (U+000A).</li>
+ * <li>Add the date for the request using the form "date:#date-of-request" followed by a single newline. The date for the signature must be formatted exactly as in the request.</li>
+ * <li>Add the nonce for the request in the form "nonce:#nonce-in-request" followed by a single newline. If no nonce is passed use the empty string as nonce value.</li>
+ * <li>Convert all remaining header names to lowercase.</li>
+ * <li>Sort the remaining headers lexicographically by header name.</li>
+ * <li>Trim header values by removing any whitespace before the first non-whitespace character and after the last non-whitespace character.</li>
+ * <li>Combine lowercase header names and header values using a single colon (“:”) as separator. Do not include whitespace characters around the separator.</li>
+ * <li>Combine all headers using a single newline (U+000A) character and append them to the canonical representation, followed by a single newline (U+000A) character.</li>
+ * <li>Append the url-decoded query path to the canonical representation</li>
+ * <li>URL-decode query parameters if required</li>
+ * </ul>
+ * <p>There is no support for query-based authentication because this breaks the purpose of a URI as a resource
+ * identifier, not as authenticator. It would lead to authenticated URIs being shared as permalinks which would
+ * later fail through a TTL threshold being exceeded.</p>
+ * <p>Examples</p>
+ * <h3>Example with X-HMAC-Nonce</h3>
+ * <pre>
+ * GET /example/resource.html?sort=header%20footer&order=ASC HTTP/1.1
+ * Host: www.example.org
+ * Date: Mon, 20 Jun 2011 12:06:11 GMT
+ * User-Agent: curl/7.20.0 (x86_64-pc-linux-gnu) libcurl/7.20.0 OpenSSL/1.0.0a zlib/1.2.3
+ * X-MAC-Nonce: Thohn2Mohd2zugoo
+ * </pre>
+ * <p>Applying the above gives a canonical representation of</p>
+ * <pre>
+ * GET\n
+ * date:Mon, 20 Jun 2011 12:06:11 GMT\n
+ * nonce:Thohn2Mohd2zugo\n
+ * /example/resource.html?order=ASC&sort=header footer
+ * </pre>
+ * <p>This would be passed into the HMAC signature </p>
+ * <h3>Example with X-HMAC-Date</h3>
+ * <p>Given the following request:</p>
+ * <pre>
+ * GET /example/resource.html?sort=header%20footer&order=ASC HTTP/1.1
+ * Host: www.example.org
+ * Date: Mon, 20 Jun 2011 12:06:11 GMT
+ * User-Agent: curl/7.20.0 (x86_64-pc-linux-gnu) libcurl/7.20.0 OpenSSL/1.0.0a zlib/1.2.3
+ * X-MAC-Nonce: Thohn2Mohd2zugoo
+ * X-MAC-Date: Mon, 20 Jun 2011 14:06:57 GMT
+ * </pre>
+ * <p>The canonical representation is:</p>
+ * <pre> GET\n
+ * date:Mon, 20 Jun 2011 14:06:57 GMT\n
+ * nonce:Thohn2Mohd2zugo\n
+ * /example/resource.html?order=ASC&sort=header footer
+ * </pre>
+ * <p>Based on <a href=""http://rubydoc.info/gems/warden-hmac-authentication/0.6.1/file/README.md></a>the Warden HMAC Ruby gem</a>.</p>
+ *
+ * @since 0.0.1
+ */
 class HmacRestrictedToInjectable<T> extends AbstractHttpContextInjectable<T> {
-  private static final String PREFIX = "HmacSHA1";
-  private static final String HEADER_VALUE = PREFIX + " realm=\"%s\"";
 
   private final Authenticator<HmacCredentials, T> authenticator;
   private final String realm;
@@ -48,10 +111,10 @@ class HmacRestrictedToInjectable<T> extends AbstractHttpContextInjectable<T> {
   }
 
   @Override
-  public T getValue(HttpContext c) {
+  public T getValue(HttpContext httpContext) {
 
     try {
-      final String header = c.getRequest().getHeaderValue(HttpHeaders.AUTHORIZATION);
+      final String header = httpContext.getRequest().getHeaderValue(HttpHeaders.AUTHORIZATION);
       if (header != null) {
 
         final String[] authTokens = header.split(" ");
@@ -65,21 +128,9 @@ class HmacRestrictedToInjectable<T> extends AbstractHttpContextInjectable<T> {
         final String algorithm = authTokens[0];
         final String apiKey = authTokens[1];
         final String signature = authTokens[2];
-        final String contents;
+        final String canonicalRepresentation = createCanonicalRepresentation(httpContext);
 
-        // Determine which part of the request will be used for the content
-        final String method = c.getRequest().getMethod().toUpperCase();
-        if ("GET".equals(method) ||
-          "HEAD".equals(method) ||
-          "DELETE".equals(method)) {
-          // No entity so use the URI
-          contents = c.getRequest().getRequestUri().toString();
-        } else {
-          // Potentially have an entity (even in OPTIONS) so use that
-          contents = c.getRequest().getEntity(String.class);
-        }
-
-        final HmacCredentials credentials = new HmacCredentials(algorithm, apiKey, signature, contents, authorities);
+        final HmacCredentials credentials = new HmacCredentials(algorithm, apiKey, signature, canonicalRepresentation, authorities);
 
         final Optional<T> result = authenticator.authenticate(credentials);
         if (result.isPresent()) {
@@ -98,10 +149,87 @@ class HmacRestrictedToInjectable<T> extends AbstractHttpContextInjectable<T> {
     // Must have failed to be here
     throw new WebApplicationException(Response.status(Response.Status.UNAUTHORIZED)
       .header(HttpHeaders.AUTHORIZATION,
-        String.format(HEADER_VALUE, realm))
+        String.format(HmacUtils.HEADER_VALUE, realm))
       .entity("Credentials are required to access this resource.")
       .type(MediaType.TEXT_PLAIN_TYPE)
       .build());
   }
+
+  /**
+   * @param httpContext Providing the HTTP information necessary
+   *
+   * @return The canonical representation of the request
+   */
+  private String createCanonicalRepresentation(HttpContext httpContext) {
+
+    // Provide a map of all header names converted to lowercase
+    MultivaluedMap<String, String> headers=httpContext.getRequest().getRequestHeaders();
+    // Create a lexicographically sorted set of the header names for lookup later
+    Set<String> headerNames= Sets.newTreeSet(headers.keySet());
+    // Remove some headers that should not be included or will have special treatment
+    headerNames.remove(HttpHeaders.DATE);
+    headerNames.remove(HmacUtils.X_HMAC_NONCE);
+    // TODO Check if the following should be removed (would the client know them in advance?)
+    headerNames.remove(HttpHeaders.USER_AGENT);
+    headerNames.remove(HttpHeaders.HOST);
+
+    // Start with the empty string ("")
+    final StringBuilder canonicalRepresentation = new StringBuilder("");
+
+    // Add the HTTP-Verb for the request ("GET", "POST", ...) in capital letters, followed by a single newline (U+000A).
+    canonicalRepresentation
+      .append(httpContext.getRequest().getMethod().toUpperCase())
+      .append("\n");
+
+    // Add the date for the request using the form "date:#date-of-request" followed by a single newline. The date for the signature must be formatted exactly as in the request.
+    canonicalRepresentation
+      .append("date:")
+      .append(headers.getFirst(HttpHeaders.DATE))
+      .append("\n");
+
+    // Add the nonce for the request in the form "nonce:#nonce-in-request" followed by a single newline. If no nonce is passed use the empty string as nonce value.
+    if (headers.containsKey(HmacUtils.X_HMAC_NONCE)) {
+    canonicalRepresentation
+      .append("nonce:")
+      .append(headers.getFirst(HmacUtils.X_HMAC_NONCE))
+      .append("\n");
+    }
+
+    // Sort the remaining headers lexicographically by header name.
+    // Trim header values by removing any whitespace before the first non-whitespace character and after the last non-whitespace character.
+    // Combine lowercase header names and header values using a single colon (“:”) as separator. Do not include whitespace characters around the separator.
+    // Combine all headers using a single newline (U+000A) character and append them to the canonical representation, followed by a single newline (U+000A) character.
+    for (String headerName: headerNames) {
+      canonicalRepresentation
+        .append(headerName.toLowerCase())
+        .append(":");
+      // TODO Consider effect of different separators on this list
+      for (String value : headers.get(headerName)) {
+        canonicalRepresentation
+          .append(value);
+      }
+      canonicalRepresentation
+        .append("\n");
+    }
+
+    // Append the url-decoded query path to the canonical representation
+    MultivaluedMap<String,String> decodedQueryParameters = httpContext.getRequest().getQueryParameters();
+    if (!decodedQueryParameters.isEmpty()) {
+      canonicalRepresentation.append("?");
+      for (Map.Entry<String, List<String>> queryParameter: decodedQueryParameters.entrySet()) {
+        canonicalRepresentation
+          .append(queryParameter.getKey())
+          .append("&");
+        // TODO Consider effect of different separators on this list
+        for (String value : queryParameter.getValue()) {
+          canonicalRepresentation
+            .append(value);
+        }
+      }
+    }
+
+    return canonicalRepresentation.toString();
+  }
+
 }
 

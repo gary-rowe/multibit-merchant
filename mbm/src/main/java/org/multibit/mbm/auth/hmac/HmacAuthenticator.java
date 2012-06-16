@@ -1,13 +1,11 @@
 package org.multibit.mbm.auth.hmac;
 
 import com.google.common.base.Optional;
-import com.xeiam.xchange.utils.CryptoUtils;
 import com.yammer.dropwizard.auth.AuthenticationException;
 import com.yammer.dropwizard.auth.Authenticator;
 import org.multibit.mbm.db.dao.UserDao;
 import org.multibit.mbm.db.dto.User;
 
-import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 
 /**
@@ -37,20 +35,18 @@ public class HmacAuthenticator implements Authenticator<HmacCredentials, User> {
     String secretKey = user.getSecretKey();
 
     try {
-      String computedSignature = CryptoUtils.computeSignature(
-        credentials.getAlgorithm(),
-        credentials.getContents(),
-        secretKey);
+      String computedSignature = new String(
+        HmacUtils.computeSignature(
+          credentials.getAlgorithm(),
+          credentials.getCanonicalRepresentation().getBytes(),
+          secretKey.getBytes()));
 
       if (computedSignature.equals(credentials.getDigest())) {
         return Optional.of(user);
       }
     } catch (GeneralSecurityException e) {
       return Optional.absent();
-    } catch (UnsupportedEncodingException e) {
-      return Optional.absent();
     }
-
     return Optional.absent();
 
   }

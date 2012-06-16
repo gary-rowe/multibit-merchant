@@ -2,9 +2,9 @@ package org.multibit.mbm.resources;
 
 import org.junit.Test;
 import org.multibit.mbm.core.Saying;
-import org.multibit.mbm.test.BaseResourceIntegrationTest;
+import org.multibit.mbm.test.BaseJerseyResourceTest;
 
-import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.HttpMethod;
 
 import static org.junit.Assert.assertEquals;
 
@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
  * @since 0.0.1
  *         
  */
-public class HelloWorldResourceTest extends BaseResourceIntegrationTest {
+public class HelloWorldResourceTest extends BaseJerseyResourceTest {
 
 
   @Override
@@ -47,16 +47,13 @@ public class HelloWorldResourceTest extends BaseResourceIntegrationTest {
   @Test
   public void hmacResourceTest() throws Exception {
 
-    String authorization = buildHmacAuthorization("/secret", "abc123", "def456");
-
-    Saying actual = client()
-      .resource("/secret")
-      .header(HttpHeaders.AUTHORIZATION, authorization)
+    Saying actual = authorize(HttpMethod.GET,
+      client()
+      .resource("/secret"))
       .get(Saying.class);
 
     assertEquals("GET secret returns unauthorized","You cracked the code!", actual.getContent());
 
   }
-
 
 }

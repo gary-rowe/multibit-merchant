@@ -8,7 +8,7 @@ import org.multibit.mbm.db.dto.CustomerBuilder;
 import org.multibit.mbm.db.dto.User;
 import org.multibit.mbm.db.dto.UserBuilder;
 import org.multibit.mbm.services.CustomerService;
-import org.multibit.mbm.test.BaseResourceIntegrationTest;
+import org.multibit.mbm.test.BaseJerseyResourceTest;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -17,7 +17,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class CustomerResourceTest extends BaseResourceIntegrationTest {
+public class CustomerResourceTest extends BaseJerseyResourceTest {
 
   private final CustomerService customerService=mock(CustomerService.class);
   private final Customer expectedCustomer = CustomerBuilder
