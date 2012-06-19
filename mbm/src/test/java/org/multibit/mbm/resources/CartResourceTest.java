@@ -7,7 +7,6 @@ import org.multibit.mbm.db.dto.CustomerBuilder;
 import org.multibit.mbm.services.CustomerService;
 import org.multibit.mbm.test.BaseJerseyResourceTest;
 
-import javax.ws.rs.HttpMethod;
 import javax.xml.ws.Response;
 
 import static org.mockito.Matchers.anyString;
@@ -47,9 +46,8 @@ public class CartResourceTest extends BaseJerseyResourceTest {
 
     CreateCartRequest request = new CreateCartRequest();
 
-    Response actual = authorize(HttpMethod.GET,
-      client()
-      .resource("/v1/cart"))
+    Response actual = client()
+      .resource("/v1/cart")
       .post(Response.class, request);
 
     //assertEquals("POST create cart",response, actual);

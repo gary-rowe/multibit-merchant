@@ -1,0 +1,4 @@
+GET
+date:Sat, 01 Jan 2000 12:34:57 GMT
+nonce:Thohn2Mohd2zugo
+/example/resource.html?sort=header footer&order=ASC

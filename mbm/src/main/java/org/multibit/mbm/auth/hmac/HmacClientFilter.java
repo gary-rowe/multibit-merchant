@@ -5,13 +5,16 @@ import com.google.common.collect.Sets;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.filter.ClientFilter;
+import org.multibit.mbm.util.DateUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MultivaluedMap;
 import java.net.URI;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Set;
+import java.util.SortedSet;
 
 /**
  * <p>Client filter to provide the following to requests:</p>
@@ -22,6 +25,8 @@ import java.util.Set;
  * @since 0.0.1
  */
 public class HmacClientFilter extends ClientFilter {
+
+  private Logger log = LoggerFactory.getLogger(HmacClientFilter.class);
 
   private final String apiKey;
   private final String sharedSecret;
@@ -39,12 +44,24 @@ public class HmacClientFilter extends ClientFilter {
     return getNext().handle(mcr);
   }
 
+  /**
+   * Handles the process of modifying the outbound request with suitable HMAC headers
+   *
+   * @param clientRequest The original client request
+   *
+   * @return The modified client request
+   */
   private ClientRequest modifyRequest(ClientRequest clientRequest) {
+
+    // Provide a short TTL
+    String httpNow = DateUtils.formatHttpDateHeader(DateUtils.nowUtc().plusSeconds(5));
+    clientRequest.getHeaders().put(HmacUtils.X_HMAC_DATE, Lists.<Object>newArrayList(httpNow));
 
     String canonicalRepresentation = createCanonicalRepresentation(
       clientRequest.getMethod(),
       clientRequest.getURI(),
       clientRequest.getHeaders());
+    log.debug("Canonical represenation: '{}'", canonicalRepresentation);
 
     String signature;
     try {
@@ -67,12 +84,13 @@ public class HmacClientFilter extends ClientFilter {
    *
    * @return The canonical representation of the request
    */
-  private String createCanonicalRepresentation(String method, URI uri, MultivaluedMap<String, Object> headers) {
+  /* package */ String createCanonicalRepresentation(String method, URI uri, MultivaluedMap<String, Object> headers) {
 
     // Create a lexicographically sorted set of the header names for lookup later
-    Set<String> headerNames = Sets.newTreeSet(headers.keySet());
+    SortedSet<String> headerNames = Sets.newTreeSet(headers.keySet());
     // Remove some headers that should not be included or will have special treatment
     headerNames.remove(HttpHeaders.DATE);
+    headerNames.remove(HmacUtils.X_HMAC_DATE);
     headerNames.remove(HmacUtils.X_HMAC_NONCE);
     // TODO Check if the following should be removed (would the client know them in advance?)
     headerNames.remove(HttpHeaders.USER_AGENT);
@@ -87,10 +105,19 @@ public class HmacClientFilter extends ClientFilter {
       .append("\n");
 
     // Add the date for the request using the form "date:#date-of-request" followed by a single newline. The date for the signature must be formatted exactly as in the request.
-    canonicalRepresentation
-      .append("date:")
-      .append(headers.getFirst(HttpHeaders.DATE))
-      .append("\n");
+    if (headers.containsKey(HmacUtils.X_HMAC_DATE)) {
+      // Use the TTL date
+      canonicalRepresentation
+        .append("date:")
+        .append(headers.getFirst(HmacUtils.X_HMAC_DATE))
+        .append("\n");
+    } else {
+      // Use the HTTP date
+      canonicalRepresentation
+        .append("date:")
+        .append(headers.getFirst(HttpHeaders.DATE))
+        .append("\n");
+    }
 
     // Add the nonce for the request in the form "nonce:#nonce-in-request" followed by a single newline. If no nonce is passed use the empty string as nonce value.
     if (headers.containsKey(HmacUtils.X_HMAC_NONCE)) {
@@ -117,9 +144,14 @@ public class HmacClientFilter extends ClientFilter {
         .append("\n");
     }
 
-    // Append the url-decoded query path to the canonical representation
+    // Append the url-decoded path and query to the canonical representation
     canonicalRepresentation
-      .append(uri.getQuery());
+      .append(uri.getPath());
+    if (uri.getQuery() != null) {
+      canonicalRepresentation
+        .append("?")
+        .append(uri.getQuery());
+    }
 
     return canonicalRepresentation.toString();
   }

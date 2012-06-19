@@ -22,6 +22,7 @@ public class HmacUtils {
   // Public to allow tests to share the designated accepted structure
   public static final String PREFIX = "HMAC";
   public static final String X_HMAC_NONCE = "X-HMAC-Nonce";
+  public static final String X_HMAC_DATE = "X-HMAC-Date";
   static final String HEADER_VALUE = PREFIX + " realm=\"%s\"";
 
   /**

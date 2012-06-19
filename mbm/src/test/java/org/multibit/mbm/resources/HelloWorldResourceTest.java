@@ -4,8 +4,6 @@ import org.junit.Test;
 import org.multibit.mbm.core.Saying;
 import org.multibit.mbm.test.BaseJerseyResourceTest;
 
-import javax.ws.rs.HttpMethod;
-
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -47,9 +45,8 @@ public class HelloWorldResourceTest extends BaseJerseyResourceTest {
   @Test
   public void hmacResourceTest() throws Exception {
 
-    Saying actual = authorize(HttpMethod.GET,
-      client()
-      .resource("/secret"))
+    Saying actual = client()
+      .resource("/secret")
       .get(Saying.class);
 
     assertEquals("GET secret returns unauthorized","You cracked the code!", actual.getContent());
