@@ -25,7 +25,7 @@ public class ItemBuilder {
   /**
    * @return A new instance of the builder
    */
-  public static ItemBuilder getInstance() {
+  public static ItemBuilder newInstance() {
     return new ItemBuilder();
   }
 
@@ -72,7 +72,7 @@ public class ItemBuilder {
    * @param localeKey The locale key (e.g. "en")
    * @return The builder
    */
-  public ItemBuilder addPrimaryFieldDetail(ItemField itemField, String content, String localeKey) {
+  public ItemBuilder withPrimaryFieldDetail(ItemField itemField, String content, String localeKey) {
 
     validateState();
 
@@ -90,7 +90,7 @@ public class ItemBuilder {
    * @param localeKey The locale key (e.g. "en")
    * @return The builder
    */
-  public ItemBuilder addSecondaryFieldDetail(ItemField itemField, String content, String localeKey) {
+  public ItemBuilder withSecondaryFieldDetail(ItemField itemField, String content, String localeKey) {
 
     validateState();
 
@@ -99,16 +99,15 @@ public class ItemBuilder {
     return this;
   }
 
-  public ItemBuilder setSKU(String sku) {
+  public ItemBuilder withSKU(String sku) {
     this.sku = sku;
     return this;
   }
 
-  public ItemBuilder setGTIN(String gtin) {
+  public ItemBuilder withGTIN(String gtin) {
     this.gtin = gtin;
     return this;
   }
-
 
   /**
    * Storage of parameters until ready for application

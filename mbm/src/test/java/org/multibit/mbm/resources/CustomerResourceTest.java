@@ -21,11 +21,11 @@ public class CustomerResourceTest extends BaseJerseyResourceTest {
 
   private final CustomerService customerService=mock(CustomerService.class);
   private final Customer expectedCustomer = CustomerBuilder
-    .getInstance()
+    .newInstance()
     .build();
   private final User expectedUser = UserBuilder
-    .getInstance()
-    .addCustomer(expectedCustomer)
+    .newInstance()
+    .withCustomer(expectedCustomer)
     .build();
 
   @Override

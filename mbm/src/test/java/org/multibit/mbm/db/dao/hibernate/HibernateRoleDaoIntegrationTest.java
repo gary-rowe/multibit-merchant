@@ -30,10 +30,10 @@ public class HibernateRoleDaoIntegrationTest extends BaseIntegrationTests {
   public void testPersistAndFind() {
 
     // Create a new Role
-    Role expected = RoleBuilder.getInstance()
-      .setName("ROLE_TEST")
-      .setDescription("A test role")
-      .addAuthority(Authority.CHANGE_OWN_PASSWORD)
+    Role expected = RoleBuilder.newInstance()
+      .withName("ROLE_TEST")
+      .withDescription("A test role")
+      .withAuthority(Authority.CHANGE_OWN_PASSWORD)
       .build();
 
     // Persist with insert

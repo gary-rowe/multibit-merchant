@@ -22,7 +22,7 @@ public class CartBuilder {
   /**
    * @return A new instance of the builder
    */
-  public static CartBuilder getInstance() {
+  public static CartBuilder newInstance() {
     return new CartBuilder();
   }
 
@@ -60,7 +60,7 @@ public class CartBuilder {
    * @param quantity The quantity
    * @return The builder
    */
-  public CartBuilder addCartItem(Item item, int quantity) {
+  public CartBuilder withCartItem(Item item, int quantity) {
 
     validateState();
 

@@ -33,9 +33,9 @@ public class HibernateUserDaoIntegrationTest extends BaseIntegrationTests {
     String openId="abc123";
     String uuid="1234-5678";
 
-    User expected = UserBuilder.getInstance()
-      .setOpenId(openId)
-      .setUUID(uuid)
+    User expected = UserBuilder.newInstance()
+      .withOpenId(openId)
+      .withUUID(uuid)
       .build();
     expected.setOpenId(openId);
 

@@ -25,7 +25,7 @@ public class RoleBuilder {
   /**
    * @return A new instance of the builder
    */
-  public static RoleBuilder getInstance() {
+  public static RoleBuilder newInstance() {
     return new RoleBuilder();
   }
 
@@ -63,7 +63,11 @@ public class RoleBuilder {
     }
   }
 
-  public RoleBuilder addAuthority(Authority authority) {
+  /**
+   * @param authority The authority to add
+   * @return The builder
+   */
+  public RoleBuilder withAuthority(Authority authority) {
 
     validateState();
     
@@ -72,12 +76,20 @@ public class RoleBuilder {
     return this;
   }
 
-  public RoleBuilder setName(String name) {
+  /**
+   * @param name The name of the role
+   * @return The builder
+   */
+  public RoleBuilder withName(String name) {
     this.name = name;
     return this;
   }
 
-  public RoleBuilder setDescription(String description) {
+  /**
+   * @param description The role description
+   * @return The builder
+   */
+  public RoleBuilder withDescription(String description) {
     this.description = description;
     return this;
   }
@@ -86,11 +98,11 @@ public class RoleBuilder {
    * <p>Admin are staff members associated with maintaining the application</p>
    * @return The builder
    */
-  public RoleBuilder addAdminAuthorities() {
+  public RoleBuilder withAdminAuthorities() {
 
     // TODO Currently assume that an admin has all authorities for convenience - this will change
     for (Authority authority: Authority.values()) {
-      addAuthority(authority);
+      withAuthority(authority);
     }
 
     return this;
@@ -100,12 +112,12 @@ public class RoleBuilder {
    * <p>Sales are staff members associated with dealing directly with customers</p> 
    * @return The builder
    */
-  public RoleBuilder addSalesAuthorities() {
+  public RoleBuilder withSalesAuthorities() {
 
     // Apply a pick list
-    addAuthority(Authority.ROLE_SALES);
-    addAuthority(Authority.RETRIEVE_INVOICES);
-    addAuthority(Authority.RETRIEVE_ORDERS);
+    withAuthority(Authority.ROLE_SALES);
+    withAuthority(Authority.RETRIEVE_INVOICES);
+    withAuthority(Authority.RETRIEVE_ORDERS);
 
     return this;
   }
@@ -115,14 +127,14 @@ public class RoleBuilder {
    * <p>Manager has more authorities within this group</p>
    * @return The builder
    */
-  public RoleBuilder addSalesManagerAuthorities() {
+  public RoleBuilder withSalesManagerAuthorities() {
 
     // Apply a pick list
-    addAuthority(Authority.ROLE_SALES);
-    addAuthority(Authority.RETRIEVE_INVOICES);
-    addAuthority(Authority.UPDATE_INVOICES);
-    addAuthority(Authority.RETRIEVE_ORDERS);
-    addAuthority(Authority.UPDATE_ORDERS);
+    withAuthority(Authority.ROLE_SALES);
+    withAuthority(Authority.RETRIEVE_INVOICES);
+    withAuthority(Authority.UPDATE_INVOICES);
+    withAuthority(Authority.RETRIEVE_ORDERS);
+    withAuthority(Authority.UPDATE_ORDERS);
 
 
     return this;
@@ -132,7 +144,7 @@ public class RoleBuilder {
    * <p>Marketing are staff members associated with raising awareness of items through campaigns and writing copy</p> 
    * @return The builder
    */
-  public RoleBuilder addMarketingAuthorities() {
+  public RoleBuilder withMarketingAuthorities() {
 
     // TODO Apply a pick list
 
@@ -144,7 +156,7 @@ public class RoleBuilder {
    * <p>Manager has more authorities within this group</p>
    * @return The builder
    */
-  public RoleBuilder addMarketingManagerAuthorities() {
+  public RoleBuilder withMarketingManagerAuthorities() {
 
     // TODO Apply a pick list
 
@@ -155,7 +167,7 @@ public class RoleBuilder {
    * <p>Stores are staff members associated with inventory</p> 
    * @return The builder
    */
-  public RoleBuilder addStoresAuthorities() {
+  public RoleBuilder withStoresAuthorities() {
 
     // TODO Apply a pick list
 
@@ -167,7 +179,7 @@ public class RoleBuilder {
    * <p>Manager has more authorities within this group</p>
    * @return The builder
    */
-  public RoleBuilder addStoresManagerAuthorities() {
+  public RoleBuilder withStoresManagerAuthorities() {
 
     // TODO Apply a pick list
 
@@ -178,7 +190,7 @@ public class RoleBuilder {
    * <p>Finance are staff members associated with accounting and financial reporting</p> 
    * @return The builder
    */
-  public RoleBuilder addFinanceAuthorities() {
+  public RoleBuilder withFinanceAuthorities() {
 
     // TODO Apply a pick list
 
@@ -190,7 +202,7 @@ public class RoleBuilder {
    * <p>Manager has more authorities within this group</p>
    * @return The builder
    */
-  public RoleBuilder addFinanceManagerAuthorities() {
+  public RoleBuilder withFinanceManagerAuthorities() {
 
     // TODO Apply a pick list
 
@@ -201,7 +213,7 @@ public class RoleBuilder {
    * <p>Delivery are staff members associated with getting inventory to the customer</p>
    * @return The builder
    */
-  public RoleBuilder addDeliveryAuthorities() {
+  public RoleBuilder withDeliveryAuthorities() {
 
     // TODO Apply a pick list
 
@@ -213,7 +225,7 @@ public class RoleBuilder {
    * <p>Manager has more authorities within this group</p>
    * @return The builder
    */
-  public RoleBuilder addDeliveryManagerAuthorities() {
+  public RoleBuilder withDeliveryManagerAuthorities() {
 
     // TODO Apply a pick list
 
@@ -224,12 +236,12 @@ public class RoleBuilder {
    * Configure the various supporting structure to make this Role into a Customer
    * @return The builder
    */
-  public RoleBuilder addCustomerAuthorities() {
+  public RoleBuilder withCustomerAuthorities() {
 
     // TODO Assume that a Customer has all external authorities - this may change with Affiliate concept
     for (Authority authority: Authority.values()) {
       if (!authority.isInternal()) {
-        addAuthority(authority);
+        withAuthority(authority);
       }
     }
 

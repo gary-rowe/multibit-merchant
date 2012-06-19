@@ -27,12 +27,12 @@ public class HibernateCustomerDaoIntegrationTest extends BaseIntegrationTests {
   public void testPersistAndFind() {
 
     // TODO Introduce Cart API
-    Customer expected = CustomerBuilder.getInstance()
+    Customer expected = CustomerBuilder.newInstance()
       .build();
 
     User user = UserBuilder
-      .getInstance()
-      .addCustomer(expected)
+      .newInstance()
+      .withCustomer(expected)
       .build();
 
     // Persist with insert

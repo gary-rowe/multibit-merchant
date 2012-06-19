@@ -18,7 +18,7 @@ public class CartResourceTest extends BaseJerseyResourceTest {
   private final CustomerService customerService=mock(CustomerService.class);
 
   private final Customer expectedCustomer = CustomerBuilder
-    .getInstance()
+    .newInstance()
     .build();
 
   private final CartResource testObject=new CartResource();

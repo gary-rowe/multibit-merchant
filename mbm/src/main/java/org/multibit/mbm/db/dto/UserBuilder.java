@@ -31,7 +31,7 @@ public class UserBuilder {
   /**
    * @return A new instance of the builder
    */
-  public static UserBuilder getInstance() {
+  public static UserBuilder newInstance() {
     return new UserBuilder();
   }
 
@@ -79,12 +79,18 @@ public class UserBuilder {
     return user;
   }
 
+  private void validateState() {
+    if (isBuilt) {
+      throw new IllegalStateException("The entity has been built");
+    }
+  }
+
   /**
    * @param openId The openId (e.g. "abc123")
    *
    * @return The builder
    */
-  public UserBuilder setOpenId(String openId) {
+  public UserBuilder withOpenId(String openId) {
     validateState();
     this.openId = openId;
     return this;
@@ -95,7 +101,7 @@ public class UserBuilder {
    *
    * @return The builder
    */
-  public UserBuilder setUUID(String uuid) {
+  public UserBuilder withUUID(String uuid) {
     validateState();
     this.uuid = uuid;
     return this;
@@ -106,26 +112,26 @@ public class UserBuilder {
    *
    * @return The builder
    */
-  public UserBuilder setSecretKey(String secretKey) {
+  public UserBuilder withSecretKey(String secretKey) {
     validateState();
     this.secretKey = secretKey;
     return this;
   }
 
-  public UserBuilder addContactMethod(ContactMethod contactMethod, String detail) {
+  public UserBuilder withContactMethod(ContactMethod contactMethod, String detail) {
 
     addContactMethods.add(new AddContactMethod(contactMethod, detail));
 
     return this;
   }
 
-  public UserBuilder addRole(Role role) {
+  public UserBuilder withRole(Role role) {
 
     addRoles.add(new AddRole(role));
     return this;
   }
 
-  public UserBuilder addRoles(List<Role> roles) {
+  public UserBuilder withRoles(List<Role> roles) {
 
     for (Role role : roles) {
       addRoles.add(new AddRole(role));
@@ -134,18 +140,12 @@ public class UserBuilder {
     return this;
   }
 
-  private void validateState() {
-    if (isBuilt) {
-      throw new IllegalStateException("The entity has been built");
-    }
-  }
-
-  public UserBuilder setUsername(String username) {
+  public UserBuilder withUsername(String username) {
     this.username = username;
     return this;
   }
 
-  public UserBuilder setPassword(String password) {
+  public UserBuilder withPassword(String password) {
     this.password = password;
     return this;
   }
@@ -155,7 +155,7 @@ public class UserBuilder {
    *
    * @return The builder
    */
-  public UserBuilder addCustomer(Customer customer) {
+  public UserBuilder withCustomer(Customer customer) {
     this.customer = customer;
     return this;
   }

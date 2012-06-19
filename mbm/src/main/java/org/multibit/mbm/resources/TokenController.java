@@ -33,9 +33,9 @@ public class TokenController {
     if (uuid==null) {
       // Need to generate one
       uuid = UUID.randomUUID().toString();
-      Cookie cookie = CookieUtils.CookieBuilder.getInstance()
-        .setName(TOKEN_COOKIE_NAME)
-        .setValue(uuid)
+      Cookie cookie = CookieUtils.CookieBuilder.newInstance()
+        .withName(TOKEN_COOKIE_NAME)
+        .withValue(uuid)
         .build();
       response.addCookie(cookie);
     }

@@ -59,9 +59,9 @@ public class SecurityService {
     } catch (UserNotFoundException ex) {
       log.debug("Inserting new authenticated user");
       String uuid = UUID.randomUUID().toString();
-      User newUser = UserBuilder.getInstance()
-        .setOpenId(openId)
-        .setUUID(uuid)
+      User newUser = UserBuilder.newInstance()
+        .withOpenId(openId)
+        .withUUID(uuid)
         .build();
       return userDao.saveOrUpdate(newUser);
     }
@@ -82,8 +82,8 @@ public class SecurityService {
       return userDao.getUserByUUID(uuid);
     } catch (UserNotFoundException ex) {
       log.debug("Inserting new anonymous user");
-      User newUser = UserBuilder.getInstance()
-        .setUUID(uuid)
+      User newUser = UserBuilder.newInstance()
+        .withUUID(uuid)
         .build();
       return userDao.saveOrUpdate(newUser);
     }
@@ -184,19 +184,19 @@ public class SecurityService {
   public User createUserAsCustomer(CreateUserRequest createUserRequest) {
 
     // Build the supporting objects
-    Customer customer = CustomerBuilder.getInstance()
+    Customer customer = CustomerBuilder.newInstance()
       .build();
 
     // Require the standard Customer Roles
     List<Role> customerRoles = getCustomerRoles();
 
     // Build the User including the supporting objects
-    User newUser = UserBuilder.getInstance()
-      .setOpenId(createUserRequest.getOpenId())
-      .setUsername(createUserRequest.getUsername())
-      .setPassword(createUserRequest.getPassword())
-      .addCustomer(customer)
-      .addRoles(customerRoles)
+    User newUser = UserBuilder.newInstance()
+      .withOpenId(createUserRequest.getOpenId())
+      .withUsername(createUserRequest.getUsername())
+      .withPassword(createUserRequest.getPassword())
+      .withCustomer(customer)
+      .withRoles(customerRoles)
       .build();
 
     // Persist the user

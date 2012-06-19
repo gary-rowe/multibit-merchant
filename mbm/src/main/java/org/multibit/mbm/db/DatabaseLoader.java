@@ -68,18 +68,18 @@ public class DatabaseLoader {
   private void buildRolesAndAuthorities() {
 
     // Build the administration Role and Authorities
-    adminRole = RoleBuilder.getInstance()
-      .setName(Authority.ROLE_ADMIN.name())
-      .setDescription("Administration role")
-      .addAdminAuthorities()
+    adminRole = RoleBuilder.newInstance()
+      .withName(Authority.ROLE_ADMIN.name())
+      .withDescription("Administration role")
+      .withAdminAuthorities()
       .build();
     adminRole = roleDao.saveOrUpdate(adminRole);
 
     // Build the Customer Role and Authorities
-    customerRole = RoleBuilder.getInstance()
-      .setName(Authority.ROLE_CUSTOMER.name())
-      .setDescription("Customer role")
-      .addCustomerAuthorities()
+    customerRole = RoleBuilder.newInstance()
+      .withName(Authority.ROLE_CUSTOMER.name())
+      .withDescription("Customer role")
+      .withCustomerAuthorities()
       .build();
     customerRole = roleDao.saveOrUpdate(customerRole);
 
@@ -91,47 +91,47 @@ public class DatabaseLoader {
    * Build a demonstration database based on books
    */
   private void buildCatalogBooks() {
-    Item book1 = ItemBuilder.getInstance()
-      .setSKU("0099410672")
-      .addPrimaryFieldDetail(ItemField.TITLE, "Cryptonomicon, by Neal Stephenson", "en")
-      .addPrimaryFieldDetail(ItemField.SUMMARY, "'A brilliant patchwork of code-breaking mathematicians and their descendants who are striving to create a data haven in the Philippines...trust me on this one' Guardian", "en")
-      .addPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/2/thumbnail2.png", "en")
+    Item book1 = ItemBuilder.newInstance()
+      .withSKU("0099410672")
+      .withPrimaryFieldDetail(ItemField.TITLE, "Cryptonomicon, by Neal Stephenson", "en")
+      .withPrimaryFieldDetail(ItemField.SUMMARY, "'A brilliant patchwork of code-breaking mathematicians and their descendants who are striving to create a data haven in the Philippines...trust me on this one' Guardian", "en")
+      .withPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/2/thumbnail2.png", "en")
       .build();
 
     itemDao.saveOrUpdate(book1);
 
-    Item book2 = ItemBuilder.getInstance()
-      .setSKU("0140296034")
-      .addPrimaryFieldDetail(ItemField.TITLE, "A Year In Provence, by Peter Mayle", "en")
-      .addPrimaryFieldDetail(ItemField.SUMMARY, "Enjoy an irresistible feast of humour and discover the joys of French rural living with Peter Mayle's bestselling, much-loved account of 'A Year In Provence'.", "en")
-      .addPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/1/thumbnail1.png", "en")
+    Item book2 = ItemBuilder.newInstance()
+      .withSKU("0140296034")
+      .withPrimaryFieldDetail(ItemField.TITLE, "A Year In Provence, by Peter Mayle", "en")
+      .withPrimaryFieldDetail(ItemField.SUMMARY, "Enjoy an irresistible feast of humour and discover the joys of French rural living with Peter Mayle's bestselling, much-loved account of 'A Year In Provence'.", "en")
+      .withPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/1/thumbnail1.png", "en")
       .build();
 
     itemDao.saveOrUpdate(book2);
 
-    Item book3 = ItemBuilder.getInstance()
-      .setSKU("186126173X")
-      .addPrimaryFieldDetail(ItemField.TITLE, "Plumbing and Central Heating, by Mike Lawrence", "en")
-      .addPrimaryFieldDetail(ItemField.SUMMARY, "This guide begins with the basic skills of plumbing, which once mastered, can be applied to any situation, from mending a leaking tap to installing a new shower unit.", "en")
-      .addPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/3/thumbnail3.png", "en")
+    Item book3 = ItemBuilder.newInstance()
+      .withSKU("186126173X")
+      .withPrimaryFieldDetail(ItemField.TITLE, "Plumbing and Central Heating, by Mike Lawrence", "en")
+      .withPrimaryFieldDetail(ItemField.SUMMARY, "This guide begins with the basic skills of plumbing, which once mastered, can be applied to any situation, from mending a leaking tap to installing a new shower unit.", "en")
+      .withPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/3/thumbnail3.png", "en")
       .build();
 
     itemDao.saveOrUpdate(book3);
 
-    Item book4 = ItemBuilder.getInstance()
-      .setSKU("0575088893")
-      .addPrimaryFieldDetail(ItemField.TITLE, "The Quantum Thief, by Hannu Rajaniemi", "en")
-      .addPrimaryFieldDetail(ItemField.SUMMARY, "The most exciting SF debut of the last five years - a star to stand alongside Alistair Reynolds and Richard Morgan.", "en")
-      .addPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/4/thumbnail4.png", "en")
+    Item book4 = ItemBuilder.newInstance()
+      .withSKU("0575088893")
+      .withPrimaryFieldDetail(ItemField.TITLE, "The Quantum Thief, by Hannu Rajaniemi", "en")
+      .withPrimaryFieldDetail(ItemField.SUMMARY, "The most exciting SF debut of the last five years - a star to stand alongside Alistair Reynolds and Richard Morgan.", "en")
+      .withPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/4/thumbnail4.png", "en")
       .build();
 
     itemDao.saveOrUpdate(book4);
 
-    Item book5 = ItemBuilder.getInstance()
-      .setSKU("0316184136")
-      .addPrimaryFieldDetail(ItemField.TITLE, "The Complete Works of Emily Dickinson, edited by Thomas H Johnson", "en")
-      .addPrimaryFieldDetail(ItemField.SUMMARY, "The Complete Poems of Emily Dickinson is the only one-volume edition containing all Emily Dickinson's poems.", "en")
-      .addPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/5/thumbnail5.png", "en")
+    Item book5 = ItemBuilder.newInstance()
+      .withSKU("0316184136")
+      .withPrimaryFieldDetail(ItemField.TITLE, "The Complete Works of Emily Dickinson, edited by Thomas H Johnson", "en")
+      .withPrimaryFieldDetail(ItemField.SUMMARY, "The Complete Poems of Emily Dickinson is the only one-volume edition containing all Emily Dickinson's poems.", "en")
+      .withPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/5/thumbnail5.png", "en")
       .build();
 
     itemDao.saveOrUpdate(book5);
@@ -143,13 +143,13 @@ public class DatabaseLoader {
 
     // Admin
 
-    User admin = UserBuilder.getInstance()
-      .setUUID("trent123")
-      .setUsername("trent")
-      .setPassword("trent1")
-      .addContactMethod(ContactMethod.FIRST_NAME, "Trent")
-      .addContactMethod(ContactMethod.EMAIL, "admin@example.org")
-      .addRole(adminRole)
+    User admin = UserBuilder.newInstance()
+      .withUUID("trent123")
+      .withUsername("trent")
+      .withPassword("trent1")
+      .withContactMethod(ContactMethod.FIRST_NAME, "Trent")
+      .withContactMethod(ContactMethod.EMAIL, "admin@example.org")
+      .withRole(adminRole)
       .build();
 
     userDao.saveOrUpdate(admin);
@@ -158,35 +158,35 @@ public class DatabaseLoader {
 
     // Customers
     // Alice
-    Customer aliceCustomer = CustomerBuilder.getInstance()
+    Customer aliceCustomer = CustomerBuilder.newInstance()
       .build();
 
-    User aliceUser = UserBuilder.getInstance()
-      .setUUID("alice123")
-      .setUsername("alice")
-      .setPassword("alice1")
-      .addContactMethod(ContactMethod.FIRST_NAME, "Alice")
-      .addContactMethod(ContactMethod.LAST_NAME, "Customer")
-      .addContactMethod(ContactMethod.EMAIL, "alice@example.org")
-      .addRole(customerRole)
-      .addCustomer(aliceCustomer)
+    User aliceUser = UserBuilder.newInstance()
+      .withUUID("alice123")
+      .withUsername("alice")
+      .withPassword("alice1")
+      .withContactMethod(ContactMethod.FIRST_NAME, "Alice")
+      .withContactMethod(ContactMethod.LAST_NAME, "Customer")
+      .withContactMethod(ContactMethod.EMAIL, "alice@example.org")
+      .withRole(customerRole)
+      .withCustomer(aliceCustomer)
       .build();
 
 
     userDao.saveOrUpdate(aliceUser);
 
     // Bob
-    Customer bobCustomer = CustomerBuilder.getInstance()
+    Customer bobCustomer = CustomerBuilder.newInstance()
       .build();
 
-    User bob = UserBuilder.getInstance()
-      .setUUID("bob123")
-      .setUsername("bob")
-      .setPassword("bob1")
-      .addContactMethod(ContactMethod.FIRST_NAME, "Bob")
-      .addContactMethod(ContactMethod.LAST_NAME, "Customer")
-      .addContactMethod(ContactMethod.EMAIL, "bob@example.org")
-      .addRole(customerRole)
+    User bob = UserBuilder.newInstance()
+      .withUUID("bob123")
+      .withUsername("bob")
+      .withPassword("bob1")
+      .withContactMethod(ContactMethod.FIRST_NAME, "Bob")
+      .withContactMethod(ContactMethod.LAST_NAME, "Customer")
+      .withContactMethod(ContactMethod.EMAIL, "bob@example.org")
+      .withRole(customerRole)
       .build();
 
     userDao.saveOrUpdate(bob);

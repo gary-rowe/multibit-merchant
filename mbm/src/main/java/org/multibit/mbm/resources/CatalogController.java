@@ -46,14 +46,14 @@ public class CatalogController {
     if (query == null) {
       // No query so default to the promotional items
       // TODO Implement promotional rules
-      exampleItem = ItemBuilder.getInstance()
+      exampleItem = ItemBuilder.newInstance()
         .build();
     } else {
-      exampleItem = ItemBuilder.getInstance()
-        .setGTIN(query)
-        .setSKU(query)
-        .addPrimaryFieldDetail(ItemField.TITLE,query,"en")
-        .addPrimaryFieldDetail(ItemField.SUMMARY,query,"en")
+      exampleItem = ItemBuilder.newInstance()
+        .withGTIN(query)
+        .withSKU(query)
+        .withPrimaryFieldDetail(ItemField.TITLE, query, "en")
+        .withPrimaryFieldDetail(ItemField.SUMMARY, query, "en")
         .build();
     }
 
