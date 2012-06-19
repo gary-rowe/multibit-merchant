@@ -20,7 +20,19 @@ import java.util.Locale;
  */
 public class DateUtils {
 
+  /**
+   * Produces "Sat, 01 Jan 2000 23:59:59 GMT"
+   */
+  private static final DateTimeFormatter RFC_1123 = DateTimeFormat
+    .forPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'")
+    .withLocale(Locale.US) // For common language
+    .withZone(DateTimeZone.UTC); // For GMT
+
+  /**
+   * Produces Sunday, January 01
+   */
   private static final DateTimeFormatter friendlyDateFormatter = DateTimeFormat.forPattern("EEEE, MMMM dd");
+
   /**
    * @return The current instant in UTC
    */
@@ -79,6 +91,14 @@ public class DateUtils {
    */
   public static String formatFriendlyDate(ReadableInstant when, Locale locale) {
     return friendlyDateFormatter.withLocale(locale).print(when);
+  }
+
+  /**
+   * @param when The instant
+   * @return The instant formatted as RFC 1123 e.g. "Sat, 01 Jan 2000 23:59:59 GMT"
+   */
+  public static String formatHttpDateHeader(ReadableInstant when) {
+    return RFC_1123.print(when);
   }
 
 }

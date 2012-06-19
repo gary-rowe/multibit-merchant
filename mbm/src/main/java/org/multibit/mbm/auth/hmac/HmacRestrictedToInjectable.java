@@ -8,6 +8,8 @@ import com.sun.jersey.server.impl.inject.AbstractHttpContextInjectable;
 import com.yammer.dropwizard.auth.AuthenticationException;
 import com.yammer.dropwizard.auth.Authenticator;
 import org.multibit.mbm.db.dto.Authority;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
@@ -43,7 +45,8 @@ import java.util.Set;
  * <li>Trim header values by removing any whitespace before the first non-whitespace character and after the last non-whitespace character.</li>
  * <li>Combine lowercase header names and header values using a single colon (“:”) as separator. Do not include whitespace characters around the separator.</li>
  * <li>Combine all headers using a single newline (U+000A) character and append them to the canonical representation, followed by a single newline (U+000A) character.</li>
- * <li>Append the url-decoded query path to the canonical representation</li>
+ * <li>Append the path to the canonical representation</li>
+ * <li>Append the url-decoded query parameters to the canonical representation</li>
  * <li>URL-decode query parameters if required</li>
  * </ul>
  * <p>There is no support for query-based authentication because this breaks the purpose of a URI as a resource
@@ -88,6 +91,8 @@ import java.util.Set;
  */
 class HmacRestrictedToInjectable<T> extends AbstractHttpContextInjectable<T> {
 
+  private final Logger log = LoggerFactory.getLogger(HmacRestrictedToInjectable.class);
+
   private final Authenticator<HmacCredentials, T> authenticator;
   private final String realm;
   private final Authority[] authorities;
@@ -125,12 +130,13 @@ class HmacRestrictedToInjectable<T> extends AbstractHttpContextInjectable<T> {
           throw new WebApplicationException(Response.Status.BAD_REQUEST);
         }
 
-        final String algorithm = authTokens[0];
         final String apiKey = authTokens[1];
         final String signature = authTokens[2];
         final String canonicalRepresentation = createCanonicalRepresentation(httpContext);
 
-        final HmacCredentials credentials = new HmacCredentials(algorithm, apiKey, signature, canonicalRepresentation, authorities);
+        log.debug("Canonical representation: '{}'",canonicalRepresentation);
+
+        final HmacCredentials credentials = new HmacCredentials("HmacSHA1", apiKey, signature, canonicalRepresentation, authorities);
 
         final Optional<T> result = authenticator.authenticate(credentials);
         if (result.isPresent()) {
@@ -160,15 +166,17 @@ class HmacRestrictedToInjectable<T> extends AbstractHttpContextInjectable<T> {
    *
    * @return The canonical representation of the request
    */
-  private String createCanonicalRepresentation(HttpContext httpContext) {
+  /* package */ String createCanonicalRepresentation(HttpContext httpContext) {
 
     // Provide a map of all header names converted to lowercase
-    MultivaluedMap<String, String> headers=httpContext.getRequest().getRequestHeaders();
+    MultivaluedMap<String, String> headers = httpContext.getRequest().getRequestHeaders();
     // Create a lexicographically sorted set of the header names for lookup later
-    Set<String> headerNames= Sets.newTreeSet(headers.keySet());
+    Set<String> headerNames = Sets.newTreeSet(headers.keySet());
     // Remove some headers that should not be included or will have special treatment
     headerNames.remove(HttpHeaders.DATE);
+    headerNames.remove(HmacUtils.X_HMAC_DATE);
     headerNames.remove(HmacUtils.X_HMAC_NONCE);
+    headerNames.remove(HttpHeaders.AUTHORIZATION);
     // TODO Check if the following should be removed (would the client know them in advance?)
     headerNames.remove(HttpHeaders.USER_AGENT);
     headerNames.remove(HttpHeaders.HOST);
@@ -182,24 +190,34 @@ class HmacRestrictedToInjectable<T> extends AbstractHttpContextInjectable<T> {
       .append("\n");
 
     // Add the date for the request using the form "date:#date-of-request" followed by a single newline. The date for the signature must be formatted exactly as in the request.
-    canonicalRepresentation
-      .append("date:")
-      .append(headers.getFirst(HttpHeaders.DATE))
-      .append("\n");
+    if (headers.containsKey(HmacUtils.X_HMAC_DATE)) {
+      // Use the TTL date
+      canonicalRepresentation
+        .append("date:")
+        .append(headers.getFirst(HmacUtils.X_HMAC_DATE))
+        .append("\n");
+
+    } else {
+      // Use the HTTP date
+      canonicalRepresentation
+        .append("date:")
+        .append(headers.getFirst(HttpHeaders.DATE))
+        .append("\n");
+    }
 
     // Add the nonce for the request in the form "nonce:#nonce-in-request" followed by a single newline. If no nonce is passed use the empty string as nonce value.
     if (headers.containsKey(HmacUtils.X_HMAC_NONCE)) {
-    canonicalRepresentation
-      .append("nonce:")
-      .append(headers.getFirst(HmacUtils.X_HMAC_NONCE))
-      .append("\n");
+      canonicalRepresentation
+        .append("nonce:")
+        .append(headers.getFirst(HmacUtils.X_HMAC_NONCE))
+        .append("\n");
     }
 
     // Sort the remaining headers lexicographically by header name.
     // Trim header values by removing any whitespace before the first non-whitespace character and after the last non-whitespace character.
     // Combine lowercase header names and header values using a single colon (“:”) as separator. Do not include whitespace characters around the separator.
     // Combine all headers using a single newline (U+000A) character and append them to the canonical representation, followed by a single newline (U+000A) character.
-    for (String headerName: headerNames) {
+    for (String headerName : headerNames) {
       canonicalRepresentation
         .append(headerName.toLowerCase())
         .append(":");
@@ -212,14 +230,25 @@ class HmacRestrictedToInjectable<T> extends AbstractHttpContextInjectable<T> {
         .append("\n");
     }
 
-    // Append the url-decoded query path to the canonical representation
-    MultivaluedMap<String,String> decodedQueryParameters = httpContext.getRequest().getQueryParameters();
+    // Append the path to the canonical representation
+    canonicalRepresentation
+      .append("/")
+      .append(httpContext.getRequest().getPath());
+
+    // Append the url-decoded query parameters to the canonical representation
+    MultivaluedMap<String, String> decodedQueryParameters = httpContext.getRequest().getQueryParameters();
     if (!decodedQueryParameters.isEmpty()) {
       canonicalRepresentation.append("?");
-      for (Map.Entry<String, List<String>> queryParameter: decodedQueryParameters.entrySet()) {
+      boolean first=true;
+      for (Map.Entry<String, List<String>> queryParameter : decodedQueryParameters.entrySet()) {
+        if (first) {
+          first=false;
+        } else {
+          canonicalRepresentation.append("&");
+        }
         canonicalRepresentation
           .append(queryParameter.getKey())
-          .append("&");
+          .append("=");
         // TODO Consider effect of different separators on this list
         for (String value : queryParameter.getValue()) {
           canonicalRepresentation
