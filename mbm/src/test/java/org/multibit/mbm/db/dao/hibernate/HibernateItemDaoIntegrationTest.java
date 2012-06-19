@@ -40,9 +40,9 @@ public class HibernateItemDaoIntegrationTest extends BaseIntegrationTests {
     String gtin="def456";
 
     Item expected = ItemBuilder
-      .getInstance()
-      .setSKU(sku)
-      .setGTIN(gtin)
+      .newInstance()
+      .withSKU(sku)
+      .withGTIN(gtin)
       .build();
 
     // Persist with insert
@@ -164,8 +164,8 @@ public class HibernateItemDaoIntegrationTest extends BaseIntegrationTests {
 
     // Search in the primary TITLE field
     Item example = ItemBuilder
-      .getInstance()
-      .addPrimaryFieldDetail(ItemField.TITLE, "Central Heating", "en")
+      .newInstance()
+      .withPrimaryFieldDetail(ItemField.TITLE, "Central Heating", "en")
       .build();
     itemPagedQueryResponse = new ItemPagedQueryResponse(0,5,example);
     items = testObject.getPagedItems(itemPagedQueryResponse);
@@ -175,9 +175,9 @@ public class HibernateItemDaoIntegrationTest extends BaseIntegrationTests {
 
     // Search in both primary TITLE and SUMMARY field (only SUMMARY will succeed)
     example = ItemBuilder
-      .getInstance()
-      .addPrimaryFieldDetail(ItemField.TITLE, "aardvark", "en")
-      .addPrimaryFieldDetail(ItemField.SUMMARY, "trust me", "en")
+      .newInstance()
+      .withPrimaryFieldDetail(ItemField.TITLE, "aardvark", "en")
+      .withPrimaryFieldDetail(ItemField.SUMMARY, "trust me", "en")
       .build();
     itemPagedQueryResponse = new ItemPagedQueryResponse(0,5,example);
     items = testObject.getPagedItems(itemPagedQueryResponse);

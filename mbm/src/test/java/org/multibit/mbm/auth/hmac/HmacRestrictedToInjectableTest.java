@@ -46,7 +46,7 @@ public class HmacRestrictedToInjectableTest {
     when(requestContext.getRequestHeaders()).thenReturn(headers);
     when(requestContext.getMethod()).thenReturn("GET");
     when(requestContext.getQueryParameters()).thenReturn(queryParameters);
-    when(requestContext.getPath()).thenReturn("/example/resource.html");
+    when(requestContext.getPath()).thenReturn("example/resource.html");
 
     // Mock context
     HttpContext httpContext = mock(HttpContext.class);

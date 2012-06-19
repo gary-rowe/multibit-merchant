@@ -26,7 +26,7 @@ public class DefaultUserBridgeTest extends BaseResourceTest {
 
 
     User user = UserBuilder
-      .getInstance()
+      .newInstance()
       .build();
 
     DefaultUserBridge testObject = new DefaultUserBridge(uriInfo,principal);
@@ -41,7 +41,7 @@ public class DefaultUserBridgeTest extends BaseResourceTest {
   public void representUserAsXml() throws IOException {
 
     User user = UserBuilder
-      .getInstance()
+      .newInstance()
       .build();
 
     DefaultUserBridge testObject = new DefaultUserBridge(uriInfo,principal);

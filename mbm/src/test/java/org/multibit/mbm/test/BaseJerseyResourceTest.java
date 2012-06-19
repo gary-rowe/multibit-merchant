@@ -118,17 +118,17 @@ public abstract class BaseJerseyResourceTest extends BaseResourceTest {
   protected void setUpAuthenticator(Optional<String> apiKey, Optional<String> sharedSecret) {
 
     // TODO Consider a shortcut for this in UserBuilder (asCustomer())
-    Role customerRole = RoleBuilder.getInstance()
-      .setName(Authority.ROLE_CUSTOMER.name())
-      .setDescription("Customer role")
-      .addCustomerAuthorities()
+    Role customerRole = RoleBuilder.newInstance()
+      .withName(Authority.ROLE_CUSTOMER.name())
+      .withDescription("Customer role")
+      .withCustomerAuthorities()
       .build();
 
     User user = UserBuilder
-      .getInstance()
-      .setUUID(apiKey.get())
-      .setSecretKey(sharedSecret.get())
-      .addRole(customerRole)
+      .newInstance()
+      .withUUID(apiKey.get())
+      .withSecretKey(sharedSecret.get())
+      .withRole(customerRole)
       .build();
 
     UserDao userDao = mock(UserDao.class);

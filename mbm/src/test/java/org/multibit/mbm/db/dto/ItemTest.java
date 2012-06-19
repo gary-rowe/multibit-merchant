@@ -14,14 +14,14 @@ public class ItemTest {
   public void testItemFieldDetailSummary() {
 
     // Use the builder
-    Item testObject=ItemBuilder.getInstance()
-      .setSKU("abc123")
-      .addPrimaryFieldDetail(ItemField.SUMMARY, "English", "en")
-      .addSecondaryFieldDetail(ItemField.SUMMARY, "French french", "fr_FR")
-      .addSecondaryFieldDetail(ItemField.SUMMARY, "British english", "en_GB")
-      .addSecondaryFieldDetail(ItemField.SUMMARY, "Thai with native script", "th_TH_TH")
-      .addPrimaryFieldDetail(ItemField.TITLE, "English title", "en")
-      .addSecondaryFieldDetail(ItemField.TITLE, "French title", "fr_FR")
+    Item testObject=ItemBuilder.newInstance()
+      .withSKU("abc123")
+      .withPrimaryFieldDetail(ItemField.SUMMARY, "English", "en")
+      .withSecondaryFieldDetail(ItemField.SUMMARY, "French french", "fr_FR")
+      .withSecondaryFieldDetail(ItemField.SUMMARY, "British english", "en_GB")
+      .withSecondaryFieldDetail(ItemField.SUMMARY, "Thai with native script", "th_TH_TH")
+      .withPrimaryFieldDetail(ItemField.TITLE, "English title", "en")
+      .withSecondaryFieldDetail(ItemField.TITLE, "French title", "fr_FR")
       .build();
    
     // Verify the results

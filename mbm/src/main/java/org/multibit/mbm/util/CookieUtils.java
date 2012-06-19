@@ -113,41 +113,64 @@ public class CookieUtils {
 
     private CookieBuilder() {
     }
-    
-    public static CookieBuilder getInstance() {
+
+    /**
+     * @return A new builder
+     */
+    public static CookieBuilder newInstance() {
       return new CookieBuilder();
     }
 
-    public CookieBuilder setName(String name) {
-      validateState();
+    /**
+     * @param name The name of the cookie
+     * @return The builder
+     */
+    public CookieBuilder withName(String name) {
       this.name = name;
       return this;
     }
-    
-    public CookieBuilder setValue(String value) {
-      validateState();
+
+    /**
+     *
+     * @param value The value
+     * @return The builder
+     */
+    public CookieBuilder withValue(String value) {
       this.value = value;
       return this;
     }
 
-    public CookieBuilder setMaxAge(int maxAge) {
-      validateState();
+    /**
+     * @param maxAge The maximum age
+     * @return The builder
+     */
+    public CookieBuilder withMaxAge(int maxAge) {
       this.maxAge = maxAge;
       return this;
     }
 
-    public CookieBuilder setPath(String path) {
-      validateState();
+    /**
+     *
+     * @param path The path to activate the cookie
+     * @return The builder
+     */
+    public CookieBuilder withPath(String path) {
       this.path = path;
       return this;
     }
 
-    public CookieBuilder setDomain(String domain) {
-      validateState();
+    /**
+     * @param domain The domain to which it belongs
+     * @return The builder
+     */
+    public CookieBuilder withDomain(String domain) {
       this.domain = domain;
       return this;
     }
-    
+
+    /**
+     * @return The cookie
+     */
     public Cookie build() {
       validateState();
       if (name==null) {

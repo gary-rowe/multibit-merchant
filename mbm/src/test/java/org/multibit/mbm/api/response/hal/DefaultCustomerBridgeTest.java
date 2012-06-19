@@ -28,12 +28,12 @@ public class DefaultCustomerBridgeTest extends BaseResourceTest {
   public void representCustomerAsJson() throws Exception {
 
     Customer customer = CustomerBuilder
-      .getInstance()
+      .newInstance()
       .build();
 
     User user = UserBuilder
-      .getInstance()
-      .addCustomer(customer)
+      .newInstance()
+      .withCustomer(customer)
       .build();
 
     DefaultCustomerBridge testObject = new DefaultCustomerBridge(uriInfo,principal);
@@ -48,12 +48,12 @@ public class DefaultCustomerBridgeTest extends BaseResourceTest {
   public void representCustomerAsXml() throws IOException {
 
     Customer customer = CustomerBuilder
-      .getInstance()
+      .newInstance()
       .build();
 
     User user = UserBuilder
-      .getInstance()
-      .addCustomer(customer)
+      .newInstance()
+      .withCustomer(customer)
       .build();
 
     DefaultCustomerBridge testObject = new DefaultCustomerBridge(uriInfo,principal);

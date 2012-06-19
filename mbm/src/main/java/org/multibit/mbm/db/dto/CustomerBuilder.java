@@ -19,7 +19,7 @@ public class CustomerBuilder {
   /**
    * @return A new instance of the builder
    */
-  public static CustomerBuilder getInstance() {
+  public static CustomerBuilder newInstance() {
     return new CustomerBuilder();
   }
 

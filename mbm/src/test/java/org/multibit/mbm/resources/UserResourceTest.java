@@ -19,7 +19,7 @@ public class UserResourceTest extends ResourceTest {
 
   private final SecurityService securityService =mock(SecurityService.class);
   private final User expectedUser = UserBuilder
-    .getInstance()
+    .newInstance()
     .build();
 
 
