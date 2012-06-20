@@ -123,8 +123,6 @@ public class HibernateItemDaoIntegrationTest extends BaseIntegrationTests {
   @Test
   public void testGetPagedItems() {
 
-    testObject.flush();
-
     // All items (check against inefficient joins)
     ItemPagedQueryResponse itemPagedQueryResponse = new ItemPagedQueryResponse(0,10,null);
     List<Item> items = testObject.getPagedItems(itemPagedQueryResponse);

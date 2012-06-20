@@ -13,6 +13,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@Ignore
 public class CartResourceTest extends BaseJerseyResourceTest {
 
   private final CustomerService customerService=mock(CustomerService.class);
@@ -41,7 +42,6 @@ public class CartResourceTest extends BaseJerseyResourceTest {
   }
 
   // TODO Implement this
-  @Ignore
   public void testCreateCart() throws Exception {
 
     CreateCartRequest request = new CreateCartRequest();

@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.multibit.mbm.db.dto.User;
 import org.multibit.mbm.db.dto.UserBuilder;
 import org.multibit.mbm.test.BaseResourceTest;
-import org.multibit.mbm.test.TestUtils;
+import org.multibit.mbm.test.FixtureAsserts;
 
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
@@ -33,7 +33,7 @@ public class DefaultUserBridgeTest extends BaseResourceTest {
 
     Resource resource = testObject.toResource(user);
 
-    TestUtils.assertResourceMatchesJsonFixture("a User can be marshalled to JSON", resource, "fixtures/hal/user/expected-user-simple.json");
+    FixtureAsserts.assertResourceMatchesJsonFixture("a User can be marshalled to JSON", resource, "fixtures/hal/user/expected-user-simple.json");
 
   }
 
@@ -48,7 +48,7 @@ public class DefaultUserBridgeTest extends BaseResourceTest {
 
     Resource resource = testObject.toResource(user);
 
-    TestUtils.assertResourceMatchesXmlFixture("a User can be marshalled to XML", resource, "fixtures/hal/user/expected-user-simple.xml");
+    FixtureAsserts.assertResourceMatchesXmlFixture("a User can be marshalled to XML", resource, "fixtures/hal/user/expected-user-simple.xml");
 
   }
 
