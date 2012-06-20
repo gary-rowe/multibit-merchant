@@ -85,7 +85,7 @@ public class CallBackBitcoinServiceTest{
     assertNotNull(swatch1);
     assertNotNull(swatch2);
     
-    Transaction transaction1 = TestUtils.createFakeTx(prodNet, BigInteger.ONE, address1);   // 1 BTC received to address1
+    Transaction transaction1 = BitcoinTransactionHelpers.createFakeTx(prodNet, BigInteger.ONE, address1);   // 1 BTC received to address1
 
     testObject.notifyAddressListenersOfTransaction(transaction1, true);
     
@@ -124,7 +124,7 @@ public class CallBackBitcoinServiceTest{
     assertNotNull(swatch1);
     assertNotNull(swatch2);
    
-    Transaction transaction2 = TestUtils.createFakeTx(prodNet, BigInteger.ONE, address2);   // 1 BTC received to address2
+    Transaction transaction2 = BitcoinTransactionHelpers.createFakeTx(prodNet, BigInteger.ONE, address2);   // 1 BTC received to address2
 
     testObject.notifyAddressListenersOfTransaction(transaction2, false);
     

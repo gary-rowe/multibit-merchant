@@ -2,12 +2,13 @@ package org.multibit.mbm.db.dao.hibernate;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.transform.DistinctRootEntityResultTransformer;
+import org.multibit.mbm.api.response.ItemPagedQueryResponse;
+import org.multibit.mbm.db.dao.ItemDao;
 import org.multibit.mbm.db.dao.ItemNotFoundException;
 import org.multibit.mbm.db.dto.Item;
 import org.multibit.mbm.db.dto.ItemField;
 import org.multibit.mbm.db.dto.ItemFieldDetail;
-import org.multibit.mbm.db.dao.ItemDao;
-import org.multibit.mbm.api.response.ItemPagedQueryResponse;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
@@ -72,6 +73,7 @@ public class HibernateItemDao implements ItemDao {
           .createQuery(hql)
           .setFirstResult(itemPagedQueryResponse.getFirstResult())
           .setMaxResults(itemPagedQueryResponse.getMaxResults())
+          .setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE)
           .list();
       }
 
