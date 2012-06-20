@@ -14,14 +14,14 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
 /**
- * <p>Test utilities to provide the following to application:</p>
+ * <p>Fixture assertions to provide the following to application:</p>
  * <ul>
  * <li>Support methods to simplify common test patterns</li>
  * </ul>
  *
  * @since 0.0.1
  */
-public class TestUtils {
+public class FixtureAsserts {
 
   /**
    * Renders a HAL resource as JSON and compares it to a normalised fixture (

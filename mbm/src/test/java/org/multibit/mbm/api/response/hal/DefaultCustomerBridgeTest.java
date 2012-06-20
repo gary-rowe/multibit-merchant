@@ -9,7 +9,7 @@ import org.multibit.mbm.db.dto.CustomerBuilder;
 import org.multibit.mbm.db.dto.User;
 import org.multibit.mbm.db.dto.UserBuilder;
 import org.multibit.mbm.test.BaseResourceTest;
-import org.multibit.mbm.test.TestUtils;
+import org.multibit.mbm.test.FixtureAsserts;
 
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
@@ -40,7 +40,7 @@ public class DefaultCustomerBridgeTest extends BaseResourceTest {
 
     Resource resource = testObject.toResource(customer);
 
-    TestUtils.assertResourceMatchesJsonFixture("a Customer can be marshalled to JSON", resource, "fixtures/hal/customer/expected-customer-simple.json");
+    FixtureAsserts.assertResourceMatchesJsonFixture("a Customer can be marshalled to JSON", resource, "fixtures/hal/customer/expected-customer-simple.json");
 
   }
 
@@ -60,7 +60,7 @@ public class DefaultCustomerBridgeTest extends BaseResourceTest {
 
     Resource resource = testObject.toResource(customer);
 
-    TestUtils.assertResourceMatchesXmlFixture("a Customer can be marshalled to XML", resource, "fixtures/hal/customer/expected-customer-simple.xml");
+    FixtureAsserts.assertResourceMatchesXmlFixture("a Customer can be marshalled to XML", resource, "fixtures/hal/customer/expected-customer-simple.xml");
 
   }
 
