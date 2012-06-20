@@ -1,18 +1,14 @@
 package org.multibit.mbm.services;
 
 import com.google.common.collect.Lists;
-import org.multibit.mbm.db.dto.CustomerBuilder;
-import org.multibit.mbm.db.dto.*;
 import org.multibit.mbm.api.request.CreateUserRequest;
-import org.multibit.mbm.db.dto.UserBuilder;
 import org.multibit.mbm.db.dao.RoleDao;
 import org.multibit.mbm.db.dao.UserDao;
 import org.multibit.mbm.db.dao.UserNotFoundException;
-import org.multibit.mbm.util.OpenIdUtils;
+import org.multibit.mbm.db.dto.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.openid.OpenIDAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -107,27 +103,6 @@ public class SecurityService {
     if (principal == null) {
       log.warn("Null principal passed in.");
       return null;
-    }
-
-    if (principal instanceof OpenIDAuthenticationToken) {
-      // Extract information from the OpenId principal
-      OpenIDAuthenticationToken token = (OpenIDAuthenticationToken) principal;
-      String openId = token.getIdentityUrl();
-      List<String> values = OpenIdUtils.getAttributeValuesByName((OpenIDAuthenticationToken) principal, "email");
-      if (!values.isEmpty()) {
-        emailAddress = values.get(0);
-      }
-
-      // Attempt to locate the user
-      user = userDao.getUserByOpenId(openId);
-
-      // Check for known primary email address (if supplied)
-      ContactMethodDetail contactMethodDetail = user.getContactMethodDetail(ContactMethod.EMAIL);
-      if (contactMethodDetail != null && contactMethodDetail.getPrimaryDetail() == null && emailAddress != null) {
-        // Fill in the obtained email address
-        contactMethodDetail.setPrimaryDetail(emailAddress);
-        user = userDao.saveOrUpdate(user);
-      }
     }
 
     if (principal instanceof UsernamePasswordAuthenticationToken) {
