@@ -6,7 +6,6 @@ import com.google.bitcoin.discovery.IrcDiscovery;
 import com.google.bitcoin.store.BlockStore;
 import com.google.bitcoin.store.BlockStoreException;
 import com.google.bitcoin.store.BoundedOverheadBlockStore;
-import org.multibit.mbm.qrcode.SwatchGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -20,6 +19,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * TODO This requires a complete re-implementation
+ */
 @Component
 public class DefaultBitcoinService implements BitcoinService, PeerEventListener, PendingTransactionListener {
 
@@ -31,7 +33,7 @@ public class DefaultBitcoinService implements BitcoinService, PeerEventListener,
 
   public static final String BLOCKCHAIN_SUFFIX = ".blockchain";
 
-  public static final String IRC_CHANNEL_TEST = "#bitcoinTEST";;
+  public static final String IRC_CHANNEL_TEST = "#bitcoinTEST";
 
   private static final int NO_ADDRESS_GOT_YET = -1;
 
@@ -57,10 +59,6 @@ public class DefaultBitcoinService implements BitcoinService, PeerEventListener,
    * Map of addresses to address listeners
    */
   private Map<Address, AddressListener> addressToAddressListenerMap;
-
-   // TODO Reinstate this annotation
-//  @Resource
-  private SwatchGenerator swatchGenerator;
 
   public DefaultBitcoinService() {
 
@@ -130,11 +128,11 @@ public class DefaultBitcoinService implements BitcoinService, PeerEventListener,
       e.printStackTrace();
     }
 
-    // create a SwatchGenerator for later use
-    swatchGenerator = new SwatchGenerator();
-
-    // warm it up - initialises some of the QR code so that it runs faster
-    swatchGenerator.generateSwatch((new ECKey()).toAddress(networkParameters).toString(), "0.0", "warmup");
+//    // create a SwatchGenerator for later use
+//    swatchGenerator = new SwatchGenerator();
+//
+//    // warm it up - initialises some of the QR code so that it runs faster
+//    swatchGenerator.generateBitcoinSwatch((new ECKey()).toAddress(networkParameters).toString(), "0.0", "warmup");
   }
 
   @Override
@@ -160,7 +158,8 @@ public class DefaultBitcoinService implements BitcoinService, PeerEventListener,
 
   @Override
   public BufferedImage createSwatch(String address, String label, String amount) {
-    return swatchGenerator.generateSwatch(address.toString(), amount, label);
+    //return swatchGenerator.generateBitcoinSwatch(address.toString(), amount, label);
+    return null;
   }
 
   @Override

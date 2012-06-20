@@ -55,17 +55,6 @@
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-web</artifactId>
     </dependency>
-    <!-- OpenId handling -->
-    <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-openid</artifactId>
-      <exclusions>
-        <exclusion>
-          <artifactId>commons-codec</artifactId>
-          <groupId>commons-codec</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
     <!-- Spring JPA for ORM -->
     <dependency>
       <groupId>org.springframework</groupId>
@@ -147,13 +136,14 @@
       <artifactId>javase</artifactId>
     </dependency>
 
-    <!-- Jasypt for password protection -->
+    <!-- Jasypt for protecting shared secrets -->
     <dependency>
       <groupId>org.jasypt</groupId>
       <artifactId>jasypt</artifactId>
       <version>1.9.0</version>
     </dependency>
 
+    <!-- HAL provides the resource representation -->
     <dependency>
       <groupId>com.theoryinpractise</groupId>
       <artifactId>halbuilder</artifactId>

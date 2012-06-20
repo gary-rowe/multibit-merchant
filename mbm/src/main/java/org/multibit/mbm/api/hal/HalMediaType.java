@@ -3,16 +3,12 @@ package org.multibit.mbm.api.hal;
 import javax.ws.rs.core.MediaType;
 
 /**
- * <p>[Pattern] to provide the following to {@link Object}:</p>
+ * <p>Additional media types to provide the following to resource endpoints:</p>
  * <ul>
- * <li></li>
+ * <li>Provision of HAL identifier</li>
  * </ul>
- * <p>Example:</p>
- * <pre>
- * </pre>
  *
  * @since 0.0.1
- *        TODO Fill this in        
  */
 public class HalMediaType extends MediaType {
 

@@ -5,7 +5,6 @@ import com.google.bitcoin.core.ScriptException;
 import com.google.bitcoin.core.Transaction;
 import com.google.bitcoin.core.TransactionOutput;
 import com.google.common.collect.Maps;
-import org.multibit.mbm.qrcode.SwatchGenerator;
 import org.springframework.stereotype.Component;
 
 import java.awt.image.BufferedImage;
@@ -22,6 +21,8 @@ import java.util.Map;
  * <li>Next available address from the address bucket.</li>
  * <li>Registration of addresses for notification of relevant Transactions</li>
  * </p>
+ *
+ * TODO Need a complete re-implementation of this
  * 
  * @since 0.0.1
  */
@@ -45,13 +46,7 @@ public class CallBackBitcoinService implements BitcoinService {
    */
   private Map<Address, AddressListener> addressToAddressListenerMap= Maps.newHashMap();;
 
-  // TODO Reinstate this annotation
-//  @Resource
-  private SwatchGenerator swatchGenerator;
-
   public CallBackBitcoinService() {
-    swatchGenerator=new SwatchGenerator();
-
   }
 
   public String getNextAddress(Long id) {
@@ -71,7 +66,8 @@ public class CallBackBitcoinService implements BitcoinService {
 
   @Override
   public BufferedImage createSwatch(String address, String label, String amount) {
-    return swatchGenerator.generateSwatch(address, amount, label);
+    //return swatchGenerator.generateBitcoinSwatch(address, amount, label);
+    return null;
   }
 
   @Override
@@ -116,10 +112,5 @@ public class CallBackBitcoinService implements BitcoinService {
       }
     }
   }
-
-  public void setSwatchGenerator(SwatchGenerator swatchGenerator) {
-    this.swatchGenerator = swatchGenerator;
-  }
-
 
 }

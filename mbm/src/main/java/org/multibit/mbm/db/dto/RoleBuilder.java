@@ -68,11 +68,7 @@ public class RoleBuilder {
    * @return The builder
    */
   public RoleBuilder withAuthority(Authority authority) {
-
-    validateState();
-    
     addAuthorities.add(new AddAuthority(authority));
-
     return this;
   }
 
