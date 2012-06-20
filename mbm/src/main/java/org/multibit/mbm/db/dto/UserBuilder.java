@@ -91,7 +91,6 @@ public class UserBuilder {
    * @return The builder
    */
   public UserBuilder withOpenId(String openId) {
-    validateState();
     this.openId = openId;
     return this;
   }
@@ -102,7 +101,6 @@ public class UserBuilder {
    * @return The builder
    */
   public UserBuilder withUUID(String uuid) {
-    validateState();
     this.uuid = uuid;
     return this;
   }
@@ -113,7 +111,6 @@ public class UserBuilder {
    * @return The builder
    */
   public UserBuilder withSecretKey(String secretKey) {
-    validateState();
     this.secretKey = secretKey;
     return this;
   }

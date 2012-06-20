@@ -2,11 +2,13 @@ package org.multibit.mbm.test;
 
 import com.theoryinpractise.halbuilder.spi.Resource;
 import com.yammer.dropwizard.testing.FixtureHelpers;
+import org.bouncycastle.util.Arrays;
 import org.multibit.mbm.api.hal.HalMediaType;
 
 import java.io.IOException;
 
 import static com.yammer.dropwizard.testing.JsonHelpers.jsonFixture;
+import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -47,6 +49,18 @@ public class TestUtils {
     assertThat(reason,
       resource.renderContent(HalMediaType.APPLICATION_HAL_XML),
       is(equalTo(FixtureHelpers.fixture(fixtureClasspath))));
+  }
+
+  /**
+   * Compares the given byte[] with that read from the expected fixture
+   *
+   * @param reason The reason (e.g. "a correct swatch has been generated")
+   * @param resource The byte[] to test
+   * @param fixtureClasspath The classpath reference to the resource (e.g. "fixtures/example.png")
+   * @throws IOException If something goes wrong
+   */
+  public static void assertResourceMatchesBinaryFixture(String reason, byte[] resource, String fixtureClasspath) throws IOException {
+    assertTrue(reason, Arrays.areEqual(resource, BinaryFixtureHelpers.fixture(fixtureClasspath)));
   }
 
 }

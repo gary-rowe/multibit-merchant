@@ -1,12 +1,12 @@
 package org.multibit.mbm.resources;
 
 import com.yammer.dropwizard.testing.FixtureHelpers;
-import com.yammer.dropwizard.testing.ResourceTest;
 import org.junit.Test;
 import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.db.dto.User;
 import org.multibit.mbm.db.dto.UserBuilder;
 import org.multibit.mbm.services.SecurityService;
+import org.multibit.mbm.test.BaseJerseyResourceTest;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -15,7 +15,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class UserResourceTest extends ResourceTest {
+public class UserResourceTest extends BaseJerseyResourceTest {
 
   private final SecurityService securityService =mock(SecurityService.class);
   private final User expectedUser = UserBuilder
@@ -34,6 +34,8 @@ public class UserResourceTest extends ResourceTest {
     testObject.setSecurityService(securityService);
 
     addResource(testObject);
+
+    setUpAuthenticator();
 
   }
 

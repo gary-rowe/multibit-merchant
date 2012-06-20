@@ -20,7 +20,6 @@ import static org.junit.Assert.assertEquals;
  */
 public class HelloWorldResourceTest extends BaseJerseyResourceTest {
 
-
   @Override
   protected void setUpResources() {
     addResource(new HelloWorldResource("Hello, %s!","Stranger"));
