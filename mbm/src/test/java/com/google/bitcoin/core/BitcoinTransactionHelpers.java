@@ -21,7 +21,7 @@ import com.google.bitcoin.store.BlockStoreException;
 
 import java.math.BigInteger;
 
-public class TestUtils {
+public class BitcoinTransactionHelpers {
   public static Transaction createFakeTx(NetworkParameters params, BigInteger nanocoins, Address to) {
     Transaction t = new Transaction(params);
     TransactionOutput o1 = new TransactionOutput(params, t, nanocoins, to);
