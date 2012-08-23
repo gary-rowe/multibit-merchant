@@ -41,7 +41,8 @@ public class HmacAuthenticator implements Authenticator<HmacCredentials, User> {
           credentials.getCanonicalRepresentation().getBytes(),
           secretKey.getBytes()));
 
-      if (computedSignature.equals(credentials.getDigest())) {
+      // Avoid timing attacks
+      if (isEqual(computedSignature.getBytes(), credentials.getDigest().getBytes())) {
         return Optional.of(user);
       }
     } catch (GeneralSecurityException e) {
@@ -54,4 +55,24 @@ public class HmacAuthenticator implements Authenticator<HmacCredentials, User> {
   public void setUserDao(UserDao userDao) {
     this.userDao = userDao;
   }
+
+  /**
+   * Performs a byte array comparison with a constant time
+   *
+   * @param a A byte array
+   * @param b Another byte array
+   * @return True if the byte array have equal contents
+   */
+  public static boolean isEqual(byte[] a, byte[] b) {
+    if (a.length != b.length) {
+      return false;
+    }
+
+    int result = 0;
+    for (int i = 0; i < a.length; i++) {
+      result |= a[i] ^ b[i];
+    }
+    return result == 0;
+  }
+
 }
