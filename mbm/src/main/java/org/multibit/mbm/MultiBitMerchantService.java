@@ -17,12 +17,18 @@ import org.multibit.mbm.resources.HelloWorldResource;
  * <ul>
  * <li>Provision of access to resources</li>
  * </ul>
+ * <p>Use <code>java -jar mbm-develop-SNAPSHOT.jar server mbm.yml</code> to start MBM</p>
  *
  * @since 0.0.1
  *         
  */
 public class MultiBitMerchantService extends Service<MultiBitMerchantConfiguration> {
 
+  /**
+   * Main entry point to the application
+   * @param args
+   * @throws Exception
+   */
   public static void main(String[] args) throws Exception {
     new MultiBitMerchantService().run(args);
   }

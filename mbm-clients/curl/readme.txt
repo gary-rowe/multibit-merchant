@@ -2,7 +2,7 @@ cURL client for MBM
 ===================
 
 This provides a set of cURL commands that work against the MBM RESTful API. To get them to work you will need to run up
-a copy of MBM using mvn clean jetty:run.
+a copy of MBM using instructions detailed in the MBM module readme.txt.
 
 A useful tutorial for cURL is available here: http://curl.haxx.se/docs/httpscripting.html
 
