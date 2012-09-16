@@ -1,10 +1,12 @@
 package org.multibit.mbm.resources;
 
 import com.yammer.dropwizard.testing.FixtureHelpers;
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.api.request.CreateCartRequest;
+import org.multibit.mbm.core.Saying;
 import org.multibit.mbm.db.dto.Customer;
 import org.multibit.mbm.db.dto.CustomerBuilder;
 import org.multibit.mbm.services.CustomerService;
@@ -20,7 +22,6 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@Ignore
 public class CartResourceTest extends BaseJerseyResourceTest {
 
   private final CustomerService customerService=mock(CustomerService.class);
@@ -51,9 +52,15 @@ public class CartResourceTest extends BaseJerseyResourceTest {
   @Test
   public void testCreateCart() throws Exception {
 
+    CreateCartRequest createCartRequest = new CreateCartRequest();
+
+
+    // TODO Fix the canonical representation problem for POST
+
     String actualResponse = client()
-      .resource("/customer/abc123/cart")
+      .resource("/cart")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
+      .entity(createCartRequest)
       .post(String.class);
 
     String expectedResponse= FixtureHelpers.fixture("fixtures/hal/cart/expected-cart-new-jersey.json");

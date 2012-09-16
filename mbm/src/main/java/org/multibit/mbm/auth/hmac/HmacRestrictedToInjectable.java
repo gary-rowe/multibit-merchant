@@ -141,8 +141,6 @@ class HmacRestrictedToInjectable<T> extends AbstractHttpContextInjectable<T> {
         final Optional<T> result = authenticator.authenticate(credentials);
         if (result.isPresent()) {
           return result.get();
-        } else {
-
         }
       }
     } catch (IllegalArgumentException e) {
@@ -169,9 +167,10 @@ class HmacRestrictedToInjectable<T> extends AbstractHttpContextInjectable<T> {
   /* package */ String createCanonicalRepresentation(HttpContext httpContext) {
 
     // Provide a map of all header names converted to lowercase
-    MultivaluedMap<String, String> headers = httpContext.getRequest().getRequestHeaders();
+    MultivaluedMap<String, String> originalHeaders = httpContext.getRequest().getRequestHeaders();
+
     // Create a lexicographically sorted set of the header names for lookup later
-    Set<String> headerNames = Sets.newTreeSet(headers.keySet());
+    Set<String> headerNames = Sets.newTreeSet(originalHeaders.keySet());
     // Remove some headers that should not be included or will have special treatment
     headerNames.remove(HttpHeaders.DATE);
     headerNames.remove(HmacUtils.X_HMAC_DATE);
@@ -181,35 +180,38 @@ class HmacRestrictedToInjectable<T> extends AbstractHttpContextInjectable<T> {
     headerNames.remove(HttpHeaders.USER_AGENT);
     headerNames.remove(HttpHeaders.HOST);
 
+    // Keep track of the method in a fixed format
+    String httpMethod = httpContext.getRequest().getMethod().toUpperCase();
+
     // Start with the empty string ("")
     final StringBuilder canonicalRepresentation = new StringBuilder("");
 
     // Add the HTTP-Verb for the request ("GET", "POST", ...) in capital letters, followed by a single newline (U+000A).
     canonicalRepresentation
-      .append(httpContext.getRequest().getMethod().toUpperCase())
+      .append(httpMethod)
       .append("\n");
 
     // Add the date for the request using the form "date:#date-of-request" followed by a single newline. The date for the signature must be formatted exactly as in the request.
-    if (headers.containsKey(HmacUtils.X_HMAC_DATE)) {
+    if (originalHeaders.containsKey(HmacUtils.X_HMAC_DATE)) {
       // Use the TTL date
       canonicalRepresentation
         .append("date:")
-        .append(headers.getFirst(HmacUtils.X_HMAC_DATE))
+        .append(originalHeaders.getFirst(HmacUtils.X_HMAC_DATE))
         .append("\n");
 
     } else {
       // Use the HTTP date
       canonicalRepresentation
         .append("date:")
-        .append(headers.getFirst(HttpHeaders.DATE))
+        .append(originalHeaders.getFirst(HttpHeaders.DATE))
         .append("\n");
     }
 
     // Add the nonce for the request in the form "nonce:#nonce-in-request" followed by a single newline. If no nonce is passed use the empty string as nonce value.
-    if (headers.containsKey(HmacUtils.X_HMAC_NONCE)) {
+    if (originalHeaders.containsKey(HmacUtils.X_HMAC_NONCE)) {
       canonicalRepresentation
         .append("nonce:")
-        .append(headers.getFirst(HmacUtils.X_HMAC_NONCE))
+        .append(originalHeaders.getFirst(HmacUtils.X_HMAC_NONCE))
         .append("\n");
     }
 
@@ -222,7 +224,7 @@ class HmacRestrictedToInjectable<T> extends AbstractHttpContextInjectable<T> {
         .append(headerName.toLowerCase())
         .append(":");
       // TODO Consider effect of different separators on this list
-      for (String value : headers.get(headerName)) {
+      for (String value : originalHeaders.get(headerName)) {
         canonicalRepresentation
           .append(value);
       }
@@ -255,6 +257,14 @@ class HmacRestrictedToInjectable<T> extends AbstractHttpContextInjectable<T> {
             .append(value);
         }
       }
+    }
+
+    // Check for payload
+    if ("POST".equalsIgnoreCase(httpMethod) ||
+     "PUT".equalsIgnoreCase(httpMethod)) {
+      // Include the entity as a simple string
+      canonicalRepresentation.append("\n");
+      canonicalRepresentation.append(httpContext.getRequest().getEntity(String.class));
     }
 
     return canonicalRepresentation.toString();
