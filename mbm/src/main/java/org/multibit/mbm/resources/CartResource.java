@@ -1,13 +1,16 @@
 package org.multibit.mbm.resources;
 
 import com.yammer.dropwizard.auth.Auth;
-import org.multibit.mbm.api.response.CartItemResponse;
-import org.multibit.mbm.services.CatalogService;
-import org.multibit.mbm.db.dto.Customer;
-import org.multibit.mbm.services.CustomerService;
-import org.multibit.mbm.api.response.CartResponse;
+import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.api.request.CreateCartRequest;
+import org.multibit.mbm.api.response.CartItemResponse;
+import org.multibit.mbm.api.response.CartResponse;
+import org.multibit.mbm.auth.annotation.RestrictedTo;
+import org.multibit.mbm.db.dto.Authority;
+import org.multibit.mbm.db.dto.Customer;
 import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.services.CatalogService;
+import org.multibit.mbm.services.CustomerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
@@ -32,8 +35,8 @@ import java.net.URI;
  * @since 0.0.1
  *         
  */
-@Path("/v1")
-@Produces(MediaType.APPLICATION_JSON)
+@Path("/")
+@Produces({HalMediaType.APPLICATION_HAL_JSON, HalMediaType.APPLICATION_HAL_XML})
 public class CartResource {
 
   private static final Logger log = LoggerFactory.getLogger(CartResource.class);
@@ -47,6 +50,7 @@ public class CartResource {
 
   /**
    * Retrieves the  Cart for the authenticated User
+   *
    * @return The response
    */
   @GET
@@ -56,25 +60,27 @@ public class CartResource {
     // Validate the expected form of the data
     Assert.notNull(user.getCustomer());
 
-
     return new CartResponse(user.getCustomer().getCart());
   }
 
   /**
    * Creates a new Cart for the User
+   *
    * @param createCartRequest The initial Cart contents
    * @return The response
    */
   @POST
   @Path("/cart")
-  public Response createCart(@Auth User user,
+  public Response createCart(
+    @RestrictedTo({Authority.ROLE_CUSTOMER})
+    User user,
     CreateCartRequest createCartRequest,
     @Context UriInfo uriInfo) {
 
     // TODO Validate the request
     Customer customer = user.getCustomer();
 
-    for (CartItemResponse cartItemSummary: createCartRequest.getCartItemSummaries()) {
+    for (CartItemResponse cartItemSummary : createCartRequest.getCartItemSummaries()) {
       Long itemId = cartItemSummary.getId();
       int quantity = cartItemSummary.getQuantity();
       customer = customerService.setCartItemQuantity(customer, itemId, quantity);

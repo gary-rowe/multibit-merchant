@@ -59,4 +59,5 @@ public abstract class BaseBridge<T> {
    * @return The {@link Resource}
    */
   public abstract Resource toResource(T entity);
+
 }

@@ -57,10 +57,7 @@ public class HmacClientFilter extends ClientFilter {
     String httpNow = DateUtils.formatHttpDateHeader(DateUtils.nowUtc().plusSeconds(5));
     clientRequest.getHeaders().put(HmacUtils.X_HMAC_DATE, Lists.<Object>newArrayList(httpNow));
 
-    String canonicalRepresentation = createCanonicalRepresentation(
-      clientRequest.getMethod(),
-      clientRequest.getURI(),
-      clientRequest.getHeaders());
+    String canonicalRepresentation = createCanonicalRepresentation(clientRequest);
     log.debug("Canonical represenation: '{}'", canonicalRepresentation);
 
     String signature;
@@ -80,14 +77,20 @@ public class HmacClientFilter extends ClientFilter {
   }
 
   /**
-   * @param headers Providing the HTTP information necessary
+   * @param clientRequest Providing the HTTP information necessary
    *
-   * @return The canonical representation of the request
+   * @return The canonical representation of the request for the client to use
    */
-  /* package */ String createCanonicalRepresentation(String method, URI uri, MultivaluedMap<String, Object> headers) {
+  /* package */ String createCanonicalRepresentation(ClientRequest clientRequest) {
+
+    // Extract the original headers
+    MultivaluedMap<String,Object> originalHeaders = clientRequest.getHeaders();
+
+    // Extract the original URI
+    URI uri = clientRequest.getURI();
 
     // Create a lexicographically sorted set of the header names for lookup later
-    SortedSet<String> headerNames = Sets.newTreeSet(headers.keySet());
+    SortedSet<String> headerNames = Sets.newTreeSet(originalHeaders.keySet());
     // Remove some headers that should not be included or will have special treatment
     headerNames.remove(HttpHeaders.DATE);
     headerNames.remove(HmacUtils.X_HMAC_DATE);
@@ -96,34 +99,36 @@ public class HmacClientFilter extends ClientFilter {
     headerNames.remove(HttpHeaders.USER_AGENT);
     headerNames.remove(HttpHeaders.HOST);
 
+    String httpMethod = clientRequest.getMethod().toUpperCase();
+
     // Start with the empty string ("")
     final StringBuilder canonicalRepresentation = new StringBuilder("");
 
     // Add the HTTP-Verb for the request ("GET", "POST", ...) in capital letters, followed by a single newline (U+000A).
     canonicalRepresentation
-      .append(method.toUpperCase())
+      .append(httpMethod.toUpperCase())
       .append("\n");
 
     // Add the date for the request using the form "date:#date-of-request" followed by a single newline. The date for the signature must be formatted exactly as in the request.
-    if (headers.containsKey(HmacUtils.X_HMAC_DATE)) {
+    if (originalHeaders.containsKey(HmacUtils.X_HMAC_DATE)) {
       // Use the TTL date
       canonicalRepresentation
         .append("date:")
-        .append(headers.getFirst(HmacUtils.X_HMAC_DATE))
+        .append(originalHeaders.getFirst(HmacUtils.X_HMAC_DATE))
         .append("\n");
     } else {
       // Use the HTTP date
       canonicalRepresentation
         .append("date:")
-        .append(headers.getFirst(HttpHeaders.DATE))
+        .append(originalHeaders.getFirst(HttpHeaders.DATE))
         .append("\n");
     }
 
     // Add the nonce for the request in the form "nonce:#nonce-in-request" followed by a single newline. If no nonce is passed use the empty string as nonce value.
-    if (headers.containsKey(HmacUtils.X_HMAC_NONCE)) {
+    if (originalHeaders.containsKey(HmacUtils.X_HMAC_NONCE)) {
       canonicalRepresentation
         .append("nonce:")
-        .append(headers.getFirst(HmacUtils.X_HMAC_NONCE))
+        .append(originalHeaders.getFirst(HmacUtils.X_HMAC_NONCE))
         .append("\n");
     }
 
@@ -136,7 +141,7 @@ public class HmacClientFilter extends ClientFilter {
         .append(headerName.toLowerCase())
         .append(":");
       // TODO Consider effect of different separators on this list
-      for (Object value : headers.get(headerName)) {
+      for (Object value : originalHeaders.get(headerName)) {
         canonicalRepresentation
           .append(value.toString());
       }
@@ -151,6 +156,14 @@ public class HmacClientFilter extends ClientFilter {
       canonicalRepresentation
         .append("?")
         .append(uri.getQuery());
+    }
+
+// Check for payload
+    if ("POST".equalsIgnoreCase(httpMethod) ||
+      "PUT".equalsIgnoreCase(httpMethod)) {
+      // Include the entity as a simple string
+      canonicalRepresentation.append("\n");
+      canonicalRepresentation.append(clientRequest.getEntity());
     }
 
     return canonicalRepresentation.toString();
