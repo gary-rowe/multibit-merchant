@@ -42,13 +42,13 @@ public class HmacClientFilter extends ClientFilter {
 
     // Call the next client handler in the filter chain
     return getNext().handle(mcr);
+
   }
 
   /**
    * Handles the process of modifying the outbound request with suitable HMAC headers
    *
    * @param clientRequest The original client request
-   *
    * @return The modified client request
    */
   private ClientRequest modifyRequest(ClientRequest clientRequest) {
@@ -78,13 +78,12 @@ public class HmacClientFilter extends ClientFilter {
 
   /**
    * @param clientRequest Providing the HTTP information necessary
-   *
    * @return The canonical representation of the request for the client to use
    */
   /* package */ String createCanonicalRepresentation(ClientRequest clientRequest) {
 
     // Extract the original headers
-    MultivaluedMap<String,Object> originalHeaders = clientRequest.getHeaders();
+    MultivaluedMap<String, Object> originalHeaders = clientRequest.getHeaders();
 
     // Extract the original URI
     URI uri = clientRequest.getURI();
