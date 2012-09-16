@@ -1,5 +1,7 @@
 package org.multibit.mbm.api.request;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 /**
  * <p>Base class to provide the following to client side objects:</p>
  * <ul>
@@ -15,6 +17,7 @@ public abstract class BaseRequest {
   /**
    * The sessionId provides an anonymous session for RESTful API calls requiring state without authentication
    */
+  @JsonProperty
   private String sessionId=null;
 
   // TODO Consider error reporting through JSON

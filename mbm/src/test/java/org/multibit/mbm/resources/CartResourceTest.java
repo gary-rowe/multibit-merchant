@@ -1,6 +1,7 @@
 package org.multibit.mbm.resources;
 
 import com.yammer.dropwizard.testing.FixtureHelpers;
+import com.yammer.dropwizard.testing.JsonHelpers;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -54,16 +55,15 @@ public class CartResourceTest extends BaseJerseyResourceTest {
 
     CreateCartRequest createCartRequest = new CreateCartRequest();
 
-
     // TODO Fix the canonical representation problem for POST
 
-    String actualResponse = client()
+    CreateCartRequest actualResponse = client()
       .resource("/cart")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .entity(createCartRequest)
-      .post(String.class);
+      .post(CreateCartRequest.class);
 
-    String expectedResponse= FixtureHelpers.fixture("fixtures/hal/cart/expected-cart-new-jersey.json");
+    CreateCartRequest expectedResponse= JsonHelpers.fromJson(FixtureHelpers.fixture("fixtures/hal/cart/expected-cart-new-jersey.json"),CreateCartRequest.class);
 
     assertThat(actualResponse,is(equalTo(expectedResponse)));
 
