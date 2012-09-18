@@ -7,6 +7,7 @@ import com.yammer.dropwizard.testing.FixtureHelpers;
 import org.junit.Test;
 
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.ext.Providers;
 import java.net.URI;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -17,7 +18,10 @@ public class HmacClientFilterTest {
   @Test
   public void testCanonicalRepresentation_AllFields_Get() throws Exception {
 
-    HmacClientFilter testObject = new HmacClientFilter("abc123","def456");
+    // TODO Implement this
+    Providers providers = null;
+
+    HmacClientFilter testObject = new HmacClientFilter("abc123","def456", providers);
 
     OutBoundHeaders headers = new OutBoundHeaders();
     headers.add(HttpHeaders.DATE,"Sat, 01 Jan 2000 12:34:56 GMT");
@@ -41,7 +45,10 @@ public class HmacClientFilterTest {
   @Test
   public void testCanonicalRepresentation_AllFields_Post() throws Exception {
 
-    HmacClientFilter testObject = new HmacClientFilter("abc123","def456");
+    // TODO Implement this
+    Providers providers = null;
+
+    HmacClientFilter testObject = new HmacClientFilter("abc123","def456", providers);
 
     OutBoundHeaders headers = new OutBoundHeaders();
     headers.add(HttpHeaders.DATE,"Sat, 01 Jan 2000 12:34:56 GMT");
