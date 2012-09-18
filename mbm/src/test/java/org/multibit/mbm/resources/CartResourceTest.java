@@ -7,6 +7,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.api.request.CreateCartRequest;
+import org.multibit.mbm.api.response.CartResponse;
 import org.multibit.mbm.core.Saying;
 import org.multibit.mbm.db.dto.Customer;
 import org.multibit.mbm.db.dto.CustomerBuilder;
@@ -54,16 +55,17 @@ public class CartResourceTest extends BaseJerseyResourceTest {
   public void testCreateCart() throws Exception {
 
     CreateCartRequest createCartRequest = new CreateCartRequest();
+    createCartRequest.setSessionId("1234");
 
     // TODO Fix the canonical representation problem for POST
 
-    CreateCartRequest actualResponse = client()
+    CartResponse actualResponse = client()
       .resource("/cart")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .entity(createCartRequest)
-      .post(CreateCartRequest.class);
+      .post(CartResponse.class);
 
-    CreateCartRequest expectedResponse= JsonHelpers.fromJson(FixtureHelpers.fixture("fixtures/hal/cart/expected-cart-new-jersey.json"),CreateCartRequest.class);
+    CartResponse expectedResponse= JsonHelpers.fromJson(FixtureHelpers.fixture("fixtures/hal/cart/expected-cart-new-jersey.json"),CartResponse.class);
 
     assertThat(actualResponse,is(equalTo(expectedResponse)));
 

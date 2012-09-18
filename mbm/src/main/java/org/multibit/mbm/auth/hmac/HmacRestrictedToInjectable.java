@@ -1,21 +1,33 @@
 package org.multibit.mbm.auth.hmac;
 
 
+import com.google.common.base.Charsets;
 import com.google.common.base.Optional;
 import com.google.common.collect.Sets;
+import com.google.common.io.ByteStreams;
+import com.google.common.io.CharStreams;
+import com.google.common.io.Resources;
+import com.sun.jersey.api.container.ContainerException;
 import com.sun.jersey.api.core.HttpContext;
+import com.sun.jersey.core.util.ReaderWriter;
 import com.sun.jersey.server.impl.inject.AbstractHttpContextInjectable;
+import com.sun.jersey.spi.container.ContainerRequest;
 import com.yammer.dropwizard.auth.AuthenticationException;
 import com.yammer.dropwizard.auth.Authenticator;
+import org.multibit.mbm.api.request.CreateCartRequest;
 import org.multibit.mbm.db.dto.Authority;
+import org.multibit.mbm.util.StreamUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
+import javax.ws.rs.ext.MessageBodyReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -134,7 +146,7 @@ class HmacRestrictedToInjectable<T> extends AbstractHttpContextInjectable<T> {
         final String signature = authTokens[2];
         final String canonicalRepresentation = createCanonicalRepresentation(httpContext);
 
-        log.debug("Canonical representation: '{}'",canonicalRepresentation);
+        log.debug("Server side canonical representation: '{}'",canonicalRepresentation);
 
         final HmacCredentials credentials = new HmacCredentials("HmacSHA1", apiKey, signature, canonicalRepresentation, authorities);
 
@@ -169,6 +181,9 @@ class HmacRestrictedToInjectable<T> extends AbstractHttpContextInjectable<T> {
     // Provide a map of all header names converted to lowercase
     MultivaluedMap<String, String> originalHeaders = httpContext.getRequest().getRequestHeaders();
 
+    // This should always be safe
+    ContainerRequest request = (ContainerRequest) httpContext.getRequest();
+
     // Create a lexicographically sorted set of the header names for lookup later
     Set<String> headerNames = Sets.newTreeSet(originalHeaders.keySet());
     // Remove some headers that should not be included or will have special treatment
@@ -179,6 +194,8 @@ class HmacRestrictedToInjectable<T> extends AbstractHttpContextInjectable<T> {
     // TODO Check if the following should be removed (would the client know them in advance?)
     headerNames.remove(HttpHeaders.USER_AGENT);
     headerNames.remove(HttpHeaders.HOST);
+    headerNames.remove(HttpHeaders.ACCEPT);
+    headerNames.remove(HttpHeaders.CONTENT_TYPE);
 
     // Keep track of the method in a fixed format
     String httpMethod = httpContext.getRequest().getMethod().toUpperCase();
@@ -264,7 +281,22 @@ class HmacRestrictedToInjectable<T> extends AbstractHttpContextInjectable<T> {
      "PUT".equalsIgnoreCase(httpMethod)) {
       // Include the entity as a simple string
       canonicalRepresentation.append("\n");
-      canonicalRepresentation.append(httpContext.getRequest().getEntity(String.class));
+      ByteArrayOutputStream out = new ByteArrayOutputStream();
+      InputStream in = request.getEntityInputStream();
+      try {
+        if (in.available() > 0) {
+          ReaderWriter.writeTo(in, out);
+
+          canonicalRepresentation.append(out);
+
+          // Reset the input stream to the same contents to avoid problems with chained reading
+          byte[] requestEntity = out.toByteArray();
+          request.setEntityInputStream(new ByteArrayInputStream(requestEntity));
+        }
+      } catch (IOException ex) {
+        throw new ContainerException(ex);
+      }
+
     }
 
     return canonicalRepresentation.toString();

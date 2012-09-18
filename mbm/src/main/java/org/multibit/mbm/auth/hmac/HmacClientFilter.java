@@ -9,8 +9,16 @@ import org.multibit.mbm.util.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.MessageBodyWriter;
+import javax.ws.rs.ext.Providers;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.net.URI;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -30,19 +38,22 @@ public class HmacClientFilter extends ClientFilter {
 
   private final String apiKey;
   private final String sharedSecret;
+  private final Providers providers;
 
-  public HmacClientFilter(String apiKey, String sharedSecret) {
+  public HmacClientFilter(String apiKey, String sharedSecret, Providers providers) {
     this.apiKey = apiKey;
     this.sharedSecret = sharedSecret;
+    this.providers = providers;
   }
 
   public ClientResponse handle(ClientRequest cr) {
-    // Modify the request
     ClientRequest mcr = modifyRequest(cr);
 
     // Call the next client handler in the filter chain
-    return getNext().handle(mcr);
+    ClientResponse resp = getNext().handle(mcr);
 
+    // Modify the response
+    return modifyResponse(resp);
   }
 
   /**
@@ -58,7 +69,7 @@ public class HmacClientFilter extends ClientFilter {
     clientRequest.getHeaders().put(HmacUtils.X_HMAC_DATE, Lists.<Object>newArrayList(httpNow));
 
     String canonicalRepresentation = createCanonicalRepresentation(clientRequest);
-    log.debug("Canonical represenation: '{}'", canonicalRepresentation);
+    log.debug("Client side canonical representation: '{}'", canonicalRepresentation);
 
     String signature;
     try {
@@ -74,6 +85,11 @@ public class HmacClientFilter extends ClientFilter {
     clientRequest.getHeaders().put(HttpHeaders.AUTHORIZATION, Lists.<Object>newArrayList(authorization));
 
     return clientRequest;
+  }
+
+  private ClientResponse modifyResponse(ClientResponse resp) {
+    // Placeholder to complete the implementation
+    return resp;
   }
 
   /**
@@ -97,6 +113,8 @@ public class HmacClientFilter extends ClientFilter {
     // TODO Check if the following should be removed (would the client know them in advance?)
     headerNames.remove(HttpHeaders.USER_AGENT);
     headerNames.remove(HttpHeaders.HOST);
+    headerNames.remove(HttpHeaders.ACCEPT);
+    headerNames.remove(HttpHeaders.CONTENT_TYPE);
 
     String httpMethod = clientRequest.getMethod().toUpperCase();
 
@@ -157,12 +175,30 @@ public class HmacClientFilter extends ClientFilter {
         .append(uri.getQuery());
     }
 
-// Check for payload
+    // Check for payload
     if ("POST".equalsIgnoreCase(httpMethod) ||
       "PUT".equalsIgnoreCase(httpMethod)) {
       // Include the entity as a simple string
       canonicalRepresentation.append("\n");
-      canonicalRepresentation.append(clientRequest.getEntity());
+      // Get the message body writer that will be used later
+      Object entity = clientRequest.getEntity();
+      final MessageBodyWriter messageBodyWriter = providers
+        .getMessageBodyWriter(entity.getClass(), entity.getClass(),
+          new Annotation[0], MediaType.APPLICATION_JSON_TYPE);
+      final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+      if (messageBodyWriter == null) {
+        throw new WebApplicationException(Response.Status.BAD_REQUEST);
+      }
+
+      try {
+        messageBodyWriter.writeTo(entity, entity.getClass(),
+          entity.getClass(), new Annotation[0],
+          MediaType.APPLICATION_JSON_TYPE, originalHeaders, baos);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+      canonicalRepresentation.append(baos);
+
     }
 
     return canonicalRepresentation.toString();

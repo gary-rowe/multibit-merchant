@@ -4,9 +4,16 @@ import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.core.ResourceConfig;
+import com.sun.jersey.spi.container.ContainerRequestFilter;
+import com.sun.jersey.spi.service.ServiceFinder;
 import com.sun.jersey.test.framework.AppDescriptor;
 import com.sun.jersey.test.framework.JerseyTest;
 import com.sun.jersey.test.framework.LowLevelAppDescriptor;
+import com.sun.jersey.test.framework.WebAppDescriptor;
+import com.sun.jersey.test.framework.spi.container.TestContainer;
+import com.sun.jersey.test.framework.spi.container.TestContainerException;
+import com.sun.jersey.test.framework.spi.container.TestContainerFactory;
 import com.yammer.dropwizard.bundles.JavaBundle;
 import com.yammer.dropwizard.jersey.DropwizardResourceConfig;
 import com.yammer.dropwizard.jersey.JacksonMessageBodyProvider;
@@ -14,15 +21,14 @@ import com.yammer.dropwizard.json.Json;
 import org.codehaus.jackson.map.Module;
 import org.junit.After;
 import org.junit.Before;
-import org.multibit.mbm.auth.hmac.HmacAuthenticator;
-import org.multibit.mbm.auth.hmac.HmacClientFilter;
-import org.multibit.mbm.auth.hmac.HmacRestrictedToProvider;
+import org.multibit.mbm.auth.hmac.*;
 import org.multibit.mbm.db.dao.UserDao;
 import org.multibit.mbm.db.dto.*;
 
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -58,10 +64,6 @@ public abstract class BaseJerseyResourceTest extends BaseResourceTest {
     providers.add(provider);
   }
 
-  protected void addJacksonModule(Module module) {
-    modules.add(module);
-  }
-
   protected Json getJson() {
     return new Json();
   }
@@ -77,23 +79,31 @@ public abstract class BaseJerseyResourceTest extends BaseResourceTest {
       @Override
       protected AppDescriptor configure() {
         final DropwizardResourceConfig config = new DropwizardResourceConfig();
-        for (Object provider : JavaBundle.DEFAULT_PROVIDERS) { // sorry, Scala folks
+
+        for (Object provider : JavaBundle.DEFAULT_PROVIDERS) {
           config.getSingletons().add(provider);
         }
+
         for (Object provider : providers) {
           config.getSingletons().add(provider);
         }
+
         Json json = getJson();
         for (Module module : modules) {
           json.registerModule(module);
         }
+
         config.getSingletons().add(new JacksonMessageBodyProvider(json));
         config.getSingletons().addAll(singletons);
+
         return new LowLevelAppDescriptor.Builder(config).build();
       }
+
     };
-    // Allow final request filtering for HMAC authentication
-    test.client().addFilter(new HmacClientFilter(apiKey.get(), sharedSecret.get()));
+
+    // Allow final client request filtering for HMAC authentication (this allows for secure tests)
+    test.client().addFilter(new HmacClientFilter(apiKey.get(), sharedSecret.get(), test.client().getProviders()));
+
     test.setUp();
   }
 
@@ -117,6 +127,9 @@ public abstract class BaseJerseyResourceTest extends BaseResourceTest {
    */
   protected void setUpAuthenticator(Optional<String> apiKey, Optional<String> sharedSecret) {
 
+    Customer customer = CustomerBuilder.newInstance()
+      .build();
+
     // TODO Consider a shortcut for this in UserBuilder (asCustomer())
     Role customerRole = RoleBuilder.newInstance()
       .withName(Authority.ROLE_CUSTOMER.name())
@@ -129,6 +142,7 @@ public abstract class BaseJerseyResourceTest extends BaseResourceTest {
       .withUUID(apiKey.get())
       .withSecretKey(sharedSecret.get())
       .withRole(customerRole)
+      .withCustomer(customer)
       .build();
 
     UserDao userDao = mock(UserDao.class);
