@@ -6,8 +6,6 @@ import com.yammer.dropwizard.auth.Authenticator;
 import org.multibit.mbm.db.dao.UserDao;
 import org.multibit.mbm.db.dto.User;
 
-import java.security.GeneralSecurityException;
-
 /**
  * <p>Authenticator to provide the following to application:</p>
  * <ul>
@@ -34,20 +32,17 @@ public class HmacAuthenticator implements Authenticator<HmacCredentials, User> {
     // Locate their secret key
     String secretKey = user.getSecretKey();
 
-    try {
-      String computedSignature = new String(
-        HmacUtils.computeSignature(
-          credentials.getAlgorithm(),
-          credentials.getCanonicalRepresentation().getBytes(),
-          secretKey.getBytes()));
+    String computedSignature = new String(
+      HmacUtils.computeSignature(
+        credentials.getAlgorithm(),
+        credentials.getCanonicalRepresentation().getBytes(),
+        secretKey.getBytes()));
 
-      // Avoid timing attacks
-      if (isEqual(computedSignature.getBytes(), credentials.getDigest().getBytes())) {
-        return Optional.of(user);
-      }
-    } catch (GeneralSecurityException e) {
-      return Optional.absent();
+    // Avoid timing attacks by verifying every byte every time
+    if (isEqual(computedSignature.getBytes(), credentials.getDigest().getBytes())) {
+      return Optional.of(user);
     }
+
     return Optional.absent();
 
   }

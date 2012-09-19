@@ -144,8 +144,10 @@ class HmacRestrictedToInjectable<T> extends AbstractHttpContextInjectable<T> {
 
         final String apiKey = authTokens[1];
         final String signature = authTokens[2];
-        final String canonicalRepresentation = createCanonicalRepresentation(httpContext);
+        final ContainerRequest containerRequest = (ContainerRequest) httpContext.getRequest();
 
+        // Build the canonical representation for the server side
+        final String canonicalRepresentation = HmacUtils.createCanonicalRepresentation(containerRequest);
         log.debug("Server side canonical representation: '{}'",canonicalRepresentation);
 
         final HmacCredentials credentials = new HmacCredentials("HmacSHA1", apiKey, signature, canonicalRepresentation, authorities);
@@ -169,137 +171,6 @@ class HmacRestrictedToInjectable<T> extends AbstractHttpContextInjectable<T> {
       .entity("Credentials are required to access this resource.")
       .type(MediaType.TEXT_PLAIN_TYPE)
       .build());
-  }
-
-  /**
-   * @param httpContext Providing the HTTP information necessary
-   *
-   * @return The canonical representation of the request
-   */
-  /* package */ String createCanonicalRepresentation(HttpContext httpContext) {
-
-    // Provide a map of all header names converted to lowercase
-    MultivaluedMap<String, String> originalHeaders = httpContext.getRequest().getRequestHeaders();
-
-    // This should always be safe
-    ContainerRequest request = (ContainerRequest) httpContext.getRequest();
-
-    // Create a lexicographically sorted set of the header names for lookup later
-    Set<String> headerNames = Sets.newTreeSet(originalHeaders.keySet());
-    // Remove some headers that should not be included or will have special treatment
-    headerNames.remove(HttpHeaders.DATE);
-    headerNames.remove(HmacUtils.X_HMAC_DATE);
-    headerNames.remove(HmacUtils.X_HMAC_NONCE);
-    headerNames.remove(HttpHeaders.AUTHORIZATION);
-    // TODO Check if the following should be removed (would the client know them in advance?)
-    headerNames.remove(HttpHeaders.USER_AGENT);
-    headerNames.remove(HttpHeaders.HOST);
-    headerNames.remove(HttpHeaders.ACCEPT);
-    headerNames.remove(HttpHeaders.CONTENT_TYPE);
-
-    // Keep track of the method in a fixed format
-    String httpMethod = httpContext.getRequest().getMethod().toUpperCase();
-
-    // Start with the empty string ("")
-    final StringBuilder canonicalRepresentation = new StringBuilder("");
-
-    // Add the HTTP-Verb for the request ("GET", "POST", ...) in capital letters, followed by a single newline (U+000A).
-    canonicalRepresentation
-      .append(httpMethod)
-      .append("\n");
-
-    // Add the date for the request using the form "date:#date-of-request" followed by a single newline. The date for the signature must be formatted exactly as in the request.
-    if (originalHeaders.containsKey(HmacUtils.X_HMAC_DATE)) {
-      // Use the TTL date
-      canonicalRepresentation
-        .append("date:")
-        .append(originalHeaders.getFirst(HmacUtils.X_HMAC_DATE))
-        .append("\n");
-
-    } else {
-      // Use the HTTP date
-      canonicalRepresentation
-        .append("date:")
-        .append(originalHeaders.getFirst(HttpHeaders.DATE))
-        .append("\n");
-    }
-
-    // Add the nonce for the request in the form "nonce:#nonce-in-request" followed by a single newline. If no nonce is passed use the empty string as nonce value.
-    if (originalHeaders.containsKey(HmacUtils.X_HMAC_NONCE)) {
-      canonicalRepresentation
-        .append("nonce:")
-        .append(originalHeaders.getFirst(HmacUtils.X_HMAC_NONCE))
-        .append("\n");
-    }
-
-    // Sort the remaining headers lexicographically by header name.
-    // Trim header values by removing any whitespace before the first non-whitespace character and after the last non-whitespace character.
-    // Combine lowercase header names and header values using a single colon (“:”) as separator. Do not include whitespace characters around the separator.
-    // Combine all headers using a single newline (U+000A) character and append them to the canonical representation, followed by a single newline (U+000A) character.
-    for (String headerName : headerNames) {
-      canonicalRepresentation
-        .append(headerName.toLowerCase())
-        .append(":");
-      // TODO Consider effect of different separators on this list
-      for (String value : originalHeaders.get(headerName)) {
-        canonicalRepresentation
-          .append(value);
-      }
-      canonicalRepresentation
-        .append("\n");
-    }
-
-    // Append the path to the canonical representation
-    canonicalRepresentation
-      .append("/")
-      .append(httpContext.getRequest().getPath());
-
-    // Append the url-decoded query parameters to the canonical representation
-    MultivaluedMap<String, String> decodedQueryParameters = httpContext.getRequest().getQueryParameters();
-    if (!decodedQueryParameters.isEmpty()) {
-      canonicalRepresentation.append("?");
-      boolean first=true;
-      for (Map.Entry<String, List<String>> queryParameter : decodedQueryParameters.entrySet()) {
-        if (first) {
-          first=false;
-        } else {
-          canonicalRepresentation.append("&");
-        }
-        canonicalRepresentation
-          .append(queryParameter.getKey())
-          .append("=");
-        // TODO Consider effect of different separators on this list
-        for (String value : queryParameter.getValue()) {
-          canonicalRepresentation
-            .append(value);
-        }
-      }
-    }
-
-    // Check for payload
-    if ("POST".equalsIgnoreCase(httpMethod) ||
-     "PUT".equalsIgnoreCase(httpMethod)) {
-      // Include the entity as a simple string
-      canonicalRepresentation.append("\n");
-      ByteArrayOutputStream out = new ByteArrayOutputStream();
-      InputStream in = request.getEntityInputStream();
-      try {
-        if (in.available() > 0) {
-          ReaderWriter.writeTo(in, out);
-
-          canonicalRepresentation.append(out);
-
-          // Reset the input stream to the same contents to avoid problems with chained reading
-          byte[] requestEntity = out.toByteArray();
-          request.setEntityInputStream(new ByteArrayInputStream(requestEntity));
-        }
-      } catch (IOException ex) {
-        throw new ContainerException(ex);
-      }
-
-    }
-
-    return canonicalRepresentation.toString();
   }
 
 }
