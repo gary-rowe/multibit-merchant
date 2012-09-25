@@ -28,15 +28,7 @@ public class DefaultCartResponseBridgeTest extends BaseResourceTest {
   @Test
   public void representCartResponseAsJson() throws Exception {
 
-    Item item1 = DatabaseLoader.buildBookItemCryptonomicon();
-    Item item2 = DatabaseLoader.buildBookItemQuantumThief();
-
-    Cart cart = CartBuilder
-      .newInstance()
-      .withId(1L)
-      .withCartItem(item1, 1)
-      .withCartItem(item2, 2)
-      .build();
+    Cart cart = buildCart();
 
     CartResponse cartResponse = new CartResponse(cart);
 
@@ -51,15 +43,7 @@ public class DefaultCartResponseBridgeTest extends BaseResourceTest {
   @Test
   public void representCartResponseAsXml() throws IOException {
 
-    Item item1 = DatabaseLoader.buildBookItemCryptonomicon();
-    Item item2 = DatabaseLoader.buildBookItemQuantumThief();
-
-    Cart cart = CartBuilder
-      .newInstance()
-      .withId(1L)
-      .withCartItem(item1, 1)
-      .withCartItem(item2, 2)
-      .build();
+    Cart cart = buildCart();
 
     CartResponse cartResponse = new CartResponse(cart);
 
@@ -69,6 +53,21 @@ public class DefaultCartResponseBridgeTest extends BaseResourceTest {
 
     FixtureAsserts.assertRepresentationMatchesXmlFixture("a CartResponse can be marshalled to XML", resource, "fixtures/hal/cart/expected-cart-response-simple.xml");
 
+  }
+
+  private Cart buildCart() {
+    Item item1 = DatabaseLoader.buildBookItemCryptonomicon();
+    item1.setId(1L);
+
+    Item item2 = DatabaseLoader.buildBookItemQuantumThief();
+    item2.setId(2L);
+
+    return CartBuilder
+      .newInstance()
+      .withId(1L)
+      .withCartItem(item1, 1)
+      .withCartItem(item2, 2)
+      .build();
   }
 
 }
