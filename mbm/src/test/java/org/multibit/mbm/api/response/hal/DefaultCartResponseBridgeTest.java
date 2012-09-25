@@ -5,6 +5,7 @@ import com.theoryinpractise.halbuilder.spi.Resource;
 import org.junit.Before;
 import org.junit.Test;
 import org.multibit.mbm.api.response.CartResponse;
+import org.multibit.mbm.db.DatabaseLoader;
 import org.multibit.mbm.db.dto.Cart;
 import org.multibit.mbm.db.dto.CartBuilder;
 import org.multibit.mbm.db.dto.Item;
@@ -27,19 +28,19 @@ public class DefaultCartResponseBridgeTest extends BaseResourceTest {
   @Test
   public void representCartResponseAsJson() throws Exception {
 
-    Item item = ItemBuilder
-      .newInstance()
-      .build();
+    Item item1 = DatabaseLoader.buildBookItemCryptonomicon();
+    Item item2 = DatabaseLoader.buildBookItemQuantumThief();
 
     Cart cart = CartBuilder
       .newInstance()
       .withId(1L)
-      .withCartItem(item, 5)
+      .withCartItem(item1, 1)
+      .withCartItem(item2, 2)
       .build();
 
     CartResponse cartResponse = new CartResponse(cart);
 
-    DefaultCartResponseBridge testObject = new DefaultCartResponseBridge(uriInfo,principal);
+    DefaultCartResponseBridge testObject = new DefaultCartResponseBridge(uriInfo, principal);
 
     Resource resource = testObject.toResource(cartResponse);
 
@@ -50,19 +51,19 @@ public class DefaultCartResponseBridgeTest extends BaseResourceTest {
   @Test
   public void representCartResponseAsXml() throws IOException {
 
-    Item item = ItemBuilder
-      .newInstance()
-      .build();
+    Item item1 = DatabaseLoader.buildBookItemCryptonomicon();
+    Item item2 = DatabaseLoader.buildBookItemQuantumThief();
 
     Cart cart = CartBuilder
       .newInstance()
       .withId(1L)
-      .withCartItem(item, 5)
+      .withCartItem(item1, 1)
+      .withCartItem(item2, 2)
       .build();
 
     CartResponse cartResponse = new CartResponse(cart);
 
-    DefaultCartResponseBridge testObject = new DefaultCartResponseBridge(uriInfo,principal);
+    DefaultCartResponseBridge testObject = new DefaultCartResponseBridge(uriInfo, principal);
 
     Resource resource = testObject.toResource(cartResponse);
 

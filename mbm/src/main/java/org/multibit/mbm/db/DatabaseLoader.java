@@ -91,52 +91,87 @@ public class DatabaseLoader {
    * Build a demonstration database based on books
    */
   private void buildCatalogBooks() {
-    Item book1 = ItemBuilder.newInstance()
-      .withSKU("0099410672")
-      .withPrimaryFieldDetail(ItemField.TITLE, "Cryptonomicon, by Neal Stephenson", "en")
-      .withPrimaryFieldDetail(ItemField.SUMMARY, "'A brilliant patchwork of code-breaking mathematicians and their descendants who are striving to create a data haven in the Philippines...trust me on this one' Guardian", "en")
-      .withPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/2/thumbnail2.png", "en")
-      .build();
+    Item book1 = buildBookItemCryptonomicon();
 
     itemDao.saveOrUpdate(book1);
 
-    Item book2 = ItemBuilder.newInstance()
-      .withSKU("0140296034")
-      .withPrimaryFieldDetail(ItemField.TITLE, "A Year In Provence, by Peter Mayle", "en")
-      .withPrimaryFieldDetail(ItemField.SUMMARY, "Enjoy an irresistible feast of humour and discover the joys of French rural living with Peter Mayle's bestselling, much-loved account of 'A Year In Provence'.", "en")
-      .withPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/1/thumbnail1.png", "en")
-      .build();
+    Item book2 = buildBookItemProvence();
 
     itemDao.saveOrUpdate(book2);
 
-    Item book3 = ItemBuilder.newInstance()
-      .withSKU("186126173X")
-      .withPrimaryFieldDetail(ItemField.TITLE, "Plumbing and Central Heating, by Mike Lawrence", "en")
-      .withPrimaryFieldDetail(ItemField.SUMMARY, "This guide begins with the basic skills of plumbing, which once mastered, can be applied to any situation, from mending a leaking tap to installing a new shower unit.", "en")
-      .withPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/3/thumbnail3.png", "en")
-      .build();
+    Item book3 = buildBookItemPlumbing();
 
     itemDao.saveOrUpdate(book3);
 
-    Item book4 = ItemBuilder.newInstance()
-      .withSKU("0575088893")
-      .withPrimaryFieldDetail(ItemField.TITLE, "The Quantum Thief, by Hannu Rajaniemi", "en")
-      .withPrimaryFieldDetail(ItemField.SUMMARY, "The most exciting SF debut of the last five years - a star to stand alongside Alistair Reynolds and Richard Morgan.", "en")
-      .withPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/4/thumbnail4.png", "en")
-      .build();
+    Item book4 = buildBookItemQuantumThief();
 
     itemDao.saveOrUpdate(book4);
 
-    Item book5 = ItemBuilder.newInstance()
-      .withSKU("0316184136")
-      .withPrimaryFieldDetail(ItemField.TITLE, "The Complete Works of Emily Dickinson, edited by Thomas H Johnson", "en")
-      .withPrimaryFieldDetail(ItemField.SUMMARY, "The Complete Poems of Emily Dickinson is the only one-volume edition containing all Emily Dickinson's poems.", "en")
-      .withPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/5/thumbnail5.png", "en")
-      .build();
+    Item book5 = buildBookItemCompleteWorks();
 
     itemDao.saveOrUpdate(book5);
 
     itemDao.flush();
+  }
+
+  /**
+   * @return A populated book item
+   */
+  public static Item buildBookItemProvence() {
+    return ItemBuilder.newInstance()
+        .withSKU("0140296034")
+        .withPrimaryFieldDetail(ItemField.TITLE, "A Year In Provence, by Peter Mayle", "en")
+        .withPrimaryFieldDetail(ItemField.SUMMARY, "Enjoy an irresistible feast of humour and discover the joys of French rural living with Peter Mayle's bestselling, much-loved account of 'A Year In Provence'.", "en")
+        .withPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/1/thumbnail1.png", "en")
+        .build();
+  }
+
+  /**
+   * @return A populated book item
+   */
+  public static Item buildBookItemPlumbing() {
+    return ItemBuilder.newInstance()
+        .withSKU("186126173X")
+        .withPrimaryFieldDetail(ItemField.TITLE, "Plumbing and Central Heating, by Mike Lawrence", "en")
+        .withPrimaryFieldDetail(ItemField.SUMMARY, "This guide begins with the basic skills of plumbing, which once mastered, can be applied to any situation, from mending a leaking tap to installing a new shower unit.", "en")
+        .withPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/3/thumbnail3.png", "en")
+        .build();
+  }
+
+  /**
+   * @return A populated book item
+   */
+  public static Item buildBookItemQuantumThief() {
+    return ItemBuilder.newInstance()
+        .withSKU("0575088893")
+        .withPrimaryFieldDetail(ItemField.TITLE, "The Quantum Thief, by Hannu Rajaniemi", "en")
+        .withPrimaryFieldDetail(ItemField.SUMMARY, "The most exciting SF debut of the last five years - a star to stand alongside Alistair Reynolds and Richard Morgan.", "en")
+        .withPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/4/thumbnail4.png", "en")
+        .build();
+  }
+
+  /**
+   * @return A populated book item
+   */
+  public static Item buildBookItemCompleteWorks() {
+    return ItemBuilder.newInstance()
+        .withSKU("0316184136")
+        .withPrimaryFieldDetail(ItemField.TITLE, "The Complete Works of Emily Dickinson, edited by Thomas H Johnson", "en")
+        .withPrimaryFieldDetail(ItemField.SUMMARY, "The Complete Poems of Emily Dickinson is the only one-volume edition containing all Emily Dickinson's poems.", "en")
+        .withPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/5/thumbnail5.png", "en")
+        .build();
+  }
+
+  /**
+   * @return A populated book item
+   */
+  public static Item buildBookItemCryptonomicon() {
+    return ItemBuilder.newInstance()
+        .withSKU("0099410672")
+        .withPrimaryFieldDetail(ItemField.TITLE, "Cryptonomicon, by Neal Stephenson", "en")
+        .withPrimaryFieldDetail(ItemField.SUMMARY, "'A brilliant patchwork of code-breaking mathematicians and their descendants who are striving to create a data haven in the Philippines...trust me on this one' Guardian", "en")
+        .withPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/2/thumbnail2.png", "en")
+        .build();
   }
 
   private void buildUsers() {

@@ -69,7 +69,11 @@ public class CartItemResponse {
     this.imgThumbnailUri = item.getItemFieldContent(ItemField.IMAGE_THUMBNAIL_URI);
     this.quantity = cartItem.getQuantity();
     if (title != null) {
-      this.slug = title.replaceAll(" ", "-").toLowerCase();
+      // TODO Move the "slugifier" into its own class
+      this.slug = title
+        .replaceAll("\\p{Punct}", "")
+        .replaceAll("\\p{Space}", "-")
+        .toLowerCase();
     }
   }
 
