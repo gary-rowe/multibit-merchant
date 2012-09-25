@@ -3,6 +3,7 @@ package org.multibit.mbm.api.response.hal;
 import com.google.common.base.Optional;
 import com.theoryinpractise.halbuilder.ResourceFactory;
 import com.theoryinpractise.halbuilder.spi.Resource;
+import org.multibit.mbm.api.response.CartItemResponse;
 import org.multibit.mbm.api.response.CartResponse;
 import org.multibit.mbm.db.dto.User;
 
@@ -30,21 +31,16 @@ public class DefaultCartResponseBridge extends BaseBridge<CartResponse> {
 
     String basePath = "/cart/" + cartResponse.getId();
 
-    ResourceFactory resourceFactory = getResourceFactory();
-
-    Resource cartItemsResource = resourceFactory.newResource(basePath + "/items2")
-      .withBean(cartResponse.getCartItems())
-      // End of build
-      ;
-
-    return resourceFactory.newResource(basePath)
+    Resource cartResource = getResourceFactory().newResource(basePath)
       .withProperty("btcTotal", cartResponse.getBtcTotal())
       .withProperty("localSymbol", cartResponse.getLocalSymbol())
-      .withProperty("localTotal", cartResponse.getLocalTotal())
-        // Provide an inline reference to the cart items (and a direct URI)
-      .withSubresource("items", cartItemsResource)
-      // End of build
-      ;
+      .withProperty("localTotal", cartResponse.getLocalTotal());
+
+    for (CartItemResponse cartItemResponse: cartResponse.getCartItems()) {
+      cartResource.withBeanBasedSubresource("item",basePath+"/item/"+cartItemResponse.getId(),cartItemResponse);
+    }
+
+    return cartResource;
   }
 
 }

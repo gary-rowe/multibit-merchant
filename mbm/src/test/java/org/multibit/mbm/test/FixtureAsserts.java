@@ -2,6 +2,7 @@ package org.multibit.mbm.test;
 
 import com.theoryinpractise.halbuilder.spi.Resource;
 import com.yammer.dropwizard.testing.FixtureHelpers;
+import junit.framework.Assert;
 import org.bouncycastle.util.Arrays;
 import org.multibit.mbm.api.hal.HalMediaType;
 
@@ -26,36 +27,38 @@ public class FixtureAsserts {
   /**
    * Renders a HAL resource as JSON and compares it to a normalised fixture (
    *
-   * @param reason The reason (e.g. "a Customer can be marshalled to JSON")
-   * @param resource The HAL resource
+   * @param reason           The reason (e.g. "a Customer can be marshalled to JSON")
+   * @param representation         The HAL representation
    * @param fixtureClasspath The classpath reference to the resource (e.g. "fixtures/example.json")
    * @throws IOException If something goes wrong
    */
-  public static void assertRepresentationMatchesJsonFixture(String reason, Resource resource, String fixtureClasspath) throws IOException {
-    assertThat(reason,
-      resource.renderContent(HalMediaType.APPLICATION_HAL_JSON),
-      is(equalTo(jsonFixture(fixtureClasspath))));
+  public static void assertRepresentationMatchesJsonFixture(String reason, Resource representation, String fixtureClasspath) throws IOException {
+    Assert.assertEquals(reason,
+      jsonFixture(fixtureClasspath),
+      representation.renderContent(HalMediaType.APPLICATION_HAL_JSON)
+    );
   }
 
   /**
    * Renders a HAL representation as JSON and compares it to the expected fixture
    *
-   * @param reason The reason (e.g. "a Customer can be marshalled to JSON")
-   * @param representation The HAL representation
+   * @param reason           The reason (e.g. "a Customer can be marshalled to JSON")
+   * @param representation   The HAL representation
    * @param fixtureClasspath The classpath reference to the resource (e.g. "fixtures/example.xml")
    * @throws IOException If something goes wrong
    */
   public static void assertRepresentationMatchesXmlFixture(String reason, Resource representation, String fixtureClasspath) throws IOException {
-    assertThat(reason,
-      representation.renderContent(HalMediaType.APPLICATION_HAL_XML),
-      is(equalTo(FixtureHelpers.fixture(fixtureClasspath))));
+    Assert.assertEquals(reason,
+      FixtureHelpers.fixture(fixtureClasspath),
+      representation.renderContent(HalMediaType.APPLICATION_HAL_XML)
+    );
   }
 
   /**
    * Compares the given byte[] with that read from the expected fixture
    *
-   * @param reason The reason (e.g. "a correct swatch has been generated")
-   * @param representation The byte[] to test
+   * @param reason           The reason (e.g. "a correct swatch has been generated")
+   * @param representation   The byte[] to test
    * @param fixtureClasspath The classpath reference to the resource (e.g. "fixtures/example.png")
    * @throws IOException If something goes wrong
    */
