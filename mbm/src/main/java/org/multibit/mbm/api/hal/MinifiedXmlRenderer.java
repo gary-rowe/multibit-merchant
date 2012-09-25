@@ -1,13 +1,10 @@
 package org.multibit.mbm.api.hal;
 
 /**
- * <p>[Pattern] to provide the following to {@link Object}:</p>
+ * <p>XML renderer to provide the following to resources:</p>
  * <ul>
- * <li></li>
+ * <li>Minified XML representation</li>
  * </ul>
- * <p>Example:</p>
- * <pre>
- * </pre>
  *
  * @since 0.0.1
  *         
@@ -29,17 +26,16 @@ import java.io.Writer;
 import java.util.List;
 import java.util.Map;
 
-import static com.theoryinpractise.halbuilder.impl.api.Support.*;
+import static com.theoryinpractise.halbuilder.impl.api.Support.HREF;
+import static com.theoryinpractise.halbuilder.impl.api.Support.HREFLANG;
+import static com.theoryinpractise.halbuilder.impl.api.Support.LINK;
+import static com.theoryinpractise.halbuilder.impl.api.Support.NAME;
+import static com.theoryinpractise.halbuilder.impl.api.Support.REL;
+import static com.theoryinpractise.halbuilder.impl.api.Support.SELF;
+import static com.theoryinpractise.halbuilder.impl.api.Support.TEMPLATED;
+import static com.theoryinpractise.halbuilder.impl.api.Support.TITLE;
+import static com.theoryinpractise.halbuilder.impl.api.Support.XSI_NAMESPACE;
 
-/**
- * <p>XML renderer to provide the following to resources:</p>
- * <ul>
- * <li>Minified XML representation</li>
- * </ul>
- *
- * @since 0.0.1
- *         
- */
 public class MinifiedXmlRenderer implements Renderer<String> {
 
   public Optional<String> render(ReadableResource resource, Writer writer) {
@@ -72,6 +68,11 @@ public class MinifiedXmlRenderer implements Renderer<String> {
         resourceElement.addNamespaceDeclaration(
           Namespace.getNamespace(entry.getKey(), entry.getValue()));
       }
+      // Add the instance namespace if there are null properties on this
+      // resource or on any embedded resources.
+      if(resource.hasNullProperties()) {
+        resourceElement.addNamespaceDeclaration(XSI_NAMESPACE);
+      }
     }
 
     //add a comment
@@ -93,6 +94,9 @@ public class MinifiedXmlRenderer implements Renderer<String> {
         if (link.getHreflang().isPresent()) {
           linkElement.setAttribute(HREFLANG, link.getHreflang().get());
         }
+        if (link.hasTemplate()) {
+          linkElement.setAttribute(TEMPLATED, "true");
+        }
         resourceElement.addContent(linkElement);
       }
     }
@@ -100,7 +104,12 @@ public class MinifiedXmlRenderer implements Renderer<String> {
     // add properties
     for (Map.Entry<String, Optional<Object>> entry : resource.getProperties().entrySet()) {
       Element propertyElement = new Element(entry.getKey());
-      propertyElement.setContent(new Text(entry.getValue().toString()));
+      if(entry.getValue().isPresent()) {
+        propertyElement.setContent(new Text(entry.getValue().get().toString()));
+      }
+      else {
+        propertyElement.setAttribute("nil", "true", XSI_NAMESPACE);
+      }
       resourceElement.addContent(propertyElement);
     }
 
@@ -114,4 +123,3 @@ public class MinifiedXmlRenderer implements Renderer<String> {
   }
 
 }
-

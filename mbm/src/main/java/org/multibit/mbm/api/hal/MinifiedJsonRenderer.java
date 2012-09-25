@@ -12,8 +12,6 @@ import com.theoryinpractise.halbuilder.spi.Link;
 import com.theoryinpractise.halbuilder.spi.ReadableResource;
 import com.theoryinpractise.halbuilder.spi.Renderer;
 import com.theoryinpractise.halbuilder.spi.Resource;
-import org.codehaus.jackson.JsonFactory;
-import org.codehaus.jackson.JsonGenerator;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -37,10 +35,13 @@ public class MinifiedJsonRenderer implements Renderer<String> {
 
   public Optional<String> render(ReadableResource resource, Writer writer) {
 
-    JsonFactory f = new JsonFactory();
+    com.fasterxml.jackson.core.JsonFactory f = new com.fasterxml.jackson.core.JsonFactory();
+    f.enable(com.fasterxml.jackson.core.JsonGenerator.Feature.QUOTE_FIELD_NAMES);
 
     try {
-      JsonGenerator g = f.createJsonGenerator(writer);
+      com.fasterxml.jackson.core.JsonGenerator g = f.createJsonGenerator(writer);
+      // Turn off pretty printing since it interferes with testing and bloats output
+      // g.setPrettyPrinter(new DefaultPrettyPrinter());
       g.writeStartObject();
       renderJson(g, resource, false);
       g.writeEndObject();
@@ -51,7 +52,7 @@ public class MinifiedJsonRenderer implements Renderer<String> {
     return Optional.absent();
   }
 
-  private void renderJson(JsonGenerator g, ReadableResource resource, boolean embedded) throws IOException {
+  private void renderJson(com.fasterxml.jackson.core.JsonGenerator g, ReadableResource resource, boolean embedded) throws IOException {
 
     final Link resourceLink = resource.getResourceLink();
     final String href = resourceLink.getHref();
@@ -98,7 +99,11 @@ public class MinifiedJsonRenderer implements Renderer<String> {
     }
 
     for (Map.Entry<String, Optional<Object>> entry : resource.getProperties().entrySet()) {
-      g.writeObjectField(entry.getKey(), entry.getValue());
+      if (entry.getValue().isPresent()) {
+        g.writeObjectField(entry.getKey(), entry.getValue().get());
+      } else {
+        g.writeNullField(entry.getKey());
+      }
     }
 
     if (!resource.getResources().isEmpty()) {
@@ -134,10 +139,11 @@ public class MinifiedJsonRenderer implements Renderer<String> {
           g.writeEndArray();
         }
       }
+      g.writeEndObject();
     }
   }
 
-  private void writeJsonLinkContent(JsonGenerator g, Link link) throws IOException {
+  private void writeJsonLinkContent(com.fasterxml.jackson.core.JsonGenerator g, Link link) throws IOException {
     g.writeStringField(HREF, link.getHref());
     if (link.getName().isPresent()) {
       g.writeStringField(NAME, link.getName().get());
@@ -148,5 +154,10 @@ public class MinifiedJsonRenderer implements Renderer<String> {
     if (link.getHreflang().isPresent()) {
       g.writeStringField(HREFLANG, link.getHreflang().get());
     }
+    if (link.hasTemplate()) {
+      g.writeBooleanField(TEMPLATED, true);
+    }
   }
+
+
 }
