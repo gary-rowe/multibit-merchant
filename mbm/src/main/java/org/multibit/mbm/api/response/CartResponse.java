@@ -21,6 +21,9 @@ import java.util.List;
 public class CartResponse extends BaseResponse {
 
   @JsonProperty
+  private String id = "";
+
+  @JsonProperty
   private List<CartItemResponse> cartItems = Lists.newArrayList();
 
   @JsonProperty
@@ -42,6 +45,12 @@ public class CartResponse extends BaseResponse {
    * @param cart The Cart to base the summary upon
    */
   public CartResponse(Cart cart) {
+
+    if (cart.getId() == null) {
+      throw new IllegalArgumentException("Cannot respond with a transient Cart. Id is null.");
+    }
+    id = String.valueOf(cart.getId());
+
     // Populate the items (keeping a running total)
     double btcSubTotal = 0;
     double localSubTotal = 0;
@@ -50,6 +59,7 @@ public class CartResponse extends BaseResponse {
       btcSubTotal += (cartItem.getQuantity() * 36);
       localSubTotal += (cartItem.getQuantity() * 14);
     }
+
     // Provide a simple totalling system (needs a lot more work!)
     btcTotal = String.format("%.4f", btcSubTotal / 10);
     localTotal = String.format("%.2f", localSubTotal / 10);
@@ -61,6 +71,14 @@ public class CartResponse extends BaseResponse {
         return c1.getTitle().compareTo(c2.getTitle());
       }
     });
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
   }
 
   public List<CartItemResponse> getCartItems() {

@@ -31,23 +31,23 @@ public class FixtureAsserts {
    * @param fixtureClasspath The classpath reference to the resource (e.g. "fixtures/example.json")
    * @throws IOException If something goes wrong
    */
-  public static void assertResourceMatchesJsonFixture(String reason, Resource resource, String fixtureClasspath) throws IOException {
+  public static void assertRepresentationMatchesJsonFixture(String reason, Resource resource, String fixtureClasspath) throws IOException {
     assertThat(reason,
       resource.renderContent(HalMediaType.APPLICATION_HAL_JSON),
       is(equalTo(jsonFixture(fixtureClasspath))));
   }
 
   /**
-   * Renders a HAL resource as JSON and compares it to the expected fixture
+   * Renders a HAL representation as JSON and compares it to the expected fixture
    *
    * @param reason The reason (e.g. "a Customer can be marshalled to JSON")
-   * @param resource The HAL resource
+   * @param representation The HAL representation
    * @param fixtureClasspath The classpath reference to the resource (e.g. "fixtures/example.xml")
    * @throws IOException If something goes wrong
    */
-  public static void assertResourceMatchesXmlFixture(String reason, Resource resource, String fixtureClasspath) throws IOException {
+  public static void assertRepresentationMatchesXmlFixture(String reason, Resource representation, String fixtureClasspath) throws IOException {
     assertThat(reason,
-      resource.renderContent(HalMediaType.APPLICATION_HAL_XML),
+      representation.renderContent(HalMediaType.APPLICATION_HAL_XML),
       is(equalTo(FixtureHelpers.fixture(fixtureClasspath))));
   }
 
@@ -55,12 +55,12 @@ public class FixtureAsserts {
    * Compares the given byte[] with that read from the expected fixture
    *
    * @param reason The reason (e.g. "a correct swatch has been generated")
-   * @param resource The byte[] to test
+   * @param representation The byte[] to test
    * @param fixtureClasspath The classpath reference to the resource (e.g. "fixtures/example.png")
    * @throws IOException If something goes wrong
    */
-  public static void assertResourceMatchesBinaryFixture(String reason, byte[] resource, String fixtureClasspath) throws IOException {
-    assertTrue(reason, Arrays.areEqual(resource, BinaryFixtureHelpers.fixture(fixtureClasspath)));
+  public static void assertRepresentationMatchesBinaryFixture(String reason, byte[] representation, String fixtureClasspath) throws IOException {
+    assertTrue(reason, Arrays.areEqual(representation, BinaryFixtureHelpers.fixture(fixtureClasspath)));
   }
 
 }

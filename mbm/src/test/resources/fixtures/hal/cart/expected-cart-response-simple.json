@@ -1,0 +1,1 @@
+{"_links":{"self":{"href":"http://example.org/cart/1"}},"btcTotal":"18.0000","localSymbol":"&euro;","localTotal":"7.00","_embedded":{"items":{"_links":{"items self":{"href":"http://example.org/cart/1/items"}},"empty":false}}}

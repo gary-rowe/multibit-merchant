@@ -6,6 +6,7 @@ import org.multibit.mbm.api.response.hal.BaseBridge;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.*;
+import java.net.URI;
 
 /**
  * <p>Abstract base class to provide the following to subclasses:</p>
@@ -35,6 +36,19 @@ public abstract class BaseResource<T> {
     String body = bridge.toResource(entity).renderContent(acceptedMediaType.toString());
 
     return Response.ok().type(acceptedMediaType).entity(body).build();
+  }
+
+  /**
+   * @param bridge The bridge for the entity
+   * @param entity The entity
+   * @return A configured HTTP 201 CREATED response
+   */
+  protected Response created(BaseBridge<T> bridge,T entity, URI location) {
+    MediaType acceptedMediaType = getAcceptedMediaType(httpHeaders);
+
+    String body = bridge.toResource(entity).renderContent(acceptedMediaType.toString());
+
+    return Response.created(location).type(acceptedMediaType).entity(body).build();
   }
 
   /**

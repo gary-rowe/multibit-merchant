@@ -16,6 +16,7 @@ import javax.ws.rs.core.UriInfo;
  *
  * @since 0.0.1
  */
+// TODO Replace Customer with CustomerResponse
 public class DefaultCustomerBridge extends BaseBridge<Customer> {
 
   /**

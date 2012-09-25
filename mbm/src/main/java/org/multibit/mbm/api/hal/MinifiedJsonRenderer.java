@@ -97,7 +97,7 @@ public class MinifiedJsonRenderer implements Renderer<String> {
       g.writeEndObject();
     }
 
-    for (Map.Entry<String, Object> entry : resource.getProperties().entrySet()) {
+    for (Map.Entry<String, Optional<Object>> entry : resource.getProperties().entrySet()) {
       g.writeObjectField(entry.getKey(), entry.getValue());
     }
 
