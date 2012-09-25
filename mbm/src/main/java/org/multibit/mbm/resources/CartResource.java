@@ -1,12 +1,16 @@
 package org.multibit.mbm.resources;
 
+import com.google.common.base.Optional;
 import com.yammer.dropwizard.auth.Auth;
 import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.api.request.CreateCartRequest;
 import org.multibit.mbm.api.response.CartItemResponse;
 import org.multibit.mbm.api.response.CartResponse;
+import org.multibit.mbm.api.response.hal.DefaultCartResponseBridge;
+import org.multibit.mbm.api.response.hal.DefaultCustomerBridge;
 import org.multibit.mbm.auth.annotation.RestrictedTo;
 import org.multibit.mbm.db.dto.Authority;
+import org.multibit.mbm.db.dto.Cart;
 import org.multibit.mbm.db.dto.Customer;
 import org.multibit.mbm.db.dto.User;
 import org.multibit.mbm.services.CatalogService;
@@ -37,7 +41,7 @@ import java.net.URI;
  */
 @Path("/")
 @Produces({HalMediaType.APPLICATION_HAL_JSON, HalMediaType.APPLICATION_HAL_XML})
-public class CartResource {
+public class CartResource extends BaseResource<CartResponse> {
 
   private static final Logger log = LoggerFactory.getLogger(CartResource.class);
 
@@ -86,11 +90,15 @@ public class CartResource {
       customer = customerService.setCartItemQuantity(customer, itemId, quantity);
     }
 
-    // Ensure the new Cart can be found (one Cart per User)
-    URI location = uriInfo.getAbsolutePathBuilder().path("/cart").build();
+    CartResponse cartResponse = new CartResponse(customer.getCart());
+
+    // Ensure the new Cart can be found using its ID
+    URI location = uriInfo.getAbsolutePathBuilder().path("/cart/"+customer.getCart().getId()).build();
+
+    DefaultCartResponseBridge bridge = new DefaultCartResponseBridge(uriInfo, Optional.of(customer.getUser()));
 
     // Provide the entire Cart as a shortcut for lazy clients
-    return Response.created(location).entity(new CartResponse(customer.getCart())).build();
+    return created(bridge, cartResponse, location);
 
   }
 

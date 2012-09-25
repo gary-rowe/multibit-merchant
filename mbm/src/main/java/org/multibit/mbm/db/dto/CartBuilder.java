@@ -15,6 +15,7 @@ import java.util.List;
  */
 public class CartBuilder {
 
+  private Long id;
   private List<AddCartItem> addCartItems = Lists.newArrayList();
 
   private boolean isBuilt = false;
@@ -38,7 +39,9 @@ public class CartBuilder {
     // Cart is a DTO so requires a default constructor
     Cart cart = new Cart();
 
-    // Item is a DTO so requires a public default constructor
+    cart.setId(id);
+
+    // Add any items
     for (AddCartItem addCartItem : addCartItems) {
       addCartItem.applyTo(cart);
     }
@@ -52,6 +55,20 @@ public class CartBuilder {
     if (isBuilt) {
       throw new IllegalStateException("Build process is complete - no further changes can be made");
     }
+  }
+
+  /**
+   * Creates a CartItem entry based on the parameters
+   * @param id The ID
+   * @return The builder
+   */
+  public CartBuilder withId(Long id) {
+
+    validateState();
+
+    this.id = id;
+
+    return this;
   }
 
   /**

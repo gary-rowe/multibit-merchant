@@ -98,7 +98,7 @@ public class MinifiedXmlRenderer implements Renderer<String> {
     }
 
     // add properties
-    for (Map.Entry<String, Object> entry : resource.getProperties().entrySet()) {
+    for (Map.Entry<String, Optional<Object>> entry : resource.getProperties().entrySet()) {
       Element propertyElement = new Element(entry.getKey());
       propertyElement.setContent(new Text(entry.getValue().toString()));
       resourceElement.addContent(propertyElement);

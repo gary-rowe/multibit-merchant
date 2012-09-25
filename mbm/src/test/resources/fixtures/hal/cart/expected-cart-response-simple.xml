@@ -1,0 +1,1 @@
+<resource href="http://example.org/cart/1"><btcTotal>18.0000</btcTotal><localSymbol>&amp;euro;</localSymbol><localTotal>7.00</localTotal><resource href="http://example.org/cart/1/items" rel="items self"><empty>false</empty></resource></resource>

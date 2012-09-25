@@ -38,10 +38,10 @@ public abstract class BaseBridge<T> {
   protected ResourceFactory getResourceFactory() {
     ResourceFactory resourceFactory = new ResourceFactory(uriInfo.getBaseUri().toString());
     // Override the default configuration
-    resourceFactory.withRenderer(HalMediaType.APPLICATION_HAL_JSON,
-      MinifiedJsonRenderer.class);
-    resourceFactory.withRenderer(HalMediaType.APPLICATION_HAL_XML,
-      MinifiedXmlRenderer.class);
+//    resourceFactory.withRenderer(HalMediaType.APPLICATION_HAL_JSON,
+//      MinifiedJsonRenderer.class);
+//    resourceFactory.withRenderer(HalMediaType.APPLICATION_HAL_XML,
+//      MinifiedXmlRenderer.class);
     return resourceFactory;
   }
 
