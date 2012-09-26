@@ -117,15 +117,15 @@ public abstract class BaseJerseyResourceTest extends BaseResourceTest {
   /**
    * Provides the default authentication settings
    */
-  protected void setUpAuthenticator() {
-    setUpAuthenticator(apiKey, sharedSecret);
+  protected User setUpAuthenticator() {
+    return setUpAuthenticator(apiKey, sharedSecret);
   }
 
   /**
    * @param apiKey    The API key to assign to the User (default is "abc123")
    * @param sharedSecret The shared secret to assign (default is "def456")
    */
-  protected void setUpAuthenticator(Optional<String> apiKey, Optional<String> sharedSecret) {
+  protected User setUpAuthenticator(Optional<String> apiKey, Optional<String> sharedSecret) {
 
     Customer customer = CustomerBuilder.newInstance()
       .build();
@@ -153,6 +153,7 @@ public abstract class BaseJerseyResourceTest extends BaseResourceTest {
 
     addProvider(new HmacRestrictedToProvider<User>(authenticator, "REST"));
 
+    return user;
   }
 
 }

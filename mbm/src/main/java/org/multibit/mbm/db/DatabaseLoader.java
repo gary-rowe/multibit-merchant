@@ -67,24 +67,32 @@ public class DatabaseLoader {
 
   private void buildRolesAndAuthorities() {
 
-    // Build the administration Role and Authorities
-    adminRole = RoleBuilder.newInstance()
-      .withName(Authority.ROLE_ADMIN.name())
-      .withDescription("Administration role")
-      .withAdminAuthorities()
-      .build();
+    adminRole = buildRoleAdmin();
     adminRole = roleDao.saveOrUpdate(adminRole);
 
     // Build the Customer Role and Authorities
-    customerRole = RoleBuilder.newInstance()
-      .withName(Authority.ROLE_CUSTOMER.name())
-      .withDescription("Customer role")
-      .withCustomerAuthorities()
-      .build();
+    customerRole = buildRoleCustomer();
     customerRole = roleDao.saveOrUpdate(customerRole);
 
     roleDao.flush();
 
+  }
+
+  public static Role buildRoleCustomer() {
+    return RoleBuilder.newInstance()
+      .withName(Authority.ROLE_CUSTOMER.name())
+      .withDescription("Customer role")
+      .withCustomerAuthorities()
+      .build();
+  }
+
+  public static Role buildRoleAdmin() {
+    // Build the administration Role and Authorities
+    return RoleBuilder.newInstance()
+      .withName(Authority.ROLE_ADMIN.name())
+      .withDescription("Administration role")
+      .withAdminAuthorities()
+      .build();
   }
 
   /**
@@ -176,45 +184,31 @@ public class DatabaseLoader {
 
   private void buildUsers() {
 
-    // Admin
-
-    User admin = UserBuilder.newInstance()
-      .withUUID("trent123")
-      .withUsername("trent")
-      .withPassword("trent1")
-      .withContactMethod(ContactMethod.FIRST_NAME, "Trent")
-      .withContactMethod(ContactMethod.EMAIL, "admin@example.org")
-      .withRole(adminRole)
-      .build();
-
-    userDao.saveOrUpdate(admin);
+    User userTrent = buildUserTrent(adminRole);
+    userDao.saveOrUpdate(userTrent);
 
     // TODO Introduce various staff roles (dispatch, sales etc)
 
     // Customers
     // Alice
-    Customer aliceCustomer = CustomerBuilder.newInstance()
-      .build();
+    User userAlice = buildCustomerAlice(customerRole);
 
-    User aliceUser = UserBuilder.newInstance()
-      .withUUID("alice123")
-      .withUsername("alice")
-      .withPassword("alice1")
-      .withContactMethod(ContactMethod.FIRST_NAME, "Alice")
-      .withContactMethod(ContactMethod.LAST_NAME, "Customer")
-      .withContactMethod(ContactMethod.EMAIL, "alice@example.org")
-      .withRole(customerRole)
-      .withCustomer(aliceCustomer)
-      .build();
-
-
-    userDao.saveOrUpdate(aliceUser);
+    userDao.saveOrUpdate(userAlice);
 
     // Bob
+    User bob = buildCustomerBob(customerRole);
+
+    userDao.saveOrUpdate(bob);
+
+    userDao.flush();
+
+  }
+
+  public static User buildCustomerBob(Role customerRole) {
     Customer bobCustomer = CustomerBuilder.newInstance()
       .build();
 
-    User bob = UserBuilder.newInstance()
+    return UserBuilder.newInstance()
       .withUUID("bob123")
       .withUsername("bob")
       .withPassword("bob1")
@@ -223,11 +217,34 @@ public class DatabaseLoader {
       .withContactMethod(ContactMethod.EMAIL, "bob@example.org")
       .withRole(customerRole)
       .build();
+  }
 
-    userDao.saveOrUpdate(bob);
+  public static User buildCustomerAlice(Role customerRole) {
+    Customer customerAlice = CustomerBuilder.newInstance()
+      .build();
 
-    userDao.flush();
+    return UserBuilder.newInstance()
+      .withUUID("alice123")
+      .withUsername("alice")
+      .withPassword("alice1")
+      .withContactMethod(ContactMethod.FIRST_NAME, "Alice")
+      .withContactMethod(ContactMethod.LAST_NAME, "Customer")
+      .withContactMethod(ContactMethod.EMAIL, "alice@example.org")
+      .withRole(customerRole)
+      .withCustomer(customerAlice)
+      .build();
+  }
 
+  public static User buildUserTrent(Role adminRole) {
+    // Admin
+    return UserBuilder.newInstance()
+      .withUUID("trent123")
+      .withUsername("trent")
+      .withPassword("trent1")
+      .withContactMethod(ContactMethod.FIRST_NAME, "Trent")
+      .withContactMethod(ContactMethod.EMAIL, "admin@example.org")
+      .withRole(adminRole)
+      .build();
   }
 
   public void setCustomerDao(CustomerDao customerDao) {

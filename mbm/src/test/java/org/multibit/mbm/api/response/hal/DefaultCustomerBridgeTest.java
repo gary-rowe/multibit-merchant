@@ -4,10 +4,8 @@ import com.google.common.base.Optional;
 import com.theoryinpractise.halbuilder.spi.Resource;
 import org.junit.Before;
 import org.junit.Test;
-import org.multibit.mbm.db.dto.Customer;
-import org.multibit.mbm.db.dto.CustomerBuilder;
-import org.multibit.mbm.db.dto.User;
-import org.multibit.mbm.db.dto.UserBuilder;
+import org.multibit.mbm.db.DatabaseLoader;
+import org.multibit.mbm.db.dto.*;
 import org.multibit.mbm.test.BaseResourceTest;
 import org.multibit.mbm.test.FixtureAsserts;
 
@@ -63,5 +61,15 @@ public class DefaultCustomerBridgeTest extends BaseResourceTest {
     FixtureAsserts.assertRepresentationMatchesXmlFixture("a Customer can be marshalled to XML", resource, "fixtures/hal/customer/expected-customer-simple.xml");
 
   }
+
+  private Customer buildCustomer() {
+    User customerAlice = DatabaseLoader.buildCustomerAlice(null);
+    customerAlice.setId(1L);
+
+    return CustomerBuilder
+      .newInstance()
+      .build();
+  }
+
 
 }
