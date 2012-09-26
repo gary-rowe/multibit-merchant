@@ -2,6 +2,9 @@ package org.multibit.mbm.test;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeUtils;
+import org.joda.time.DateTimeZone;
 import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.db.dto.User;
 
@@ -18,9 +21,15 @@ import static org.mockito.Mockito.when;
  * A base test class for testing resources against a simulated container
  */
 public abstract class BaseResourceTest {
+
   protected UriInfo uriInfo;
   protected HttpHeaders httpHeaders;
   protected Optional<User> principal=Optional.absent();
+
+  static {
+    // Fix all DateTime values to midnight on January 01 2000 UTC
+    DateTimeUtils.setCurrentMillisFixed(new DateTime(2000, 1, 1, 0, 0, 0, 0).withZone(DateTimeZone.UTC).getMillis());
+  }
 
   /**
    * @param baseHref Optional with default of "http://example.org"

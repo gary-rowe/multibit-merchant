@@ -4,31 +4,29 @@ import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.core.ResourceConfig;
-import com.sun.jersey.spi.container.ContainerRequestFilter;
-import com.sun.jersey.spi.service.ServiceFinder;
 import com.sun.jersey.test.framework.AppDescriptor;
 import com.sun.jersey.test.framework.JerseyTest;
 import com.sun.jersey.test.framework.LowLevelAppDescriptor;
-import com.sun.jersey.test.framework.WebAppDescriptor;
-import com.sun.jersey.test.framework.spi.container.TestContainer;
-import com.sun.jersey.test.framework.spi.container.TestContainerException;
-import com.sun.jersey.test.framework.spi.container.TestContainerFactory;
 import com.yammer.dropwizard.bundles.JavaBundle;
 import com.yammer.dropwizard.jersey.DropwizardResourceConfig;
 import com.yammer.dropwizard.jersey.JacksonMessageBodyProvider;
 import com.yammer.dropwizard.json.Json;
 import org.codehaus.jackson.map.Module;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeUtils;
+import org.joda.time.DateTimeZone;
 import org.junit.After;
 import org.junit.Before;
-import org.multibit.mbm.auth.hmac.*;
+import org.multibit.mbm.auth.hmac.HmacAuthenticator;
+import org.multibit.mbm.auth.hmac.HmacClientFilter;
+import org.multibit.mbm.auth.hmac.HmacRestrictedToProvider;
 import org.multibit.mbm.db.dao.UserDao;
 import org.multibit.mbm.db.dto.*;
+import org.springframework.format.datetime.joda.JodaTimeContext;
 
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -105,6 +103,7 @@ public abstract class BaseJerseyResourceTest extends BaseResourceTest {
     test.client().addFilter(new HmacClientFilter(apiKey.get(), sharedSecret.get(), test.client().getProviders()));
 
     test.setUp();
+
   }
 
   @After
