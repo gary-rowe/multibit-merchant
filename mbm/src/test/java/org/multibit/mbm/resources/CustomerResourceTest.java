@@ -9,6 +9,7 @@ import org.multibit.mbm.db.dto.User;
 import org.multibit.mbm.db.dto.UserBuilder;
 import org.multibit.mbm.services.CustomerService;
 import org.multibit.mbm.test.BaseJerseyResourceTest;
+import org.multibit.mbm.test.FixtureAsserts;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -52,10 +53,7 @@ public class CustomerResourceTest extends BaseJerseyResourceTest {
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 
-    String expectedResponse= FixtureHelpers.fixture("fixtures/hal/customer/expected-customer-simple-jersey.json");
-
-    assertThat(actualResponse,is(equalTo(expectedResponse)));
-
+    FixtureAsserts.assertStringMatchesJsonFixture("Customer can be retrieved as JSON",actualResponse, "fixtures/hal/customer/expected-customer-simple-jersey.json");
 
   }
 

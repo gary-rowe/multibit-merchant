@@ -5,6 +5,8 @@ import com.yammer.dropwizard.jersey.caching.CacheControl;
 import com.yammer.metrics.annotation.Timed;
 import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.api.response.hal.DefaultUserBridge;
+import org.multibit.mbm.auth.annotation.RestrictedTo;
+import org.multibit.mbm.db.dto.Authority;
 import org.multibit.mbm.db.dto.User;
 import org.multibit.mbm.services.SecurityService;
 
@@ -23,30 +25,20 @@ import java.util.concurrent.TimeUnit;
  * </ul>
  *
  * @since 0.0.1
- * TODO Consider a base class with configured UriInfo and HttpHeaders (need to verify Prototype pattern)
  */
 @Path("/")
 @Produces({HalMediaType.APPLICATION_HAL_JSON, HalMediaType.APPLICATION_HAL_XML})
 public class UserResource extends BaseResource<User> {
 
-  @Resource(name="securityService")
-  private SecurityService securityService =null;
-
   @GET
   @Timed
   @Path("/user")
   @CacheControl(maxAge = 6, maxAgeUnit = TimeUnit.HOURS)
-  public Response findById(@QueryParam("uuid") Optional<String> uuid) {
-
-    User user =  securityService.getUserByUUID(uuid.get());
+  public Response retrieveUser(@RestrictedTo({Authority.ROLE_CUSTOMER}) User user) {
 
     DefaultUserBridge bridge = new DefaultUserBridge(uriInfo, Optional.of(user));
 
     return ok(bridge, user);
 
-  }
-
-  public void setSecurityService(SecurityService securityService) {
-    this.securityService = securityService;
   }
 }
