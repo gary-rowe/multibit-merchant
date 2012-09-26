@@ -24,7 +24,6 @@ public class DefaultUserBridgeTest extends BaseResourceTest {
   @Test
   public void representUserAsJson() throws Exception {
 
-
     User user = UserBuilder
       .newInstance()
       .build();

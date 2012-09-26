@@ -1,1 +1,1 @@
-{"_links":{"self":{"href":"http://localhost:9998/customer"},"http://localhost:9998/customer?q={query}":{"href":"search"},"http://localhost:9998/description":{"href":"description"}}}
+{"_links":{"self":{"href":"http://localhost:9998/cart/1"}},"btcTotal":"0.0000","localSymbol":"&euro;","localTotal":"0.00"}
