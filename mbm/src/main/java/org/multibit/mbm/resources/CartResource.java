@@ -45,9 +45,6 @@ public class CartResource extends BaseResource<CartResponse> {
 
   private static final Logger log = LoggerFactory.getLogger(CartResource.class);
 
-  @Resource(name = "catalogService")
-  private CatalogService catalogService = null;
-
   @Resource(name = "customerService")
   private CustomerService customerService = null;
 
@@ -82,8 +79,12 @@ public class CartResource extends BaseResource<CartResponse> {
     @Context UriInfo uriInfo) {
 
     // TODO Validate the request
-    Customer customer = user.getCustomer();
 
+    // Locate the customer
+    // TODO Consider getting this direct from the User
+    Customer customer = customerService.findByOpenId(user.getOpenId());
+
+    // Simply reflect the offered items back in the response for now
     for (CartItemResponse cartItemSummary : createCartRequest.getCartItemSummaries()) {
       Long itemId = cartItemSummary.getId();
       int quantity = cartItemSummary.getQuantity();
@@ -93,17 +94,13 @@ public class CartResource extends BaseResource<CartResponse> {
     CartResponse cartResponse = new CartResponse(customer.getCart());
 
     // Ensure the new Cart can be found using its ID
-    URI location = uriInfo.getAbsolutePathBuilder().path("/cart/"+customer.getCart().getId()).build();
+    URI location = uriInfo.getAbsolutePathBuilder().path(customer.getCart().getId().toString()).build();
 
     DefaultCartResponseBridge bridge = new DefaultCartResponseBridge(uriInfo, Optional.of(customer.getUser()));
 
     // Provide the entire Cart as a shortcut for lazy clients
     return created(bridge, cartResponse, location);
 
-  }
-
-  public void setCatalogService(CatalogService catalogService) {
-    this.catalogService = catalogService;
   }
 
   public void setCustomerService(CustomerService customerService) {

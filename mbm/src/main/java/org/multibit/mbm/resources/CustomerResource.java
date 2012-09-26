@@ -5,7 +5,10 @@ import com.yammer.dropwizard.jersey.caching.CacheControl;
 import com.yammer.metrics.annotation.Timed;
 import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.api.response.hal.DefaultCustomerBridge;
+import org.multibit.mbm.auth.annotation.RestrictedTo;
+import org.multibit.mbm.db.dto.Authority;
 import org.multibit.mbm.db.dto.Customer;
+import org.multibit.mbm.db.dto.User;
 import org.multibit.mbm.services.CustomerService;
 
 import javax.annotation.Resource;
@@ -34,9 +37,9 @@ public class CustomerResource extends BaseResource<Customer> {
   @Timed
   @Path("/customer")
   @CacheControl(maxAge = 6, maxAgeUnit = TimeUnit.HOURS)
-  public Response findById(@QueryParam("openId") Optional<String> openId) {
+  public Response retrieveCustomer(@RestrictedTo({Authority.ROLE_CUSTOMER}) User user) {
 
-    Customer customer = customerService.findByOpenId(openId.get());
+    Customer customer = customerService.findByOpenId(user.getOpenId());
 
     DefaultCustomerBridge bridge = new DefaultCustomerBridge(uriInfo, Optional.of(customer.getUser()));
 

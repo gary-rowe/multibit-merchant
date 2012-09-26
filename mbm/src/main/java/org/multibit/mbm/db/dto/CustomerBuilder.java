@@ -32,8 +32,10 @@ public class CustomerBuilder {
     // Customer is a DTO and so requires a default constructor
     Customer customer = new Customer();
 
-    // TODO Provide a CartBuilder
-    customer.setCart(new Cart());
+    Cart cart = CartBuilder
+      .newInstance()
+      .build();
+    customer.setCart(cart);
 
     isBuilt = true;
 

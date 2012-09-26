@@ -20,34 +20,35 @@ import static org.mockito.Mockito.when;
 public class CustomerResourceTest extends BaseJerseyResourceTest {
 
   private final CustomerService customerService=mock(CustomerService.class);
-  private final Customer expectedCustomer = CustomerBuilder
-    .newInstance()
-    .build();
-  private final User expectedUser = UserBuilder
-    .newInstance()
-    .withCustomer(expectedCustomer)
-    .build();
+
+  private final CustomerResource testObject=new CustomerResource();
+
 
   @Override
-  protected void setUpResources() throws Exception {
+  protected void setUpResources() {
 
-    // Apply mocks
-    when(customerService.findByOpenId(anyString())).thenReturn(expectedCustomer);
+    // Create the User for authenticated access
+    User user = setUpAuthenticator();
+
+    // Configure the customer in more detail
+    Customer customer = user.getCustomer();
+    customer.setId(1L);
+    customer.getCart().setId(1L);
+    when(customerService.findByOpenId(anyString())).thenReturn(customer);
 
     // Configure the test object
-    CustomerResource testObject = new CustomerResource();
     testObject.setCustomerService(customerService);
 
+    // Configure resources
     addResource(testObject);
 
   }
 
   @Test
-  public void testGetByOpenId() throws Exception {
+  public void testGetCustomer() throws Exception {
 
     String actualResponse = client()
       .resource("/customer")
-      .queryParam("openId", "abc123")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 

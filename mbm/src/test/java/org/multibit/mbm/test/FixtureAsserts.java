@@ -10,9 +10,6 @@ import java.io.IOException;
 
 import static com.yammer.dropwizard.testing.JsonHelpers.jsonFixture;
 import static junit.framework.Assert.assertTrue;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
 
 /**
  * <p>Fixture assertions to provide the following to application:</p>
@@ -28,7 +25,22 @@ public class FixtureAsserts {
    * Renders a HAL resource as JSON and compares it to a normalised fixture (
    *
    * @param reason           The reason (e.g. "a Customer can be marshalled to JSON")
-   * @param representation         The HAL representation
+   * @param representation   The simple string representation
+   * @param fixtureClasspath The classpath reference to the resource (e.g. "fixtures/example.json")
+   * @throws IOException If something goes wrong
+   */
+  public static void assertStringMatchesJsonFixture(String reason, String representation, String fixtureClasspath) throws IOException {
+    Assert.assertEquals(reason,
+      jsonFixture(fixtureClasspath),
+      representation
+    );
+  }
+
+  /**
+   * Renders a HAL resource as JSON and compares it to a normalised fixture (
+   *
+   * @param reason           The reason (e.g. "a Customer can be marshalled to JSON")
+   * @param representation   The HAL representation
    * @param fixtureClasspath The classpath reference to the resource (e.g. "fixtures/example.json")
    * @throws IOException If something goes wrong
    */
