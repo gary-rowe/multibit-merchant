@@ -1,25 +1,14 @@
 package org.multibit.mbm.resources;
 
-import com.yammer.dropwizard.testing.FixtureHelpers;
 import org.junit.Test;
 import org.multibit.mbm.api.hal.HalMediaType;
-import org.multibit.mbm.db.dto.Customer;
 import org.multibit.mbm.db.dto.User;
-import org.multibit.mbm.db.dto.UserBuilder;
-import org.multibit.mbm.services.SecurityService;
 import org.multibit.mbm.test.BaseJerseyResourceTest;
 import org.multibit.mbm.test.FixtureAsserts;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+public class CustomerUserResourceTest extends BaseJerseyResourceTest {
 
-public class UserResourceTest extends BaseJerseyResourceTest {
-
-  private final UserResource testObject=new UserResource();
+  private final CustomerUserResource testObject=new CustomerUserResource();
 
   @Override
   protected void setUpResources() {
