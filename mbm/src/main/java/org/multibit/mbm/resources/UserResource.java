@@ -8,13 +8,10 @@ import org.multibit.mbm.api.response.hal.DefaultUserBridge;
 import org.multibit.mbm.auth.annotation.RestrictedTo;
 import org.multibit.mbm.db.dto.Authority;
 import org.multibit.mbm.db.dto.User;
-import org.multibit.mbm.services.SecurityService;
 
-import javax.annotation.Resource;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import java.util.concurrent.TimeUnit;
 
@@ -34,7 +31,7 @@ public class UserResource extends BaseResource<User> {
   @Timed
   @Path("/user")
   @CacheControl(maxAge = 6, maxAgeUnit = TimeUnit.HOURS)
-  public Response retrieveUser(@RestrictedTo({Authority.ROLE_CUSTOMER}) User user) {
+  public Response retrieveAllUsers(@RestrictedTo({Authority.ROLE_ADMIN}) User user) {
 
     DefaultUserBridge bridge = new DefaultUserBridge(uriInfo, Optional.of(user));
 
