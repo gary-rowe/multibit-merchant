@@ -13,7 +13,7 @@ import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.util.List;
 
-public class DefaultUserBridgeTest extends BaseResourceTest {
+public class AdminUserBridgeTest extends BaseResourceTest {
 
   @Before
   public void setUpDefaultRequestInfo() throws Exception {
@@ -28,11 +28,11 @@ public class DefaultUserBridgeTest extends BaseResourceTest {
       .newInstance()
       .build();
 
-    DefaultUserBridge testObject = new DefaultUserBridge(uriInfo,principal);
+    AdminUserBridge testObject = new AdminUserBridge(uriInfo,principal);
 
     Resource resource = testObject.toResource(user);
 
-    FixtureAsserts.assertRepresentationMatchesJsonFixture("a User can be marshalled to JSON", resource, "fixtures/hal/user/expected-user-simple.json");
+    FixtureAsserts.assertRepresentationMatchesJsonFixture("a User can be marshalled to JSON", resource, "fixtures/hal/user/expected-user-by-admin.json");
 
   }
 
@@ -43,11 +43,11 @@ public class DefaultUserBridgeTest extends BaseResourceTest {
       .newInstance()
       .build();
 
-    DefaultUserBridge testObject = new DefaultUserBridge(uriInfo,principal);
+    AdminUserBridge testObject = new AdminUserBridge(uriInfo,principal);
 
     Resource resource = testObject.toResource(user);
 
-    FixtureAsserts.assertRepresentationMatchesXmlFixture("a User can be marshalled to XML", resource, "fixtures/hal/user/expected-user-simple.xml");
+    FixtureAsserts.assertRepresentationMatchesXmlFixture("a User can be marshalled to XML", resource, "fixtures/hal/user/expected-user-by-admin.xml");
 
   }
 

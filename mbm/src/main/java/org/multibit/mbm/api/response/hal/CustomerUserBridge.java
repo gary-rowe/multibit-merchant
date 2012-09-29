@@ -10,18 +10,18 @@ import javax.ws.rs.core.UriInfo;
 /**
  * <p>Bridge to provide the following to {@link User}:</p>
  * <ul>
- * <li>Creates {@link com.theoryinpractise.halbuilder.spi.Resource} representations</li>
+ * <li>Creates representations of a User for a Customer</li>
  * </ul>
  *
  * @since 0.0.1
  */
-public class DefaultUserBridge extends BaseBridge<User> {
+public class CustomerUserBridge extends BaseBridge<User> {
 
   /**
    * @param uriInfo The {@link javax.ws.rs.core.UriInfo} containing the originating request information
    * @param principal    An optional {@link User} to provide a security principal
    */
-  public DefaultUserBridge(UriInfo uriInfo, Optional<User> principal) {
+  public CustomerUserBridge(UriInfo uriInfo, Optional<User> principal) {
     super(uriInfo, principal);
   }
 

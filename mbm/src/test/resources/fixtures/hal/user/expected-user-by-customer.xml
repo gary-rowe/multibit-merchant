@@ -1,0 +1,1 @@
+<resource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" href="http://example.org/user"><link rel="http://example.org/description" href="description" /><link rel="http://example.org/user?q={query}" href="search" /><id xsi:nil="true" /><name xsi:nil="true" /></resource>

@@ -12,9 +12,6 @@ import com.yammer.dropwizard.jersey.DropwizardResourceConfig;
 import com.yammer.dropwizard.jersey.JacksonMessageBodyProvider;
 import com.yammer.dropwizard.json.Json;
 import org.codehaus.jackson.map.Module;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeUtils;
-import org.joda.time.DateTimeZone;
 import org.junit.After;
 import org.junit.Before;
 import org.multibit.mbm.auth.hmac.HmacAuthenticator;
@@ -22,7 +19,6 @@ import org.multibit.mbm.auth.hmac.HmacClientFilter;
 import org.multibit.mbm.auth.hmac.HmacRestrictedToProvider;
 import org.multibit.mbm.db.dao.UserDao;
 import org.multibit.mbm.db.dto.*;
-import org.springframework.format.datetime.joda.JodaTimeContext;
 
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
@@ -117,30 +113,37 @@ public abstract class BaseJerseyResourceTest extends BaseResourceTest {
    * Provides the default authentication settings
    */
   protected User setUpAuthenticator() {
-    return setUpAuthenticator(apiKey, sharedSecret);
-  }
 
-  /**
-   * @param apiKey    The API key to assign to the User (default is "abc123")
-   * @param sharedSecret The shared secret to assign (default is "def456")
-   */
-  protected User setUpAuthenticator(Optional<String> apiKey, Optional<String> sharedSecret) {
-
-    Customer customer = CustomerBuilder.newInstance()
-      .build();
-
-    // TODO Consider a shortcut for this in UserBuilder (asCustomer())
     Role customerRole = RoleBuilder.newInstance()
       .withName(Authority.ROLE_CUSTOMER.name())
       .withDescription("Customer role")
       .withCustomerAuthorities()
       .build();
 
+    return setUpAuthenticator(apiKey, sharedSecret, Lists.newArrayList(customerRole));
+  }
+
+  /**
+   * Provides the default authentication settings
+   */
+  protected User setUpAuthenticator(List<Role> roles) {
+    return setUpAuthenticator(apiKey, sharedSecret, roles);
+  }
+
+  /**
+   * @param apiKey    The API key to assign to the User (default is "abc123")
+   * @param sharedSecret The shared secret to assign (default is "def456")
+   */
+  protected User setUpAuthenticator(Optional<String> apiKey, Optional<String> sharedSecret, List<Role> roles) {
+
+    Customer customer = CustomerBuilder.newInstance()
+      .build();
+
     User user = UserBuilder
       .newInstance()
       .withUUID(apiKey.get())
       .withSecretKey(sharedSecret.get())
-      .withRole(customerRole)
+      .withRoles(roles)
       .withCustomer(customer)
       .build();
 
