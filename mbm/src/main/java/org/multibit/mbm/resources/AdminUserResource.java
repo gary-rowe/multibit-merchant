@@ -34,6 +34,8 @@ public class AdminUserResource extends BaseResource<User> {
   /**
    * Provide a paged response of all users in the system
    * @param adminUser A user with administrator rights
+   * @param rawPageSize The unvalidated page size
+   * @param rawPageNumber The unvalidated page number
    * @return A response containing a paged list of all users
    */
   @GET
@@ -42,10 +44,14 @@ public class AdminUserResource extends BaseResource<User> {
   @CacheControl(maxAge = 6, maxAgeUnit = TimeUnit.HOURS)
   public Response getAllByPage(
     @RestrictedTo({Authority.ROLE_ADMIN}) User adminUser,
-    @QueryParam("pageSize") Optional<Integer> pageSize,
-    @QueryParam("pageNumber") Optional<Integer> pageNumber) {
+    @QueryParam("pageSize") Optional<String> rawPageSize,
+    @QueryParam("pageNumber") Optional<String> rawPageNumber) {
 
-    userDao.getAllByPage(pageSize.get(), pageNumber.get());
+    // Validation
+    int pageSize = Integer.valueOf(rawPageSize.get());
+    int pageNumber = Integer.valueOf(rawPageNumber.get());
+
+    userDao.getAllByPage(pageSize, pageNumber);
 
     AdminUserBridge bridge = new AdminUserBridge(uriInfo, Optional.of(adminUser));
 
