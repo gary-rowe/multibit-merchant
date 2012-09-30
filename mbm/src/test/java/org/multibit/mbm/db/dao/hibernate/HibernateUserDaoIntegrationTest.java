@@ -1,15 +1,16 @@
 package org.multibit.mbm.db.dao.hibernate;
 
 import org.junit.Test;
-import org.multibit.mbm.db.dto.UserBuilder;
 import org.multibit.mbm.db.dao.UserDao;
 import org.multibit.mbm.db.dto.ContactMethod;
 import org.multibit.mbm.db.dto.ContactMethodDetail;
 import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.db.dto.UserBuilder;
 import org.multibit.mbm.test.BaseIntegrationTests;
 import org.springframework.test.context.ContextConfiguration;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertNotNull;
@@ -109,6 +110,26 @@ public class HibernateUserDaoIntegrationTest extends BaseIntegrationTests {
     
     assertNotNull("Expected pre-populated data",aliceCustomer);
     assertThat("Unexpected number of Roles",aliceCustomer.getUserRoles().size(), equalTo(1));
+
+  }
+
+  /**
+   * Verifies that paging works as expected
+   */
+  @Test
+  public void testPaging() {
+
+    List<User> users = testObject.getAllByPage(1,1);
+
+    assertNotNull("Expected pre-populated data (page 1)",users);
+    assertThat("Unexpected number of Users",users.size(), equalTo(1));
+    assertThat("Unexpected ordering of Users",users.get(0).getUsername(), equalTo("alice"));
+
+    users = testObject.getAllByPage(1,2);
+
+    assertNotNull("Expected pre-populated data (page 2)",users);
+    assertThat("Unexpected number of Users",users.size(), equalTo(1));
+    assertThat("Unexpected ordering of Users",users.get(0).getUsername(), equalTo("bob"));
 
   }
 

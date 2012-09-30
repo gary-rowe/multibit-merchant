@@ -32,7 +32,7 @@ public class AdminUserBridgeTest extends BaseResourceTest {
 
     Resource resource = testObject.toResource(user);
 
-    FixtureAsserts.assertRepresentationMatchesJsonFixture("a User can be marshalled to JSON", resource, "fixtures/hal/user/expected-user-by-admin.json");
+    FixtureAsserts.assertRepresentationMatchesJsonFixture("a User can be marshalled to JSON", resource, "fixtures/hal/user/expected-users-by-admin-page-1.json");
 
   }
 
