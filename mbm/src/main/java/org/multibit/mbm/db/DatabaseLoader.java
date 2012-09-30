@@ -1,20 +1,10 @@
 package org.multibit.mbm.db;
 
-import org.multibit.mbm.db.dto.ItemBuilder;
-import org.multibit.mbm.db.dao.ItemDao;
-import org.multibit.mbm.db.dto.Item;
-import org.multibit.mbm.db.dto.ItemField;
-import org.multibit.mbm.db.dto.CustomerBuilder;
 import org.multibit.mbm.db.dao.CustomerDao;
-import org.multibit.mbm.db.dto.Customer;
-import org.multibit.mbm.db.dto.RoleBuilder;
-import org.multibit.mbm.db.dto.UserBuilder;
+import org.multibit.mbm.db.dao.ItemDao;
 import org.multibit.mbm.db.dao.RoleDao;
 import org.multibit.mbm.db.dao.UserDao;
-import org.multibit.mbm.db.dto.Authority;
-import org.multibit.mbm.db.dto.ContactMethod;
-import org.multibit.mbm.db.dto.Role;
-import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.db.dto.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -67,18 +57,21 @@ public class DatabaseLoader {
 
   private void buildRolesAndAuthorities() {
 
-    adminRole = buildRoleAdmin();
+    adminRole = buildAdminRole();
     adminRole = roleDao.saveOrUpdate(adminRole);
 
     // Build the Customer Role and Authorities
-    customerRole = buildRoleCustomer();
+    customerRole = buildCustomerRole();
     customerRole = roleDao.saveOrUpdate(customerRole);
 
     roleDao.flush();
 
   }
 
-  public static Role buildRoleCustomer() {
+  /**
+   * @return A transient instance of the Customer role
+   */
+  public static Role buildCustomerRole() {
     return RoleBuilder.newInstance()
       .withName(Authority.ROLE_CUSTOMER.name())
       .withDescription("Customer role")
@@ -86,8 +79,10 @@ public class DatabaseLoader {
       .build();
   }
 
-  public static Role buildRoleAdmin() {
-    // Build the administration Role and Authorities
+  /**
+   * @return A transient instance of the Administrator role
+   */
+  public static Role buildAdminRole() {
     return RoleBuilder.newInstance()
       .withName(Authority.ROLE_ADMIN.name())
       .withDescription("Administration role")
@@ -97,6 +92,7 @@ public class DatabaseLoader {
 
   /**
    * Build a demonstration database based on books
+   * TODO Refactor into BookStore, MusicStore etc
    */
   private void buildCatalogBooks() {
     Item book1 = buildBookItemCryptonomicon();
@@ -123,63 +119,79 @@ public class DatabaseLoader {
   }
 
   /**
-   * @return A populated book item
+   * Book: "A Year In Provence"
+   *
+   * @return A transient instance of the Item
    */
   public static Item buildBookItemProvence() {
     return ItemBuilder.newInstance()
-        .withSKU("0140296034")
-        .withPrimaryFieldDetail(ItemField.TITLE, "A Year In Provence, by Peter Mayle", "en")
-        .withPrimaryFieldDetail(ItemField.SUMMARY, "Enjoy an irresistible feast of humour and discover the joys of French rural living with Peter Mayle's bestselling, much-loved account of 'A Year In Provence'.", "en")
-        .withPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/1/thumbnail1.png", "en")
-        .build();
+      .withSKU("0140296034")
+      .withPrimaryFieldDetail(ItemField.TITLE, "A Year In Provence", "en")
+      .withPrimaryFieldDetail(ItemField.AUTHOR, "Peter Mayle", "en")
+      .withPrimaryFieldDetail(ItemField.SUMMARY, "Enjoy an irresistible feast of humour and discover the joys of French rural living with Peter Mayle's bestselling, much-loved account of 'A Year In Provence'.", "en")
+      .withPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/1/thumbnail1.png", "en")
+      .build();
   }
 
   /**
-   * @return A populated book item
+   * Book: "Plumbing and Central Heating"
+   *
+   * @return A transient instance of the Item
    */
   public static Item buildBookItemPlumbing() {
     return ItemBuilder.newInstance()
-        .withSKU("186126173X")
-        .withPrimaryFieldDetail(ItemField.TITLE, "Plumbing and Central Heating, by Mike Lawrence", "en")
-        .withPrimaryFieldDetail(ItemField.SUMMARY, "This guide begins with the basic skills of plumbing, which once mastered, can be applied to any situation, from mending a leaking tap to installing a new shower unit.", "en")
-        .withPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/3/thumbnail3.png", "en")
-        .build();
+      .withSKU("186126173X")
+      .withPrimaryFieldDetail(ItemField.TITLE, "Plumbing and Central Heating", "en")
+      .withPrimaryFieldDetail(ItemField.AUTHOR, "Mike Lawrence", "en")
+      .withPrimaryFieldDetail(ItemField.SUMMARY, "This guide begins with the basic skills of plumbing, which once mastered, can be applied to any situation, from mending a leaking tap to installing a new shower unit.", "en")
+      .withPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/3/thumbnail3.png", "en")
+      .build();
   }
 
   /**
-   * @return A populated book item
+   * Book: "The Quantum Thief"
+   *
+   * @return A transient instance of the Item
    */
   public static Item buildBookItemQuantumThief() {
     return ItemBuilder.newInstance()
-        .withSKU("0575088893")
-        .withPrimaryFieldDetail(ItemField.TITLE, "The Quantum Thief, by Hannu Rajaniemi", "en")
-        .withPrimaryFieldDetail(ItemField.SUMMARY, "The most exciting SF debut of the last five years - a star to stand alongside Alistair Reynolds and Richard Morgan.", "en")
-        .withPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/4/thumbnail4.png", "en")
-        .build();
+      .withSKU("0575088893")
+      .withPrimaryFieldDetail(ItemField.TITLE, "The Quantum Thief", "en")
+      .withPrimaryFieldDetail(ItemField.AUTHOR, "Hannu Rajaniemi", "en")
+      .withPrimaryFieldDetail(ItemField.SUMMARY, "The most exciting SF debut of the last five years - a star to stand alongside Alistair Reynolds and Richard Morgan.", "en")
+      .withPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/4/thumbnail4.png", "en")
+      .build();
   }
 
+
   /**
-   * @return A populated book item
+   * Book: "The Complete Works of Emily Dickinson"
+   *
+   * @return A transient instance of the Item
    */
   public static Item buildBookItemCompleteWorks() {
     return ItemBuilder.newInstance()
-        .withSKU("0316184136")
-        .withPrimaryFieldDetail(ItemField.TITLE, "The Complete Works of Emily Dickinson, edited by Thomas H Johnson", "en")
-        .withPrimaryFieldDetail(ItemField.SUMMARY, "The Complete Poems of Emily Dickinson is the only one-volume edition containing all Emily Dickinson's poems.", "en")
-        .withPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/5/thumbnail5.png", "en")
-        .build();
+      .withSKU("0316184136")
+      .withPrimaryFieldDetail(ItemField.TITLE, "The Complete Works of Emily Dickinson", "en")
+      .withPrimaryFieldDetail(ItemField.AUTHOR, "Emily Dickinson, edited by Thomas H Johnson", "en")
+      .withPrimaryFieldDetail(ItemField.SUMMARY, "The Complete Poems of Emily Dickinson is the only one-volume edition containing all Emily Dickinson's poems.", "en")
+      .withPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/5/thumbnail5.png", "en")
+      .build();
   }
 
   /**
-   * @return A populated book item
+   * Book: "Cryptonomicon"
+   *
+   * @return A transient instance of the Item
    */
   public static Item buildBookItemCryptonomicon() {
     return ItemBuilder.newInstance()
-        .withSKU("0099410672")
-        .withPrimaryFieldDetail(ItemField.TITLE, "Cryptonomicon, by Neal Stephenson", "en")
-        .withPrimaryFieldDetail(ItemField.SUMMARY, "'A brilliant patchwork of code-breaking mathematicians and their descendants who are striving to create a data haven in the Philippines...trust me on this one' Guardian", "en")
-        .withPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/2/thumbnail2.png", "en")
-        .build();
+      .withSKU("0099410672")
+      .withPrimaryFieldDetail(ItemField.TITLE, "Cryptonomicon", "en")
+      .withPrimaryFieldDetail(ItemField.AUTHOR, "Neal Stephenson", "en")
+      .withPrimaryFieldDetail(ItemField.SUMMARY, "'A brilliant patchwork of code-breaking mathematicians and their descendants who are striving to create a data haven in the Philippines...trust me on this one' Guardian", "en")
+      .withPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/2/thumbnail2.png", "en")
+      .build();
   }
 
   private void buildUsers() {
@@ -191,18 +203,18 @@ public class DatabaseLoader {
 
     // Customers
     // Alice
-    User userAlice = buildCustomerAlice(customerRole);
+    User userAlice = buildAliceCustomer(customerRole);
     userDao.saveOrUpdate(userAlice);
 
     // Bob
-    User bob = buildCustomerBob(customerRole);
+    User bob = buildBobCustomer(customerRole);
     userDao.saveOrUpdate(bob);
 
     userDao.flush();
 
   }
 
-  public static User buildCustomerBob(Role customerRole) {
+  public static User buildBobCustomer(Role customerRole) {
     Customer bobCustomer = CustomerBuilder.newInstance()
       .build();
 
@@ -218,7 +230,7 @@ public class DatabaseLoader {
       .build();
   }
 
-  public static User buildCustomerAlice(Role customerRole) {
+  public static User buildAliceCustomer(Role customerRole) {
     Customer aliceCustomer = CustomerBuilder.newInstance()
       .build();
 

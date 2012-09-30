@@ -25,8 +25,8 @@ public class DefaultCustomerBridgeTest extends BaseResourceTest {
   @Test
   public void representCustomerAsJson() throws Exception {
 
-    Role customerRole = DatabaseLoader.buildRoleCustomer();
-    User aliceUser = DatabaseLoader.buildCustomerAlice(customerRole);
+    Role customerRole = DatabaseLoader.buildCustomerRole();
+    User aliceUser = DatabaseLoader.buildAliceCustomer(customerRole);
 
     DefaultCustomerBridge testObject = new DefaultCustomerBridge(uriInfo,principal);
 
@@ -39,8 +39,8 @@ public class DefaultCustomerBridgeTest extends BaseResourceTest {
   @Test
   public void representCustomerAsXml() throws IOException {
 
-    Role customerRole = DatabaseLoader.buildRoleCustomer();
-    User aliceUser = DatabaseLoader.buildCustomerAlice(customerRole);
+    Role customerRole = DatabaseLoader.buildCustomerRole();
+    User aliceUser = DatabaseLoader.buildAliceCustomer(customerRole);
 
     DefaultCustomerBridge testObject = new DefaultCustomerBridge(uriInfo,principal);
 
@@ -51,7 +51,7 @@ public class DefaultCustomerBridgeTest extends BaseResourceTest {
   }
 
   private Customer buildCustomer() {
-    User customerAlice = DatabaseLoader.buildCustomerAlice(null);
+    User customerAlice = DatabaseLoader.buildAliceCustomer(null);
     customerAlice.setId(1L);
 
     return CustomerBuilder

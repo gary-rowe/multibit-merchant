@@ -25,17 +25,17 @@ public class AdminUserResourceTest extends BaseJerseyResourceTest {
   protected void setUpResources() {
 
     // Create the supporting Role
-    Role adminRole = DatabaseLoader.buildRoleAdmin();
-    Role customerRole = DatabaseLoader.buildRoleCustomer();
+    Role adminRole = DatabaseLoader.buildAdminRole();
+    Role customerRole = DatabaseLoader.buildCustomerRole();
 
     // Create the User for authenticated access
     User adminUser = setUpAuthenticator(Lists.newArrayList(adminRole));
     adminUser.setId(1L);
 
     // Create the customer Users
-    User aliceUser = DatabaseLoader.buildCustomerAlice(customerRole);
+    User aliceUser = DatabaseLoader.buildAliceCustomer(customerRole);
     aliceUser.setId(1L);
-    User bobUser = DatabaseLoader.buildCustomerAlice(customerRole);
+    User bobUser = DatabaseLoader.buildAliceCustomer(customerRole);
     bobUser.setId(2L);
 
     // Create pages
@@ -61,7 +61,7 @@ public class AdminUserResourceTest extends BaseJerseyResourceTest {
     String actualResponse = client()
       .resource("/admin/user")
       .queryParam("pageSize","1")
-      .queryParam("pageNumber","1")
+      .queryParam("pageNumber", "1")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 
@@ -70,7 +70,7 @@ public class AdminUserResourceTest extends BaseJerseyResourceTest {
     actualResponse = client()
       .resource("/admin/user")
       .queryParam("pageSize","1")
-      .queryParam("pageNumber","2")
+      .queryParam("pageNumber", "2")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 

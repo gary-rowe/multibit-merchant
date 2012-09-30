@@ -20,6 +20,22 @@ public enum ItemField {
    */
   TITLE("title", "titles"),
   /**
+   * The author (for written material)
+   */
+  AUTHOR("author", "authors"),
+  /**
+   * The artist (for performed or produced material)
+   */
+  ARTIST("artist", "artist"),
+  /**
+   * The composer (for audio material)
+   */
+  COMPOSER("composer", "composers"),
+  /**
+   * The genre (for classification)
+   */
+  GENRE("genre", "genres"),
+  /**
    * Appears in search engine results under the title (single sentence with no buzzwords)
    */
   META_SUMMARY("meta_summary", "meta_summaries"),

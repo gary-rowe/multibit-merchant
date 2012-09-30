@@ -24,8 +24,8 @@ public class HibernateCustomerDaoIntegrationTest extends BaseIntegrationTests {
   @Test
   public void testPersistAndFind() {
 
-    Role customerRole = DatabaseLoader.buildRoleCustomer();
-    User aliceUser = DatabaseLoader.buildCustomerAlice(customerRole);
+    Role customerRole = DatabaseLoader.buildCustomerRole();
+    User aliceUser = DatabaseLoader.buildAliceCustomer(customerRole);
 
     Customer expected = aliceUser.getCustomer();
 
