@@ -1,9 +1,12 @@
 package org.multibit.mbm.api.response.hal;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.Lists;
 import com.theoryinpractise.halbuilder.spi.Resource;
 import org.junit.Before;
 import org.junit.Test;
+import org.multibit.mbm.db.DatabaseLoader;
+import org.multibit.mbm.db.dto.Role;
 import org.multibit.mbm.db.dto.User;
 import org.multibit.mbm.db.dto.UserBuilder;
 import org.multibit.mbm.test.BaseResourceTest;
@@ -22,22 +25,22 @@ public class AdminUserBridgeTest extends BaseResourceTest {
   }
 
   @Test
-  public void representUserAsJson() throws Exception {
+  public void representUserListAsJson() throws Exception {
 
-    User user = UserBuilder
-      .newInstance()
-      .build();
+    Role customerRole = DatabaseLoader.buildRoleCustomer();
+    User aliceUser = DatabaseLoader.buildCustomerAlice(customerRole);
+    User bobUser = DatabaseLoader.buildCustomerAlice(customerRole);
 
     AdminUserBridge testObject = new AdminUserBridge(uriInfo,principal);
 
-    Resource resource = testObject.toResource(user);
+    Resource resource = testObject.toResource(Lists.newArrayList(aliceUser,bobUser));
 
-    FixtureAsserts.assertRepresentationMatchesJsonFixture("a User can be marshalled to JSON", resource, "fixtures/hal/user/expected-users-by-admin-page-1.json");
+    FixtureAsserts.assertRepresentationMatchesJsonFixture("a User list can be marshalled to JSON", resource, "fixtures/hal/user/expected-users-by-admin-page-1.json");
 
   }
 
   @Test
-  public void representUserAsXml() throws IOException {
+  public void representUserListAsXml() throws IOException {
 
     User user = UserBuilder
       .newInstance()
@@ -45,9 +48,9 @@ public class AdminUserBridgeTest extends BaseResourceTest {
 
     AdminUserBridge testObject = new AdminUserBridge(uriInfo,principal);
 
-    Resource resource = testObject.toResource(user);
+    Resource resource = testObject.toResource(Lists.newArrayList(user));
 
-    FixtureAsserts.assertRepresentationMatchesXmlFixture("a User can be marshalled to XML", resource, "fixtures/hal/user/expected-user-by-admin.xml");
+    FixtureAsserts.assertRepresentationMatchesXmlFixture("a User list can be marshalled to XML", resource, "fixtures/hal/user/expected-user-by-admin.xml");
 
   }
 

@@ -15,19 +15,20 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
  * <p>Resource to provide the following to application:</p>
  * <ul>
- * <li>Provision of REST endpoints to manage CRUD operations by an administrator</li>
+ * <li>Provision of REST endpoints to manage CRUD operations by an administrator against a collection of {@link User} entities</li>
  * </ul>
  *
  * @since 0.0.1
  */
 @Path("/admin")
 @Produces({HalMediaType.APPLICATION_HAL_JSON, HalMediaType.APPLICATION_HAL_XML})
-public class AdminUserResource extends BaseResource<User> {
+public class AdminUserResource extends BaseResource<List<User>> {
 
   UserDao userDao;
 
@@ -51,11 +52,11 @@ public class AdminUserResource extends BaseResource<User> {
     int pageSize = Integer.valueOf(rawPageSize.get());
     int pageNumber = Integer.valueOf(rawPageNumber.get());
 
-    userDao.getAllByPage(pageSize, pageNumber);
+    List<User> users = userDao.getAllByPage(pageSize, pageNumber);
 
     AdminUserBridge bridge = new AdminUserBridge(uriInfo, Optional.of(adminUser));
 
-    return ok(bridge, adminUser);
+    return ok(bridge, users);
 
   }
 

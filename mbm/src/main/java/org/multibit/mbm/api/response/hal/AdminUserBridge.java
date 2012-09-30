@@ -6,6 +6,7 @@ import com.theoryinpractise.halbuilder.spi.Resource;
 import org.multibit.mbm.db.dto.User;
 
 import javax.ws.rs.core.UriInfo;
+import java.util.List;
 
 /**
  * <p>Bridge to provide the following to {@link org.multibit.mbm.db.dto.User}:</p>
@@ -15,7 +16,7 @@ import javax.ws.rs.core.UriInfo;
  *
  * @since 0.0.1
  */
-public class AdminUserBridge extends BaseBridge<User> {
+public class AdminUserBridge extends BaseBridge<List<User>> {
 
   /**
    * @param uriInfo The {@link javax.ws.rs.core.UriInfo} containing the originating request information
@@ -25,16 +26,22 @@ public class AdminUserBridge extends BaseBridge<User> {
     super(uriInfo, principal);
   }
 
-  public Resource toResource(User user) {
+  public Resource toResource(List<User> users) {
     ResourceFactory resourceFactory = getResourceFactory();
 
-    return resourceFactory.newResource("/user")
-      .withLink("search", "?q={query}")
-      .withLink("description", "/description")
-      .withProperty("id", user.getId())
-      .withProperty("name", user.getPublicName())
-      // End of build
-      ;
+    Resource userList = resourceFactory.newResource("/user");
+
+    for (User user: users) {
+      Resource userResource = resourceFactory.newResource("/user")
+        .withProperty("id", user.getId())
+        .withProperty("name", user.getPublicName())
+        // End of build
+        ;
+      userList.withSubresource("", userResource);
+    }
+
+    return userList;
+
   }
 
 }

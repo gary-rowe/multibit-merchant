@@ -1,1 +1,1 @@
-{"_links":{"self":{"href":"http://localhost:9998/user"},"http://localhost:9998/description":{"href":"description"},"http://localhost:9998/user?q={query}":{"href":"search"}},"id":1,"name":null}
+{"_links":{"self":{"href":"http://localhost:9998/user"}},"_embedded":{"":[{"_links":{"self":{"href":"http://localhost:9998/user"}},"id":1,"name":null},{"_links":{"self":{"href":"http://localhost:9998/user"}},"id":2,"name":null}]}}

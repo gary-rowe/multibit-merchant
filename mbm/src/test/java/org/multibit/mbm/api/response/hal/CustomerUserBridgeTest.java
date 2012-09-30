@@ -4,8 +4,9 @@ import com.google.common.base.Optional;
 import com.theoryinpractise.halbuilder.spi.Resource;
 import org.junit.Before;
 import org.junit.Test;
+import org.multibit.mbm.db.DatabaseLoader;
+import org.multibit.mbm.db.dto.Role;
 import org.multibit.mbm.db.dto.User;
-import org.multibit.mbm.db.dto.UserBuilder;
 import org.multibit.mbm.test.BaseResourceTest;
 import org.multibit.mbm.test.FixtureAsserts;
 
@@ -24,13 +25,12 @@ public class CustomerUserBridgeTest extends BaseResourceTest {
   @Test
   public void representUserAsJson() throws Exception {
 
-    User user = UserBuilder
-      .newInstance()
-      .build();
+    Role customerRole = DatabaseLoader.buildRoleCustomer();
+    User aliceUser = DatabaseLoader.buildCustomerAlice(customerRole);
 
     CustomerUserBridge testObject = new CustomerUserBridge(uriInfo,principal);
 
-    Resource resource = testObject.toResource(user);
+    Resource resource = testObject.toResource(aliceUser);
 
     FixtureAsserts.assertRepresentationMatchesJsonFixture("a User can be marshalled to JSON", resource, "fixtures/hal/user/expected-user-by-customer.json");
 
@@ -39,13 +39,12 @@ public class CustomerUserBridgeTest extends BaseResourceTest {
   @Test
   public void representUserAsXml() throws IOException {
 
-    User user = UserBuilder
-      .newInstance()
-      .build();
+    Role customerRole = DatabaseLoader.buildRoleCustomer();
+    User aliceUser = DatabaseLoader.buildCustomerAlice(customerRole);
 
     CustomerUserBridge testObject = new CustomerUserBridge(uriInfo,principal);
 
-    Resource resource = testObject.toResource(user);
+    Resource resource = testObject.toResource(aliceUser);
 
     FixtureAsserts.assertRepresentationMatchesXmlFixture("a User can be marshalled to XML", resource, "fixtures/hal/user/expected-user-by-customer.xml");
 
