@@ -42,7 +42,7 @@ public class AdminUserResourceTest extends BaseJerseyResourceTest {
     List<User> usersPage1 = Lists.newArrayList();
     usersPage1.add(aliceUser);
     List<User> usersPage2 = Lists.newArrayList();
-    usersPage1.add(bobUser);
+    usersPage2.add(bobUser);
 
     // Configure the mock DAO
     when(userDao.getAllByPage(1,1)).thenReturn(usersPage1);
