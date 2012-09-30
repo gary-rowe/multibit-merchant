@@ -9,7 +9,6 @@ import org.multibit.mbm.db.DatabaseLoader;
 import org.multibit.mbm.db.dto.Cart;
 import org.multibit.mbm.db.dto.CartBuilder;
 import org.multibit.mbm.db.dto.Item;
-import org.multibit.mbm.db.dto.ItemBuilder;
 import org.multibit.mbm.test.BaseResourceTest;
 import org.multibit.mbm.test.FixtureAsserts;
 
@@ -36,7 +35,7 @@ public class DefaultCartResponseBridgeTest extends BaseResourceTest {
 
     Resource resource = testObject.toResource(cartResponse);
 
-    FixtureAsserts.assertRepresentationMatchesJsonFixture("a CartResponse can be marshalled to JSON", resource, "fixtures/hal/cart/expected-cart-response-simple.json");
+    FixtureAsserts.assertRepresentationMatchesJsonFixture("a CartResponse can be marshalled to JSON", resource, "fixtures/hal/cart/expected-cart-by-customer.json");
 
   }
 
@@ -51,7 +50,7 @@ public class DefaultCartResponseBridgeTest extends BaseResourceTest {
 
     Resource resource = testObject.toResource(cartResponse);
 
-    FixtureAsserts.assertRepresentationMatchesXmlFixture("a CartResponse can be marshalled to XML", resource, "fixtures/hal/cart/expected-cart-response-simple.xml");
+    FixtureAsserts.assertRepresentationMatchesXmlFixture("a CartResponse can be marshalled to XML", resource, "fixtures/hal/cart/expected-cart-by-customer.xml");
 
   }
 
