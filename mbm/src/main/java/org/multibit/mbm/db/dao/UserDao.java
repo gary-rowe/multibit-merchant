@@ -2,6 +2,8 @@ package org.multibit.mbm.db.dao;
 
 import org.multibit.mbm.db.dto.User;
 
+import java.util.List;
+
 public interface UserDao {
 
   /**
@@ -26,6 +28,14 @@ public interface UserDao {
    * @return A matching User with Roles and Authorities initialised
    */
   User getUserByCredentials(String username, String password);
+
+  /**
+   * Provide a paged list of all Users
+   *
+   * @param pageSize   the total record in one page
+   * @param pageNumber the page number starts from 0
+   */
+  List<User> getAllByPage(final int pageSize, final int pageNumber);
 
   /**
    * Persist the given User

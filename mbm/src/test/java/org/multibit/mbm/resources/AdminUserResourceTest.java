@@ -24,8 +24,8 @@ public class AdminUserResourceTest extends BaseJerseyResourceTest {
       .build();
 
     // Create the User for authenticated access
-    User user = setUpAuthenticator(Lists.newArrayList(adminRole));
-    user.setId(1L);
+    User adminUser = setUpAuthenticator(Lists.newArrayList(adminRole));
+    adminUser.setId(1L);
 
     // Configure resources
     addResource(testObject);
@@ -33,14 +33,14 @@ public class AdminUserResourceTest extends BaseJerseyResourceTest {
   }
 
   @Test
-  public void testRetrieveUser() throws Exception {
+  public void testGetAllByPage() throws Exception {
 
     String actualResponse = client()
       .resource("/admin/user")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 
-    FixtureAsserts.assertStringMatchesJsonFixture("User can be retrieved as JSON", actualResponse, "fixtures/hal/user/expected-user-by-admin.json");
+    FixtureAsserts.assertStringMatchesJsonFixture("User list can be retrieved as JSON", actualResponse, "fixtures/hal/user/expected-users-by-admin-page-1.json");
 
   }
 

@@ -6,12 +6,14 @@ import com.yammer.metrics.annotation.Timed;
 import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.api.response.hal.AdminUserBridge;
 import org.multibit.mbm.auth.annotation.RestrictedTo;
+import org.multibit.mbm.db.dao.UserDao;
 import org.multibit.mbm.db.dto.Authority;
 import org.multibit.mbm.db.dto.User;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import java.util.concurrent.TimeUnit;
 
@@ -27,15 +29,31 @@ import java.util.concurrent.TimeUnit;
 @Produces({HalMediaType.APPLICATION_HAL_JSON, HalMediaType.APPLICATION_HAL_XML})
 public class AdminUserResource extends BaseResource<User> {
 
+  UserDao userDao;
+
+  /**
+   * Provide a paged response of all users in the system
+   * @param adminUser A user with administrator rights
+   * @return A response containing a paged list of all users
+   */
   @GET
   @Timed
   @Path("/user")
   @CacheControl(maxAge = 6, maxAgeUnit = TimeUnit.HOURS)
-  public Response retrieveUser(@RestrictedTo({Authority.ROLE_ADMIN}) User user) {
+  public Response getAllByPage(
+    @RestrictedTo({Authority.ROLE_ADMIN}) User adminUser,
+    @QueryParam("pageSize") Optional<Integer> pageSize,
+    @QueryParam("pageNumber") Optional<Integer> pageNumber) {
 
-    AdminUserBridge bridge = new AdminUserBridge(uriInfo, Optional.of(user));
+    userDao.getAllByPage(pageSize.get(), pageNumber.get());
 
-    return ok(bridge, user);
+    AdminUserBridge bridge = new AdminUserBridge(uriInfo, Optional.of(adminUser));
 
+    return ok(bridge, adminUser);
+
+  }
+
+  public void setUserDao(UserDao userDao) {
+    this.userDao = userDao;
   }
 }
