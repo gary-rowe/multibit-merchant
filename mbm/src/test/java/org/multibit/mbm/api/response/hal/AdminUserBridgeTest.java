@@ -8,7 +8,6 @@ import org.junit.Test;
 import org.multibit.mbm.db.DatabaseLoader;
 import org.multibit.mbm.db.dto.Role;
 import org.multibit.mbm.db.dto.User;
-import org.multibit.mbm.db.dto.UserBuilder;
 import org.multibit.mbm.test.BaseResourceTest;
 import org.multibit.mbm.test.FixtureAsserts;
 
@@ -29,28 +28,32 @@ public class AdminUserBridgeTest extends BaseResourceTest {
 
     Role customerRole = DatabaseLoader.buildCustomerRole();
     User aliceUser = DatabaseLoader.buildAliceCustomer(customerRole);
+    aliceUser.setId(1L);
     User bobUser = DatabaseLoader.buildBobCustomer(customerRole);
+    bobUser.setId(2L);
 
     AdminUserBridge testObject = new AdminUserBridge(uriInfo,principal);
 
     Resource resource = testObject.toResource(Lists.newArrayList(aliceUser,bobUser));
 
-    FixtureAsserts.assertRepresentationMatchesJsonFixture("a User list can be marshalled to JSON", resource, "fixtures/hal/user/expected-users-by-admin-page-1.json");
+    FixtureAsserts.assertRepresentationMatchesJsonFixture("a User list can be marshalled to JSON", resource, "fixtures/hal/user/expected-users-by-admin-all.json");
 
   }
 
   @Test
   public void representUserListAsXml() throws IOException {
 
-    User user = UserBuilder
-      .newInstance()
-      .build();
+    Role customerRole = DatabaseLoader.buildCustomerRole();
+    User aliceUser = DatabaseLoader.buildAliceCustomer(customerRole);
+    aliceUser.setId(1L);
+    User bobUser = DatabaseLoader.buildBobCustomer(customerRole);
+    bobUser.setId(2L);
 
     AdminUserBridge testObject = new AdminUserBridge(uriInfo,principal);
 
-    Resource resource = testObject.toResource(Lists.newArrayList(user));
+    Resource resource = testObject.toResource(Lists.newArrayList(aliceUser, bobUser));
 
-    FixtureAsserts.assertRepresentationMatchesXmlFixture("a User list can be marshalled to XML", resource, "fixtures/hal/user/expected-user-by-admin.xml");
+    FixtureAsserts.assertRepresentationMatchesXmlFixture("a User list can be marshalled to XML", resource, "fixtures/hal/user/expected-users-by-admin-all.xml");
 
   }
 
