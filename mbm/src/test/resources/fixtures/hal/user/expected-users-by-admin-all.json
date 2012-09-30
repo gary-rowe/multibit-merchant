@@ -1,0 +1,1 @@
+{"_links":{"self":{"href":"http://example.org/user"}},"_embedded":{"http://example.org/user/1":{"_links":{"http://example.org/user/1 self":{"href":"http://example.org/user/1"}},"id":1,"name":null},"http://example.org/user/2":{"_links":{"http://example.org/user/2 self":{"href":"http://example.org/user/2"}},"id":2,"name":null}}}

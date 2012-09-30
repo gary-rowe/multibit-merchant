@@ -31,13 +31,16 @@ public class AdminUserBridge extends BaseBridge<List<User>> {
 
     Resource userList = resourceFactory.newResource("/user");
 
+    // TODO Fill this in for all fields
     for (User user: users) {
-      Resource userResource = resourceFactory.newResource("/user")
+      String rel = "/user/"+user.getId();
+      Resource userResource = resourceFactory
+        .newResource(rel)
         .withProperty("id", user.getId())
         .withProperty("name", user.getPublicName())
         // End of build
         ;
-      userList.withSubresource("", userResource);
+      userList.withSubresource(rel, userResource);
     }
 
     return userList;
