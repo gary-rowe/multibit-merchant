@@ -115,7 +115,7 @@ public abstract class BaseJerseyResourceTest extends BaseResourceTest {
    */
   protected User setUpAuthenticator() {
 
-    Role customerRole = DatabaseLoader.buildRoleCustomer();
+    Role customerRole = DatabaseLoader.buildCustomerRole();
 
     return setUpAuthenticator(apiKey, sharedSecret, Lists.newArrayList(customerRole));
   }

@@ -25,8 +25,8 @@ public class CustomerUserBridgeTest extends BaseResourceTest {
   @Test
   public void representUserAsJson() throws Exception {
 
-    Role customerRole = DatabaseLoader.buildRoleCustomer();
-    User aliceUser = DatabaseLoader.buildCustomerAlice(customerRole);
+    Role customerRole = DatabaseLoader.buildCustomerRole();
+    User aliceUser = DatabaseLoader.buildAliceCustomer(customerRole);
 
     CustomerUserBridge testObject = new CustomerUserBridge(uriInfo,principal);
 
@@ -39,8 +39,8 @@ public class CustomerUserBridgeTest extends BaseResourceTest {
   @Test
   public void representUserAsXml() throws IOException {
 
-    Role customerRole = DatabaseLoader.buildRoleCustomer();
-    User aliceUser = DatabaseLoader.buildCustomerAlice(customerRole);
+    Role customerRole = DatabaseLoader.buildCustomerRole();
+    User aliceUser = DatabaseLoader.buildAliceCustomer(customerRole);
 
     CustomerUserBridge testObject = new CustomerUserBridge(uriInfo,principal);
 
