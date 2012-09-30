@@ -17,6 +17,7 @@ import org.junit.Before;
 import org.multibit.mbm.auth.hmac.HmacAuthenticator;
 import org.multibit.mbm.auth.hmac.HmacClientFilter;
 import org.multibit.mbm.auth.hmac.HmacRestrictedToProvider;
+import org.multibit.mbm.db.DatabaseLoader;
 import org.multibit.mbm.db.dao.UserDao;
 import org.multibit.mbm.db.dto.*;
 
@@ -114,11 +115,7 @@ public abstract class BaseJerseyResourceTest extends BaseResourceTest {
    */
   protected User setUpAuthenticator() {
 
-    Role customerRole = RoleBuilder.newInstance()
-      .withName(Authority.ROLE_CUSTOMER.name())
-      .withDescription("Customer role")
-      .withCustomerAuthorities()
-      .build();
+    Role customerRole = DatabaseLoader.buildRoleCustomer();
 
     return setUpAuthenticator(apiKey, sharedSecret, Lists.newArrayList(customerRole));
   }

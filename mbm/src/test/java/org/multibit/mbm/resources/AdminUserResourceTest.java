@@ -6,7 +6,6 @@ import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.db.DatabaseLoader;
 import org.multibit.mbm.db.dao.UserDao;
 import org.multibit.mbm.db.dto.Role;
-import org.multibit.mbm.db.dto.RoleBuilder;
 import org.multibit.mbm.db.dto.User;
 import org.multibit.mbm.test.BaseJerseyResourceTest;
 import org.multibit.mbm.test.FixtureAsserts;
@@ -25,28 +24,25 @@ public class AdminUserResourceTest extends BaseJerseyResourceTest {
   @Override
   protected void setUpResources() {
 
-    // Create the admin Role
-    Role adminRole = RoleBuilder.newInstance()
-      .withAdminAuthorities()
-      .withName("Administrator")
-      .withDescription("Administrator role")
-      .build();
-
-    Role customerRole = RoleBuilder.newInstance()
-      .withCustomerAuthorities()
-      .withName("Customer")
-      .withDescription("Customer role")
-      .build();
+    // Create the supporting Role
+    Role adminRole = DatabaseLoader.buildRoleAdmin();
+    Role customerRole = DatabaseLoader.buildRoleCustomer();
 
     // Create the User for authenticated access
     User adminUser = setUpAuthenticator(Lists.newArrayList(adminRole));
     adminUser.setId(1L);
 
+    // Create the customer Users
+    User aliceUser = DatabaseLoader.buildCustomerAlice(customerRole);
+    aliceUser.setId(1L);
+    User bobUser = DatabaseLoader.buildCustomerAlice(customerRole);
+    bobUser.setId(2L);
+
     // Create pages
     List<User> usersPage1 = Lists.newArrayList();
-    usersPage1.add(DatabaseLoader.buildCustomerAlice(customerRole));
+    usersPage1.add(aliceUser);
     List<User> usersPage2 = Lists.newArrayList();
-    usersPage1.add(DatabaseLoader.buildCustomerBob(customerRole));
+    usersPage1.add(bobUser);
 
     // Configure the mock DAO
     when(userDao.getAllByPage(1,1)).thenReturn(usersPage1);

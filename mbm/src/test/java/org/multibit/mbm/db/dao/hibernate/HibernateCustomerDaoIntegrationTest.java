@@ -1,11 +1,9 @@
 package org.multibit.mbm.db.dao.hibernate;
 
 import org.junit.Test;
-import org.multibit.mbm.db.dto.CustomerBuilder;
-import org.multibit.mbm.db.dto.Customer;
+import org.multibit.mbm.db.DatabaseLoader;
+import org.multibit.mbm.db.dto.*;
 import org.multibit.mbm.db.dao.CustomerDao;
-import org.multibit.mbm.db.dto.User;
-import org.multibit.mbm.db.dto.UserBuilder;
 import org.multibit.mbm.test.BaseIntegrationTests;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -26,14 +24,10 @@ public class HibernateCustomerDaoIntegrationTest extends BaseIntegrationTests {
   @Test
   public void testPersistAndFind() {
 
-    // TODO Introduce Cart API
-    Customer expected = CustomerBuilder.newInstance()
-      .build();
+    Role customerRole = DatabaseLoader.buildRoleCustomer();
+    User aliceUser = DatabaseLoader.buildCustomerAlice(customerRole);
 
-    User user = UserBuilder
-      .newInstance()
-      .withCustomer(expected)
-      .build();
+    Customer expected = aliceUser.getCustomer();
 
     // Persist with insert
     int originalCustomerRows = countRowsInTable("customers");

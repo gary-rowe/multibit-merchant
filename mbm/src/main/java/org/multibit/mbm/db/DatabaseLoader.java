@@ -192,12 +192,10 @@ public class DatabaseLoader {
     // Customers
     // Alice
     User userAlice = buildCustomerAlice(customerRole);
-
     userDao.saveOrUpdate(userAlice);
 
     // Bob
     User bob = buildCustomerBob(customerRole);
-
     userDao.saveOrUpdate(bob);
 
     userDao.flush();
@@ -216,11 +214,12 @@ public class DatabaseLoader {
       .withContactMethod(ContactMethod.LAST_NAME, "Customer")
       .withContactMethod(ContactMethod.EMAIL, "bob@example.org")
       .withRole(customerRole)
+      .withCustomer(bobCustomer)
       .build();
   }
 
   public static User buildCustomerAlice(Role customerRole) {
-    Customer customerAlice = CustomerBuilder.newInstance()
+    Customer aliceCustomer = CustomerBuilder.newInstance()
       .build();
 
     return UserBuilder.newInstance()
@@ -231,7 +230,7 @@ public class DatabaseLoader {
       .withContactMethod(ContactMethod.LAST_NAME, "Customer")
       .withContactMethod(ContactMethod.EMAIL, "alice@example.org")
       .withRole(customerRole)
-      .withCustomer(customerAlice)
+      .withCustomer(aliceCustomer)
       .build();
   }
 

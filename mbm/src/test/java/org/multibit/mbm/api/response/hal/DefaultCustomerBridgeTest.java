@@ -25,18 +25,12 @@ public class DefaultCustomerBridgeTest extends BaseResourceTest {
   @Test
   public void representCustomerAsJson() throws Exception {
 
-    Customer customer = CustomerBuilder
-      .newInstance()
-      .build();
-
-    User user = UserBuilder
-      .newInstance()
-      .withCustomer(customer)
-      .build();
+    Role customerRole = DatabaseLoader.buildRoleCustomer();
+    User aliceUser = DatabaseLoader.buildCustomerAlice(customerRole);
 
     DefaultCustomerBridge testObject = new DefaultCustomerBridge(uriInfo,principal);
 
-    Resource resource = testObject.toResource(customer);
+    Resource resource = testObject.toResource(aliceUser.getCustomer());
 
     FixtureAsserts.assertRepresentationMatchesJsonFixture("a Customer can be marshalled to JSON", resource, "fixtures/hal/customer/expected-customer-simple.json");
 
@@ -45,18 +39,12 @@ public class DefaultCustomerBridgeTest extends BaseResourceTest {
   @Test
   public void representCustomerAsXml() throws IOException {
 
-    Customer customer = CustomerBuilder
-      .newInstance()
-      .build();
-
-    User user = UserBuilder
-      .newInstance()
-      .withCustomer(customer)
-      .build();
+    Role customerRole = DatabaseLoader.buildRoleCustomer();
+    User aliceUser = DatabaseLoader.buildCustomerAlice(customerRole);
 
     DefaultCustomerBridge testObject = new DefaultCustomerBridge(uriInfo,principal);
 
-    Resource resource = testObject.toResource(customer);
+    Resource resource = testObject.toResource(aliceUser.getCustomer());
 
     FixtureAsserts.assertRepresentationMatchesXmlFixture("a Customer can be marshalled to XML", resource, "fixtures/hal/customer/expected-customer-simple.xml");
 
