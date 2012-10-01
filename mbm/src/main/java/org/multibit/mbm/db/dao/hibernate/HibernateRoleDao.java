@@ -1,7 +1,7 @@
 package org.multibit.mbm.db.dao.hibernate;
 
+import com.google.common.base.Optional;
 import org.multibit.mbm.db.dao.RoleDao;
-import org.multibit.mbm.db.dao.RoleNotFoundException;
 import org.multibit.mbm.db.dto.Authority;
 import org.multibit.mbm.db.dto.Role;
 import org.springframework.orm.hibernate3.HibernateTemplate;
@@ -11,23 +11,21 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @Repository("hibernateRoleDao")
-public class HibernateRoleDao implements RoleDao {
+public class HibernateRoleDao extends BaseHibernateDao implements RoleDao {
 
   @Resource(name = "hibernateTemplate")
   private HibernateTemplate hibernateTemplate = null;
 
   @Override
-  public Role getRoleByAuthority(Authority authority) throws RoleNotFoundException {
+  public Optional<Role> getRoleByAuthority(Authority authority) {
     return getRoleByName(authority.name());
   }
 
   @Override
-  public Role getRoleByName(String name) throws RoleNotFoundException {
+  public Optional<Role> getRoleByName(String name) {
     List roles = hibernateTemplate.find("from Role r where r.name = ?", name);
-    if (roles==null || roles.isEmpty()) {
-      throw new RoleNotFoundException();
-    }
-    return (Role) roles.get(0);
+
+    return first(roles, Role.class);
   }
 
   @Override

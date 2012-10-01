@@ -1,8 +1,9 @@
-package org.multibit.mbm.resources;
+package org.multibit.mbm.resources.admin;
 
 import com.google.common.collect.Lists;
 import org.junit.Test;
 import org.multibit.mbm.api.hal.HalMediaType;
+import org.multibit.mbm.api.request.admin.AdminCreateUserRequest;
 import org.multibit.mbm.db.DatabaseLoader;
 import org.multibit.mbm.db.dao.UserDao;
 import org.multibit.mbm.db.dto.Role;
@@ -77,5 +78,23 @@ public class AdminUserResourceTest extends BaseJerseyResourceTest {
     FixtureAsserts.assertStringMatchesJsonFixture("User list can be retrieved as JSON", actualResponse, "fixtures/hal/user/expected-users-by-admin-page-2.json");
 
   }
+
+  @Test
+  public void testCreateUser() throws Exception {
+
+    AdminCreateUserRequest createUserRequest = new AdminCreateUserRequest();
+    createUserRequest.setUsername("charlie");
+    createUserRequest.setPassword("charlie1");
+
+    String actualResponse = client()
+      .resource("/admin/user")
+      .accept(HalMediaType.APPLICATION_HAL_JSON)
+      .entity(createUserRequest)
+      .post(String.class);
+
+    FixtureAsserts.assertStringMatchesJsonFixture("CreateUser by admin response render to JSON",actualResponse,"fixtures/hal/cart/expected-user-new-by-admin.json");
+
+  }
+
 
 }

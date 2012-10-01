@@ -7,26 +7,17 @@ import com.sun.jersey.core.header.InBoundHeaders;
 import com.sun.jersey.core.header.OutBoundHeaders;
 import com.sun.jersey.core.impl.provider.entity.StringProvider;
 import com.sun.jersey.spi.container.ContainerRequest;
-import com.yammer.dropwizard.jersey.JacksonMessageBodyProvider;
-import com.yammer.dropwizard.json.Json;
-import com.yammer.dropwizard.testing.FixtureHelpers;
 import org.junit.Test;
+import org.multibit.mbm.test.FixtureAsserts;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Providers;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.net.URI;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.any;
-import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -48,11 +39,9 @@ public class HmacUtilsTest {
 
     ClientRequest clientRequest = new ClientRequestImpl(uri, "get", null, headers);
 
-    String actualCanonicalRepresentation = HmacUtils.createCanonicalRepresentation(clientRequest, providers);
+    String representation = HmacUtils.createCanonicalRepresentation(clientRequest, providers);
 
-    String expectedCanonicalRepresentation = FixtureHelpers.fixture("fixtures/hmac/expected-canonical-get.txt");
-
-    assertThat(actualCanonicalRepresentation, equalTo(expectedCanonicalRepresentation));
+    FixtureAsserts.assertStringMatchesStringFixture("GET canonical representation",representation,"fixtures/hmac/expected-canonical-get.txt");
 
   }
 
@@ -79,11 +68,9 @@ public class HmacUtilsTest {
 
     ClientRequest clientRequest = new ClientRequestImpl(uri, "post", entity, headers);
 
-    String actualCanonicalRepresentation = HmacUtils.createCanonicalRepresentation(clientRequest, providers);
+    String representation = HmacUtils.createCanonicalRepresentation(clientRequest, providers);
 
-    String expectedCanonicalRepresentation = FixtureHelpers.fixture("fixtures/hmac/expected-canonical-post.txt");
-
-    assertThat(actualCanonicalRepresentation, equalTo(expectedCanonicalRepresentation));
+    FixtureAsserts.assertStringMatchesStringFixture("POST canonical representation", representation, "fixtures/hmac/expected-canonical-post.txt");
 
   }
 
@@ -110,11 +97,9 @@ public class HmacUtilsTest {
     when(containerRequest.getQueryParameters()).thenReturn(queryParameters);
     when(containerRequest.getPath()).thenReturn("example/resource.html");
 
-    String actualCanonicalRepresentation = HmacUtils.createCanonicalRepresentation(containerRequest);
+    String representation = HmacUtils.createCanonicalRepresentation(containerRequest);
 
-    String expectedCanonicalRepresentation = FixtureHelpers.fixture("fixtures/hmac/expected-canonical-get.txt");
-
-    assertThat(actualCanonicalRepresentation, equalTo(expectedCanonicalRepresentation));
+    FixtureAsserts.assertStringMatchesStringFixture("GET all fields canonical representation", representation, "fixtures/hmac/expected-canonical-get.txt");
 
   }
 
@@ -147,9 +132,7 @@ public class HmacUtilsTest {
 
     String actualCanonicalRepresentation = HmacUtils.createCanonicalRepresentation(containerRequest);
 
-    String expectedCanonicalRepresentation = FixtureHelpers.fixture("fixtures/hmac/expected-canonical-post.txt");
-
-    assertThat(actualCanonicalRepresentation, equalTo(expectedCanonicalRepresentation));
+    FixtureAsserts.assertStringMatchesStringFixture("POST all fields canonical representation",actualCanonicalRepresentation,"fixtures/hmac/expected-canonical-post.txt");
 
   }
 

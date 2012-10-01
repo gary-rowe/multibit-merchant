@@ -2,7 +2,7 @@ package org.multibit.mbm.api.request;
 
 import com.google.common.collect.Lists;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.multibit.mbm.api.response.CartItemResponse;
+import org.multibit.mbm.api.response.CustomerCartItem;
 
 import java.util.List;
 
@@ -15,16 +15,16 @@ import java.util.List;
  * @since 0.0.1
  *         
  */
-public class CreateCartRequest extends BaseRequest {
+public class CustomerCreateCartRequest {
 
   @JsonProperty
-  List<CartItemResponse> cartItemSummaries = Lists.newArrayList();
+  List<CustomerCartItem> cartItems = Lists.newArrayList();
 
-  public List<CartItemResponse> getCartItemSummaries() {
-    return cartItemSummaries;
+  public List<CustomerCartItem> getCartItems() {
+    return cartItems;
   }
 
-  public void setCartItemSummaries(List<CartItemResponse> cartItemSummaries) {
-    this.cartItemSummaries = cartItemSummaries;
+  public void setCartItems(List<CustomerCartItem> cartItems) {
+    this.cartItems = cartItems;
   }
 }

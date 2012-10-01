@@ -1,11 +1,12 @@
 package org.multibit.mbm.services;
 
+import com.google.common.base.Optional;
 import org.multibit.mbm.db.dao.CartDao;
-import org.multibit.mbm.db.dto.Cart;
-import org.multibit.mbm.db.dao.ItemDao;
-import org.multibit.mbm.db.dto.Item;
 import org.multibit.mbm.db.dao.CustomerDao;
+import org.multibit.mbm.db.dao.ItemDao;
+import org.multibit.mbm.db.dto.Cart;
 import org.multibit.mbm.db.dto.Customer;
+import org.multibit.mbm.db.dto.Item;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -49,13 +50,13 @@ public class CustomerService {
    */
   @Transactional(propagation = Propagation.REQUIRED)
   public Customer setCartItemQuantity(Customer customer, Long itemId, int quantity) {
-    Cart cart = cartDao.getInitialisedCartByCustomer(customer);
+    Optional<Cart> cart = cartDao.getInitialisedCartByCustomer(customer);
 
     // Find the Item in the database
-    Item item = itemDao.getById(itemId);
+    Optional<Item> item = itemDao.getById(itemId);
 
     // Set the quantity of Items in the cart
-    cart.setItemQuantity(item, quantity);
+    cart.get().setItemQuantity(item.get(), quantity);
 
     return customerDao.saveOrUpdate(customer);
 
@@ -94,7 +95,7 @@ public class CustomerService {
     this.itemDao = itemDao;
   }
 
-  public Customer findByOpenId(String openId) {
+  public Optional<Customer> findByOpenId(String openId) {
     return customerDao.getCustomerByOpenId(openId);
   }
 }

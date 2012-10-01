@@ -4,7 +4,7 @@ import com.google.common.base.Optional;
 import com.theoryinpractise.halbuilder.spi.Resource;
 import org.junit.Before;
 import org.junit.Test;
-import org.multibit.mbm.api.response.CartResponse;
+import org.multibit.mbm.api.response.CustomerCartResponse;
 import org.multibit.mbm.db.DatabaseLoader;
 import org.multibit.mbm.db.dto.Cart;
 import org.multibit.mbm.db.dto.CartBuilder;
@@ -29,9 +29,9 @@ public class DefaultCartResponseBridgeTest extends BaseResourceTest {
 
     Cart cart = buildCart();
 
-    CartResponse cartResponse = new CartResponse(cart);
+    CustomerCartResponse cartResponse = new CustomerCartResponse(cart);
 
-    DefaultCartResponseBridge testObject = new DefaultCartResponseBridge(uriInfo, principal);
+    CustomerCartResponseBridge testObject = new CustomerCartResponseBridge(uriInfo, principal);
 
     Resource resource = testObject.toResource(cartResponse);
 
@@ -44,9 +44,9 @@ public class DefaultCartResponseBridgeTest extends BaseResourceTest {
 
     Cart cart = buildCart();
 
-    CartResponse cartResponse = new CartResponse(cart);
+    CustomerCartResponse cartResponse = new CustomerCartResponse(cart);
 
-    DefaultCartResponseBridge testObject = new DefaultCartResponseBridge(uriInfo, principal);
+    CustomerCartResponseBridge testObject = new CustomerCartResponseBridge(uriInfo, principal);
 
     Resource resource = testObject.toResource(cartResponse);
 

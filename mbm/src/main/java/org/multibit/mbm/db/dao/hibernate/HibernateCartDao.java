@@ -1,10 +1,10 @@
 package org.multibit.mbm.db.dao.hibernate;
 
-import org.multibit.mbm.db.dao.CartNotFoundException;
-import org.multibit.mbm.db.dto.Cart;
-import org.multibit.mbm.db.dao.CustomerNotFoundException;
-import org.multibit.mbm.db.dto.Customer;
+import com.google.common.base.Optional;
 import org.multibit.mbm.db.dao.CartDao;
+import org.multibit.mbm.db.dto.Cart;
+import org.multibit.mbm.db.dto.CartBuilder;
+import org.multibit.mbm.db.dto.Customer;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
@@ -13,30 +13,29 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @Repository("hibernateCartDao")
-public class HibernateCartDao implements CartDao {
+public class HibernateCartDao extends BaseHibernateDao implements CartDao {
 
-  @Resource(name="hibernateTemplate")
+  @Resource(name = "hibernateTemplate")
   private HibernateTemplate hibernateTemplate = null;
 
   @Override
-  public Cart getCartById(Long id) throws CartNotFoundException {
+  public Optional<Cart> getCartById(Long id) {
     Assert.notNull(id, "id cannot be null");
     List carts = hibernateTemplate.find("from Cart c where c.id = ?", id);
-    if (carts == null || carts.isEmpty()) {
-      // No matching cart
-      return null;
-    }
-    return (Cart) carts.get(0);
+    if (isNotFound(carts)) return Optional.absent();
+
+    return Optional.of((Cart) carts.get(0));
   }
 
   @Override
-  public Cart getInitialisedCartByCustomer(Customer customer) throws CustomerNotFoundException {
+  public Optional<Cart> getInitialisedCartByCustomer(Customer customer) {
     Assert.notNull(customer, "customer cannot be null");
 
     Cart cart = customer.getCart();
     if (cart == null) {
       // Create a suitable cart
-      cart = new Cart();
+      cart = CartBuilder.newInstance()
+        .build();
       customer.setCart(cart);
     }
 
@@ -44,7 +43,7 @@ public class HibernateCartDao implements CartDao {
     hibernateTemplate.saveOrUpdate(customer);
     hibernateTemplate.initialize(customer.getCart().getCartItems());
 
-    return cart;
+    return Optional.of(cart);
 
   }
 

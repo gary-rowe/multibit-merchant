@@ -19,9 +19,11 @@ import java.net.URI;
  */
 public abstract class BaseResource<T> {
 
+  // TODO Verify thread safety
   @Context
   protected UriInfo uriInfo;
 
+  // TODO Verify thread safety
   @Context
   protected HttpHeaders httpHeaders;
 

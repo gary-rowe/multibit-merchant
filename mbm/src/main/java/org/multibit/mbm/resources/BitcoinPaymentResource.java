@@ -7,7 +7,6 @@ import org.multibit.mbm.bitcoin.service.BitcoinService;
 import org.multibit.mbm.bitcoin.service.SwatchBuilder;
 import org.multibit.mbm.db.dto.Authority;
 import org.multibit.mbm.db.dto.User;
-import org.multibit.mbm.services.SecurityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,9 +33,6 @@ public class BitcoinPaymentResource extends BaseResource<User> {
 
   @Resource(name="defaultBitcoinService")
   BitcoinService bitcoinService;
-
-  @Resource(name="securityService")
-  SecurityService securityService;
 
   /**
    * Provides a Bitcoin swatch with the given parameters

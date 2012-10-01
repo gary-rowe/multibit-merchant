@@ -22,7 +22,7 @@ import static junit.framework.Assert.assertTrue;
 public class FixtureAsserts {
 
   /**
-   * Renders a HAL resource as JSON and compares it to a normalised fixture (
+   * Takes a String and compares it to a JSON fixture (
    *
    * @param reason           The reason (e.g. "a Customer can be marshalled to JSON")
    * @param representation   The simple string representation
@@ -37,7 +37,22 @@ public class FixtureAsserts {
   }
 
   /**
-   * Renders a HAL resource as JSON and compares it to a normalised fixture (
+   * Takes a String and compares it to a normalised String fixture
+   *
+   * @param reason           The reason (e.g. "a Customer can be marshalled to JSON")
+   * @param representation   The simple string representation
+   * @param fixtureClasspath The classpath reference to the resource (e.g. "fixtures/example.json")
+   * @throws IOException If something goes wrong
+   */
+  public static void assertStringMatchesStringFixture(String reason, String representation, String fixtureClasspath) throws IOException {
+    Assert.assertEquals(reason,
+      FixtureHelpers.fixture(fixtureClasspath),
+      representation
+    );
+  }
+
+  /**
+   * Renders a HAL resource as JSON and compares it to a normalised JSON fixture
    *
    * @param reason           The reason (e.g. "a Customer can be marshalled to JSON")
    * @param representation   The HAL representation
@@ -77,5 +92,7 @@ public class FixtureAsserts {
   public static void assertRepresentationMatchesBinaryFixture(String reason, byte[] representation, String fixtureClasspath) throws IOException {
     assertTrue(reason, Arrays.areEqual(representation, BinaryFixtureHelpers.fixture(fixtureClasspath)));
   }
+
+
 
 }

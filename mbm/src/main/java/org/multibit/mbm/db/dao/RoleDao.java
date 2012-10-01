@@ -1,5 +1,6 @@
 package org.multibit.mbm.db.dao;
 
+import com.google.common.base.Optional;
 import org.multibit.mbm.db.dto.Authority;
 import org.multibit.mbm.db.dto.Role;
 
@@ -7,19 +8,21 @@ public interface RoleDao {
 
   /**
    * Attempt to locate the Role using a shortcut Authority
+   *
    * @param authority The Role shortcut Authority  (e.g. "ROLE_CUSTOMER")
    * @return A matching Role
    * @throws RoleNotFoundException If something goes wrong
    */
-  Role getRoleByAuthority(Authority authority) throws RoleNotFoundException;
+  Optional<Role> getRoleByAuthority(Authority authority) throws RoleNotFoundException;
 
   /**
    * Attempt to locate the Role using a name
+   *
    * @param name The Role name (e.g. "ROLE_SPECIAL") which has been defined by an admin
    * @return A matching Role
    * @throws RoleNotFoundException If something goes wrong
    */
-  Role getRoleByName(String name);
+  Optional<Role> getRoleByName(String name);
 
   /**
    * Persist the given Role

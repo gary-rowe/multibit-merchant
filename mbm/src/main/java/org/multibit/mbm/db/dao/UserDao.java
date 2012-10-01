@@ -1,5 +1,6 @@
 package org.multibit.mbm.db.dao;
 
+import com.google.common.base.Optional;
 import org.multibit.mbm.db.dto.User;
 
 import java.util.List;
@@ -8,26 +9,30 @@ public interface UserDao {
 
   /**
    * Attempt to locate the User
+   *
+   *
    * @param openId The OpenId token
    * @return A matching User
    * @throws UserNotFoundException If something goes wrong
    */
-  User getUserByOpenId(String openId) throws UserNotFoundException;
+  Optional<User> getUserByOpenId(String openId);
 
   /**
    * Attempt to locate the User by a UUID
+   *
    * @param uuid The UUID that acts as a unique identifier when Open ID is not available
    * @return A matching User
    */
-  User getUserByUUID(String uuid);
+  Optional<User> getUserByUUID(String uuid);
 
   /**
    * Attempt to locate the User by a UUID
+   *
    * @param username The username
    * @param password The password (as provided by the security token)
    * @return A matching User with Roles and Authorities initialised
    */
-  User getUserByCredentials(String username, String password);
+  Optional<User> getUserByCredentials(String username, String password);
 
   /**
    * Provide a paged list of all Users
@@ -39,6 +44,8 @@ public interface UserDao {
 
   /**
    * Persist the given User
+   *
+   *
    * @param User A User (either new or updated)
    * @return The persisted User
    */

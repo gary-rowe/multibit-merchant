@@ -32,7 +32,7 @@ public class AdminUserBridgeTest extends BaseResourceTest {
     User bobUser = DatabaseLoader.buildBobCustomer(customerRole);
     bobUser.setId(2L);
 
-    AdminUserBridge testObject = new AdminUserBridge(uriInfo,principal);
+    AdminUserCollectionBridge testObject = new AdminUserCollectionBridge(uriInfo,principal);
 
     Resource resource = testObject.toResource(Lists.newArrayList(aliceUser,bobUser));
 
@@ -49,7 +49,7 @@ public class AdminUserBridgeTest extends BaseResourceTest {
     User bobUser = DatabaseLoader.buildBobCustomer(customerRole);
     bobUser.setId(2L);
 
-    AdminUserBridge testObject = new AdminUserBridge(uriInfo,principal);
+    AdminUserCollectionBridge testObject = new AdminUserCollectionBridge(uriInfo,principal);
 
     Resource resource = testObject.toResource(Lists.newArrayList(aliceUser, bobUser));
 

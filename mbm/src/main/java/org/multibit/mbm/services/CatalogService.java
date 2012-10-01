@@ -1,8 +1,9 @@
 package org.multibit.mbm.services;
 
+import com.google.common.base.Optional;
+import org.multibit.mbm.api.response.ItemPagedQueryResponse;
 import org.multibit.mbm.db.dao.ItemDao;
 import org.multibit.mbm.db.dto.Item;
-import org.multibit.mbm.api.response.ItemPagedQueryResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +35,7 @@ public class CatalogService {
    * @return An Item or null if not found
    */
   @Transactional(propagation = Propagation.REQUIRED)
-  public Item getBySKU(String sku) {
+  public Optional<Item> getBySKU(String sku) {
     return itemDao.getBySKU(sku);
   }
 
@@ -44,7 +45,7 @@ public class CatalogService {
    * @return An Item or null if not found
    */
   @Transactional(propagation = Propagation.REQUIRED)
-  public Item getByGTIN(String gtin) {
+  public Optional<Item> getByGTIN(String gtin) {
     return itemDao.getByGTIN(gtin);
   }
 
@@ -64,7 +65,7 @@ public class CatalogService {
    * @return The matching Item (if it exists)
    */
   @Transactional(propagation = Propagation.REQUIRED)
-  public Item getById(Long id) {
+  public Optional<Item> getById(Long id) {
     return itemDao.getById(id);
   }
 

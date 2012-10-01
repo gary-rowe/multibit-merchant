@@ -1,13 +1,14 @@
 package org.multibit.mbm.db.dao.hibernate;
 
+import com.google.common.base.Optional;
 import org.junit.Test;
-import org.multibit.mbm.db.dto.Cart;
 import org.multibit.mbm.db.dao.CartDao;
-import org.multibit.mbm.db.dao.ItemDao;
-import org.multibit.mbm.db.dto.Item;
 import org.multibit.mbm.db.dao.CustomerDao;
-import org.multibit.mbm.db.dto.Customer;
+import org.multibit.mbm.db.dao.ItemDao;
 import org.multibit.mbm.db.dao.UserDao;
+import org.multibit.mbm.db.dto.Cart;
+import org.multibit.mbm.db.dto.Customer;
+import org.multibit.mbm.db.dto.Item;
 import org.multibit.mbm.db.dto.User;
 import org.multibit.mbm.test.BaseIntegrationTests;
 import org.springframework.test.context.ContextConfiguration;
@@ -38,10 +39,10 @@ public class HibernateCartDaoIntegrationTest extends BaseIntegrationTests {
   @Test
   public void testPersist() {
 
-    User user = userDao.getUserByUUID("alice123");
-    assertNotNull("Unexpected missing user",user);
+    Optional<User> user = userDao.getUserByUUID("alice123");
+    assertTrue("Unexpected missing user",user.isPresent());
 
-    Cart expectedCart = new Cart(user.getCustomer());
+    Cart expectedCart = new Cart(user.get().getCustomer());
 
     // Persist with insert (new cart)
     int originalCartRows = countRowsInTable("carts");
@@ -61,11 +62,11 @@ public class HibernateCartDaoIntegrationTest extends BaseIntegrationTests {
     assertThat("Unexpected data in cart_items", updatedCartItemRows, equalTo(originalCartItemRows));
 
     // Perform an update to the Cart that cascades to an insert in join table
-    Item book1 = itemDao.getBySKU("0099410672");
-    Item book2 = itemDao.getBySKU("0140296034");
+    Optional<Item> book1 = itemDao.getBySKU("0099410672");
+    Optional<Item> book2 = itemDao.getBySKU("0140296034");
 
-    expectedCart.setItemQuantity(book1, 1);
-    expectedCart.setItemQuantity(book2, 2);
+    expectedCart.setItemQuantity(book1.get(), 1);
+    expectedCart.setItemQuantity(book2.get(), 2);
     expectedCart = testObject.saveOrUpdate(expectedCart);
     testObject.flush();
 
@@ -78,11 +79,11 @@ public class HibernateCartDaoIntegrationTest extends BaseIntegrationTests {
     assertThat("Unexpected data in items", updatedItemRows, equalTo(originalItemRows));
     assertThat("Unexpected data in customers", updatedCustomerRows, equalTo(originalCustomerRows));
     assertThat("Unexpected data in cart_items", updatedCartItemRows, equalTo(originalCartItemRows + 2));
-    assertThat("Unexpected quantity for book1", expectedCart.getCartItemByItem(book1).getQuantity(), equalTo(1));
-    assertThat("Unexpected quantity for book2", expectedCart.getCartItemByItem(book2).getQuantity(), equalTo(2));
+    assertThat("Unexpected quantity for book1", expectedCart.getCartItemByItem(book1.get()).getQuantity(), equalTo(1));
+    assertThat("Unexpected quantity for book2", expectedCart.getCartItemByItem(book2.get()).getQuantity(), equalTo(2));
 
-    expectedCart.setItemQuantity(book1, 4);
-    expectedCart.setItemQuantity(book2, 5);
+    expectedCart.setItemQuantity(book1.get(), 4);
+    expectedCart.setItemQuantity(book2.get(), 5);
     expectedCart = testObject.saveOrUpdate(expectedCart);
     testObject.flush();
 
@@ -95,12 +96,12 @@ public class HibernateCartDaoIntegrationTest extends BaseIntegrationTests {
     assertThat("Unexpected data in items", updatedItemRows, equalTo(originalItemRows));
     assertThat("Unexpected data in customers", updatedCustomerRows, equalTo(originalCustomerRows));
     assertThat("Unexpected data in cart_items", updatedCartItemRows, equalTo(originalCartItemRows + 2));
-    assertThat("Unexpected quantity for book1", expectedCart.getCartItemByItem(book1).getQuantity(), equalTo(4));
-    assertThat("Unexpected quantity for book2", expectedCart.getCartItemByItem(book2).getQuantity(), equalTo(5));
+    assertThat("Unexpected quantity for book1", expectedCart.getCartItemByItem(book1.get()).getQuantity(), equalTo(4));
+    assertThat("Unexpected quantity for book2", expectedCart.getCartItemByItem(book2.get()).getQuantity(), equalTo(5));
 
     // Perform an update to the Cart that cascades to a delete in join table
     // due to an addition to the linked reference
-    expectedCart.setItemQuantity(book2, 0);
+    expectedCart.setItemQuantity(book2.get(), 0);
     testObject.saveOrUpdate(expectedCart);
     testObject.flush();
 
@@ -113,24 +114,24 @@ public class HibernateCartDaoIntegrationTest extends BaseIntegrationTests {
     assertThat("Unexpected data in items", updatedItemRows, equalTo(originalItemRows));
     assertThat("Unexpected data in customers", updatedCustomerRows, equalTo(originalCustomerRows));
     assertThat("Unexpected data in cart_items", updatedCartItemRows, equalTo(originalCartItemRows + 1));
-    assertThat("Unexpected quantity for book1", expectedCart.getCartItemByItem(book1).getQuantity(), equalTo(4));
-    assertNull("Unexpected existence for book2", expectedCart.getCartItemByItem(book2));
+    assertThat("Unexpected quantity for book1", expectedCart.getCartItemByItem(book1.get()).getQuantity(), equalTo(4));
+    assertNull("Unexpected existence for book2", expectedCart.getCartItemByItem(book2.get()));
 
   }
 
   @Test
   public void testGetInitialisedCartByCustomer() {
 
-    User user = userDao.getUserByUUID("alice123");
+    Optional<User> user = userDao.getUserByUUID("alice123");
 
-    Customer customer = user.getCustomer();
+    Customer customer = user.get().getCustomer();
 
     customer = customerDao.saveOrUpdate(customer);
 
-    Cart actualCart = testObject.getInitialisedCartByCustomer(customer);
+    Optional<Cart> actualCart = testObject.getInitialisedCartByCustomer(customer);
 
     assertNotNull("Unexpected missing Cart", actualCart);
-    assertThat("Unexpected quantity for cart", actualCart.getCartItems().size(), equalTo(0));
+    assertThat("Unexpected quantity for cart", actualCart.get().getCartItems().size(), equalTo(0));
 
 
   }
