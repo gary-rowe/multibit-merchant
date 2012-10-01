@@ -10,21 +10,23 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * <p>Response to provide the following to {@link org.multibit.mbm.resources.CartController}:</p>
+ * <p>Response to provide the following to {@link org.multibit.mbm.resources.CustomerCartResource}:</p>
  * <ul>
  * <li>Provides the contents of a Cart</li>
  * </ul>
  *
  * @since 0.0.1
  *         
+ * TODO Replace with the HAL bridge
  */
-public class CartResponse extends BaseResponse {
+@Deprecated
+public class CustomerCartResponse extends BaseResponse {
 
   @JsonProperty
   private String id = "";
 
   @JsonProperty
-  private List<CartItemResponse> cartItems = Lists.newArrayList();
+  private List<CustomerCartItem> cartItems = Lists.newArrayList();
 
   @JsonProperty
   private String btcTotal = "";
@@ -38,13 +40,13 @@ public class CartResponse extends BaseResponse {
   /**
    * Default constructor
    */
-  public CartResponse() {
+  public CustomerCartResponse() {
   }
 
   /**
    * @param cart The Cart to base the summary upon
    */
-  public CartResponse(Cart cart) {
+  public CustomerCartResponse(Cart cart) {
 
     if (cart.getId() == null) {
       throw new IllegalArgumentException("Cannot respond with a transient Cart. Id is null.");
@@ -55,7 +57,7 @@ public class CartResponse extends BaseResponse {
     double btcSubTotal = 0;
     double localSubTotal = 0;
     for (CartItem cartItem : cart.getCartItems()) {
-      cartItems.add(new CartItemResponse(cartItem));
+      cartItems.add(new CustomerCartItem(cartItem));
       btcSubTotal += (cartItem.getQuantity() * 36);
       localSubTotal += (cartItem.getQuantity() * 14);
     }
@@ -65,10 +67,10 @@ public class CartResponse extends BaseResponse {
     localTotal = String.format("%.2f", localSubTotal / 10);
 
     // Provide a simple ordering scheme
-    Collections.sort(cartItems, new Comparator<CartItemResponse>() {
+    Collections.sort(cartItems, new Comparator<CustomerCartItem>() {
       @Override
-      public int compare(CartItemResponse c1, CartItemResponse c2) {
-        return c1.getTitle().compareTo(c2.getTitle());
+      public int compare(CustomerCartItem c1, CustomerCartItem c2) {
+        return c1.getId().compareTo(c2.getId());
       }
     });
   }
@@ -81,11 +83,11 @@ public class CartResponse extends BaseResponse {
     this.id = id;
   }
 
-  public List<CartItemResponse> getCartItems() {
+  public List<CustomerCartItem> getCartItems() {
     return cartItems;
   }
 
-  public void setCartItems(List<CartItemResponse> cartItems) {
+  public void setCartItems(List<CustomerCartItem> cartItems) {
     this.cartItems = cartItems;
   }
 

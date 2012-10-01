@@ -1,5 +1,6 @@
 package org.multibit.mbm.db.dao.hibernate;
 
+import com.google.common.base.Optional;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.transform.DistinctRootEntityResultTransformer;
@@ -20,43 +21,36 @@ import java.util.List;
 import java.util.Map;
 
 @Repository("hibernateItemDao")
-public class HibernateItemDao implements ItemDao {
+public class HibernateItemDao extends BaseHibernateDao implements ItemDao {
 
   @Resource(name="hibernateTemplate")
   private HibernateTemplate hibernateTemplate = null;
 
   @Override
-  public Item getById(Long id) throws ItemNotFoundException {
+  public Optional<Item> getById(Long id) throws ItemNotFoundException {
     List items = hibernateTemplate.find("from Item i where i.id = ?", id);
-    if (items == null || items.isEmpty()) {
-      // Failing to find using a known primary key is exceptional
-      throw new ItemNotFoundException();
-    }
-    return (Item) items.get(0);
+
+    return first(items, Item.class);
   }
 
   @Override
-  public Item getBySKU(String sku) {
+  public Optional<Item> getBySKU(String sku) {
     List items = hibernateTemplate.find("from Item i where i.sku = ?", sku);
-    if (items == null || items.isEmpty()) {
-      // No matching item
-      return null;
-    }
-    return (Item) items.get(0);
+
+    return first(items, Item.class);
   }
 
 
   @Override
-  public Item getByGTIN(String gtin) {
+  public Optional<Item> getByGTIN(String gtin) {
     List items = hibernateTemplate.find("from Item i where i.gtin = ?", gtin);
-    if (items == null || items.isEmpty()) {
-      // No matching item
-      return null;
-    }
-    return (Item) items.get(0);
+
+    return first(items, Item.class);
   }
 
 
+  // TODO Review the ItemPagedQueryResponse requirement
+  // Consider a more generic search mechanism
   @SuppressWarnings("unchecked")
   @Override
   public List<Item> getPagedItems(final ItemPagedQueryResponse itemPagedQueryResponse) {

@@ -1,20 +1,22 @@
-package org.multibit.mbm.resources;
+package org.multibit.mbm.resources.admin;
 
 import com.google.common.base.Optional;
 import com.yammer.dropwizard.jersey.caching.CacheControl;
 import com.yammer.metrics.annotation.Timed;
 import org.multibit.mbm.api.hal.HalMediaType;
+import org.multibit.mbm.api.request.CustomerCreateUserRequest;
 import org.multibit.mbm.api.response.hal.AdminUserBridge;
+import org.multibit.mbm.api.response.hal.AdminUserCollectionBridge;
 import org.multibit.mbm.auth.annotation.RestrictedTo;
 import org.multibit.mbm.db.dao.UserDao;
 import org.multibit.mbm.db.dto.Authority;
 import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.db.dto.UserBuilder;
+import org.multibit.mbm.resources.BaseResource;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
+import java.net.URI;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -54,9 +56,46 @@ public class AdminUserResource extends BaseResource<List<User>> {
 
     List<User> users = userDao.getAllByPage(pageSize, pageNumber);
 
-    AdminUserBridge bridge = new AdminUserBridge(uriInfo, Optional.of(adminUser));
+    AdminUserCollectionBridge bridge = new AdminUserCollectionBridge(uriInfo, Optional.of(adminUser));
 
     return ok(bridge, users);
+
+  }
+
+  /**
+   * Provide a paged response of all users in the system
+   * @param adminUser A user with administrator rights
+   * @return A response containing a paged list of all users
+   */
+  @POST
+  @Timed
+  @Path("/user")
+  @CacheControl(maxAge = 6, maxAgeUnit = TimeUnit.HOURS)
+  public Response createUser(
+    @RestrictedTo({Authority.ROLE_ADMIN}) User adminUser, CustomerCreateUserRequest createUserRequest) {
+
+    // Build a user from the given request information
+    User user = UserBuilder.newInstance()
+      .withUsername(createUserRequest.getUsername())
+      .withPassword(createUserRequest.getPassword())
+      .withOpenId(createUserRequest.getOpenId())
+      .build();
+
+    // Perform basic verification
+    Optional<User> verificationUser = userDao.getUserByCredentials(user.getUsername(), user.getPassword());
+
+    if (verificationUser.isPresent()) {
+      throw new WebApplicationException(Response.Status.BAD_REQUEST);
+    }
+
+    // Persist the user
+    User persistentUser = userDao.saveOrUpdate(user);
+    AdminUserBridge bridge = new AdminUserBridge(uriInfo, Optional.of(adminUser));
+
+    URI location = null;
+
+    //return created(bridge, persistentUser, location);
+    return null;
 
   }
 

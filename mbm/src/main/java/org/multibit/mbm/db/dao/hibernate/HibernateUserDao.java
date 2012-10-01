@@ -1,5 +1,6 @@
 package org.multibit.mbm.db.dao.hibernate;
 
+import com.google.common.base.Optional;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -16,42 +17,42 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Repository("hibernateUserDao")
-public class HibernateUserDao implements UserDao {
+public class HibernateUserDao extends BaseHibernateDao implements UserDao {
 
   @Resource(name = "hibernateTemplate")
   private HibernateTemplate hibernateTemplate = null;
 
+  @SuppressWarnings("unchecked")
   @Override
-  public User getUserByOpenId(String openId) throws UserNotFoundException {
+  public Optional<User> getUserByOpenId(String openId) {
     List users = hibernateTemplate.find("from User u where u.openId = ?", openId);
-    if (users == null || users.isEmpty()) {
-      throw new UserNotFoundException();
-    }
-    return (User) users.get(0);
+    if (isNotFound(users)) return Optional.absent();
+    // TODO Consider duplicates?
+    return Optional.of((User) users.get(0));
   }
 
+  @SuppressWarnings("unchecked")
   @Override
-  public User getUserByUUID(String uuid) {
+  public Optional<User> getUserByUUID(String uuid) {
     List users = hibernateTemplate.find("from User u where u.uuid = ?", uuid);
-    if (users == null || users.isEmpty()) {
-      throw new UserNotFoundException();
-    }
-    return (User) users.get(0);
+    if (isNotFound(users)) return Optional.absent();
+    // TODO Consider duplicates?
+    return Optional.of((User) users.get(0));
   }
 
   @Override
   @SuppressWarnings("unchecked")
-  public User getUserByCredentials(String username, String password) {
+  public Optional<User> getUserByCredentials(String username, String password) {
     List<User> users = hibernateTemplate.find("from User u where u.username = ? ", username);
-    if (users == null || users.isEmpty()) {
-      throw new UserNotFoundException();
-    }
+
+    if (isNotFound(users)) return Optional.absent();
+
     StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
 
     // Check the password against all matching Users
     for (User user : users) {
       if (passwordEncryptor.checkPassword(password, user.getPassword())) {
-        return user;
+        return Optional.of(user);
       }
     }
 
@@ -71,7 +72,6 @@ public class HibernateUserDao implements UserDao {
     });
   }
 
-
   @Override
   public User saveOrUpdate(User user) {
     hibernateTemplate.saveOrUpdate(user);
@@ -84,7 +84,6 @@ public class HibernateUserDao implements UserDao {
   public void flush() {
     hibernateTemplate.flush();
   }
-
 
   public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
     this.hibernateTemplate = hibernateTemplate;

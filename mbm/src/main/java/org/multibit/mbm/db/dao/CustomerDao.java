@@ -1,16 +1,18 @@
 package org.multibit.mbm.db.dao;
 
+import com.google.common.base.Optional;
 import org.multibit.mbm.db.dto.Customer;
 
 public interface CustomerDao {
 
   /**
    * Attempt to locate the customer
+   *
    * @param openId The OpenId token
    * @return A matching Customer
    * @throws CustomerNotFoundException If something goes wrong
    */
-  Customer getCustomerByOpenId(String openId) throws CustomerNotFoundException;
+  Optional<Customer> getCustomerByOpenId(String openId) throws CustomerNotFoundException;
 
   /**
    * Persist the given Customer

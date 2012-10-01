@@ -39,11 +39,11 @@ public class CustomerResource extends BaseResource<Customer> {
   @CacheControl(maxAge = 6, maxAgeUnit = TimeUnit.HOURS)
   public Response retrieveCustomer(@RestrictedTo({Authority.ROLE_CUSTOMER}) User user) {
 
-    Customer customer = customerService.findByOpenId(user.getOpenId());
+    Optional<Customer> customer = customerService.findByOpenId(user.getOpenId());
 
-    DefaultCustomerBridge bridge = new DefaultCustomerBridge(uriInfo, Optional.of(customer.getUser()));
+    DefaultCustomerBridge bridge = new DefaultCustomerBridge(uriInfo, Optional.of(customer.get().getUser()));
 
-    return ok(bridge,customer);
+    return ok(bridge,customer.get());
 
   }
 

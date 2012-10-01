@@ -1,14 +1,11 @@
 package org.multibit.mbm.db.dao.hibernate;
 
+import com.google.common.base.Optional;
 import org.junit.Test;
-import org.multibit.mbm.db.dto.ItemBuilder;
-import org.multibit.mbm.db.dto.Item;
-import org.multibit.mbm.db.dto.ItemField;
-import org.multibit.mbm.db.dto.ItemFieldDetail;
-import org.multibit.mbm.db.dao.CustomerDao;
-import org.multibit.mbm.db.dto.LocalisedText;
-import org.multibit.mbm.db.dao.ItemDao;
 import org.multibit.mbm.api.response.ItemPagedQueryResponse;
+import org.multibit.mbm.db.dao.CustomerDao;
+import org.multibit.mbm.db.dao.ItemDao;
+import org.multibit.mbm.db.dto.*;
 import org.multibit.mbm.test.BaseIntegrationTests;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -101,7 +98,7 @@ public class HibernateItemDaoIntegrationTest extends BaseIntegrationTests {
     assertThat("Unexpected data in item_field_secondary_details", updatedItemFieldDetailSecondaryRows, equalTo(originalItemFieldDetailSecondaryRows+1));
 
     // Query against the SKU
-    Item actual=testObject.getBySKU("abc123");
+    Optional<Item> actual=testObject.getBySKU("abc123");
 
     // Session flush: Expect no change to items, contact_method_details, contact_method_secondary_details
     updatedItemRows = countRowsInTable("items");
@@ -111,8 +108,8 @@ public class HibernateItemDaoIntegrationTest extends BaseIntegrationTests {
     assertThat("Unexpected data in item_field_details",updatedItemFieldDetailRows, equalTo(originalItemFieldDetailRows+1));
     assertThat("Unexpected data in item_field_secondary_details", updatedItemFieldDetailSecondaryRows, equalTo(originalItemFieldDetailSecondaryRows+1));
 
-    assertThat(actual,equalTo(expected));
-    assertThat(actual.getGTIN(),equalTo("def456"));
+    assertThat(actual.get(),equalTo(expected));
+    assertThat(actual.get().getGTIN(),equalTo("def456"));
 
 
   }

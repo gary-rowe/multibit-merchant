@@ -22,15 +22,18 @@ public class HmacAuthenticator implements Authenticator<HmacCredentials, User> {
   public Optional<User> authenticate(HmacCredentials credentials) throws AuthenticationException {
 
     // Get the User referred to by the API key
-    User user = userDao.getUserByUUID(credentials.getApiKey());
+    Optional<User> user = userDao.getUserByUUID(credentials.getApiKey());
+    if (!user.isPresent()) {
+      return Optional.absent();
+    }
 
     // Check that their authorities match their credentials
-    if (!user.hasAllAuthorities(credentials.getAuthorities())) {
+    if (!user.get().hasAllAuthorities(credentials.getAuthorities())) {
       return Optional.absent();
     }
 
     // Locate their secret key
-    String secretKey = user.getSecretKey();
+    String secretKey = user.get().getSecretKey();
 
     String computedSignature = new String(
       HmacUtils.computeSignature(
@@ -40,7 +43,7 @@ public class HmacAuthenticator implements Authenticator<HmacCredentials, User> {
 
     // Avoid timing attacks by verifying every byte every time
     if (isEqual(computedSignature.getBytes(), credentials.getDigest().getBytes())) {
-      return Optional.of(user);
+      return user;
     }
 
     return Optional.absent();

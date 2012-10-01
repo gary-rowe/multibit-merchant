@@ -1,5 +1,6 @@
 package org.multibit.mbm.db.dao.hibernate;
 
+import com.google.common.base.Optional;
 import org.junit.Test;
 import org.multibit.mbm.db.dao.UserDao;
 import org.multibit.mbm.db.dto.ContactMethod;
@@ -12,6 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 import javax.annotation.Resource;
 import java.util.List;
 
+import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
@@ -86,7 +88,7 @@ public class HibernateUserDaoIntegrationTest extends BaseIntegrationTests {
     assertThat("Unexpected data in contact_method_secondary_details", updatedContactMethodDetailSecondaryRows, equalTo(originalContactMethodDetailSecondaryRows+1));
 
     // Query against the "openId"
-    User actual=testObject.getUserByOpenId("abc123");
+    Optional<User> actual=testObject.getUserByOpenId("abc123");
 
     // Session flush: Expect no change to users, contact_method_details, contact_method_secondary_details
     updatedUserRows = countRowsInTable("users");
@@ -96,7 +98,7 @@ public class HibernateUserDaoIntegrationTest extends BaseIntegrationTests {
     assertThat("Unexpected data in contact_method_details",updatedContactMethodDetailRows, equalTo(originalContactMethodDetailRows+1));
     assertThat("Unexpected data in contact_method_secondary_details", updatedContactMethodDetailSecondaryRows, equalTo(originalContactMethodDetailSecondaryRows+1));
 
-    assertThat(actual,equalTo(expected));
+    assertThat(actual.get(),equalTo(expected));
 
   }
 
@@ -106,10 +108,10 @@ public class HibernateUserDaoIntegrationTest extends BaseIntegrationTests {
   @Test
   public void testUsersAndRoles() {
 
-    User aliceCustomer = testObject.getUserByUUID("alice123");
+    Optional<User> aliceCustomer = testObject.getUserByUUID("alice123");
     
-    assertNotNull("Expected pre-populated data",aliceCustomer);
-    assertThat("Unexpected number of Roles",aliceCustomer.getUserRoles().size(), equalTo(1));
+    assertTrue("Expected pre-populated data", aliceCustomer.isPresent());
+    assertThat("Unexpected number of Roles",aliceCustomer.get().getUserRoles().size(), equalTo(1));
 
   }
 

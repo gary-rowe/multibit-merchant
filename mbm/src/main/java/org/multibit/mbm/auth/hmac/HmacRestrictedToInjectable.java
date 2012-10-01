@@ -1,36 +1,18 @@
 package org.multibit.mbm.auth.hmac;
 
 
-import com.google.common.base.Charsets;
 import com.google.common.base.Optional;
-import com.google.common.collect.Sets;
-import com.google.common.io.ByteStreams;
-import com.google.common.io.CharStreams;
-import com.google.common.io.Resources;
-import com.sun.jersey.api.container.ContainerException;
 import com.sun.jersey.api.core.HttpContext;
-import com.sun.jersey.core.util.ReaderWriter;
 import com.sun.jersey.server.impl.inject.AbstractHttpContextInjectable;
 import com.sun.jersey.spi.container.ContainerRequest;
 import com.yammer.dropwizard.auth.AuthenticationException;
 import com.yammer.dropwizard.auth.Authenticator;
-import org.multibit.mbm.api.request.CreateCartRequest;
 import org.multibit.mbm.db.dto.Authority;
-import org.multibit.mbm.util.StreamUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.*;
-import javax.ws.rs.ext.MessageBodyReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.annotation.Annotation;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * <p>Injectable to provide the following to {@link HmacRestrictedToProvider}:</p>

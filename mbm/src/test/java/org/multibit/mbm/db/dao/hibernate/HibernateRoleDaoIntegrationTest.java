@@ -1,17 +1,18 @@
 package org.multibit.mbm.db.dao.hibernate;
 
+import com.google.common.base.Optional;
 import org.junit.Test;
-import org.multibit.mbm.db.dto.RoleBuilder;
 import org.multibit.mbm.db.dao.RoleDao;
 import org.multibit.mbm.db.dto.Authority;
 import org.multibit.mbm.db.dto.Role;
+import org.multibit.mbm.db.dto.RoleBuilder;
 import org.multibit.mbm.test.BaseIntegrationTests;
 import org.springframework.test.context.ContextConfiguration;
 
 import javax.annotation.Resource;
 
+import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -60,7 +61,7 @@ public class HibernateRoleDaoIntegrationTest extends BaseIntegrationTests {
     assertThat("Unexpected data in authorities", updatedAuthorityRows, equalTo(originalAuthorityRows+1));
 
     // Query against the role name
-    Role actual=testObject.getRoleByName("ROLE_TEST");
+    Optional<Role> actual=testObject.getRoleByName("ROLE_TEST");
 
     // Session flush: Expect no change to roles, authorities
     updatedRoleRows = countRowsInTable("roles");
@@ -68,7 +69,7 @@ public class HibernateRoleDaoIntegrationTest extends BaseIntegrationTests {
     assertThat("Unexpected data in roles",updatedRoleRows, equalTo(originalRoleRows+1));
     assertThat("Unexpected data in authorities",updatedAuthorityRows, equalTo(originalAuthorityRows+1));
 
-    assertThat(actual,equalTo(expected));
+    assertThat(actual.get(),equalTo(expected));
 
   }
 
@@ -78,10 +79,10 @@ public class HibernateRoleDaoIntegrationTest extends BaseIntegrationTests {
   @Test
   public void testRolesAndAuthorities() {
 
-    Role adminRole = testObject.getRoleByName("ROLE_ADMIN");
+    Optional<Role> adminRole = testObject.getRoleByName("ROLE_ADMIN");
     
-    assertNotNull("Expected pre-populated data",adminRole);
-    assertThat("Unexpected number of Roles",adminRole.getAuthorities().size(), equalTo(Authority.values().length));
+    assertTrue("Expected pre-populated data", adminRole.isPresent());
+    assertThat("Unexpected number of Roles",adminRole.get().getAuthorities().size(), equalTo(Authority.values().length));
 
   }
 

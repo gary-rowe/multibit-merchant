@@ -1,5 +1,6 @@
 package org.multibit.mbm.db.dao;
 
+import com.google.common.base.Optional;
 import org.multibit.mbm.db.dto.Cart;
 import org.multibit.mbm.db.dto.Customer;
 
@@ -9,24 +10,26 @@ public interface CartDao {
    * Attempt to locate the Cart using it's ID
    *
    * @param id The cart ID
+   *
    * @return A matching Cart
-   * @throws CartNotFoundException If something goes wrong
    */
-  Cart getCartById(Long id) throws CartNotFoundException;
+  Optional<Cart> getCartById(Long id);
 
   /**
    * Get the Cart for the Customer, initialising the {@link org.multibit.mbm.db.dto.CartItem}s
-   * 
+   *
    * @param customer The owning Customer
+   *
    * @return A persistent cart (never null)
-   * @throws CustomerNotFoundException If the Customer is not found
    */
-  Cart getInitialisedCartByCustomer(Customer customer) throws CustomerNotFoundException;
+  Optional<Cart> getInitialisedCartByCustomer(Customer customer);
 
-  
+
   /**
    * Persist the given Cart
+   *
    * @param cart A Cart (either new or updated)
+   *
    * @return The persisted Cart
    */
   Cart saveOrUpdate(Cart cart);

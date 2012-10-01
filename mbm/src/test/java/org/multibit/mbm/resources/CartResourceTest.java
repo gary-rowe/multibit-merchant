@@ -2,22 +2,19 @@ package org.multibit.mbm.resources;
 
 import org.junit.Test;
 import org.multibit.mbm.api.hal.HalMediaType;
-import org.multibit.mbm.api.request.CreateCartRequest;
-import org.multibit.mbm.db.dto.Customer;
+import org.multibit.mbm.api.request.CustomerCreateCartRequest;
 import org.multibit.mbm.db.dto.User;
 import org.multibit.mbm.services.CustomerService;
 import org.multibit.mbm.test.BaseJerseyResourceTest;
 import org.multibit.mbm.test.FixtureAsserts;
 
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class CartResourceTest extends BaseJerseyResourceTest {
 
   private final CustomerService customerService=mock(CustomerService.class);
 
-  private final CartResource testObject=new CartResource();
+  private final CustomerCartResource testObject=new CustomerCartResource();
 
 
   @Override
@@ -25,12 +22,9 @@ public class CartResourceTest extends BaseJerseyResourceTest {
 
     // Create the User for authenticated access
     User user = setUpAuthenticator();
-
-    // Configure the customer in more detail
-    Customer customer = user.getCustomer();
-    customer.setId(1L);
-    customer.getCart().setId(1L);
-    when(customerService.findByOpenId(anyString())).thenReturn(customer);
+    user.setId(1L);
+    user.getCustomer().setId(1L);
+    user.getCustomer().getCart().setId(1L);
 
     // Configure the test object
     testObject.setCustomerService(customerService);
@@ -43,8 +37,7 @@ public class CartResourceTest extends BaseJerseyResourceTest {
   @Test
   public void testCreateCart() throws Exception {
 
-    CreateCartRequest createCartRequest = new CreateCartRequest();
-    createCartRequest.setSessionId("1234");
+    CustomerCreateCartRequest createCartRequest = new CustomerCreateCartRequest();
 
     String actualResponse = client()
       .resource("/cart")

@@ -1,22 +1,15 @@
 package org.multibit.mbm.resources;
 
-import com.yammer.dropwizard.testing.FixtureHelpers;
 import org.junit.Test;
 import org.multibit.mbm.api.hal.HalMediaType;
-import org.multibit.mbm.db.dto.Customer;
-import org.multibit.mbm.db.dto.CustomerBuilder;
+import org.multibit.mbm.db.DatabaseLoader;
+import org.multibit.mbm.db.dto.Role;
 import org.multibit.mbm.db.dto.User;
-import org.multibit.mbm.db.dto.UserBuilder;
 import org.multibit.mbm.services.CustomerService;
 import org.multibit.mbm.test.BaseJerseyResourceTest;
 import org.multibit.mbm.test.FixtureAsserts;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class CustomerResourceTest extends BaseJerseyResourceTest {
 
@@ -32,10 +25,11 @@ public class CustomerResourceTest extends BaseJerseyResourceTest {
     User user = setUpAuthenticator();
 
     // Configure the customer in more detail
-    Customer customer = user.getCustomer();
-    customer.setId(1L);
-    customer.getCart().setId(1L);
-    when(customerService.findByOpenId(anyString())).thenReturn(customer);
+    Role customerRole = DatabaseLoader.buildCustomerRole();
+    User aliceUser = DatabaseLoader.buildAliceCustomer(customerRole);
+    aliceUser.setId(1L);
+    aliceUser.getCustomer().setId(1L);
+    aliceUser.getCustomer().getCart().setId(1L);
 
     // Configure the test object
     testObject.setCustomerService(customerService);

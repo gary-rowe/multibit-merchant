@@ -11,9 +11,9 @@ import org.multibit.mbm.db.dto.Cart;
  * @since 0.0.1
  *         
  */
-public class UpdateCartRequest {
+public class CustomerUpdateCartRequest {
 
-  public UpdateCartRequest() {
+  public CustomerUpdateCartRequest() {
   }
 
   /**
@@ -21,6 +21,6 @@ public class UpdateCartRequest {
    *
    * @param cart The Cart
    */
-  public UpdateCartRequest(Cart cart) {
+  public CustomerUpdateCartRequest(Cart cart) {
   }
 }

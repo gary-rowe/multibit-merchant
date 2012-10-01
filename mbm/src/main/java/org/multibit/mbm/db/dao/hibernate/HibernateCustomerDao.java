@@ -1,8 +1,8 @@
 package org.multibit.mbm.db.dao.hibernate;
 
-import org.multibit.mbm.db.dao.CustomerNotFoundException;
-import org.multibit.mbm.db.dto.Customer;
+import com.google.common.base.Optional;
 import org.multibit.mbm.db.dao.CustomerDao;
+import org.multibit.mbm.db.dto.Customer;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -10,18 +10,16 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @Repository("hibernateCustomerDao")
-public class HibernateCustomerDao implements CustomerDao {
+public class HibernateCustomerDao extends BaseHibernateDao implements CustomerDao {
 
   @Resource(name="hibernateTemplate")
   private HibernateTemplate hibernateTemplate = null;
 
   @Override
-  public Customer getCustomerByOpenId(String openId) throws CustomerNotFoundException {
+  public Optional<Customer> getCustomerByOpenId(String openId) {
     List customers = hibernateTemplate.find("from Customer c where c.openId = ?", openId);
-    if (customers==null || customers.isEmpty()) {
-      throw new CustomerNotFoundException();
-    }
-    return (Customer) customers.get(0);
+
+    return first(customers, Customer.class);
   }
 
   @Override

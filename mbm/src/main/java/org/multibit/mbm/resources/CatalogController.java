@@ -1,13 +1,14 @@
 package org.multibit.mbm.resources;
 
-import org.multibit.mbm.db.dto.ItemBuilder;
-import org.multibit.mbm.db.dto.Item;
-import org.multibit.mbm.db.dto.ItemField;
-import org.multibit.mbm.services.CatalogService;
+import com.google.common.base.Optional;
+import org.multibit.mbm.api.request.admin.AdminCreateItemRequest;
 import org.multibit.mbm.api.response.BaseResponse;
-import org.multibit.mbm.api.request.CreateItemRequest;
 import org.multibit.mbm.api.response.ItemPagedQueryResponse;
 import org.multibit.mbm.api.response.ItemSearchResponse;
+import org.multibit.mbm.db.dto.Item;
+import org.multibit.mbm.db.dto.ItemBuilder;
+import org.multibit.mbm.db.dto.ItemField;
+import org.multibit.mbm.services.CatalogService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -66,6 +67,7 @@ public class CatalogController {
 
   /**
    * Retrieve a single Item
+   * TODO Various listed below
    * Consider support for named parameters (e.g. category:, reference: etc)
    * Consider caching strategies (e.g. DAO against ItemFieldDetail with word index)
    * Consider a Lucene or Hibernate Search implementation
@@ -81,9 +83,9 @@ public class CatalogController {
   ) {
 
     // Broad search of front page items
-    Item item = catalogService.getById(id);
+    Optional<Item> item = catalogService.getById(id);
 
-    return new ItemSearchResponse(1,1, item);
+    return new ItemSearchResponse(1,1, item.get());
 
   }
 
@@ -98,7 +100,7 @@ public class CatalogController {
     value = "/item"
   )
   @ResponseBody
-  public BaseResponse addItem(@RequestBody CreateItemRequest createItemRequest) {
+  public BaseResponse addItem(@RequestBody AdminCreateItemRequest createItemRequest) {
     return new BaseResponse();
   }
 

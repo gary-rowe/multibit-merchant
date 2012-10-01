@@ -1,4 +1,4 @@
-package org.multibit.mbm.api.request;
+package org.multibit.mbm.api.request.admin;
 
 /**
  *  <p>Request to provide the following to {@link org.multibit.mbm.resources.CatalogController}:</p>
@@ -9,5 +9,5 @@ package org.multibit.mbm.api.request;
  * @since 0.0.1
  *         
  */
-public class CreateItemRequest extends BaseRequest {
+public class AdminCreateItemRequest {
 }
