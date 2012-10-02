@@ -13,11 +13,13 @@ import java.net.URI;
  * <ul>
  * <li>Provision of common methods</li>
  * </ul>
+ * <p><code>E</code> is the primary entity</p>
+ * <p><code>C</code> is the primary entity in a suitable collection</p>
  *
  * @since 0.0.1
  *         
  */
-public abstract class BaseResource<T> {
+public abstract class BaseResource {
 
   // TODO Verify thread safety
   @Context
@@ -32,7 +34,7 @@ public abstract class BaseResource<T> {
    * @param entity The entity
    * @return A configured HTTP 200 OK response
    */
-  protected Response ok(BaseBridge<T> bridge,T entity) {
+  protected <T> Response ok(BaseBridge<T> bridge,T entity) {
     MediaType acceptedMediaType = getAcceptedMediaType(httpHeaders);
 
     String body = bridge.toResource(entity).renderContent(acceptedMediaType.toString());
@@ -45,7 +47,7 @@ public abstract class BaseResource<T> {
    * @param entity The entity
    * @return A configured HTTP 201 CREATED response
    */
-  protected Response created(BaseBridge<T> bridge,T entity, URI location) {
+  protected <T> Response created(BaseBridge<T> bridge,T entity, URI location) {
     MediaType acceptedMediaType = getAcceptedMediaType(httpHeaders);
 
     String body = bridge.toResource(entity).renderContent(acceptedMediaType.toString());

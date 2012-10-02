@@ -17,7 +17,7 @@ public class CustomerCreateCartRequestTest {
 
     String representation = JsonHelpers.asJson(createCartRequest);
 
-    FixtureAsserts.assertStringMatchesJsonFixture("CustomerCreateCartRequest represented as JSON", representation, "fixtures/user/expected-customer-create-cart-request.json");
+    FixtureAsserts.assertStringMatchesJsonFixture("CustomerCreateCartRequest represented as JSON", representation, "fixtures/user/expected-customer-create-user-request.json");
 
   }
 

@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Path("/")
 @Produces({HalMediaType.APPLICATION_HAL_JSON, HalMediaType.APPLICATION_HAL_XML})
-public class CustomerUserResource extends BaseResource<User> {
+public class CustomerUserResource extends BaseResource {
 
   @GET
   @Timed

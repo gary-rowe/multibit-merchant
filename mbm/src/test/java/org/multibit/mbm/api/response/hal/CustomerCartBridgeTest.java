@@ -16,7 +16,7 @@ import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.util.List;
 
-public class DefaultCartResponseBridgeTest extends BaseResourceTest {
+public class CustomerCartBridgeTest extends BaseResourceTest {
 
   @Before
   public void setUpDefaultRequestInfo() throws Exception {
@@ -25,13 +25,13 @@ public class DefaultCartResponseBridgeTest extends BaseResourceTest {
   }
 
   @Test
-  public void representCartResponseAsJson() throws Exception {
+  public void representCartAsJson() throws Exception {
 
     Cart cart = buildCart();
 
     CustomerCartResponse cartResponse = new CustomerCartResponse(cart);
 
-    CustomerCartResponseBridge testObject = new CustomerCartResponseBridge(uriInfo, principal);
+    CustomerCartBridge testObject = new CustomerCartBridge(uriInfo, principal);
 
     Resource resource = testObject.toResource(cartResponse);
 
@@ -46,7 +46,7 @@ public class DefaultCartResponseBridgeTest extends BaseResourceTest {
 
     CustomerCartResponse cartResponse = new CustomerCartResponse(cart);
 
-    CustomerCartResponseBridge testObject = new CustomerCartResponseBridge(uriInfo, principal);
+    CustomerCartBridge testObject = new CustomerCartBridge(uriInfo, principal);
 
     Resource resource = testObject.toResource(cartResponse);
 

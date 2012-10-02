@@ -5,7 +5,7 @@ import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.api.request.CustomerCreateCartRequest;
 import org.multibit.mbm.api.response.CustomerCartItem;
 import org.multibit.mbm.api.response.CustomerCartResponse;
-import org.multibit.mbm.api.response.hal.CustomerCartResponseBridge;
+import org.multibit.mbm.api.response.hal.CustomerCartBridge;
 import org.multibit.mbm.auth.annotation.RestrictedTo;
 import org.multibit.mbm.db.dto.Authority;
 import org.multibit.mbm.db.dto.Customer;
@@ -36,7 +36,7 @@ import java.net.URI;
  */
 @Path("/")
 @Produces({HalMediaType.APPLICATION_HAL_JSON, HalMediaType.APPLICATION_HAL_XML})
-public class CustomerCartResource extends BaseResource<CustomerCartResponse> {
+public class CustomerCartResource extends BaseResource {
 
   private static final Logger log = LoggerFactory.getLogger(CustomerCartResource.class);
 
@@ -94,7 +94,7 @@ public class CustomerCartResource extends BaseResource<CustomerCartResponse> {
     // Ensure the new Cart can be found using its ID
     URI location = uriInfo.getAbsolutePathBuilder().path(customer.getCart().getId().toString()).build();
 
-    CustomerCartResponseBridge bridge = new CustomerCartResponseBridge(uriInfo, Optional.of(customer.getUser()));
+    CustomerCartBridge bridge = new CustomerCartBridge(uriInfo, Optional.of(customer.getUser()));
 
     // Provide the entire Cart as a shortcut for lazy clients
     return created(bridge, cartResponse, location);

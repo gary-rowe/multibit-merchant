@@ -27,7 +27,7 @@ import java.io.IOException;
  */
 @Path("/")
 @Produces({HalMediaType.APPLICATION_HAL_JSON, HalMediaType.APPLICATION_HAL_XML})
-public class BitcoinPaymentResource extends BaseResource<User> {
+public class BitcoinPaymentResource extends BaseResource {
 
   private static final Logger log = LoggerFactory.getLogger(BitcoinPaymentResource.class);
 

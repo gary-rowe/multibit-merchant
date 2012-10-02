@@ -16,13 +16,13 @@ import javax.ws.rs.core.UriInfo;
  *
  * @since 0.0.1
  */
-public class CustomerCartResponseBridge extends BaseBridge<CustomerCartResponse> {
+public class CustomerCartBridge extends BaseBridge<CustomerCartResponse> {
 
   /**
    * @param uriInfo   The {@link javax.ws.rs.core.UriInfo} containing the originating request information
    * @param principal An optional {@link org.multibit.mbm.db.dto.User} to provide a security principal
    */
-  public CustomerCartResponseBridge(UriInfo uriInfo, Optional<User> principal) {
+  public CustomerCartBridge(UriInfo uriInfo, Optional<User> principal) {
     super(uriInfo, principal);
   }
 
