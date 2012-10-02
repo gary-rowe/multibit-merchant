@@ -43,6 +43,8 @@ public class DefaultCustomerBridgeTest extends BaseResourceTest {
 
     Role customerRole = DatabaseLoader.buildCustomerRole();
     User aliceUser = DatabaseLoader.buildAliceCustomer(customerRole);
+    aliceUser.setId(1L);
+    aliceUser.getCustomer().setId(1L);
 
     DefaultCustomerBridge testObject = new DefaultCustomerBridge(uriInfo,principal);
 
@@ -51,15 +53,5 @@ public class DefaultCustomerBridgeTest extends BaseResourceTest {
     FixtureAsserts.assertRepresentationMatchesXmlFixture("a Customer can be marshalled to XML", resource, "fixtures/hal/customer/expected-customer-retrieve-customer.xml");
 
   }
-
-  private Customer buildCustomer() {
-    User customerAlice = DatabaseLoader.buildAliceCustomer(null);
-    customerAlice.setId(1L);
-
-    return CustomerBuilder
-      .newInstance()
-      .build();
-  }
-
 
 }
