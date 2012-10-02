@@ -2,7 +2,7 @@ package org.multibit.mbm.resources;
 
 import org.junit.Test;
 import org.multibit.mbm.api.hal.HalMediaType;
-import org.multibit.mbm.api.request.CustomerCreateCartRequest;
+import org.multibit.mbm.api.request.cart.CustomerCreateCartRequest;
 import org.multibit.mbm.db.dto.User;
 import org.multibit.mbm.services.CustomerService;
 import org.multibit.mbm.test.BaseJerseyResourceTest;

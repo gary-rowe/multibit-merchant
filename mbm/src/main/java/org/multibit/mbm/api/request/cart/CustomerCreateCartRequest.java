@@ -1,4 +1,4 @@
-package org.multibit.mbm.api.request;
+package org.multibit.mbm.api.request.cart;
 
 import com.google.common.collect.Lists;
 import org.codehaus.jackson.annotate.JsonProperty;

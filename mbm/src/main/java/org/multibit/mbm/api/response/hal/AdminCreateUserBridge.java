@@ -15,13 +15,13 @@ import javax.ws.rs.core.UriInfo;
  *
  * @since 0.0.1
  */
-public class AdminUserBridge extends BaseBridge<User> {
+public class AdminCreateUserBridge extends BaseBridge<User> {
 
   /**
    * @param uriInfo   The {@link javax.ws.rs.core.UriInfo} containing the originating request information
    * @param principal An optional {@link org.multibit.mbm.db.dto.User} to provide a security principal
    */
-  public AdminUserBridge(UriInfo uriInfo, Optional<User> principal) {
+  public AdminCreateUserBridge(UriInfo uriInfo, Optional<User> principal) {
     super(uriInfo, principal);
   }
 

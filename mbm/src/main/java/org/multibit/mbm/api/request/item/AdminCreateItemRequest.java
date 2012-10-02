@@ -1,4 +1,4 @@
-package org.multibit.mbm.api.request.admin;
+package org.multibit.mbm.api.request.item;
 
 /**
  *  <p>Request to provide the following to {@link org.multibit.mbm.resources.CatalogController}:</p>

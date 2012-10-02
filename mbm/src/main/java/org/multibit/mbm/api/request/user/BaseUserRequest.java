@@ -1,29 +1,35 @@
-package org.multibit.mbm.api.request.admin;
+package org.multibit.mbm.api.request.user;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
- * <p>Request to provide the following to Resources:</p>
+ * <p>Base request to provide the following to Resources:</p>
  * <ul>
- * <li>Provision of client state to create an initial bare bones User by an administrator</li>
+ * <li>Provision of client state common to all interactions with the User entity</li>
  * </ul>
- * <p>Note that subsequent updates to the User can set more detail into the User as required</p>
- * <p>When an administrator creates a User there is a lot more detail that can be added that is
- * not available to the general public.</p>
  *
  * @since 0.0.1
  *         
  */
-public class AdminCreateUserRequest {
+public abstract class BaseUserRequest {
 
+  /**
+   * A username (optional for anonymity reasons)
+   */
   @JsonProperty
-  private String username;
+  private String username = null;
 
+  /**
+   * A user password (not plaintext and optional for anonymity reasons)
+   */
   @JsonProperty
-  private String password;
+  private String password = null;
 
+  /**
+   * A third-party provided UUID to act as an authentication token
+   */
   @JsonProperty
-  private String openId;
+  private String openId = null;
 
   @JsonProperty
   private boolean oneTimeUse = false;
@@ -71,4 +77,5 @@ public class AdminCreateUserRequest {
   public void setUsername(String username) {
     this.username = username;
   }
+
 }
