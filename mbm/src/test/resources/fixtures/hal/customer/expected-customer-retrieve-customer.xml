@@ -1,0 +1,1 @@
+<resource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" href="http://localhost:9998/customer"><link rel="http://localhost:9998/customer?q={query}" href="search" /><link rel="http://localhost:9998/description" href="description" /><id xsi:nil="true" /></resource>

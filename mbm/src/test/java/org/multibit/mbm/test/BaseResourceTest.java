@@ -37,7 +37,8 @@ public abstract class BaseResourceTest {
    */
   protected void setUpUriInfo(Optional<String> baseHref) throws Exception {
     if (!baseHref.isPresent()) {
-      baseHref=Optional.of("http://example.org");
+      // This allows test fixtures to be DRY
+      baseHref=Optional.of("http://localhost:9998");
     }
     final URI uri = new URI(baseHref.get());
     uriInfo = mock(UriInfo.class);

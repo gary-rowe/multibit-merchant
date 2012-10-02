@@ -35,7 +35,7 @@ public class CustomerCartBridgeTest extends BaseResourceTest {
 
     Resource resource = testObject.toResource(cartResponse);
 
-    FixtureAsserts.assertRepresentationMatchesJsonFixture("a CartResponse can be marshalled to JSON", resource, "fixtures/hal/cart/expected-cart-by-customer.json");
+    FixtureAsserts.assertRepresentationMatchesJsonFixture("a CartResponse can be marshalled to JSON", resource, "fixtures/hal/cart/expected-customer-retrieve-cart.json");
 
   }
 
@@ -50,7 +50,7 @@ public class CustomerCartBridgeTest extends BaseResourceTest {
 
     Resource resource = testObject.toResource(cartResponse);
 
-    FixtureAsserts.assertRepresentationMatchesXmlFixture("a CartResponse can be marshalled to XML", resource, "fixtures/hal/cart/expected-cart-by-customer.xml");
+    FixtureAsserts.assertRepresentationMatchesXmlFixture("a CartResponse can be marshalled to XML", resource, "fixtures/hal/cart/expected-customer-create-cart.xml");
 
   }
 

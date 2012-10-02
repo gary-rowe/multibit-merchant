@@ -23,14 +23,14 @@ public class CustomerUserResourceTest extends BaseJerseyResourceTest {
   }
 
   @Test
-  public void testRetrieveUser() throws Exception {
+  public void customerRetrieveUserAsHalJson() throws Exception {
 
     String actualResponse = client()
       .resource("/user")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 
-    FixtureAsserts.assertStringMatchesJsonFixture("User can be retrieved as JSON", actualResponse, "fixtures/hal/user/expected-customer-retrieve-user.json");
+    FixtureAsserts.assertStringMatchesJsonFixture("Customer retrieve User as HAL+JSON", actualResponse, "fixtures/hal/user/expected-customer-retrieve-user.json");
 
   }
 
