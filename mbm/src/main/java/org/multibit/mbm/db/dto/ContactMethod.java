@@ -72,9 +72,9 @@ public enum ContactMethod {
    */
   LINKED_IN_URI("linkedInUri",true),
   /**
-   * A Twitter(TM) profile name, e.g. "@Example"
+   * A Twitter(TM) channel name, e.g. "@Example"
    */
-  TWITTER("twitter",true),
+  TWITTER_CHANNEL("twitterChannel",true),
   /**
    * A Facebook(TM) profile URI
    */
