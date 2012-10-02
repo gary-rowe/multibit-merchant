@@ -1,4 +1,4 @@
-package org.multibit.mbm.resources;
+package org.multibit.mbm.resources.admin;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
@@ -11,7 +11,6 @@ import org.multibit.mbm.db.DatabaseLoader;
 import org.multibit.mbm.db.dao.UserDao;
 import org.multibit.mbm.db.dto.Role;
 import org.multibit.mbm.db.dto.User;
-import org.multibit.mbm.resources.admin.AdminUserResource;
 import org.multibit.mbm.test.BaseJerseyResourceTest;
 import org.multibit.mbm.test.FixtureAsserts;
 
@@ -53,7 +52,7 @@ public class AdminUserResourceTest extends BaseJerseyResourceTest {
 
     // Configure the mock DAO
     // Create
-    when(userDao.getUserByCredentials(anyString(), anyString())).thenReturn(Optional.of(aliceUser));
+    when(userDao.getByCredentials(anyString(), anyString())).thenReturn(Optional.of(aliceUser));
     when(userDao.saveOrUpdate((User) isNotNull())).thenReturn(aliceUser);
     // Retrieve
     when(userDao.getAllByPage(1,1)).thenReturn(usersPage1);

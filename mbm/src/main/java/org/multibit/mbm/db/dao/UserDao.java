@@ -23,7 +23,7 @@ public interface UserDao {
    *
    * @return A matching User
    */
-  Optional<User> getUserByOpenId(String openId);
+  Optional<User> getByOpenId(String openId);
 
   /**
    * Attempt to locate the User by a UUID
@@ -32,7 +32,7 @@ public interface UserDao {
    *
    * @return A matching User
    */
-  Optional<User> getUserByUUID(String uuid);
+  Optional<User> getByUUID(String uuid);
 
   /**
    * Attempt to locate the User by a UUID
@@ -42,7 +42,7 @@ public interface UserDao {
    *
    * @return A matching User with Roles and Authorities initialised
    */
-  Optional<User> getUserByCredentials(String username, String password);
+  Optional<User> getByCredentials(String username, String password);
 
   /**
    * Provide a paged list of all Users

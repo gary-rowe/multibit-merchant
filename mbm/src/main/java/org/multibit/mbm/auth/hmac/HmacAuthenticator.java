@@ -22,7 +22,7 @@ public class HmacAuthenticator implements Authenticator<HmacCredentials, User> {
   public Optional<User> authenticate(HmacCredentials credentials) throws AuthenticationException {
 
     // Get the User referred to by the API key
-    Optional<User> user = userDao.getUserByUUID(credentials.getApiKey());
+    Optional<User> user = userDao.getByUUID(credentials.getApiKey());
     if (!user.isPresent()) {
       return Optional.absent();
     }

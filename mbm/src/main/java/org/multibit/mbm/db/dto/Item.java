@@ -33,6 +33,18 @@ public class Item implements Serializable {
   @Column(name = "gtin", nullable = true)
   private String gtin = null;
 
+  /**
+   * Indicates if the User has been deleted (archived)
+   */
+  @Column(name = "deleted", nullable = false)
+  private boolean deleted = false;
+
+  /**
+   * Provides a reason for being deleted
+   */
+  @Column(name = "reasonForDelete", nullable = true)
+  private String reasonForDelete = null;
+
   @OneToMany(targetEntity=CartItem.class, cascade = {CascadeType.ALL}, mappedBy = "primaryKey.item", orphanRemoval = true)
   private Set<CartItem> cartItems = Sets.newLinkedHashSet();
   
@@ -84,6 +96,22 @@ public class Item implements Serializable {
 
   public void setGTIN(String gtin) {
     this.gtin = gtin;
+  }
+
+  public boolean isDeleted() {
+    return deleted;
+  }
+
+  public void setDeleted(boolean deleted) {
+    this.deleted = deleted;
+  }
+
+  public String getReasonForDelete() {
+    return reasonForDelete;
+  }
+
+  public void setReasonForDelete(String reasonForDelete) {
+    this.reasonForDelete = reasonForDelete;
   }
 
   /**

@@ -145,7 +145,7 @@ public abstract class BaseJerseyResourceTest extends BaseResourceTest {
       .build();
 
     UserDao userDao = mock(UserDao.class);
-    when(userDao.getUserByUUID(apiKey.get())).thenReturn(Optional.of(user));
+    when(userDao.getByUUID(apiKey.get())).thenReturn(Optional.of(user));
 
     HmacAuthenticator authenticator = new HmacAuthenticator();
     authenticator.setUserDao(userDao);

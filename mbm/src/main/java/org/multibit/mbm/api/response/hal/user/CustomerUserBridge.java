@@ -43,7 +43,7 @@ public class CustomerUserBridge extends BaseBridge<User> {
 
     // Convert the ContactMethodDetails map into primary and secondary property entries
     for (Map.Entry<ContactMethod, ContactMethodDetail> entry : user.getContactMethodMap().entrySet()) {
-      String propertyName = entry.getKey().getPropertyName();
+      String propertyName = entry.getKey().getPropertyNameSingular();
       ContactMethodDetail contactMethodDetail = entry.getValue();
       String primaryDetail = contactMethodDetail.getPrimaryDetail();
 
