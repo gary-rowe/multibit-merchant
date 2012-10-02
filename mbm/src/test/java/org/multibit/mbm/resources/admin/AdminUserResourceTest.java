@@ -67,7 +67,7 @@ public class AdminUserResourceTest extends BaseJerseyResourceTest {
   }
 
   @Test
-  public void testGetAllByPage_Json() throws Exception {
+  public void adminRetrieveUserAsHalJson() throws Exception {
 
     String actualResponse = client()
       .resource("/admin/user")
@@ -76,7 +76,7 @@ public class AdminUserResourceTest extends BaseJerseyResourceTest {
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 
-    FixtureAsserts.assertStringMatchesJsonFixture("User list can be retrieved as JSON", actualResponse, "fixtures/hal/user/expected-admin-retrieve-users-page-1.json");
+    FixtureAsserts.assertStringMatchesJsonFixture("User list 1 can be retrieved as HAL+JSON", actualResponse, "fixtures/hal/user/expected-admin-retrieve-users-page-1.json");
 
     actualResponse = client()
       .resource("/admin/user")
@@ -85,12 +85,12 @@ public class AdminUserResourceTest extends BaseJerseyResourceTest {
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 
-    FixtureAsserts.assertStringMatchesJsonFixture("User list can be retrieved as JSON", actualResponse, "fixtures/hal/user/expected-admin-retrieve-users-page-2.json");
+    FixtureAsserts.assertStringMatchesJsonFixture("User list 2 can be retrieved as HAL+JSON", actualResponse, "fixtures/hal/user/expected-admin-retrieve-users-page-2.json");
 
   }
 
   @Test
-  public void testCreateUser_Json() throws Exception {
+  public void adminCreateUserAsHalJson() throws Exception {
 
     AdminCreateUserRequest createUserRequest = new AdminCreateUserRequest();
     createUserRequest.setUsername("charlie");
@@ -102,12 +102,12 @@ public class AdminUserResourceTest extends BaseJerseyResourceTest {
       .entity(createUserRequest)
       .post(String.class);
 
-    FixtureAsserts.assertStringMatchesJsonFixture("CreateUser by admin response render to JSON",actualResponse, "fixtures/hal/user/expected-admin-create-user.json");
+    FixtureAsserts.assertStringMatchesJsonFixture("CreateUser by admin response render to HAL+JSON",actualResponse, "fixtures/hal/user/expected-admin-create-user.json");
 
   }
 
   @Test
-  public void testUpdateUser_Json() throws Exception {
+  public void adminUpdateUserAsHalJson() throws Exception {
 
     AdminUpdateUserRequest updateUserRequest = new AdminUpdateUserRequest();
     updateUserRequest.setUsername("charlie");
@@ -119,7 +119,7 @@ public class AdminUserResourceTest extends BaseJerseyResourceTest {
       .entity(updateUserRequest)
       .put(String.class);
 
-    FixtureAsserts.assertStringMatchesJsonFixture("UpdateUser by admin response render to JSON",actualResponse, "fixtures/hal/user/expected-admin-update-user.json");
+    FixtureAsserts.assertStringMatchesJsonFixture("UpdateUser by admin response render to HAL+JSON",actualResponse, "fixtures/hal/user/expected-admin-update-user.json");
 
   }
 

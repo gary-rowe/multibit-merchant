@@ -85,12 +85,6 @@ public class User implements Serializable {
   private String username = null;
 
   /**
-   * How the User wishes to be displayed to the public (optional for anonymity reasons)
-   */
-  @Column(name = "public_name", nullable = true)
-  private String publicName = null;
-
-  /**
    * Indicates if the User has been locked (defaults to unlocked)
    */
   @Column(name = "locked", nullable = false)
@@ -235,14 +229,6 @@ public class User implements Serializable {
     this.passwordResetAt = passwordResetAt;
   }
 
-  public String getPublicName() {
-    return publicName;
-  }
-
-  public void setPublicName(String publicName) {
-    this.publicName = publicName;
-  }
-
   public boolean isStaffMember() {
     return staffMember;
   }
@@ -306,8 +292,8 @@ public class User implements Serializable {
    * TODO Consider making this cacheable
    *
    * @param authorities The required authorities
-   *
    * @return True if the user has all the required authorities
+   *
    */
   public boolean hasAllAuthorities(Authority[] authorities) {
     Set<Authority> requiredAuthorities = Sets.newHashSet(authorities);

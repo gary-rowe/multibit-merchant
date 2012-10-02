@@ -1,8 +1,9 @@
-package org.multibit.mbm.api.response.hal;
+package org.multibit.mbm.api.response.hal.user;
 
 import com.google.common.base.Optional;
 import com.theoryinpractise.halbuilder.ResourceFactory;
 import com.theoryinpractise.halbuilder.spi.Resource;
+import org.multibit.mbm.api.response.hal.BaseBridge;
 import org.multibit.mbm.db.dto.ContactMethod;
 import org.multibit.mbm.db.dto.ContactMethodDetail;
 import org.multibit.mbm.db.dto.User;
@@ -12,40 +13,31 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * <p>Bridge to provide the following to {@link org.multibit.mbm.db.dto.User}:</p>
+ * <p>Bridge to provide the following to {@link User}:</p>
  * <ul>
- * <li>Creates a representation of a single {@link org.multibit.mbm.db.dto.User} update for an administrator</li>
+ * <li>Creates representations of a User for a Customer</li>
  * </ul>
  *
  * @since 0.0.1
  */
-public class AdminUpdateUserBridge extends BaseBridge<User> {
+public class CustomerUserBridge extends BaseBridge<User> {
 
   /**
    * @param uriInfo   The {@link javax.ws.rs.core.UriInfo} containing the originating request information
-   * @param principal An optional {@link org.multibit.mbm.db.dto.User} to provide a security principal
+   * @param principal An optional {@link User} to provide a security principal
    */
-  public AdminUpdateUserBridge(UriInfo uriInfo, Optional<User> principal) {
+  public CustomerUserBridge(UriInfo uriInfo, Optional<User> principal) {
     super(uriInfo, principal);
   }
 
   public Resource toResource(User user) {
     ResourceFactory resourceFactory = getResourceFactory();
 
-    // TODO Fill this in for all fields
-    String rel = "/user/" + user.getId();
-    Resource userResource = resourceFactory
-      .newResource(rel)
-      // Must use individual property entries due to collections
-      .withProperty("id", user.getId())
-      .withProperty("uuid", user.getUUID())
-      .withProperty("openId", user.getOpenId())
+    Resource userResource = resourceFactory.newResource("/user/" + user.getId())
+      .withProperty("id",user.getId())
       .withProperty("username", user.getUsername())
-      .withProperty("password",user.getPassword())
-      .withProperty("publicName",user.getPublicName())
-      .withProperty("createdAt",user.getCreatedAt())
-      .withProperty("passwordResetAt",user.getPasswordResetAt())
-      .withProperty("secretKey",user.getSecretKey())
+      // Do not return password - it is useless
+      .withProperty("secretKey", user.getSecretKey())
       // End of build
       ;
 
@@ -55,15 +47,15 @@ public class AdminUpdateUserBridge extends BaseBridge<User> {
       ContactMethodDetail contactMethodDetail = entry.getValue();
       String primaryDetail = contactMethodDetail.getPrimaryDetail();
 
-      userResource.withProperty(propertyName,primaryDetail);
+      userResource.withProperty(propertyName, primaryDetail);
 
       // Determine if secondary details should be included
       if (entry.getKey().isSecondaryDetailSupported()) {
         Set<String> secondaryDetails = contactMethodDetail.getSecondaryDetails();
         // TODO Consider if a 1-based field index is the best representation here: array? sub-resource?
-        int index=1;
-        for (String secondaryDetail: secondaryDetails) {
-          userResource.withProperty(propertyName+index,secondaryDetail);
+        int index = 1;
+        for (String secondaryDetail : secondaryDetails) {
+          userResource.withProperty(propertyName + index, secondaryDetail);
           index++;
         }
       }
