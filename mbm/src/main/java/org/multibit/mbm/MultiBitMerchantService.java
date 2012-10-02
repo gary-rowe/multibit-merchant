@@ -10,7 +10,11 @@ import org.multibit.mbm.auth.hmac.HmacCredentials;
 import org.multibit.mbm.auth.hmac.HmacRestrictedToProvider;
 import org.multibit.mbm.db.dto.User;
 import org.multibit.mbm.health.TemplatePropertyHealthCheck;
-import org.multibit.mbm.resources.HelloWorldResource;
+import org.multibit.mbm.resources.BitcoinPaymentResource;
+import org.multibit.mbm.resources.CustomerCartResource;
+import org.multibit.mbm.resources.CustomerResource;
+import org.multibit.mbm.resources.CustomerUserResource;
+import org.multibit.mbm.resources.admin.AdminUserResource;
 
 /**
  * <p>Service to provide the following to application:</p>
@@ -50,10 +54,17 @@ public class MultiBitMerchantService extends Service<MultiBitMerchantConfigurati
     CachingAuthenticator<HmacCredentials, User> cachingAuthenticator = CachingAuthenticator.wrap(authenticator, CacheBuilderSpec.parse(configuration.getAuthenticationCachePolicy()));
 
     // Configure environment accordingly
-    // Resources
-    environment.addResource(new HelloWorldResource(template, defaultName));
+    // Resources - admin
+    environment.addResource(new AdminUserResource());
+    // Resource - other
+    environment.addResource(new CustomerResource());
+    environment.addResource(new CustomerCartResource());
+    environment.addResource(new CustomerUserResource());
+    environment.addResource(new BitcoinPaymentResource());
+
     // Health checks
     environment.addHealthCheck(new TemplatePropertyHealthCheck(template));
+
     // Providers
     environment.addProvider(new HmacRestrictedToProvider<User>(cachingAuthenticator, "REST"));
   }

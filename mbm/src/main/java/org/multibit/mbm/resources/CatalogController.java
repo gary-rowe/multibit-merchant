@@ -17,6 +17,7 @@ import java.util.List;
 
 /**
  * Handles the RESTful APIs for the Catalog package
+ * TODO Refactor into a Resource for the Catalog entity
  */
 @Controller
 @RequestMapping(value = "/v1")

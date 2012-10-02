@@ -91,6 +91,18 @@ public class User implements Serializable {
   private boolean locked = false;
 
   /**
+   * Indicates if the User has been deleted (archived)
+   */
+  @Column(name = "deleted", nullable = false)
+  private boolean deleted = false;
+
+  /**
+   * Provides a reason for being deleted
+   */
+  @Column(name = "reasonForDelete", nullable = true)
+  private String reasonForDelete = null;
+
+  /**
    * Indicates if the User is a staff member (defaults to no)
    */
   @Column(name = "staff", nullable = false)
@@ -211,6 +223,22 @@ public class User implements Serializable {
 
   public void setLocked(boolean locked) {
     this.locked = locked;
+  }
+
+  public boolean isDeleted() {
+    return deleted;
+  }
+
+  public void setDeleted(boolean deleted) {
+    this.deleted = deleted;
+  }
+
+  public String getReasonForDelete() {
+    return reasonForDelete;
+  }
+
+  public void setReasonForDelete(String reasonForDelete) {
+    this.reasonForDelete = reasonForDelete;
   }
 
   public String getPassword() {
