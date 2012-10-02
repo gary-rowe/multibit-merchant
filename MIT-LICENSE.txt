@@ -1,4 +1,4 @@
-Copyright (c) 2011 Gary Rowe, http://gary-rowe.com/
+Copyright (c) 2011-2012 Gary Rowe, http://gary-rowe.com/
 
 This software consists of voluntary contributions made by many
 individuals (see AUTHORS.txt) For the exact contribution history, 
