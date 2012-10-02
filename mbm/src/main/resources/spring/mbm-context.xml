@@ -15,10 +15,10 @@
   <context:component-scan base-package="org.multibit.mbm"/>
 
   <!-- Supporting transactional services -->
-  <import resource="classpath:/src/main/resources/spring/mbm-hibernate-service.xml"/>
+  <import resource="classpath:/spring/mbm-hibernate-service.xml"/>
 
   <!-- Hibernate implementations of DAOs -->
-  <import resource="classpath:/src/main/resources/spring/mbm-hibernate-dao.xml"/>
+  <import resource="classpath:/spring/mbm-hibernate-dao.xml"/>
 
   <!-- Twitter messaging -->
   <!--<import resource="classpath:/spring/mbm-twitter.xml"/>-->
