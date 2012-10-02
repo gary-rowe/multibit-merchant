@@ -121,7 +121,7 @@ public class HibernateItemDaoIntegrationTest extends BaseIntegrationTests {
   public void testGetPagedItems() {
 
     // All items (check against inefficient joins)
-    ItemPagedQueryResponse itemPagedQueryResponse = new ItemPagedQueryResponse(0,10,null);
+    ItemPagedQueryResponse itemPagedQueryResponse = new ItemPagedQueryResponse(0,5,null);
     List<Item> items = testObject.getPagedItems(itemPagedQueryResponse);
 
     // TODO Examine the transaction boundaries for these tests

@@ -4,7 +4,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.multibit.mbm.db.dto.Item;
 
 /**
- * Parameter object to provide query state for Items
+ * <p>Parameter object to provide query state for Items</p>
  */
 public class ItemPagedQueryResponse extends BasePagedQueryResponse {
 
