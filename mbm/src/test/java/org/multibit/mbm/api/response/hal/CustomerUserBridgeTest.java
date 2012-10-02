@@ -27,12 +27,13 @@ public class CustomerUserBridgeTest extends BaseResourceTest {
 
     Role customerRole = DatabaseLoader.buildCustomerRole();
     User aliceUser = DatabaseLoader.buildAliceCustomer(customerRole);
+    aliceUser.setId(1L);
 
     CustomerUserBridge testObject = new CustomerUserBridge(uriInfo,principal);
 
     Resource resource = testObject.toResource(aliceUser);
 
-    FixtureAsserts.assertRepresentationMatchesJsonFixture("a User can be marshalled to JSON", resource, "fixtures/hal/user/expected-customer-retrieve-user.json");
+    FixtureAsserts.assertRepresentationMatchesJsonFixture("Customer retrieve User as JSON", resource, "fixtures/hal/user/expected-customer-retrieve-user.json");
 
   }
 
