@@ -1,0 +1,1 @@
+{"_links":{"self":{"href":"http://localhost:9998/cart/1"}},"btcTotal":"10.8000","localSymbol":"&euro;","localTotal":"4.20","_embedded":{"item":[{"_links":{"item self":{"href":"http://localhost:9998/cart/1/item/1"}},"id":1,"quantity":1},{"_links":{"item self":{"href":"http://localhost:9998/cart/1/item/2"}},"id":2,"quantity":2}]}}

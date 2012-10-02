@@ -45,7 +45,7 @@ public class CartResourceTest extends BaseJerseyResourceTest {
       .entity(createCartRequest)
       .post(String.class);
 
-    FixtureAsserts.assertStringMatchesJsonFixture("CreateCart response render to JSON",actualResponse,"fixtures/hal/cart/expected-cart-new-jersey.json");
+    FixtureAsserts.assertStringMatchesJsonFixture("CreateCart response render to JSON",actualResponse, "fixtures/hal/cart/expected-customer-create-cart.json");
 
   }
 }

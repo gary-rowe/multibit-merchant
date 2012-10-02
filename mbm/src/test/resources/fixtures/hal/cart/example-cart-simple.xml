@@ -1,4 +1,0 @@
-<resource href="http://example.org/customer">
-  <link rel="http://example.org/customer?q={query}" href="search"/>
-  <link rel="http://example.org/description" href="description"/>
-</resource>
