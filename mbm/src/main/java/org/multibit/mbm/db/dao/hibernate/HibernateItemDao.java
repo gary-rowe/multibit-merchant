@@ -2,6 +2,7 @@ package org.multibit.mbm.db.dao.hibernate;
 
 import com.google.common.base.Optional;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.transform.DistinctRootEntityResultTransformer;
 import org.multibit.mbm.api.response.ItemPagedQueryResponse;
@@ -10,6 +11,7 @@ import org.multibit.mbm.db.dao.ItemNotFoundException;
 import org.multibit.mbm.db.dto.Item;
 import org.multibit.mbm.db.dto.ItemField;
 import org.multibit.mbm.db.dto.ItemFieldDetail;
+import org.multibit.mbm.db.dto.User;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
@@ -48,11 +50,23 @@ public class HibernateItemDao extends BaseHibernateDao implements ItemDao {
     return first(items, Item.class);
   }
 
+  @SuppressWarnings("unchecked")
+  public List<Item> getAllByPage(final int pageSize, final int pageNumber) {
+    return (List<Item>) hibernateTemplate.executeFind(new HibernateCallback() {
+      public Object doInHibernate(Session session) throws HibernateException, SQLException {
+        Query query = session.createQuery("from Item");
+        query.setMaxResults(pageSize);
+        query.setFirstResult(pageSize * pageNumber);
+        return query.list();
+      }
+    });
+  }
 
   // TODO Review the ItemPagedQueryResponse requirement
   // Consider a more generic search mechanism
   @SuppressWarnings("unchecked")
   @Override
+  @Deprecated
   public List<Item> getPagedItems(final ItemPagedQueryResponse itemPagedQueryResponse) {
     Assert.notNull(itemPagedQueryResponse, "itemPagedQueryResponse cannot be null");
 

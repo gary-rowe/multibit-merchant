@@ -59,7 +59,7 @@ public class AdminUserResource extends BaseResource {
       .build();
 
     // Perform basic verification
-    Optional<User> verificationUser = userDao.getUserByCredentials(user.getUsername(), user.getPassword());
+    Optional<User> verificationUser = userDao.getByCredentials(user.getUsername(), user.getPassword());
 
     if (!verificationUser.isPresent()) {
       throw new WebApplicationException(Response.Status.BAD_REQUEST);

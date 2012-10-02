@@ -88,7 +88,7 @@ public class HibernateUserDaoIntegrationTest extends BaseIntegrationTests {
     assertThat("Unexpected data in contact_method_secondary_details", updatedContactMethodDetailSecondaryRows, equalTo(originalContactMethodDetailSecondaryRows+1));
 
     // Query against the "openId"
-    Optional<User> actual=testObject.getUserByOpenId("abc123");
+    Optional<User> actual=testObject.getByOpenId("abc123");
 
     // Session flush: Expect no change to users, contact_method_details, contact_method_secondary_details
     updatedUserRows = countRowsInTable("users");
@@ -108,7 +108,7 @@ public class HibernateUserDaoIntegrationTest extends BaseIntegrationTests {
   @Test
   public void testUsersAndRoles() {
 
-    Optional<User> aliceCustomer = testObject.getUserByUUID("alice123");
+    Optional<User> aliceCustomer = testObject.getByUUID("alice123");
     
     assertTrue("Expected pre-populated data", aliceCustomer.isPresent());
     assertThat("Unexpected number of Roles",aliceCustomer.get().getUserRoles().size(), equalTo(1));

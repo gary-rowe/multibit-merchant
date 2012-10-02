@@ -86,4 +86,91 @@ public class AdminUpdateUserRequest extends AdminCreateUserRequest {
   @JsonProperty
   private Set<UserRole> userRoles = Sets.newLinkedHashSet();
 
+  public String getUuid() {
+    return uuid;
+  }
+
+  public void setUuid(String uuid) {
+    this.uuid = uuid;
+  }
+
+  public String getSecretKey() {
+    return secretKey;
+  }
+
+  public void setSecretKey(String secretKey) {
+    this.secretKey = secretKey;
+  }
+
+  public Map<ContactMethod, ContactMethodDetail> getContactMethodMap() {
+    return contactMethodMap;
+  }
+
+  public void setContactMethodMap(Map<ContactMethod, ContactMethodDetail> contactMethodMap) {
+    this.contactMethodMap = contactMethodMap;
+  }
+
+  public DateTime getPasswordResetAt() {
+    return passwordResetAt;
+  }
+
+  public void setPasswordResetAt(DateTime passwordResetAt) {
+    this.passwordResetAt = passwordResetAt;
+  }
+
+  public DateTime getCreatedAt() {
+    return createdAt;
+  }
+
+  public void setCreatedAt(DateTime createdAt) {
+    this.createdAt = createdAt;
+  }
+
+  public String getPublicName() {
+    return publicName;
+  }
+
+  public void setPublicName(String publicName) {
+    this.publicName = publicName;
+  }
+
+  public boolean isLocked() {
+    return locked;
+  }
+
+  public void setLocked(boolean locked) {
+    this.locked = locked;
+  }
+
+  public boolean isStaffMember() {
+    return staffMember;
+  }
+
+  public void setStaffMember(boolean staffMember) {
+    this.staffMember = staffMember;
+  }
+
+  public Customer getCustomer() {
+    return customer;
+  }
+
+  public void setCustomer(Customer customer) {
+    this.customer = customer;
+  }
+
+  public Map<UserField, UserFieldDetail> getUserFieldMap() {
+    return userFieldMap;
+  }
+
+  public void setUserFieldMap(Map<UserField, UserFieldDetail> userFieldMap) {
+    this.userFieldMap = userFieldMap;
+  }
+
+  public Set<UserRole> getUserRoles() {
+    return userRoles;
+  }
+
+  public void setUserRoles(Set<UserRole> userRoles) {
+    this.userRoles = userRoles;
+  }
 }

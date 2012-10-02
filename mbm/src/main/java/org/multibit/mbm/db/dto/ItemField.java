@@ -111,7 +111,7 @@ public enum ItemField {
     return plural;
   }
 
-  public String getSingular() {
+  public String getPropertyNameSingular() {
     return singular;
   }
 
@@ -121,7 +121,7 @@ public enum ItemField {
    */
   public ItemField findBySingular(String singular) {
     for (ItemField itemField: ItemField.values()) {
-      if (itemField.getSingular().equals(singular)) {
+      if (itemField.getPropertyNameSingular().equals(singular)) {
         return itemField;
       }
     }

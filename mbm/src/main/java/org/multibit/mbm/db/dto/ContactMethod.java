@@ -87,16 +87,16 @@ public enum ContactMethod {
   // End of enum
   ;
 
-  private final String propertyName;
+  private final String propertyNameSingular;
   private final boolean secondaryDetailSupported;
 
-  ContactMethod(String propertyName, boolean secondaryDetailSupported) {
-    this.propertyName = propertyName;
+  ContactMethod(String propertyNameSingular, boolean secondaryDetailSupported) {
+    this.propertyNameSingular = propertyNameSingular;
     this.secondaryDetailSupported = secondaryDetailSupported;
   }
 
-  public String getPropertyName() {
-    return propertyName;
+  public String getPropertyNameSingular() {
+    return propertyNameSingular;
   }
 
   public boolean isSecondaryDetailSupported() {
