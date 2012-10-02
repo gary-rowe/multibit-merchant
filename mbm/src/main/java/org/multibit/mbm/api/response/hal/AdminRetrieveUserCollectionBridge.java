@@ -11,18 +11,18 @@ import java.util.List;
 /**
  * <p>Bridge to provide the following to {@link org.multibit.mbm.db.dto.User}:</p>
  * <ul>
- * <li>Creates representations of multiple Users for an administrator</li>
+ * <li>Creates representation of multiple Users for an administrator</li>
  * </ul>
  *
  * @since 0.0.1
  */
-public class AdminUserCollectionBridge extends BaseBridge<List<User>> {
+public class AdminRetrieveUserCollectionBridge extends BaseBridge<List<User>> {
 
   /**
    * @param uriInfo The {@link javax.ws.rs.core.UriInfo} containing the originating request information
    * @param principal    An optional {@link org.multibit.mbm.db.dto.User} to provide a security principal
    */
-  public AdminUserCollectionBridge(UriInfo uriInfo, Optional<User> principal) {
+  public AdminRetrieveUserCollectionBridge(UriInfo uriInfo, Optional<User> principal) {
     super(uriInfo, principal);
   }
 

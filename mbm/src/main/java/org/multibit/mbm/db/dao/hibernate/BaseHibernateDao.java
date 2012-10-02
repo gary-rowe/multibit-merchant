@@ -1,7 +1,9 @@
 package org.multibit.mbm.db.dao.hibernate;
 
 import com.google.common.base.Optional;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 
+import javax.annotation.Resource;
 import java.util.Collection;
 import java.util.List;
 
@@ -15,6 +17,9 @@ import java.util.List;
  *         
  */
 public abstract class BaseHibernateDao {
+
+  @Resource(name = "hibernateTemplate")
+  protected HibernateTemplate hibernateTemplate = null;
 
   /**
    * @param collection The collection to check
@@ -36,7 +41,12 @@ public abstract class BaseHibernateDao {
       return Optional.absent();
     }
     return Optional.of((T) list.get(0));
-
   }
+
+  public <T> Optional<T> getById(Class<T> clazz,Long id) {
+    T entity = hibernateTemplate.get(clazz, id);
+    return Optional.fromNullable(entity);
+  }
+
 
 }

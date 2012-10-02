@@ -1,0 +1,1 @@
+{"_links":{"self":{"href":"http://localhost:9998/user/1"}},"createdAt":null,"email":"alice@example.org","id":1,"lastName":"Customer","names":"Alice","openId":null,"password":"charlie1","passwordResetAt":null,"publicName":null,"secretKey":null,"username":"charlie","uuid":"alice123"}

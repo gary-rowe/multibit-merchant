@@ -18,8 +18,15 @@ import java.util.List;
 @Repository("hibernateUserDao")
 public class HibernateUserDao extends BaseHibernateDao implements UserDao {
 
-  @Resource(name = "hibernateTemplate")
-  private HibernateTemplate hibernateTemplate = null;
+  @SuppressWarnings("unchecked")
+  @Override
+  public Optional<User> getById(Long id) {
+    User user = hibernateTemplate.get(User.class, id);
+    if (user == null) {
+      return Optional.absent();
+    }
+    return Optional.of(user);
+  }
 
   @SuppressWarnings("unchecked")
   @Override

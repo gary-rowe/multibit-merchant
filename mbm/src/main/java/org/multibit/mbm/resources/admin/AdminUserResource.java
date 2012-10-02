@@ -4,9 +4,11 @@ import com.google.common.base.Optional;
 import com.yammer.dropwizard.jersey.caching.CacheControl;
 import com.yammer.metrics.annotation.Timed;
 import org.multibit.mbm.api.hal.HalMediaType;
-import org.multibit.mbm.api.request.CustomerCreateUserRequest;
-import org.multibit.mbm.api.response.hal.AdminUserBridge;
-import org.multibit.mbm.api.response.hal.AdminUserCollectionBridge;
+import org.multibit.mbm.api.request.user.AdminCreateUserRequest;
+import org.multibit.mbm.api.request.user.AdminUpdateUserRequest;
+import org.multibit.mbm.api.response.hal.AdminCreateUserBridge;
+import org.multibit.mbm.api.response.hal.AdminRetrieveUserCollectionBridge;
+import org.multibit.mbm.api.response.hal.AdminUpdateUserBridge;
 import org.multibit.mbm.auth.annotation.RestrictedTo;
 import org.multibit.mbm.db.dao.UserDao;
 import org.multibit.mbm.db.dto.Authority;
@@ -35,44 +37,20 @@ public class AdminUserResource extends BaseResource {
   UserDao userDao;
 
   /**
-   * Provide a paged response of all users in the system
+   * Create a new User from the given mandatory fields
+   *
    * @param adminUser A user with administrator rights
-   * @param rawPageSize The unvalidated page size
-   * @param rawPageNumber The unvalidated page number
-   * @return A response containing a paged list of all users
-   */
-  @GET
-  @Timed
-  @Path("/user")
-  @CacheControl(maxAge = 6, maxAgeUnit = TimeUnit.HOURS)
-  public Response getAllByPage(
-    @RestrictedTo({Authority.ROLE_ADMIN}) User adminUser,
-    @QueryParam("pageSize") Optional<String> rawPageSize,
-    @QueryParam("pageNumber") Optional<String> rawPageNumber) {
-
-    // Validation
-    int pageSize = Integer.valueOf(rawPageSize.get());
-    int pageNumber = Integer.valueOf(rawPageNumber.get());
-
-    List<User> users = userDao.getAllByPage(pageSize, pageNumber);
-
-    AdminUserCollectionBridge bridge = new AdminUserCollectionBridge(uriInfo, Optional.of(adminUser));
-
-    return ok(bridge, users);
-
-  }
-
-  /**
-   * Provide a paged response of all users in the system
-   * @param adminUser A user with administrator rights
-   * @return A response containing a paged list of all users
+   *
+   * @return A response containing the minimum details of the created entity
    */
   @POST
   @Timed
   @Path("/user")
   @CacheControl(maxAge = 6, maxAgeUnit = TimeUnit.HOURS)
-  public Response createUser(
-    @RestrictedTo({Authority.ROLE_ADMIN}) User adminUser, CustomerCreateUserRequest createUserRequest) {
+  public Response create(
+    @RestrictedTo({Authority.ROLE_ADMIN})
+    User adminUser,
+    AdminCreateUserRequest createUserRequest) {
 
     // Build a user from the given request information
     User user = UserBuilder.newInstance()
@@ -90,12 +68,84 @@ public class AdminUserResource extends BaseResource {
 
     // Persist the user
     User persistentUser = userDao.saveOrUpdate(user);
-    AdminUserBridge bridge = new AdminUserBridge(uriInfo, Optional.of(adminUser));
 
+    // Provide a representation to the client
+    AdminCreateUserBridge bridge = new AdminCreateUserBridge(uriInfo, Optional.of(adminUser));
     URI location = uriInfo.getAbsolutePathBuilder().path(persistentUser.getId().toString()).build();
 
-    //return created(bridge, persistentUser, location);
-    return created(bridge,persistentUser,location);
+    return created(bridge, persistentUser, location);
+
+  }
+
+  /**
+   * Provide a paged response of all users in the system
+   *
+   * @param adminUser     A user with administrator rights
+   * @param rawPageSize   The unvalidated page size
+   * @param rawPageNumber The unvalidated page number
+   *
+   * @return A response containing a paged list of all users
+   */
+  @GET
+  @Timed
+  @Path("/user")
+  @CacheControl(maxAge = 6, maxAgeUnit = TimeUnit.HOURS)
+  public Response retrieveAllByPage(
+    @RestrictedTo({Authority.ROLE_ADMIN}) User adminUser,
+    @QueryParam("pageSize") Optional<String> rawPageSize,
+    @QueryParam("pageNumber") Optional<String> rawPageNumber) {
+
+    // Validation
+    int pageSize = Integer.valueOf(rawPageSize.get());
+    int pageNumber = Integer.valueOf(rawPageNumber.get());
+
+    List<User> users = userDao.getAllByPage(pageSize, pageNumber);
+
+    // Provide a representation to the client
+    AdminRetrieveUserCollectionBridge bridge = new AdminRetrieveUserCollectionBridge(uriInfo, Optional.of(adminUser));
+
+    return ok(bridge, users);
+
+  }
+
+  /**
+   * Update an existing User with the populated fields
+   *
+   * @param adminUser A user with administrator rights
+   *
+   * @return A response containing the full details of the updated entity
+   */
+  @PUT
+  @Timed
+  @Path("/user/{userId}")
+  @CacheControl(maxAge = 6, maxAgeUnit = TimeUnit.HOURS)
+  public Response update(
+    @RestrictedTo({Authority.ROLE_ADMIN})
+    User adminUser,
+    @PathParam("userId") Long userId,
+    AdminUpdateUserRequest updateUserRequest) {
+
+    // Retrieve the user
+    Optional<User> user = userDao.getById(userId);
+
+    if (!user.isPresent()) {
+      throw new WebApplicationException(Response.Status.BAD_REQUEST);
+    }
+
+    // Verify and apply any changes to the User
+    // TODO Fill in all details
+    User persistentUser = user.get();
+    persistentUser.setPassword(updateUserRequest.getPassword());
+    persistentUser.setUsername(updateUserRequest.getUsername());
+    persistentUser.setOpenId(updateUserRequest.getOpenId());
+
+    // Persist the updated user
+    persistentUser = userDao.saveOrUpdate(user.get());
+
+    // Provide a representation to the client
+    AdminUpdateUserBridge bridge = new AdminUpdateUserBridge(uriInfo, Optional.of(adminUser));
+
+    return ok(bridge, persistentUser);
 
   }
 

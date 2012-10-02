@@ -4,7 +4,8 @@ import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import org.junit.Test;
 import org.multibit.mbm.api.hal.HalMediaType;
-import org.multibit.mbm.api.request.admin.AdminCreateUserRequest;
+import org.multibit.mbm.api.request.user.AdminCreateUserRequest;
+import org.multibit.mbm.api.request.user.AdminUpdateUserRequest;
 import org.multibit.mbm.db.DatabaseLoader;
 import org.multibit.mbm.db.dao.UserDao;
 import org.multibit.mbm.db.dto.Role;
@@ -55,7 +56,8 @@ public class AdminUserResourceTest extends BaseJerseyResourceTest {
     // Retrieve
     when(userDao.getAllByPage(1,1)).thenReturn(usersPage1);
     when(userDao.getAllByPage(1,2)).thenReturn(usersPage2);
-
+    // Update
+    when(userDao.getById(1L)).thenReturn(Optional.of(aliceUser));
 
     testObject.setUserDao(userDao);
 
@@ -101,6 +103,23 @@ public class AdminUserResourceTest extends BaseJerseyResourceTest {
       .post(String.class);
 
     FixtureAsserts.assertStringMatchesJsonFixture("CreateUser by admin response render to JSON",actualResponse, "fixtures/hal/user/expected-admin-create-user.json");
+
+  }
+
+  @Test
+  public void testUpdateUser_Json() throws Exception {
+
+    AdminUpdateUserRequest updateUserRequest = new AdminUpdateUserRequest();
+    updateUserRequest.setUsername("charlie");
+    updateUserRequest.setPassword("charlie1");
+
+    String actualResponse = client()
+      .resource("/admin/user/1")
+      .accept(HalMediaType.APPLICATION_HAL_JSON)
+      .entity(updateUserRequest)
+      .put(String.class);
+
+    FixtureAsserts.assertStringMatchesJsonFixture("UpdateUser by admin response render to JSON",actualResponse, "fixtures/hal/user/expected-admin-update-user.json");
 
   }
 

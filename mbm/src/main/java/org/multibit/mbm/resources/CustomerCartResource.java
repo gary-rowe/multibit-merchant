@@ -2,7 +2,7 @@ package org.multibit.mbm.resources;
 
 import com.google.common.base.Optional;
 import org.multibit.mbm.api.hal.HalMediaType;
-import org.multibit.mbm.api.request.CustomerCreateCartRequest;
+import org.multibit.mbm.api.request.cart.CustomerCreateCartRequest;
 import org.multibit.mbm.api.response.CustomerCartItem;
 import org.multibit.mbm.api.response.CustomerCartResponse;
 import org.multibit.mbm.api.response.hal.CustomerCartBridge;

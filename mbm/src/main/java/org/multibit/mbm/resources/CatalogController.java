@@ -1,7 +1,7 @@
 package org.multibit.mbm.resources;
 
 import com.google.common.base.Optional;
-import org.multibit.mbm.api.request.admin.AdminCreateItemRequest;
+import org.multibit.mbm.api.request.item.AdminCreateItemRequest;
 import org.multibit.mbm.api.response.BaseResponse;
 import org.multibit.mbm.api.response.ItemPagedQueryResponse;
 import org.multibit.mbm.api.response.ItemSearchResponse;

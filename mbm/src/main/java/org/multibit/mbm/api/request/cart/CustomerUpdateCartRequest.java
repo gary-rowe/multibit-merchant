@@ -1,4 +1,4 @@
-package org.multibit.mbm.api.request;
+package org.multibit.mbm.api.request.cart;
 
 import org.multibit.mbm.db.dto.Cart;
 
