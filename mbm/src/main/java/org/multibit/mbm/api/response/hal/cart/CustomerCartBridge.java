@@ -1,9 +1,10 @@
-package org.multibit.mbm.api.response.hal;
+package org.multibit.mbm.api.response.hal.cart;
 
 import com.google.common.base.Optional;
 import com.theoryinpractise.halbuilder.spi.Resource;
 import org.multibit.mbm.api.response.CustomerCartItem;
 import org.multibit.mbm.api.response.CustomerCartResponse;
+import org.multibit.mbm.api.response.hal.BaseBridge;
 import org.multibit.mbm.db.dto.User;
 
 import javax.ws.rs.core.UriInfo;

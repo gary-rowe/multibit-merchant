@@ -6,9 +6,8 @@ import com.yammer.metrics.annotation.Timed;
 import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.api.request.user.AdminCreateUserRequest;
 import org.multibit.mbm.api.request.user.AdminUpdateUserRequest;
-import org.multibit.mbm.api.response.hal.AdminCreateUserBridge;
-import org.multibit.mbm.api.response.hal.AdminRetrieveUserCollectionBridge;
-import org.multibit.mbm.api.response.hal.AdminUpdateUserBridge;
+import org.multibit.mbm.api.response.hal.user.AdminUserBridge;
+import org.multibit.mbm.api.response.hal.user.AdminUserCollectionBridge;
 import org.multibit.mbm.auth.annotation.RestrictedTo;
 import org.multibit.mbm.db.dao.UserDao;
 import org.multibit.mbm.db.dto.Authority;
@@ -70,7 +69,7 @@ public class AdminUserResource extends BaseResource {
     User persistentUser = userDao.saveOrUpdate(user);
 
     // Provide a representation to the client
-    AdminCreateUserBridge bridge = new AdminCreateUserBridge(uriInfo, Optional.of(adminUser));
+    AdminUserBridge bridge = new AdminUserBridge(uriInfo, Optional.of(adminUser));
     URI location = uriInfo.getAbsolutePathBuilder().path(persistentUser.getId().toString()).build();
 
     return created(bridge, persistentUser, location);
@@ -102,7 +101,7 @@ public class AdminUserResource extends BaseResource {
     List<User> users = userDao.getAllByPage(pageSize, pageNumber);
 
     // Provide a representation to the client
-    AdminRetrieveUserCollectionBridge bridge = new AdminRetrieveUserCollectionBridge(uriInfo, Optional.of(adminUser));
+    AdminUserCollectionBridge bridge = new AdminUserCollectionBridge(uriInfo, Optional.of(adminUser));
 
     return ok(bridge, users);
 
@@ -143,7 +142,7 @@ public class AdminUserResource extends BaseResource {
     persistentUser = userDao.saveOrUpdate(user.get());
 
     // Provide a representation to the client
-    AdminUpdateUserBridge bridge = new AdminUpdateUserBridge(uriInfo, Optional.of(adminUser));
+    AdminUserBridge bridge = new AdminUserBridge(uriInfo, Optional.of(adminUser));
 
     return ok(bridge, persistentUser);
 
