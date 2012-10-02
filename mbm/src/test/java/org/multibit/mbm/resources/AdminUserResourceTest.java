@@ -1,15 +1,17 @@
-package org.multibit.mbm.resources.admin;
+package org.multibit.mbm.resources;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import org.junit.Test;
 import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.api.request.user.AdminCreateUserRequest;
+import org.multibit.mbm.api.request.AdminDeleteEntityRequest;
 import org.multibit.mbm.api.request.user.AdminUpdateUserRequest;
 import org.multibit.mbm.db.DatabaseLoader;
 import org.multibit.mbm.db.dao.UserDao;
 import org.multibit.mbm.db.dto.Role;
 import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.resources.admin.AdminUserResource;
 import org.multibit.mbm.test.BaseJerseyResourceTest;
 import org.multibit.mbm.test.FixtureAsserts;
 
@@ -120,6 +122,22 @@ public class AdminUserResourceTest extends BaseJerseyResourceTest {
       .put(String.class);
 
     FixtureAsserts.assertStringMatchesJsonFixture("UpdateUser by admin response render to HAL+JSON",actualResponse, "fixtures/hal/user/expected-admin-update-user.json");
+
+  }
+
+  @Test
+  public void adminDeleteUserAsHalJson() throws Exception {
+
+    AdminDeleteEntityRequest deleteUserRequest = new AdminDeleteEntityRequest();
+    deleteUserRequest.setReason("At user request");
+
+    String actualResponse = client()
+      .resource("/admin/user/1")
+      .accept(HalMediaType.APPLICATION_HAL_JSON)
+      .entity(deleteUserRequest)
+      .delete(String.class);
+
+    FixtureAsserts.assertStringMatchesJsonFixture("DeleteUser by admin response render to HAL+JSON",actualResponse, "fixtures/hal/user/expected-admin-delete-user.json");
 
   }
 

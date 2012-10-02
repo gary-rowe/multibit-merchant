@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
+// TODO Consider if this is required and refactor to resource
 @Controller
 @RequestMapping(value = "/v1")
 public class TokenController {

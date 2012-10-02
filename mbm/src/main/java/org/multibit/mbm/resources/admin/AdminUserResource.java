@@ -4,6 +4,7 @@ import com.google.common.base.Optional;
 import com.yammer.dropwizard.jersey.caching.CacheControl;
 import com.yammer.metrics.annotation.Timed;
 import org.multibit.mbm.api.hal.HalMediaType;
+import org.multibit.mbm.api.request.AdminDeleteEntityRequest;
 import org.multibit.mbm.api.request.user.AdminCreateUserRequest;
 import org.multibit.mbm.api.request.user.AdminUpdateUserRequest;
 import org.multibit.mbm.api.response.hal.user.AdminUserBridge;
@@ -45,7 +46,6 @@ public class AdminUserResource extends BaseResource {
   @POST
   @Timed
   @Path("/user")
-  @CacheControl(maxAge = 6, maxAgeUnit = TimeUnit.HOURS)
   public Response create(
     @RestrictedTo({Authority.ROLE_ADMIN})
     User adminUser,
@@ -117,7 +117,6 @@ public class AdminUserResource extends BaseResource {
   @PUT
   @Timed
   @Path("/user/{userId}")
-  @CacheControl(maxAge = 6, maxAgeUnit = TimeUnit.HOURS)
   public Response update(
     @RestrictedTo({Authority.ROLE_ADMIN})
     User adminUser,
@@ -137,6 +136,44 @@ public class AdminUserResource extends BaseResource {
     persistentUser.setPassword(updateUserRequest.getPassword());
     persistentUser.setUsername(updateUserRequest.getUsername());
     persistentUser.setOpenId(updateUserRequest.getOpenId());
+
+    // Persist the updated user
+    persistentUser = userDao.saveOrUpdate(user.get());
+
+    // Provide a representation to the client
+    AdminUserBridge bridge = new AdminUserBridge(uriInfo, Optional.of(adminUser));
+
+    return ok(bridge, persistentUser);
+
+  }
+
+  /**
+   * Delete an existing User (usually meaning set flag to deleted)
+   *
+   * @param adminUser A user with administrator rights
+   *
+   * @return A response containing the full details of the updated entity
+   */
+  @DELETE
+  @Timed
+  @Path("/user/{userId}")
+  public Response delete(
+    @RestrictedTo({Authority.ROLE_ADMIN})
+    User adminUser,
+    @PathParam("userId") Long userId,
+    AdminDeleteEntityRequest deleteEntityRequest) {
+
+    // Retrieve the user
+    Optional<User> user = userDao.getById(userId);
+
+    if (!user.isPresent()) {
+      throw new WebApplicationException(Response.Status.BAD_REQUEST);
+    }
+
+    // Verify and apply any changes to the User
+    User persistentUser = user.get();
+    persistentUser.setDeleted(true);
+    persistentUser.setReasonForDelete(deleteEntityRequest.getReason());
 
     // Persist the updated user
     persistentUser = userDao.saveOrUpdate(user.get());
