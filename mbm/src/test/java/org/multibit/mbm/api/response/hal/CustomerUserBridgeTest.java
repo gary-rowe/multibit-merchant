@@ -32,7 +32,7 @@ public class CustomerUserBridgeTest extends BaseResourceTest {
 
     Resource resource = testObject.toResource(aliceUser);
 
-    FixtureAsserts.assertRepresentationMatchesJsonFixture("a User can be marshalled to JSON", resource, "fixtures/hal/user/expected-user-by-customer.json");
+    FixtureAsserts.assertRepresentationMatchesJsonFixture("a User can be marshalled to JSON", resource, "fixtures/hal/user/expected-customer-retrieve-user.json");
 
   }
 
@@ -46,7 +46,7 @@ public class CustomerUserBridgeTest extends BaseResourceTest {
 
     Resource resource = testObject.toResource(aliceUser);
 
-    FixtureAsserts.assertRepresentationMatchesXmlFixture("a User can be marshalled to XML", resource, "fixtures/hal/user/expected-user-by-customer.xml");
+    FixtureAsserts.assertRepresentationMatchesXmlFixture("a User can be marshalled to XML", resource, "fixtures/hal/user/expected-customer-retrieve-user.xml");
 
   }
 

@@ -6,7 +6,6 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.multibit.mbm.db.dao.UserDao;
-import org.multibit.mbm.db.dao.UserNotFoundException;
 import org.multibit.mbm.db.dto.User;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
@@ -26,18 +25,14 @@ public class HibernateUserDao extends BaseHibernateDao implements UserDao {
   @Override
   public Optional<User> getUserByOpenId(String openId) {
     List users = hibernateTemplate.find("from User u where u.openId = ?", openId);
-    if (isNotFound(users)) return Optional.absent();
-    // TODO Consider duplicates?
-    return Optional.of((User) users.get(0));
+    return first(users,User.class);
   }
 
   @SuppressWarnings("unchecked")
   @Override
   public Optional<User> getUserByUUID(String uuid) {
     List users = hibernateTemplate.find("from User u where u.uuid = ?", uuid);
-    if (isNotFound(users)) return Optional.absent();
-    // TODO Consider duplicates?
-    return Optional.of((User) users.get(0));
+    return first(users,User.class);
   }
 
   @Override
@@ -57,7 +52,7 @@ public class HibernateUserDao extends BaseHibernateDao implements UserDao {
     }
 
     // Must have failed to be here
-    throw new UserNotFoundException();
+    return Optional.absent();
   }
 
   @SuppressWarnings("unchecked")

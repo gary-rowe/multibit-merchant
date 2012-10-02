@@ -10,10 +10,13 @@ import org.multibit.mbm.db.dto.Authority;
 import org.multibit.mbm.db.dto.Customer;
 import org.multibit.mbm.db.dto.User;
 import org.multibit.mbm.services.CustomerService;
+import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
-import javax.ws.rs.*;
-import javax.ws.rs.core.*;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Response;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -27,7 +30,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Path("/")
 @Produces({HalMediaType.APPLICATION_HAL_JSON, HalMediaType.APPLICATION_HAL_XML})
-public class CustomerResource extends BaseResource<Customer> {
+public class CustomerResource extends BaseResource {
 
   @Resource(name = "customerService")
   private CustomerService customerService = null;
@@ -39,11 +42,12 @@ public class CustomerResource extends BaseResource<Customer> {
   @CacheControl(maxAge = 6, maxAgeUnit = TimeUnit.HOURS)
   public Response retrieveCustomer(@RestrictedTo({Authority.ROLE_CUSTOMER}) User user) {
 
-    Optional<Customer> customer = customerService.findByOpenId(user.getOpenId());
+    Customer customer = user.getCustomer();
+    Assert.notNull(customer);
 
-    DefaultCustomerBridge bridge = new DefaultCustomerBridge(uriInfo, Optional.of(customer.get().getUser()));
+    DefaultCustomerBridge bridge = new DefaultCustomerBridge(uriInfo, Optional.of(user));
 
-    return ok(bridge,customer.get());
+    return ok(bridge,customer);
 
   }
 

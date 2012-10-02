@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Path("/admin")
 @Produces({HalMediaType.APPLICATION_HAL_JSON, HalMediaType.APPLICATION_HAL_XML})
-public class AdminUserResource extends BaseResource<List<User>> {
+public class AdminUserResource extends BaseResource {
 
   UserDao userDao;
 
@@ -84,7 +84,7 @@ public class AdminUserResource extends BaseResource<List<User>> {
     // Perform basic verification
     Optional<User> verificationUser = userDao.getUserByCredentials(user.getUsername(), user.getPassword());
 
-    if (verificationUser.isPresent()) {
+    if (!verificationUser.isPresent()) {
       throw new WebApplicationException(Response.Status.BAD_REQUEST);
     }
 
@@ -92,10 +92,10 @@ public class AdminUserResource extends BaseResource<List<User>> {
     User persistentUser = userDao.saveOrUpdate(user);
     AdminUserBridge bridge = new AdminUserBridge(uriInfo, Optional.of(adminUser));
 
-    URI location = null;
+    URI location = uriInfo.getAbsolutePathBuilder().path(persistentUser.getId().toString()).build();
 
     //return created(bridge, persistentUser, location);
-    return null;
+    return created(bridge,persistentUser,location);
 
   }
 

@@ -36,7 +36,7 @@ public class AdminUserBridgeTest extends BaseResourceTest {
 
     Resource resource = testObject.toResource(Lists.newArrayList(aliceUser,bobUser));
 
-    FixtureAsserts.assertRepresentationMatchesJsonFixture("a User list can be marshalled to JSON", resource, "fixtures/hal/user/expected-users-by-admin-all.json");
+    FixtureAsserts.assertRepresentationMatchesJsonFixture("a User list can be marshalled to JSON", resource, "fixtures/hal/user/expected-admin-retrieve-users-all.json");
 
   }
 
@@ -53,7 +53,7 @@ public class AdminUserBridgeTest extends BaseResourceTest {
 
     Resource resource = testObject.toResource(Lists.newArrayList(aliceUser, bobUser));
 
-    FixtureAsserts.assertRepresentationMatchesXmlFixture("a User list can be marshalled to XML", resource, "fixtures/hal/user/expected-users-by-admin-all.xml");
+    FixtureAsserts.assertRepresentationMatchesXmlFixture("a User list can be marshalled to XML", resource, "fixtures/hal/user/expected-admin-retrieve-users-all.xml");
 
   }
 
