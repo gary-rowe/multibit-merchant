@@ -1,14 +1,11 @@
 package org.multibit.mbm.db.dto;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
 /**
  * <p>Enumeration to provide the following to {@link Role}:</p>
  * <ul>
  * <li>Provision of standard authorities grouped by Role</li>
  * </ul>
- * <p>An Authority exists to provide an enum key to be mapped into a Spring Security {@link GrantedAuthority}.</p>
+ * <p>An Authority exists to provide an enum key to be mapped into an RestrictedTo annotation.</p>
  *
  * @since 0.0.1
  *         
@@ -82,13 +79,6 @@ public enum Authority {
    */
   Authority(boolean internal) {
     this.internal = internal;
-  }
-
-  /**
-   * @return A representative GrantedAuthority
-   */
-  public GrantedAuthority toGrantedAuthority() {
-    return new SimpleGrantedAuthority(this.name());
   }
 
   /**

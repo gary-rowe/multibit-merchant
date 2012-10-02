@@ -50,23 +50,12 @@
     </dependency>
 
     <!-- Spring framework -->
-    <!-- General web security -->
-    <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-web</artifactId>
-    </dependency>
     <!-- Spring JPA for ORM -->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-orm</artifactId>
     </dependency>
-    <!-- Spring Expression for runtime object manipulation -->
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-expression</artifactId>
-      <version>${spring.version}</version>
-    </dependency>
-    <!-- Spring testing support -->
+    <!-- Spring testing support (e.g. transactional tests) -->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
@@ -94,10 +83,11 @@
 
 
     <!-- Atmosphere for push broadcast -->
-    <dependency>
-      <groupId>org.atmosphere</groupId>
-      <artifactId>atmosphere-runtime</artifactId>
-    </dependency>
+    <!-- TODO Consider re-instating this later -->
+    <!--<dependency>-->
+      <!--<groupId>org.atmosphere</groupId>-->
+      <!--<artifactId>atmosphere-runtime</artifactId>-->
+    <!--</dependency>-->
 
     <!-- Bitcoin -->
     <dependency>
