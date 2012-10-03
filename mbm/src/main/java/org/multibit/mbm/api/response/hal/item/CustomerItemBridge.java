@@ -41,17 +41,26 @@ public class CustomerItemBridge extends BaseBridge<Item> {
     for (Map.Entry<ItemField, ItemFieldDetail> entry : item.getItemFieldMap().entrySet()) {
       // Determine the property
       String propertyName = entry.getKey().getPropertyNameSingular();
+      boolean isLink = entry.getKey().isLink();
       ItemFieldDetail itemFieldDetail = entry.getValue();
       LocalisedText primaryDetail = itemFieldDetail.getPrimaryDetail();
+
       // TODO Consider how i18n will be transmitted
       // Consider filtering on Locale
-      userResource.withProperty(propertyName, primaryDetail.getContent());
-
+      if (isLink) {
+        userResource.withLink(primaryDetail.getContent(),propertyName);
+      } else {
+        userResource.withProperty(propertyName, primaryDetail.getContent());
+      }
       Set<LocalisedText> secondaryDetails = itemFieldDetail.getSecondaryDetails();
       // TODO Consider if a 1-based field index is the best representation here: array? sub-resource?
       int index = 1;
       for (LocalisedText secondaryDetail : secondaryDetails) {
-        userResource.withProperty(propertyName + index, secondaryDetail.getContent());
+        if (isLink) {
+          userResource.withLink(secondaryDetail.getContent(),propertyName+index);
+        } else {
+          userResource.withProperty(propertyName + index, secondaryDetail.getContent());
+        }
         index++;
       }
     }
