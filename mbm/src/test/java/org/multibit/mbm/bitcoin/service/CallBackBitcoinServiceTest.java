@@ -1,16 +1,17 @@
 package org.multibit.mbm.bitcoin.service;
 
 import com.google.bitcoin.core.*;
+import com.google.common.collect.Lists;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import java.awt.image.BufferedImage;
 import java.math.BigInteger;
-import java.util.LinkedList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 // TODO Determine how swatch test can work in headless environment
 @Ignore
@@ -24,7 +25,7 @@ public class CallBackBitcoinServiceTest{
     // create a bucket of bitcoin addresses;
     NetworkParameters prodNet = NetworkParameters.prodNet();
     
-    List<Address> addressBucket = new LinkedList<Address>();
+    List<Address> addressBucket = Lists.newLinkedList();
     
     ECKey key1 = new ECKey();
     Address address1 = key1.toAddress(prodNet); 
@@ -62,7 +63,7 @@ public class CallBackBitcoinServiceTest{
     // create a bucket of bitcoin addresses;
     NetworkParameters prodNet = NetworkParameters.prodNet();
     
-    List<Address> addressBucket = new LinkedList<Address>();
+    List<Address> addressBucket = Lists.newLinkedList();
     
     ECKey key1 = new ECKey();
     Address address1 = key1.toAddress(prodNet); 
@@ -101,7 +102,7 @@ public class CallBackBitcoinServiceTest{
     // create a bucket of bitcoin addresses;
     NetworkParameters prodNet = NetworkParameters.prodNet();
     
-    List<Address> addressBucket = new LinkedList<Address>();
+    List<Address> addressBucket = Lists.newLinkedList();
     
     ECKey key1 = new ECKey();
     Address address1 = key1.toAddress(prodNet); 

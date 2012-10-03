@@ -1,5 +1,6 @@
 package org.multibit.mbm.accounting;
 
+import com.google.common.collect.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,12 +42,12 @@ public class Account<T extends Entry<T>> {
   /**
    * The set of entries
    */
-  private Set<T> entrySet = new LinkedHashSet<T>();
+  private Set<T> entrySet = Sets.newLinkedHashSet();
 
   /**
    * The set of posting rules (trigger on new entries)
    */
-  private Set<PostingRule<T>> postingRuleSet = new LinkedHashSet<PostingRule<T>>();
+  private Set<PostingRule<T>> postingRuleSet = Sets.newLinkedHashSet();
 
   /**
    * The account balance

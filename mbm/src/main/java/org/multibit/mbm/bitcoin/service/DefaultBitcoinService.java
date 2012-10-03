@@ -6,6 +6,7 @@ import com.google.bitcoin.discovery.IrcDiscovery;
 import com.google.bitcoin.store.BlockStore;
 import com.google.bitcoin.store.BlockStoreException;
 import com.google.bitcoin.store.BoundedOverheadBlockStore;
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -15,7 +16,6 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -231,7 +231,7 @@ public class DefaultBitcoinService implements BitcoinService, PeerEventListener,
    * @return
    */
   List<Address> loadAddressBucket() {
-    List<Address> newAddressBucket = new LinkedList<Address>();
+    List<Address> newAddressBucket = Lists.newLinkedList();
 
     // Read in the address bucket
     if ((new File(DEFAULT_ADDRESS_BUCKET_FILENAME)).exists()) {

@@ -11,7 +11,6 @@ import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -21,11 +20,7 @@ public class HibernateUserDao extends BaseHibernateDao implements UserDao {
   @SuppressWarnings("unchecked")
   @Override
   public Optional<User> getById(Long id) {
-    User user = hibernateTemplate.get(User.class, id);
-    if (user == null) {
-      return Optional.absent();
-    }
-    return Optional.of(user);
+    return getById(User.class,id);
   }
 
   @SuppressWarnings("unchecked")

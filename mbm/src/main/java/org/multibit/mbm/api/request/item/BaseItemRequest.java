@@ -16,7 +16,6 @@ import javax.persistence.Column;
 public abstract class BaseItemRequest {
 
   @JsonProperty
-  @Column(name = "sku", nullable = false)
   private String sku = null;
 
   public String getSKU() {

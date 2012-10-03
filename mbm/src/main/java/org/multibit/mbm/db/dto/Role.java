@@ -1,11 +1,9 @@
 package org.multibit.mbm.db.dto;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.google.common.collect.Sets;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 
@@ -23,9 +21,6 @@ import java.util.Set;
 public class Role implements Serializable {
 
   private static final long serialVersionUID = 38452390321234L;
-
-  @Transient
-  private static final Logger log = LoggerFactory.getLogger(User.class);
 
   /**
    * The Role primary key
@@ -47,6 +42,17 @@ public class Role implements Serializable {
   @Column(name = "description", nullable = false)
   private String description = null;
 
+  /**
+   * Indicates if the User has been deleted (archived)
+   */
+  @Column(name = "deleted", nullable = false)
+  private boolean deleted = false;
+
+  /**
+   * Provides a reason for being deleted
+   */
+  @Column(name = "reasonForDelete", nullable = true)
+  private String reasonForDelete = null;
 
   /**
    * True if this is an internal staff role
@@ -55,7 +61,7 @@ public class Role implements Serializable {
   private boolean internal = true;
 
   @OneToMany(targetEntity = UserRole.class, cascade = {CascadeType.ALL}, mappedBy = "primaryKey.role", orphanRemoval = true)
-  private Set<UserRole> userRoles = new LinkedHashSet<UserRole>();
+  private Set<UserRole> userRoles = Sets.newLinkedHashSet();
 
   /**
    * The authorities associated with this Role
@@ -67,7 +73,7 @@ public class Role implements Serializable {
   @CollectionTable(name = "authorities",
     joinColumns = @JoinColumn(name = "role_id"))
   @Column(name = "auth_name" )
-  private Set<Authority> authorities = new LinkedHashSet<Authority>();
+  private Set<Authority> authorities = Sets.newLinkedHashSet();
 
   /**
    * Default constructor for Hibernate
@@ -105,6 +111,22 @@ public class Role implements Serializable {
 
   public void setInternal(boolean internal) {
     this.internal = internal;
+  }
+
+  public boolean isDeleted() {
+    return deleted;
+  }
+
+  public void setDeleted(boolean deleted) {
+    this.deleted = deleted;
+  }
+
+  public String getReasonForDelete() {
+    return reasonForDelete;
+  }
+
+  public void setReasonForDelete(String reasonForDelete) {
+    this.reasonForDelete = reasonForDelete;
   }
 
   public String getName() {
