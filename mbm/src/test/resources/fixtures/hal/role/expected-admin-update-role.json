@@ -1,0 +1,1 @@
+{"_links":{"self":{"href":"http://localhost:9998/role/3"}},"description":"Stock Manager roles","internal":true,"name":"Stock Manager","_embedded":{"authorities":{"_links":{"authorities self":{"href":"http://localhost:9998/authorities"}}}}}

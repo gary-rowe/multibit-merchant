@@ -90,7 +90,8 @@ public class AdminRoleResource extends BaseResource {
   @Path("/role")
   @CacheControl(maxAge = 6, maxAgeUnit = TimeUnit.HOURS)
   public Response retrieveAllByPage(
-    @RestrictedTo({Authority.ROLE_ADMIN}) User adminUser,
+    @RestrictedTo({Authority.ROLE_ADMIN})
+    User adminUser,
     @QueryParam("pageSize") Optional<String> rawPageSize,
     @QueryParam("pageNumber") Optional<String> rawPageNumber) {
 
@@ -134,14 +135,15 @@ public class AdminRoleResource extends BaseResource {
     Role persistentRole = role.get();
     persistentRole.setName(updateRoleRequest.getName());
     persistentRole.setDescription(updateRoleRequest.getDescription());
-    for (String authorityName : updateRoleRequest.getAuthorities()) {
-      try {
-        Authority authority = Authority.valueOf(authorityName.toUpperCase());
-        persistentRole.getAuthorities().add(authority);
-      } catch (IllegalArgumentException e) {
-        throw new WebApplicationException(Response.Status.BAD_REQUEST);
-      }
-    }
+    // TODO Re-instate this
+//    for (String authorityName : updateRoleRequest.getAuthorities()) {
+//      try {
+//        Authority authority = Authority.valueOf(authorityName.toUpperCase());
+//        persistentRole.getAuthorities().add(authority);
+//      } catch (IllegalArgumentException e) {
+//        throw new WebApplicationException(Response.Status.BAD_REQUEST);
+//      }
+//    }
 
     // Persist the updated role
     persistentRole = roleDao.saveOrUpdate(role.get());

@@ -1,7 +1,6 @@
 package org.multibit.mbm.api.response.hal.role;
 
 import com.google.common.base.Optional;
-import com.theoryinpractise.halbuilder.ResourceFactory;
 import com.theoryinpractise.halbuilder.spi.Resource;
 import org.multibit.mbm.api.response.hal.BaseBridge;
 import org.multibit.mbm.db.dto.Authority;
@@ -30,10 +29,8 @@ public class AdminRoleBridge extends BaseBridge<Role> {
 
   public Resource toResource(Role role) {
 
-    ResourceFactory resourceFactory = new ResourceFactory();
-
     // Build the representation
-    Resource roleResource = resourceFactory.newResource("/role/" + role.getId())
+    Resource roleResource = getResourceFactory().newResource("/role/" + role.getId())
       // Must use individual property entries due to collections
       .withProperty("name", role.getName())
       .withProperty("description", role.getDescription())
@@ -42,12 +39,9 @@ public class AdminRoleBridge extends BaseBridge<Role> {
       ;
 
     // Build a sub-resource representing all the authorities bound to this Role
-    Resource authoritiesResource = resourceFactory.newResource("authorities");
+    Resource authoritiesResource = getResourceFactory().newResource("authorities");
     for (Authority authority : role.getAuthorities()) {
-      Resource authorityResource = resourceFactory.newResource("/authority/"+authority.name());
-      authorityResource.withProperty("name",authority.name());
-      authorityResource.withProperty("internal",authority.isInternal());
-      authoritiesResource.withSubresource("authority",authorityResource);
+      authoritiesResource.withProperty(authority.name(),Boolean.TRUE);
     }
     roleResource.withSubresource("authorities", authoritiesResource);
 
