@@ -48,6 +48,14 @@ public enum ItemField {
    */
   IMAGE_THUMBNAIL_URI("image_thumbnail_uri", "image_thumbnail_uris",true),
   /**
+   * URI to a barcode image associated with the item
+   */
+  IMAGE_BARCODE_URI("image_barcode_uri", "image_barcode_uris",true),
+  /**
+   * URI to a qrcode image associated with the item
+   */
+  IMAGE_QRCODE_URI("image_qrcode_uri", "image_qrcode_uris",true),
+  /**
    * URI to a video associated with the item
    */
   VIDEO_URI("video_uri", "video_uris",true),
@@ -79,6 +87,14 @@ public enum ItemField {
    * Detailed instructions for use
    */
   INSTRUCTIONS("instruction", "instructions",false),
+  /**
+   * Dimensions of item associated with shoes, e.g. "42 EUR, 8 UK" etc
+   */
+  SHOE_SIZE("shoe_size", "shoe_sizes",false),
+  /**
+   * Dimensions of item associated with clothing, e.g. S, M, L, XL etc
+   */
+  CLOTHING_SIZE("clothing_size", "clothing_sizes",false),
   /**
    * Dimensions of item associated with length, breadth and width
    */
