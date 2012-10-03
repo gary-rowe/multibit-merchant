@@ -11,7 +11,6 @@ import org.multibit.mbm.db.dao.ItemNotFoundException;
 import org.multibit.mbm.db.dto.Item;
 import org.multibit.mbm.db.dto.ItemField;
 import org.multibit.mbm.db.dto.ItemFieldDetail;
-import org.multibit.mbm.db.dto.User;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
@@ -30,9 +29,7 @@ public class HibernateItemDao extends BaseHibernateDao implements ItemDao {
 
   @Override
   public Optional<Item> getById(Long id) throws ItemNotFoundException {
-    List items = hibernateTemplate.find("from Item i where i.id = ?", id);
-
-    return first(items, Item.class);
+    return getById(Item.class,id);
   }
 
   @Override

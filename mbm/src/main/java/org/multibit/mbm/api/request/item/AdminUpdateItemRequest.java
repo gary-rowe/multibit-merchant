@@ -1,15 +1,10 @@
 package org.multibit.mbm.api.request.item;
 
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.joda.time.DateTime;
-import org.multibit.mbm.api.request.user.AdminCreateUserRequest;
 import org.multibit.mbm.db.dto.*;
 
-import javax.persistence.*;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * <p>Request to provide the following to Resources:</p>

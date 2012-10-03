@@ -4,25 +4,42 @@ import com.google.common.base.Optional;
 import org.multibit.mbm.db.dto.Authority;
 import org.multibit.mbm.db.dto.Role;
 
+import java.util.List;
+
 public interface RoleDao {
+
+  /**
+   * Attempt to locate the Role
+   *
+   * @param id The ID
+   *
+   * @return A matching Role
+   */
+  Optional<Role> getById(Long id);
 
   /**
    * Attempt to locate the Role using a shortcut Authority
    *
    * @param authority The Role shortcut Authority  (e.g. "ROLE_CUSTOMER")
    * @return A matching Role
-   * @throws RoleNotFoundException If something goes wrong
    */
-  Optional<Role> getRoleByAuthority(Authority authority) throws RoleNotFoundException;
+  Optional<Role> getByAuthority(Authority authority);
 
   /**
    * Attempt to locate the Role using a name
    *
    * @param name The Role name (e.g. "ROLE_SPECIAL") which has been defined by an admin
    * @return A matching Role
-   * @throws RoleNotFoundException If something goes wrong
    */
-  Optional<Role> getRoleByName(String name);
+  Optional<Role> getByName(String name);
+
+  /**
+   * Provide a paged list of all Roles
+   *
+   * @param pageSize   the total record in one page
+   * @param pageNumber the page number starts from 0
+   */
+  List<Role> getAllByPage(final int pageSize, final int pageNumber);
 
   /**
    * Persist the given Role

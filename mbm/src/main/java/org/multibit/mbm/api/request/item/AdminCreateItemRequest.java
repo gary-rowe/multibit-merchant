@@ -1,10 +1,5 @@
 package org.multibit.mbm.api.request.item;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.multibit.mbm.api.request.user.BaseUserRequest;
-
-import javax.persistence.Column;
-
 /**
  * <p>Request to provide the following to controllers:</p>
  * <ul>

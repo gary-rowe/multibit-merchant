@@ -61,7 +61,7 @@ public class HibernateRoleDaoIntegrationTest extends BaseIntegrationTests {
     assertThat("Unexpected data in authorities", updatedAuthorityRows, equalTo(originalAuthorityRows+1));
 
     // Query against the role name
-    Optional<Role> actual=testObject.getRoleByName("ROLE_TEST");
+    Optional<Role> actual=testObject.getByName("ROLE_TEST");
 
     // Session flush: Expect no change to roles, authorities
     updatedRoleRows = countRowsInTable("roles");
@@ -79,7 +79,7 @@ public class HibernateRoleDaoIntegrationTest extends BaseIntegrationTests {
   @Test
   public void testRolesAndAuthorities() {
 
-    Optional<Role> adminRole = testObject.getRoleByName("ROLE_ADMIN");
+    Optional<Role> adminRole = testObject.getByName("ROLE_ADMIN");
     
     assertTrue("Expected pre-populated data", adminRole.isPresent());
     assertThat("Unexpected number of Roles",adminRole.get().getAuthorities().size(), equalTo(Authority.values().length));
