@@ -4,8 +4,8 @@ import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import org.junit.Test;
 import org.multibit.mbm.api.hal.HalMediaType;
-import org.multibit.mbm.api.request.user.AdminCreateUserRequest;
 import org.multibit.mbm.api.request.AdminDeleteEntityRequest;
+import org.multibit.mbm.api.request.user.AdminCreateUserRequest;
 import org.multibit.mbm.api.request.user.AdminUpdateUserRequest;
 import org.multibit.mbm.db.DatabaseLoader;
 import org.multibit.mbm.db.dao.UserDao;
@@ -52,8 +52,8 @@ public class AdminUserResourceTest extends BaseJerseyResourceTest {
 
     // Configure the mock DAO
     // Create
-    when(userDao.getByCredentials(anyString(), anyString())).thenReturn(Optional.of(aliceUser));
     when(userDao.saveOrUpdate((User) isNotNull())).thenReturn(aliceUser);
+    when(userDao.getByCredentials(anyString(), anyString())).thenReturn(Optional.<User>absent());
     // Retrieve
     when(userDao.getAllByPage(1,1)).thenReturn(usersPage1);
     when(userDao.getAllByPage(1,2)).thenReturn(usersPage2);
@@ -64,6 +64,23 @@ public class AdminUserResourceTest extends BaseJerseyResourceTest {
 
     // Configure resources
     addResource(testObject);
+
+  }
+
+  @Test
+  public void adminCreateUserAsHalJson() throws Exception {
+
+    AdminCreateUserRequest createUserRequest = new AdminCreateUserRequest();
+    createUserRequest.setUsername("charlie");
+    createUserRequest.setPassword("charlie1");
+
+    String actualResponse = client()
+      .resource("/admin/user")
+      .accept(HalMediaType.APPLICATION_HAL_JSON)
+      .entity(createUserRequest)
+      .post(String.class);
+
+    FixtureAsserts.assertStringMatchesJsonFixture("CreateUser by admin response render to HAL+JSON",actualResponse, "fixtures/hal/user/expected-admin-create-user.json");
 
   }
 
@@ -87,23 +104,6 @@ public class AdminUserResourceTest extends BaseJerseyResourceTest {
       .get(String.class);
 
     FixtureAsserts.assertStringMatchesJsonFixture("User list 2 can be retrieved as HAL+JSON", actualResponse, "fixtures/hal/user/expected-admin-retrieve-users-page-2.json");
-
-  }
-
-  @Test
-  public void adminCreateUserAsHalJson() throws Exception {
-
-    AdminCreateUserRequest createUserRequest = new AdminCreateUserRequest();
-    createUserRequest.setUsername("charlie");
-    createUserRequest.setPassword("charlie1");
-
-    String actualResponse = client()
-      .resource("/admin/user")
-      .accept(HalMediaType.APPLICATION_HAL_JSON)
-      .entity(createUserRequest)
-      .post(String.class);
-
-    FixtureAsserts.assertStringMatchesJsonFixture("CreateUser by admin response render to HAL+JSON",actualResponse, "fixtures/hal/user/expected-admin-create-user.json");
 
   }
 

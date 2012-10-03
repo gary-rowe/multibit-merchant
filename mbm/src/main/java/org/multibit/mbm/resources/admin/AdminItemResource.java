@@ -10,10 +10,10 @@ import org.multibit.mbm.api.request.item.AdminUpdateItemRequest;
 import org.multibit.mbm.api.response.hal.item.AdminItemBridge;
 import org.multibit.mbm.api.response.hal.item.AdminItemCollectionBridge;
 import org.multibit.mbm.auth.annotation.RestrictedTo;
-import org.multibit.mbm.db.DatabaseLoader;
 import org.multibit.mbm.db.dao.ItemDao;
 import org.multibit.mbm.db.dto.Authority;
 import org.multibit.mbm.db.dto.Item;
+import org.multibit.mbm.db.dto.ItemBuilder;
 import org.multibit.mbm.db.dto.User;
 import org.multibit.mbm.resources.BaseResource;
 
@@ -53,13 +53,15 @@ public class AdminItemResource extends BaseResource {
     AdminCreateItemRequest createItemRequest) {
 
     // Build a item from the given request information
-    Item item = DatabaseLoader.buildBookItemCryptonomicon();
+    Item item = ItemBuilder.newInstance()
+      .withSKU(createItemRequest.getSKU())
+      .build();
 
     // Perform basic verification
-    Optional<Item> verificationItem = itemDao.getById(item.getId());
+    Optional<Item> verificationItem = itemDao.getBySKU(item.getSKU());
 
-    if (!verificationItem.isPresent()) {
-      throw new WebApplicationException(Response.Status.BAD_REQUEST);
+    if (verificationItem.isPresent()) {
+      throw new WebApplicationException(Response.Status.CONFLICT);
     }
 
     // Persist the item

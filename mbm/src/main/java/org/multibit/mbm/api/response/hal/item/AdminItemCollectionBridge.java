@@ -4,7 +4,6 @@ import com.google.common.base.Optional;
 import com.theoryinpractise.halbuilder.ResourceFactory;
 import com.theoryinpractise.halbuilder.spi.Resource;
 import org.multibit.mbm.api.response.hal.BaseBridge;
-import org.multibit.mbm.api.response.hal.user.CustomerUserBridge;
 import org.multibit.mbm.db.dto.Item;
 import org.multibit.mbm.db.dto.User;
 
@@ -21,7 +20,7 @@ import java.util.List;
  */
 public class AdminItemCollectionBridge extends BaseBridge<List<Item>> {
 
-  private final CustomerUserBridge customerItemBridge;
+  private final CustomerItemBridge customerItemBridge;
 
   /**
    * @param uriInfo   The {@link javax.ws.rs.core.UriInfo} containing the originating request information
@@ -29,7 +28,7 @@ public class AdminItemCollectionBridge extends BaseBridge<List<Item>> {
    */
   public AdminItemCollectionBridge(UriInfo uriInfo, Optional<User> principal) {
     super(uriInfo, principal);
-    customerItemBridge = new CustomerUserBridge(uriInfo,principal);
+    customerItemBridge = new CustomerItemBridge(uriInfo,principal);
   }
 
   public Resource toResource(List<Item> items) {

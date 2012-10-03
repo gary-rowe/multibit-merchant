@@ -32,7 +32,7 @@ public class CustomerItemBridge extends BaseBridge<Item> {
     ResourceFactory resourceFactory = getResourceFactory();
 
     Resource userResource = resourceFactory.newResource("/item/" + item.getId())
-      .withProperty("id",item.getId())
+      .withProperty("id", item.getId())
       .withProperty("sku", item.getSKU())
       // End of build
       ;
@@ -43,18 +43,16 @@ public class CustomerItemBridge extends BaseBridge<Item> {
       String propertyName = entry.getKey().getPropertyNameSingular();
       ItemFieldDetail itemFieldDetail = entry.getValue();
       LocalisedText primaryDetail = itemFieldDetail.getPrimaryDetail();
-      // TODO Consider l10n
+      // TODO Consider how i18n will be transmitted
+      // Consider filtering on Locale
       userResource.withProperty(propertyName, primaryDetail.getContent());
 
-      // Determine if secondary details should be included
-      if (entry.getKey().isSecondaryDetailSupported()) {
-        Set<String> secondaryDetails = itemFieldDetail.getSecondaryDetails();
-        // TODO Consider if a 1-based field index is the best representation here: array? sub-resource?
-        int index = 1;
-        for (String secondaryDetail : secondaryDetails) {
-          userResource.withProperty(propertyName + index, secondaryDetail);
-          index++;
-        }
+      Set<LocalisedText> secondaryDetails = itemFieldDetail.getSecondaryDetails();
+      // TODO Consider if a 1-based field index is the best representation here: array? sub-resource?
+      int index = 1;
+      for (LocalisedText secondaryDetail : secondaryDetails) {
+        userResource.withProperty(propertyName + index, secondaryDetail.getContent());
+        index++;
       }
     }
 
