@@ -2,6 +2,7 @@ package org.multibit.mbm.db.dto;
 
 import com.google.common.collect.Lists;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -16,6 +17,7 @@ import java.util.List;
 public class CartBuilder {
 
   private Long id;
+  private Customer customer;
   private List<AddCartItem> addCartItems = Lists.newArrayList();
 
   private boolean isBuilt = false;
@@ -38,8 +40,8 @@ public class CartBuilder {
 
     // Cart is a DTO so requires a default constructor
     Cart cart = new Cart();
-
     cart.setId(id);
+    cart.setCustomer(customer);
 
     // Add any items
     for (AddCartItem addCartItem : addCartItems) {
@@ -55,11 +57,16 @@ public class CartBuilder {
     if (isBuilt) {
       throw new IllegalStateException("Build process is complete - no further changes can be made");
     }
+    if (customer == null) {
+      throw new IllegalStateException("Cart requires a Customer");
+    }
   }
 
   /**
    * Creates a CartItem entry based on the parameters
+   *
    * @param id The ID
+   *
    * @return The builder
    */
   public CartBuilder withId(Long id) {
@@ -73,16 +80,57 @@ public class CartBuilder {
 
   /**
    * Creates a CartItem entry based on the parameters
-   * @param item The persistent Item (this should already exist in the database)
+   *
+   * @param item     The persistent Item (this should already exist in the database)
    * @param quantity The quantity
+   *
    * @return The builder
    */
   public CartBuilder withCartItem(Item item, int quantity) {
 
     validateState();
 
-    addCartItems.add(new AddCartItem(item,quantity));
+    addCartItems.add(new AddCartItem(item, quantity));
 
+    return this;
+  }
+
+  /**
+   * Creates a CartItem entry based on the parameters
+   *
+   * @param cartItem A CartItem
+   *
+   * @return The builder
+   */
+  public CartBuilder withCartItem(CartItem cartItem) {
+
+    validateState();
+
+    addCartItems.add(new AddCartItem(cartItem.getItem(), cartItem.getQuantity()));
+
+    return this;
+  }
+
+  /**
+   * Creates multiple CartItem entries based on the parameters
+   *
+   * @param cartItems A collection of CartItems (Item will be re-used)
+   *
+   * @return The builder
+   */
+  public CartBuilder withCartItems(Collection<CartItem> cartItems) {
+
+    validateState();
+
+    for (CartItem cartItem: cartItems) {
+      addCartItems.add(new AddCartItem(cartItem.getItem(), cartItem.getQuantity()));
+    }
+
+    return this;
+  }
+
+  public CartBuilder withCustomer(Customer customer) {
+    this.customer = customer;
     return this;
   }
 
@@ -113,7 +161,7 @@ public class CartBuilder {
       CartItem cartItem = new CartItem();
       cartItem.setPrimaryKey(cartItemPk);
       cartItem.setQuantity(quantity);
-      
+
       cart.getCartItems().add(cartItem);
 
     }

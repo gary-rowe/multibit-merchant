@@ -12,7 +12,12 @@ import java.util.*;
  * <li>Transactional collection of entries</li>
  * <li>Notification of PostingRules</li>
  * </ul>
- * <p>An Account represents a collection of Entries </p>
+ * <p>An Account represents a collection of {@link Entry} instances</p>
+ * <h3>Example</h3>
+ * {@code
+ *   new Account<DefaultEntry> account;
+ *
+ * }
  *
  * @since 0.0.1
  *         

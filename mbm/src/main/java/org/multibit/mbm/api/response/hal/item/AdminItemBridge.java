@@ -4,7 +4,6 @@ import com.google.common.base.Optional;
 import com.theoryinpractise.halbuilder.ResourceFactory;
 import com.theoryinpractise.halbuilder.spi.Resource;
 import org.multibit.mbm.api.response.hal.BaseBridge;
-import org.multibit.mbm.api.response.hal.user.CustomerUserBridge;
 import org.multibit.mbm.db.dto.Item;
 import org.multibit.mbm.db.dto.User;
 
@@ -29,6 +28,11 @@ public class AdminItemBridge extends BaseBridge<Item> {
   }
 
   public Resource toResource(Item item) {
+
+    if (item.getId() == null) {
+      throw new IllegalArgumentException("Cannot respond with a transient Item. Id is null.");
+    }
+
     ResourceFactory resourceFactory = getResourceFactory();
 
     Resource itemResource = resourceFactory.newResource("/item/" + item.getId())

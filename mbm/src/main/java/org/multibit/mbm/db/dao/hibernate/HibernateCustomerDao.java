@@ -6,14 +6,10 @@ import org.multibit.mbm.db.dto.Customer;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 @Repository("hibernateCustomerDao")
 public class HibernateCustomerDao extends BaseHibernateDao implements CustomerDao {
-
-  @Resource(name="hibernateTemplate")
-  private HibernateTemplate hibernateTemplate = null;
 
   @Override
   public Optional<Customer> getCustomerByOpenId(String openId) {

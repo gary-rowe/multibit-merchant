@@ -32,6 +32,7 @@ public class AdminRoleCollectionBridge extends BaseBridge<List<Role>> {
   }
 
   public Resource toResource(List<Role> roles) {
+
     ResourceFactory resourceFactory = getResourceFactory();
 
     Resource roleList = resourceFactory.newResource("/role");

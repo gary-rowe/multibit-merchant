@@ -1,35 +1,29 @@
 package org.multibit.mbm.resources;
 
 import com.google.common.base.Optional;
+import com.yammer.dropwizard.jersey.caching.CacheControl;
+import com.yammer.metrics.annotation.Timed;
 import org.multibit.mbm.api.hal.HalMediaType;
-import org.multibit.mbm.api.request.cart.CustomerCreateCartRequest;
-import org.multibit.mbm.api.response.CustomerCartItem;
-import org.multibit.mbm.api.response.CustomerCartResponse;
 import org.multibit.mbm.api.response.hal.cart.CustomerCartBridge;
 import org.multibit.mbm.auth.annotation.RestrictedTo;
 import org.multibit.mbm.db.dto.Authority;
-import org.multibit.mbm.db.dto.Customer;
+import org.multibit.mbm.db.dto.Cart;
 import org.multibit.mbm.db.dto.User;
-import org.multibit.mbm.services.CustomerService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.util.Assert;
 
-import javax.annotation.Resource;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
-import java.net.URI;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>Resource to provide the following to {@link org.multibit.mbm.db.dto.Cart}:</p>
  * <ul>
  * <li>Provision of REST endpoints for Customer interaction with their Cart</li>
  * </ul>
+ * <p>Note that a Cart has a 1:1 relationship with Customer and is meaningless
+ * without it. Therefore there is no "Create" or "Delete" requirement.</p>
  *
  * @since 0.0.1
  *         
@@ -38,70 +32,33 @@ import java.net.URI;
 @Produces({HalMediaType.APPLICATION_HAL_JSON, HalMediaType.APPLICATION_HAL_XML})
 public class CustomerCartResource extends BaseResource {
 
-  private static final Logger log = LoggerFactory.getLogger(CustomerCartResource.class);
-
-  @Resource(name = "customerService")
-  private CustomerService customerService = null;
-
-
   /**
-   * Retrieves the  Cart for the authenticated User
+   * Provide a paged response of all Carts in the system
    *
-   * @return The response
+   * @param customerUser A Customer User
+   *
+   * @return A response containing the Customer Cart
    */
   @GET
+  @Timed
   @Path("/cart")
-  public CustomerCartResponse retrieveCart(
+  @CacheControl(maxAge = 6, maxAgeUnit = TimeUnit.HOURS)
+  public Response retrieveAllByPage(
     @RestrictedTo({Authority.ROLE_CUSTOMER})
-    User user) {
-
-    // Validate the expected form of the data
-    Assert.notNull(user.getCustomer());
-
-    return new CustomerCartResponse(user.getCustomer().getCart());
-  }
-
-  /**
-   * Creates a new Cart for the User
-   *
-   * @param createCartRequest The initial Cart contents
-   *
-   * @return The response
-   */
-  @POST
-  @Path("/cart")
-  public Response createCart(
-    @RestrictedTo({Authority.ROLE_CUSTOMER})
-    User user,
-    CustomerCreateCartRequest createCartRequest,
-    @Context UriInfo uriInfo) {
+    User customerUser) {
 
     // Validation
-    Assert.notNull(user.getCustomer());
-
-    // Locate the customer
-    Customer customer = user.getCustomer();
-
-    // Simply reflect the offered items back in the response for now
-    for (CustomerCartItem cartItemSummary : createCartRequest.getCartItems()) {
-      Long itemId = cartItemSummary.getId();
-      int quantity = cartItemSummary.getQuantity();
-      customer = customerService.setCartItemQuantity(customer, itemId, quantity);
+    if (customerUser.getCustomer() == null) {
+      throw new WebApplicationException(Response.Status.BAD_REQUEST);
     }
 
-    CustomerCartResponse cartResponse = new CustomerCartResponse(customer.getCart());
+    Cart cart = customerUser.getCustomer().getCart();
 
-    // Ensure the new Cart can be found using its ID
-    URI location = uriInfo.getAbsolutePathBuilder().path(customer.getCart().getId().toString()).build();
+    // Provide a representation to the client
+    CustomerCartBridge bridge = new CustomerCartBridge(uriInfo, Optional.of(customerUser));
 
-    CustomerCartBridge bridge = new CustomerCartBridge(uriInfo, Optional.of(customer.getUser()));
-
-    // Provide the entire Cart as a shortcut for lazy clients
-    return created(bridge, cartResponse, location);
+    return ok(bridge, cart);
 
   }
 
-  public void setCustomerService(CustomerService customerService) {
-    this.customerService = customerService;
-  }
 }

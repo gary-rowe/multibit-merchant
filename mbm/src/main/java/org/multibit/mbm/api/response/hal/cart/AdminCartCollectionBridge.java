@@ -1,54 +1,53 @@
-package org.multibit.mbm.api.response.hal.item;
+package org.multibit.mbm.api.response.hal.cart;
 
 import com.google.common.base.Optional;
 import com.theoryinpractise.halbuilder.ResourceFactory;
 import com.theoryinpractise.halbuilder.spi.Resource;
 import org.multibit.mbm.api.response.hal.BaseBridge;
-import org.multibit.mbm.db.dto.Item;
+import org.multibit.mbm.db.dto.Cart;
 import org.multibit.mbm.db.dto.User;
 
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
 
 /**
- * <p>Bridge to provide the following to {@link org.multibit.mbm.db.dto.Item}:</p>
+ * <p>Bridge to provide the following to {@link org.multibit.mbm.db.dto.Cart}:</p>
  * <ul>
- * <li>Creates representation of multiple Items for an administrator</li>
+ * <li>Creates representation of multiple Carts for an administrator</li>
  * </ul>
  *
  * @since 0.0.1
  */
-public class AdminItemCollectionBridge extends BaseBridge<List<Item>> {
+public class AdminCartCollectionBridge extends BaseBridge<List<Cart>> {
 
-  private final CustomerItemBridge customerItemBridge;
+  private final CustomerCartBridge customerCartBridge;
 
   /**
    * @param uriInfo   The {@link javax.ws.rs.core.UriInfo} containing the originating request information
    * @param principal An optional {@link org.multibit.mbm.db.dto.User} to provide a security principal
    */
-  public AdminItemCollectionBridge(UriInfo uriInfo, Optional<User> principal) {
+  public AdminCartCollectionBridge(UriInfo uriInfo, Optional<User> principal) {
     super(uriInfo, principal);
-    customerItemBridge = new CustomerItemBridge(uriInfo,principal);
+    customerCartBridge = new CustomerCartBridge(uriInfo,principal);
   }
 
-  public Resource toResource(List<Item> items) {
-
+  public Resource toResource(List<Cart> carts) {
     ResourceFactory resourceFactory = getResourceFactory();
 
-    Resource itemList = resourceFactory.newResource("/item");
+    Resource userList = resourceFactory.newResource("/cart");
 
-    for (Item item : items) {
-      Resource userResource = customerItemBridge.toResource(item);
+    for (Cart cart : carts) {
+      Resource cartResource = customerCartBridge.toResource(cart);
 
       // TODO Fill this in for all admin fields
       //userResource.withProperty("id", user.getId())
         // End of build
         ;
 
-      itemList.withSubresource("/item/"+item.getId(), userResource);
+      userList.withSubresource("/cart/"+cart.getId(), cartResource);
     }
 
-    return itemList;
+    return userList;
 
   }
 

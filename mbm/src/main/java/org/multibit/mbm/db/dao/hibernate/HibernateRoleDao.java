@@ -18,9 +18,6 @@ import java.util.List;
 @Repository("hibernateRoleDao")
 public class HibernateRoleDao extends BaseHibernateDao implements RoleDao {
 
-  @Resource(name = "hibernateTemplate")
-  private HibernateTemplate hibernateTemplate = null;
-
   @SuppressWarnings("unchecked")
   @Override
   public Optional<Role> getById(Long id) {

@@ -29,6 +29,10 @@ public class AdminRoleBridge extends BaseBridge<Role> {
 
   public Resource toResource(Role role) {
 
+    if (role.getId() == null) {
+      throw new IllegalArgumentException("Cannot respond with a transient Role. Id is null.");
+    }
+
     // Build the representation
     Resource roleResource = getResourceFactory().newResource("/role/" + role.getId())
       // Must use individual property entries due to collections

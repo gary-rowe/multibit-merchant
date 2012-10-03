@@ -133,7 +133,8 @@ public abstract class BaseJerseyResourceTest extends BaseResourceTest {
    */
   protected User setUpAuthenticator(Optional<String> apiKey, Optional<String> sharedSecret, List<Role> roles) {
 
-    Customer customer = CustomerBuilder.newInstance()
+    Customer customer = CustomerBuilder
+      .newInstance()
       .build();
 
     User user = UserBuilder
