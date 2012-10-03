@@ -9,8 +9,9 @@ import org.multibit.mbm.api.request.role.AdminCreateRoleRequest;
 import org.multibit.mbm.api.request.role.AdminUpdateRoleRequest;
 import org.multibit.mbm.db.DatabaseLoader;
 import org.multibit.mbm.db.dao.RoleDao;
-import org.multibit.mbm.db.dto.Authority;
 import org.multibit.mbm.db.dto.Role;
+import org.multibit.mbm.db.dto.RoleBuilder;
+import org.multibit.mbm.db.dto.User;
 import org.multibit.mbm.test.BaseJerseyResourceTest;
 import org.multibit.mbm.test.FixtureAsserts;
 
@@ -35,6 +36,18 @@ public class AdminRoleResourceTest extends BaseJerseyResourceTest {
     Role customerRole = DatabaseLoader.buildCustomerRole();
     customerRole.setId(2L);
 
+    // Mimics the behaviour of the created Role
+    Role newRole = RoleBuilder
+      .newInstance()
+      .withName("Stock Manager")
+      .withDescription("Stock Manager roles")
+      .build();
+    newRole.setId(3L);
+
+    // Create the User for authenticated access
+    User adminUser = setUpAuthenticator(Lists.newArrayList(adminRole));
+    adminUser.setId(1L);
+
     // Create pages
     List<Role> rolesPage1 = Lists.newArrayList();
     rolesPage1.add(adminRole);
@@ -43,8 +56,8 @@ public class AdminRoleResourceTest extends BaseJerseyResourceTest {
 
     // Configure the mock DAO
     // Create
-    when(roleDao.saveOrUpdate((Role) isNotNull())).thenReturn(adminRole);
-    when(roleDao.getByName("Administrator")).thenReturn(Optional.<Role>absent());
+    when(roleDao.saveOrUpdate((Role) isNotNull())).thenReturn(newRole);
+    when(roleDao.getByName("Stock Manager")).thenReturn(Optional.<Role>absent());
     // Retrieve
     when(roleDao.getAllByPage(1, 1)).thenReturn(rolesPage1);
     when(roleDao.getAllByPage(1, 2)).thenReturn(rolesPage2);
@@ -104,7 +117,8 @@ public class AdminRoleResourceTest extends BaseJerseyResourceTest {
     AdminUpdateRoleRequest updateRoleRequest = new AdminUpdateRoleRequest();
     updateRoleRequest.setName("charlie");
     updateRoleRequest.setDescription("charlie1");
-    updateRoleRequest.getAuthorities().add(Authority.ROLE_STORES_MANAGER.name());
+    // TODO Re-instate this
+    // updateRoleRequest.getAuthorities().add(Authority.ROLE_STORES_MANAGER.name());
 
     String actualResponse = client()
       .resource("/admin/role/1")

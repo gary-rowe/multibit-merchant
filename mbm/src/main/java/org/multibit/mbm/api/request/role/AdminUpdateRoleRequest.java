@@ -1,9 +1,6 @@
 package org.multibit.mbm.api.request.role;
 
-import com.google.common.collect.Sets;
 import org.codehaus.jackson.annotate.JsonProperty;
-
-import java.util.Set;
 
 /**
  * <p>Request to provide the following to Resources:</p>
@@ -37,8 +34,8 @@ public class AdminUpdateRoleRequest extends AdminCreateRoleRequest {
   /**
    * The authorities to be bound to the Role
    */
-  @JsonProperty
-  private Set<String> authorities = Sets.newLinkedHashSet();
+//  @JsonProperty
+//  private Set<String> authorities = Sets.newLinkedHashSet();
 
   public boolean isDeleted() {
     return deleted;
@@ -64,11 +61,11 @@ public class AdminUpdateRoleRequest extends AdminCreateRoleRequest {
     this.internal = internal;
   }
 
-  public Set<String> getAuthorities() {
-    return authorities;
-  }
-
-  public void setAuthorities(Set<String> authorities) {
-    this.authorities = authorities;
-  }
+//  public Set<String> getAuthorities() {
+//    return authorities;
+//  }
+//
+//  public void setAuthorities(Set<String> authorities) {
+//    this.authorities = authorities;
+//  }
 }
