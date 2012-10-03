@@ -38,10 +38,10 @@ public class AdminUserBridge extends BaseBridge<User> {
     Resource userResource = customerUserBridge.toResource(user)
       // Must use individual property entries due to collections
       .withProperty("uuid", user.getUUID())
-      .withProperty("staffMember", user.isStaffMember())
+      .withProperty("staff_member", user.isStaffMember())
       .withProperty("locked",user.isLocked())
-      .withProperty("createdAt",user.getCreatedAt())
-      .withProperty("passwordResetAt",user.getPasswordResetAt())
+      .withProperty("created_at",user.getCreatedAt())
+      .withProperty("password_reset_at",user.getPasswordResetAt())
       // End of build
       ;
 

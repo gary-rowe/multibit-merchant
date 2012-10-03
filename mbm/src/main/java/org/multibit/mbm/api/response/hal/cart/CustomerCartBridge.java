@@ -44,9 +44,9 @@ public class CustomerCartBridge extends BaseBridge<Cart> {
       .newResource(basePath)
       .withLink("/customer/" + cart.getCustomer().getId(), "customer")
       // TODO Implement with real account
-      .withProperty("localSymbol", "&euro;")
-      .withProperty("localTotal", "13.94")
-      .withProperty("btcTotal", "4.78")
+      .withProperty("local_symbol", "&euro;")
+      .withProperty("local_total", "13.94")
+      .withProperty("btc_total", "4.78")
       // End of build
       ;
 

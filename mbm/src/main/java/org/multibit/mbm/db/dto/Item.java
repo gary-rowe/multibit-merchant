@@ -27,9 +27,19 @@ public class Item implements Serializable {
   @Column(name = "id", nullable = false)
   private Long id = null;
 
+  /**
+   * <p>The <a href="http://en.wikipedia.org/wiki/Stock-keeping_unit">stock-keeping unit</a></p>
+   * <p>Provides a mandatory code to identify an item using a local arbitrary structure, e.g. "ABC-123". The GTIN
+   * value could be replicated here if appropriate.</p>
+   */
   @Column(name = "sku", nullable = false)
   private String sku = null;
 
+  /**
+   * <p>The <a href="http://en.wikipedia.org/wiki/Global_Trade_Item_Number">global trade item number</a></p>
+   * <p>Provides the optional GTIN code to identify an item using international standards such as UPC, EAN and IAN.
+   * In the case of books, ISBN is compatible with the EAN-13 standard.</p>
+   */
   @Column(name = "gtin", nullable = true)
   private String gtin = null;
 
@@ -45,9 +55,9 @@ public class Item implements Serializable {
   @Column(name = "reasonForDelete", nullable = true)
   private String reasonForDelete = null;
 
-  @OneToMany(targetEntity=CartItem.class, cascade = {CascadeType.ALL}, mappedBy = "primaryKey.item", orphanRemoval = true)
+  @OneToMany(targetEntity = CartItem.class, cascade = {CascadeType.ALL}, mappedBy = "primaryKey.item", orphanRemoval = true)
   private Set<CartItem> cartItems = Sets.newLinkedHashSet();
-  
+
   /**
    * This collection is effectively the fields for the Item so must be eager
    */
@@ -55,15 +65,16 @@ public class Item implements Serializable {
   @MapKeyEnumerated
   private Map<ItemField, ItemFieldDetail> itemFieldMap = Maps.newLinkedHashMap();
 
-  
+
   /*
-   * Default constructor required for Hibernate
-   */
+  * Default constructor required for Hibernate
+  */
   public Item() {
   }
 
   /**
    * Required
+   *
    * @return The internal unique ID
    */
   public Long getId() {
@@ -76,6 +87,7 @@ public class Item implements Serializable {
 
   /**
    * Required
+   *
    * @return The stock-keeping unit reference (see http://en.wikipedia.org/wiki/Stock-keeping_unit)
    */
   public String getSKU() {
@@ -88,6 +100,7 @@ public class Item implements Serializable {
 
   /**
    * Optional
+   *
    * @return The global trade item number (see http://en.wikipedia.org/wiki/Global_Trade_Item_Number)
    */
   public String getGTIN() {
