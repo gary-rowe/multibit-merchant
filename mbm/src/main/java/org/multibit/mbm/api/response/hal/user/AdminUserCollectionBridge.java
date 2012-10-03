@@ -31,6 +31,7 @@ public class AdminUserCollectionBridge extends BaseBridge<List<User>> {
   }
 
   public Resource toResource(List<User> users) {
+
     ResourceFactory resourceFactory = getResourceFactory();
 
     Resource userList = resourceFactory.newResource("/user");

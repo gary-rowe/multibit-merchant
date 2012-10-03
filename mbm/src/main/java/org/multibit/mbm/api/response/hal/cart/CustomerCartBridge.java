@@ -2,9 +2,10 @@ package org.multibit.mbm.api.response.hal.cart;
 
 import com.google.common.base.Optional;
 import com.theoryinpractise.halbuilder.spi.Resource;
-import org.multibit.mbm.api.response.CustomerCartItem;
-import org.multibit.mbm.api.response.CustomerCartResponse;
 import org.multibit.mbm.api.response.hal.BaseBridge;
+import org.multibit.mbm.api.response.hal.item.CustomerItemBridge;
+import org.multibit.mbm.db.dto.Cart;
+import org.multibit.mbm.db.dto.CartItem;
 import org.multibit.mbm.db.dto.User;
 
 import javax.ws.rs.core.UriInfo;
@@ -17,7 +18,9 @@ import javax.ws.rs.core.UriInfo;
  *
  * @since 0.0.1
  */
-public class CustomerCartBridge extends BaseBridge<CustomerCartResponse> {
+public class CustomerCartBridge extends BaseBridge<Cart> {
+
+  private final CustomerItemBridge customerItemBridge;
 
   /**
    * @param uriInfo   The {@link javax.ws.rs.core.UriInfo} containing the originating request information
@@ -25,27 +28,32 @@ public class CustomerCartBridge extends BaseBridge<CustomerCartResponse> {
    */
   public CustomerCartBridge(UriInfo uriInfo, Optional<User> principal) {
     super(uriInfo, principal);
+    customerItemBridge = new CustomerItemBridge(uriInfo, principal);
   }
 
-  public Resource toResource(CustomerCartResponse cartResponse) {
+  public Resource toResource(Cart cart) {
 
-    String basePath = "/cart/" + cartResponse.getId();
+    if (cart.getId() == null) {
+      throw new IllegalArgumentException("Cannot respond with a transient Cart. Id is null.");
+    }
 
-    // TODO Instate this?
-//    String slug = cartResponse
-//      .getTitle()
-//      .replaceAll("\\p{Punct}", "")
-//      .replaceAll("\\p{Space}", "-")
-//      .toLowerCase();
+    String basePath = "/cart/" + cart.getId();
 
-    Resource cartResource = getResourceFactory().newResource(basePath)
-      .withProperty("btcTotal", cartResponse.getBtcTotal())
-      .withProperty("localSymbol", cartResponse.getLocalSymbol())
-      .withProperty("localTotal", cartResponse.getLocalTotal());
+    // Create top-level resource
+    Resource cartResource = getResourceFactory()
+      .newResource(basePath)
+      .withLink("/customer/" + cart.getCustomer().getId(), "customer")
+      // TODO Implement with real account
+      .withProperty("localSymbol", "&euro;")
+      .withProperty("localTotal", "13.94")
+      .withProperty("btcTotal", "4.78")
+      // End of build
+      ;
 
-
-    for (CustomerCartItem cartItemResponse: cartResponse.getCartItems()) {
-      cartResource.withBeanBasedSubresource("item",basePath+"/item/"+cartItemResponse.getId(),cartItemResponse);
+    // Create sub-resources based on items
+    for (CartItem cartItem : cart.getCartItems()) {
+      Resource itemResource = customerItemBridge.toResource(cartItem.getItem());
+      cartResource.withSubresource("items", itemResource);
     }
 
     return cartResource;

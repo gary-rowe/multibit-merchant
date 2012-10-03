@@ -31,6 +31,11 @@ public class CustomerUserBridge extends BaseBridge<User> {
   }
 
   public Resource toResource(User user) {
+
+    if (user.getId() == null) {
+      throw new IllegalArgumentException("Cannot respond with a transient User. Id is null.");
+    }
+
     ResourceFactory resourceFactory = getResourceFactory();
 
     Resource userResource = resourceFactory.newResource("/user/" + user.getId())

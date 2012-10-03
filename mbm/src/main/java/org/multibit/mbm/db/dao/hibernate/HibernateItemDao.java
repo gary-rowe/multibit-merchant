@@ -16,16 +16,12 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
-import javax.annotation.Resource;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
 @Repository("hibernateItemDao")
 public class HibernateItemDao extends BaseHibernateDao implements ItemDao {
-
-  @Resource(name="hibernateTemplate")
-  private HibernateTemplate hibernateTemplate = null;
 
   @Override
   public Optional<Item> getById(Long id) throws ItemNotFoundException {

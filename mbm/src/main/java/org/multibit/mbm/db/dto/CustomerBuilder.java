@@ -34,6 +34,7 @@ public class CustomerBuilder {
 
     Cart cart = CartBuilder
       .newInstance()
+      .withCustomer(customer)
       .build();
     customer.setCart(cart);
 

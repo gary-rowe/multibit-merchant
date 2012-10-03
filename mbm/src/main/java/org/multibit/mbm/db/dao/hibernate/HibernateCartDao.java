@@ -1,30 +1,27 @@
 package org.multibit.mbm.db.dao.hibernate;
 
 import com.google.common.base.Optional;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.multibit.mbm.db.dao.CartDao;
 import org.multibit.mbm.db.dto.Cart;
 import org.multibit.mbm.db.dto.CartBuilder;
 import org.multibit.mbm.db.dto.Customer;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
-import javax.annotation.Resource;
+import java.sql.SQLException;
 import java.util.List;
 
 @Repository("hibernateCartDao")
 public class HibernateCartDao extends BaseHibernateDao implements CartDao {
 
-  @Resource(name = "hibernateTemplate")
-  private HibernateTemplate hibernateTemplate = null;
-
+  @SuppressWarnings("unchecked")
   @Override
-  public Optional<Cart> getCartById(Long id) {
-    Assert.notNull(id, "id cannot be null");
-    List carts = hibernateTemplate.find("from Cart c where c.id = ?", id);
-    if (isNotFound(carts)) return Optional.absent();
-
-    return Optional.of((Cart) carts.get(0));
+  public Optional<Cart> getById(Long id) {
+    return getById(Cart.class, id);
   }
 
   @Override
@@ -47,6 +44,18 @@ public class HibernateCartDao extends BaseHibernateDao implements CartDao {
 
   }
 
+  @SuppressWarnings("unchecked")
+  public List<Cart> getAllByPage(final int pageSize, final int pageNumber) {
+    return (List<Cart>) hibernateTemplate.executeFind(new HibernateCallback() {
+      public Object doInHibernate(Session session) throws HibernateException, SQLException {
+        Query query = session.createQuery("from Cart");
+        query.setMaxResults(pageSize);
+        query.setFirstResult(pageSize * pageNumber);
+        return query.list();
+      }
+    });
+  }
+
   @Override
   public Cart saveOrUpdate(Cart cart) {
     Assert.notNull(cart, "cart cannot be null");
@@ -61,7 +70,4 @@ public class HibernateCartDao extends BaseHibernateDao implements CartDao {
     hibernateTemplate.flush();
   }
 
-  public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
-    this.hibernateTemplate = hibernateTemplate;
-  }
 }

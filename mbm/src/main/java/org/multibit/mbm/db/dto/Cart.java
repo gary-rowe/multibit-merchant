@@ -2,8 +2,6 @@ package org.multibit.mbm.db.dto;
 
 import com.google.common.collect.Sets;
 import org.multibit.mbm.util.ObjectUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
@@ -24,9 +22,6 @@ public class Cart implements Serializable {
 
   private static final long serialVersionUID = 38947590321234L;
 
-  @Transient
-  private static final Logger log = LoggerFactory.getLogger(Cart.class);
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false)
@@ -38,6 +33,9 @@ public class Cart implements Serializable {
   @OneToOne(mappedBy = "cart")
   private Customer customer = null;
 
+  /**
+   * A Cart has many CartItems
+   */
   @OneToMany(targetEntity = CartItem.class, cascade = {CascadeType.ALL}, mappedBy = "primaryKey.cart", orphanRemoval = true)
   private Set<CartItem> cartItems = Sets.newLinkedHashSet();
 
@@ -70,9 +68,7 @@ public class Cart implements Serializable {
       // Insert or update Item without removal
       if (cartItem != null) {
         cartItem.setQuantity(quantity);
-        log.debug("Update quantity to {}", cartItem.getQuantity());
       } else {
-        log.debug("Insert new CartItem with quantity {}", quantity);
         cartItem = new CartItem(this, item);
         cartItem.setQuantity(quantity);
         cartItems.add(cartItem);

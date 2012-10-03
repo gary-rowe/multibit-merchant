@@ -1,8 +1,9 @@
-package org.multibit.mbm.api.response.hal.user;
+package org.multibit.mbm.api.response.hal.cart;
 
 import com.google.common.base.Optional;
 import com.theoryinpractise.halbuilder.spi.Resource;
 import org.multibit.mbm.api.response.hal.BaseBridge;
+import org.multibit.mbm.db.dto.Cart;
 import org.multibit.mbm.db.dto.User;
 
 import javax.ws.rs.core.UriInfo;
@@ -15,33 +16,29 @@ import javax.ws.rs.core.UriInfo;
  *
  * @since 0.0.1
  */
-public class AdminUserBridge extends BaseBridge<User> {
+public class AdminCartBridge extends BaseBridge<Cart> {
 
-  private final CustomerUserBridge customerUserBridge;
+  private final CustomerCartBridge customerCartBridge;
 
   /**
    * @param uriInfo   The {@link javax.ws.rs.core.UriInfo} containing the originating request information
    * @param principal An optional {@link org.multibit.mbm.db.dto.User} to provide a security principal
    */
-  public AdminUserBridge(UriInfo uriInfo, Optional<User> principal) {
+  public AdminCartBridge(UriInfo uriInfo, Optional<User> principal) {
     super(uriInfo, principal);
-    customerUserBridge = new CustomerUserBridge(uriInfo,principal);
+    customerCartBridge = new CustomerCartBridge(uriInfo,principal);
   }
 
-  public Resource toResource(User user) {
+  public Resource toResource(Cart cart) {
 
-    if (user.getId() == null) {
+    if (cart.getId() == null) {
       throw new IllegalArgumentException("Cannot respond with a transient Cart. Id is null.");
     }
 
     // Build on the Customer representation
-    Resource userResource = customerUserBridge.toResource(user)
+    Resource userResource = customerCartBridge.toResource(cart)
       // Must use individual property entries due to collections
-      .withProperty("uuid", user.getUUID())
-      .withProperty("staffMember", user.isStaffMember())
-      .withProperty("locked",user.isLocked())
-      .withProperty("createdAt",user.getCreatedAt())
-      .withProperty("passwordResetAt",user.getPasswordResetAt())
+      .withProperty("id", cart.getId())
       // End of build
       ;
 

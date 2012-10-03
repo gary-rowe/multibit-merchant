@@ -48,5 +48,7 @@ public abstract class BaseHibernateDao {
     return Optional.fromNullable(entity);
   }
 
-
+  public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
+    this.hibernateTemplate = hibernateTemplate;
+  }
 }

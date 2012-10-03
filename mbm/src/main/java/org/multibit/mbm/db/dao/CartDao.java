@@ -4,16 +4,18 @@ import com.google.common.base.Optional;
 import org.multibit.mbm.db.dto.Cart;
 import org.multibit.mbm.db.dto.Customer;
 
+import java.util.List;
+
 public interface CartDao {
 
   /**
-   * Attempt to locate the Cart using it's ID
+   * Attempt to locate the Cart
    *
-   * @param id The cart ID
+   * @param id The ID
    *
    * @return A matching Cart
    */
-  Optional<Cart> getCartById(Long id);
+  Optional<Cart> getById(Long id);
 
   /**
    * Get the Cart for the Customer, initialising the {@link org.multibit.mbm.db.dto.CartItem}s
@@ -24,6 +26,13 @@ public interface CartDao {
    */
   Optional<Cart> getInitialisedCartByCustomer(Customer customer);
 
+  /**
+   * Provide a paged list of all Carts
+   *
+   * @param pageSize   the total record in one page
+   * @param pageNumber the page number starts from 0
+   */
+  List<Cart> getAllByPage(final int pageSize, final int pageNumber);
 
   /**
    * Persist the given Cart

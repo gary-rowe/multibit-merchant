@@ -29,11 +29,27 @@ public class CustomerItemBridge extends BaseBridge<Item> {
   }
 
   public Resource toResource(Item item) {
+
+    if (item.getId() == null) {
+      throw new IllegalArgumentException("Cannot respond with a transient Item. Id is null.");
+    }
+
     ResourceFactory resourceFactory = getResourceFactory();
+
+    // Create the slug from the title (if it is present)
+    String title = item.getItemFieldContent(ItemField.TITLE);
+    String slug = null;
+    if (title != null) {
+      slug = title
+        .replaceAll("\\p{Punct}", "")
+        .replaceAll("\\p{Space}", "-")
+        .toLowerCase();
+    }
 
     Resource userResource = resourceFactory.newResource("/item/" + item.getId())
       .withProperty("id", item.getId())
       .withProperty("sku", item.getSKU())
+      .withProperty("slug", slug)
       // End of build
       ;
 
@@ -48,7 +64,7 @@ public class CustomerItemBridge extends BaseBridge<Item> {
       // TODO Consider how i18n will be transmitted
       // Consider filtering on Locale
       if (isLink) {
-        userResource.withLink(primaryDetail.getContent(),propertyName);
+        userResource.withLink(primaryDetail.getContent(), propertyName);
       } else {
         userResource.withProperty(propertyName, primaryDetail.getContent());
       }
@@ -57,7 +73,7 @@ public class CustomerItemBridge extends BaseBridge<Item> {
       int index = 1;
       for (LocalisedText secondaryDetail : secondaryDetails) {
         if (isLink) {
-          userResource.withLink(secondaryDetail.getContent(),propertyName+index);
+          userResource.withLink(secondaryDetail.getContent(), propertyName + index);
         } else {
           userResource.withProperty(propertyName + index, secondaryDetail.getContent());
         }
