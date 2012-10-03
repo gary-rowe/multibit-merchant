@@ -53,16 +53,35 @@ public class AdminItemResourceTest extends BaseJerseyResourceTest {
     // Configure the mock DAO
     // Create
     when(itemDao.saveOrUpdate((Item) isNotNull())).thenReturn(book1);
+    when(itemDao.getBySKU("sku123")).thenReturn(Optional.<Item>absent());
     // Retrieve
     when(itemDao.getAllByPage(1,1)).thenReturn(itemsPage1);
     when(itemDao.getAllByPage(1,2)).thenReturn(itemsPage2);
     // Update
     when(itemDao.getById(1L)).thenReturn(Optional.of(book1));
+    when(itemDao.getById(2L)).thenReturn(Optional.of(book2));
+    when(itemDao.getBySKU("0099410672")).thenReturn(Optional.of(book1));
 
     testObject.setItemDao(itemDao);
 
     // Configure resources
     addResource(testObject);
+
+  }
+
+  @Test
+  public void adminCreateItemAsHalJson() throws Exception {
+
+    AdminCreateItemRequest createItemRequest = new AdminCreateItemRequest();
+    createItemRequest.setSKU("sku123");
+
+    String actualResponse = client()
+      .resource("/admin/item")
+      .accept(HalMediaType.APPLICATION_HAL_JSON)
+      .entity(createItemRequest)
+      .post(String.class);
+
+    FixtureAsserts.assertStringMatchesJsonFixture("CreateItem by admin response render to HAL+JSON",actualResponse, "fixtures/hal/item/expected-admin-create-item.json");
 
   }
 
@@ -86,22 +105,6 @@ public class AdminItemResourceTest extends BaseJerseyResourceTest {
       .get(String.class);
 
     FixtureAsserts.assertStringMatchesJsonFixture("Item list 2 can be retrieved as HAL+JSON", actualResponse, "fixtures/hal/item/expected-admin-retrieve-items-page-2.json");
-
-  }
-
-  @Test
-  public void adminCreateItemAsHalJson() throws Exception {
-
-    AdminCreateItemRequest createItemRequest = new AdminCreateItemRequest();
-    createItemRequest.setSKU("sku123");
-
-    String actualResponse = client()
-      .resource("/admin/item")
-      .accept(HalMediaType.APPLICATION_HAL_JSON)
-      .entity(createItemRequest)
-      .post(String.class);
-
-    FixtureAsserts.assertStringMatchesJsonFixture("CreateItem by admin response render to HAL+JSON",actualResponse, "fixtures/hal/item/expected-admin-create-item.json");
 
   }
 

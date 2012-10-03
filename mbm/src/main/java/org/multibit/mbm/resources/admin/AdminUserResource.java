@@ -61,8 +61,8 @@ public class AdminUserResource extends BaseResource {
     // Perform basic verification
     Optional<User> verificationUser = userDao.getByCredentials(user.getUsername(), user.getPassword());
 
-    if (!verificationUser.isPresent()) {
-      throw new WebApplicationException(Response.Status.BAD_REQUEST);
+    if (verificationUser.isPresent()) {
+      throw new WebApplicationException(Response.Status.CONFLICT);
     }
 
     // Persist the user
