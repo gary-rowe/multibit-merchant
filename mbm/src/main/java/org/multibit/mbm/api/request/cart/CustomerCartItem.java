@@ -49,10 +49,16 @@ public class CustomerCartItem {
     this.quantity = cartItem.getQuantity();
   }
 
+  /**
+   * @return The Item ID
+   */
   public Long getId() {
     return id;
   }
 
+  /**
+   * @return The unit quantity
+   */
   public int getQuantity() {
     return quantity;
   }

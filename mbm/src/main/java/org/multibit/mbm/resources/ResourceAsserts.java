@@ -35,7 +35,7 @@ public final class ResourceAsserts {
    */
   public static void assertPositive(Number obj, String fieldName) {
     assertNotNull(obj, fieldName);
-    if (obj.intValue() <= 0) {
+    if (obj.intValue() < 0) {
       log.warn("Field '{}' should be positive", fieldName);
       throw new WebApplicationException(Response.Status.BAD_REQUEST);
     }

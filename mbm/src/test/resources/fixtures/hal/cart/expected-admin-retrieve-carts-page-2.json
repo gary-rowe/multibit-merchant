@@ -1,1 +1,75 @@
-{"_links":{"self":{"href":"http://localhost:9998/cart"}},"_embedded":{"http://localhost:9998/cart/2":{"_links":{"http://localhost:9998/cart/2 self":{"href":"http://localhost:9998/cart/2"},"customer":{"href":"http://localhost:9998/customer/2"}},"btc_total":"4.78","local_symbol":"&euro;","local_total":"13.94","_embedded":{"items":[{"_links":{"items self":{"href":"http://localhost:9998/item/3"},"image_thumbnail_uri":{"href":"http://localhost:9998/mbm/images/catalog/items/5/thumbnail5.png"}},"author":"Emily Dickinson, edited by Thomas H Johnson","id":3,"sku":"0316184136","slug":"the-complete-works-of-emily-dickinson","summary":"The Complete Poems of Emily Dickinson is the only one-volume edition containing all Emily Dickinson's poems.","title":"The Complete Works of Emily Dickinson"},{"_links":{"items self":{"href":"http://localhost:9998/item/4"},"image_thumbnail_uri":{"href":"http://localhost:9998/mbm/images/catalog/items/3/thumbnail3.png"}},"author":"Mike Lawrence","id":4,"sku":"186126173X","slug":"plumbing-and-central-heating","summary":"This guide begins with the basic skills of plumbing, which once mastered, can be applied to any situation, from mending a leaking tap to installing a new shower unit.","title":"Plumbing and Central Heating"}]}}}}
+{"_links":{
+  "self":{
+    "href":"http://localhost:9998/cart"
+  }
+}, "_embedded":{
+  "http://localhost:9998/cart/2":{
+    "_links":{
+      "http://localhost:9998/cart/2 self":{
+        "href":"http://localhost:9998/cart/2"
+      },
+      "customer":{
+        "href":"http://localhost:9998/customer/2"
+      }
+    },
+    "btc_total":"4.78",
+    "local_symbol":"&euro;",
+    "local_total":"13.94",
+    "_embedded":{
+      "cartitems":[
+        {
+          "_links":{
+            "cartitems self":{
+              "href":"http://localhost:9998/cart/2/cartitem/3"
+            }
+          },
+          "quantity":3,
+          "_embedded":{
+            "item":{
+              "_links":{
+                "item self":{
+                  "href":"http://localhost:9998/item/3"
+                },
+                "image_thumbnail_uri":{
+                  "href":"http://localhost:9998/mbm/images/catalog/items/5/thumbnail5.png"
+                }
+              },
+              "author":"Emily Dickinson, edited by Thomas H Johnson",
+              "id":3,
+              "sku":"0316184136",
+              "slug":"the-complete-works-of-emily-dickinson",
+              "summary":"The Complete Poems of Emily Dickinson is the only one-volume edition containing all Emily Dickinson's poems.",
+              "title":"The Complete Works of Emily Dickinson"
+            }
+          }
+        },
+        {
+          "_links":{
+            "cartitems self":{
+              "href":"http://localhost:9998/cart/2/cartitem/4"
+            }
+          },
+          "quantity":4,
+          "_embedded":{
+            "item":{
+              "_links":{
+                "item self":{
+                  "href":"http://localhost:9998/item/4"
+                },
+                "image_thumbnail_uri":{
+                  "href":"http://localhost:9998/mbm/images/catalog/items/3/thumbnail3.png"
+                }
+              },
+              "author":"Mike Lawrence",
+              "id":4,
+              "sku":"186126173X",
+              "slug":"plumbing-and-central-heating",
+              "summary":"This guide begins with the basic skills of plumbing, which once mastered, can be applied to any situation, from mending a leaking tap to installing a new shower unit.",
+              "title":"Plumbing and Central Heating"
+            }
+          }
+        }
+      ]
+    }
+  }
+}}

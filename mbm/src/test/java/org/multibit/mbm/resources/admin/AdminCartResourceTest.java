@@ -8,6 +8,7 @@ import org.multibit.mbm.api.request.cart.AdminUpdateCartRequest;
 import org.multibit.mbm.api.request.cart.CustomerCartItem;
 import org.multibit.mbm.db.DatabaseLoader;
 import org.multibit.mbm.db.dao.CartDao;
+import org.multibit.mbm.db.dao.ItemDao;
 import org.multibit.mbm.db.dto.*;
 import org.multibit.mbm.test.BaseJerseyResourceTest;
 import org.multibit.mbm.test.FixtureAsserts;
@@ -20,6 +21,7 @@ import static org.mockito.Mockito.when;
 public class AdminCartResourceTest extends BaseJerseyResourceTest {
 
   private final CartDao cartDao=mock(CartDao.class);
+  private final ItemDao itemDao=mock(ItemDao.class);
 
   private final AdminCartResource testObject=new AdminCartResource();
 
@@ -84,10 +86,19 @@ public class AdminCartResourceTest extends BaseJerseyResourceTest {
     // Configure Cart DAO
     when(cartDao.getById(1L)).thenReturn(Optional.of(aliceCart));
     when(cartDao.getById(2L)).thenReturn(Optional.of(bobCart));
-    when(cartDao.getAllByPage(1,0)).thenReturn(Lists.newLinkedList(cartList1));
-    when(cartDao.getAllByPage(1,1)).thenReturn(Lists.newLinkedList(cartList2));
+    when(cartDao.getAllByPage(1, 0)).thenReturn(Lists.newLinkedList(cartList1));
+    when(cartDao.getAllByPage(1, 1)).thenReturn(Lists.newLinkedList(cartList2));
+    when(cartDao.saveOrUpdate(aliceCart)).thenReturn(aliceCart);
+    when(cartDao.saveOrUpdate(bobCart)).thenReturn(bobCart);
+
+    // Configure Item DAO
+    when(itemDao.getById(1L)).thenReturn(Optional.of(book1));
+    when(itemDao.getById(2L)).thenReturn(Optional.of(book2));
+    when(itemDao.getById(3L)).thenReturn(Optional.of(book3));
+    when(itemDao.getById(4L)).thenReturn(Optional.of(book4));
 
     testObject.setCartDao(cartDao);
+    testObject.setItemDao(itemDao);
 
     // Configure resources
     addResource(testObject);
@@ -118,6 +129,9 @@ public class AdminCartResourceTest extends BaseJerseyResourceTest {
 
   @Test
   public void adminUpdateCartAsHalJson() throws Exception {
+
+    // Starting condition is Alice has {book1: 1, book2: 2}
+    // Ending condition is Alice has {book1: 0, book2: 2, book3: 3}
 
     AdminUpdateCartRequest updateCartRequest = new AdminUpdateCartRequest();
     updateCartRequest.setId(1L);
