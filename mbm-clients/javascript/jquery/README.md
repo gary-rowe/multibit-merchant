@@ -10,18 +10,25 @@ as part of the right hand sidebar.
 
 ## Getting started
 
-Follow the instructions in the main README.md to build and run up the MBM platform. This handles all the back
-end operations, leaving the JavaScript to handle the front end.
+It is necessary that the whole MBM project has been built locally using
 
-Once MBM is running, execute the following statements in this module
+    mvn clean install
 
-    mvn clean jetty:run
+This will ensure that mbm/target/mbm-<version>.jar is present.
 
-then open a browser to
+Once MBM has been built, execute the following statement in this module
 
-    http://localhost:8080/mbm-client/index.html
+    mvn clean exec:exec jetty:run
 
-and you should see a simple example blog for a bookstore with an interactive shopping cart.
+This will start the MBM platform as a standalone module, using the default
+project settings. It will also start an instance of Jetty which will serve
+the JavaScript files necessary to run the shopping cart.
+
+To see it in action open a browser and navigate to
+
+    http://localhost:8081/mbm-client/index.html
+
+There you should see a simple example blog for a bookstore with an interactive shopping cart.
 
 ## Select some items
 

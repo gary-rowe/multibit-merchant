@@ -27,7 +27,7 @@ public class BitcoinPaymentResourceTest extends BaseJerseyResourceTest {
   public void testCreateSwatch() throws Exception {
 
     String actualResponse = client()
-      .resource("/swatch")
+      .resource("/bitcoin/swatch")
       .queryParam("amount", "12.34")
       .queryParam("address", "1abcdefgh")
       .queryParam("label", "Hello")

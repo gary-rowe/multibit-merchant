@@ -14,6 +14,9 @@ import org.multibit.mbm.resources.BitcoinPaymentResource;
 import org.multibit.mbm.resources.CustomerCartResource;
 import org.multibit.mbm.resources.CustomerResource;
 import org.multibit.mbm.resources.CustomerUserResource;
+import org.multibit.mbm.resources.admin.AdminCartResource;
+import org.multibit.mbm.resources.admin.AdminItemResource;
+import org.multibit.mbm.resources.admin.AdminRoleResource;
 import org.multibit.mbm.resources.admin.AdminUserResource;
 
 /**
@@ -56,6 +59,9 @@ public class MultiBitMerchantService extends Service<MultiBitMerchantConfigurati
     // Configure environment accordingly
     // Resources - admin
     environment.addResource(new AdminUserResource());
+    environment.addResource(new AdminCartResource());
+    environment.addResource(new AdminRoleResource());
+    environment.addResource(new AdminItemResource());
     // Resource - other
     environment.addResource(new CustomerResource());
     environment.addResource(new CustomerCartResource());

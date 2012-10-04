@@ -49,7 +49,6 @@ public class CustomerCartResource extends BaseResource {
    */
   @GET
   @Timed
-  @Path("/")
   @CacheControl(maxAge = 6, maxAgeUnit = TimeUnit.HOURS)
   public Response retrieveAllByPage(
     @RestrictedTo({Authority.ROLE_CUSTOMER})
@@ -76,7 +75,6 @@ public class CustomerCartResource extends BaseResource {
    */
   @PUT
   @Timed
-  @Path("/")
   public Response update(
     @RestrictedTo({Authority.ROLE_CUSTOMER})
     User customerUser,
