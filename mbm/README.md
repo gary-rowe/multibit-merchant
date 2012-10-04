@@ -28,9 +28,10 @@ This will run the self-diagnostics and verify that the service is up and running
 
 ## Getting started from within IDE with runtime configuration
 
-The main entry point to MBM is throught MultiBitMerchantService.main()
+The main entry point to MBM is through MultiBitMerchantService.main()
 
-Configure the runtime environment to execute in the MBM module folder (e.g. same as this file) and provide the following parameters
+Configure the runtime environment to execute in the MBM module folder (e.g. same as this file)
+and provide the following parameters
 
     server mbm.yml
 
