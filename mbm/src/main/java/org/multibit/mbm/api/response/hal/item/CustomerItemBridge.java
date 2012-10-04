@@ -5,6 +5,7 @@ import com.theoryinpractise.halbuilder.ResourceFactory;
 import com.theoryinpractise.halbuilder.spi.Resource;
 import org.multibit.mbm.api.response.hal.BaseBridge;
 import org.multibit.mbm.db.dto.*;
+import org.multibit.mbm.resources.ResourceAsserts;
 
 import javax.ws.rs.core.UriInfo;
 import java.util.Map;
@@ -29,10 +30,8 @@ public class CustomerItemBridge extends BaseBridge<Item> {
   }
 
   public Resource toResource(Item item) {
-
-    if (item.getId() == null) {
-      throw new IllegalArgumentException("Cannot respond with a transient Item. Id is null.");
-    }
+    ResourceAsserts.assertNotNull(item, "item");
+    ResourceAsserts.assertNotNull(item.getId(),"id");
 
     ResourceFactory resourceFactory = getResourceFactory();
 

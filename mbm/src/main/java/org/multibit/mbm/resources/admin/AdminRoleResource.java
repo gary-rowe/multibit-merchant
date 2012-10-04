@@ -16,6 +16,7 @@ import org.multibit.mbm.db.dto.Role;
 import org.multibit.mbm.db.dto.RoleBuilder;
 import org.multibit.mbm.db.dto.User;
 import org.multibit.mbm.resources.BaseResource;
+import org.multibit.mbm.resources.ResourceAsserts;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
@@ -60,10 +61,7 @@ public class AdminRoleResource extends BaseResource {
 
     // Perform basic verification
     Optional<Role> verificationRole = roleDao.getByName(role.getName());
-
-    if (verificationRole.isPresent()) {
-      throw new WebApplicationException(Response.Status.CONFLICT);
-    }
+    ResourceAsserts.assertNotConflicted(verificationRole,"role");
 
     // Persist the role
     Role persistentRole = roleDao.saveOrUpdate(role);
@@ -126,16 +124,13 @@ public class AdminRoleResource extends BaseResource {
 
     // Retrieve the role
     Optional<Role> role = roleDao.getById(roleId);
-
-    if (!role.isPresent()) {
-      throw new WebApplicationException(Response.Status.BAD_REQUEST);
-    }
+    ResourceAsserts.assertPresent(role, "role");
 
     // Verify and apply any changes to the Role
     Role persistentRole = role.get();
     persistentRole.setName(updateRoleRequest.getName());
     persistentRole.setDescription(updateRoleRequest.getDescription());
-    // TODO Re-instate this
+    // TODO Re-instate this (needs an update to the request)
 //    for (String authorityName : updateRoleRequest.getAuthorities()) {
 //      try {
 //        Authority authority = Authority.valueOf(authorityName.toUpperCase());
@@ -173,10 +168,7 @@ public class AdminRoleResource extends BaseResource {
 
     // Retrieve the role
     Optional<Role> role = roleDao.getById(roleId);
-
-    if (!role.isPresent()) {
-      throw new WebApplicationException(Response.Status.BAD_REQUEST);
-    }
+    ResourceAsserts.assertPresent(role,"role");
 
     // Verify and apply any changes to the Role
     Role persistentRole = role.get();

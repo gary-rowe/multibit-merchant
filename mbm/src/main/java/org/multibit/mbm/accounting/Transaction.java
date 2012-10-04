@@ -1,6 +1,6 @@
 package org.multibit.mbm.accounting;
 
-import org.multibit.mbm.util.ValidationUtils;
+import org.springframework.util.Assert;
 
 /**
  * <p>Multi-legged transaction to provide the following to {@link Account}:</p>
@@ -38,8 +38,8 @@ public class Transaction<T extends Entry<T>> {
     // ("Entries are not balanced. Withdrawal={}, deposit={}",withdrawalEntry.getAmount(), depositEntry.getAmount()
 
     // Validation
-    ValidationUtils.isNotNull(withdrawalEntry, "withdrawalEntry");
-    ValidationUtils.isNotNull(depositEntry, "depositEntry");
+    Assert.notNull(withdrawalEntry, "withdrawalEntry");
+    Assert.notNull(depositEntry, "depositEntry");
 
     if (withdrawalEntry.getAmount() + depositEntry.getAmount() != 0) {
       throw new IllegalArgumentException("Entries are not balanced");

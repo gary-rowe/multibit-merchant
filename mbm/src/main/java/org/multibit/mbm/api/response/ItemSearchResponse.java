@@ -15,6 +15,7 @@ import java.util.List;
  * @since 0.0.1
  *         
  */
+@Deprecated
 public class ItemSearchResponse extends BasePagedQueryResponse {
 
   @JsonProperty

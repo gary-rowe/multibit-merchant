@@ -6,6 +6,7 @@ import org.multibit.mbm.api.response.hal.BaseBridge;
 import org.multibit.mbm.db.dto.Authority;
 import org.multibit.mbm.db.dto.Role;
 import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.resources.ResourceAsserts;
 
 import javax.ws.rs.core.UriInfo;
 
@@ -29,9 +30,8 @@ public class AdminRoleBridge extends BaseBridge<Role> {
 
   public Resource toResource(Role role) {
 
-    if (role.getId() == null) {
-      throw new IllegalArgumentException("Cannot respond with a transient Role. Id is null.");
-    }
+    ResourceAsserts.assertNotNull(role, "role");
+    ResourceAsserts.assertNotNull(role.getId(),"id");
 
     // Build the representation
     Resource roleResource = getResourceFactory().newResource("/role/" + role.getId())

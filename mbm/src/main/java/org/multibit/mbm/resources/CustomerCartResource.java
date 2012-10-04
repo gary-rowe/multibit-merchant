@@ -13,7 +13,6 @@ import org.multibit.mbm.db.dto.User;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import java.util.concurrent.TimeUnit;
 
@@ -48,9 +47,7 @@ public class CustomerCartResource extends BaseResource {
     User customerUser) {
 
     // Validation
-    if (customerUser.getCustomer() == null) {
-      throw new WebApplicationException(Response.Status.BAD_REQUEST);
-    }
+    ResourceAsserts.assertNotNull(customerUser.getCustomer(),"customer");
 
     Cart cart = customerUser.getCustomer().getCart();
 

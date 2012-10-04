@@ -9,5 +9,6 @@ package org.multibit.mbm.api.response;
  * @since 0.0.1
  *         
  */
+@Deprecated
 public interface SearchResponse {
 }

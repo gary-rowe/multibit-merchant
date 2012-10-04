@@ -14,6 +14,7 @@ import org.multibit.mbm.util.DateUtils;
  * @since 0.0.1
  *         
  */
+@Deprecated
 public class ItemResponse implements SearchResponse {
 
   @JsonProperty

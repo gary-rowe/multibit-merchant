@@ -26,7 +26,7 @@ public class AdminUpdateItemRequest extends AdminCreateItemRequest {
   /**
    * This collection is effectively the fields for the Item
    */
-  @JsonProperty
+  @JsonProperty("item_field_map")
   private Map<ItemField, ItemFieldDetail> itemFieldMap = Maps.newLinkedHashMap();
 
   public String getGTIN() {

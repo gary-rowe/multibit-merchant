@@ -6,6 +6,7 @@ import com.theoryinpractise.halbuilder.spi.Resource;
 import org.multibit.mbm.api.response.hal.BaseBridge;
 import org.multibit.mbm.db.dto.Role;
 import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.resources.ResourceAsserts;
 
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
@@ -32,6 +33,8 @@ public class AdminRoleCollectionBridge extends BaseBridge<List<Role>> {
   }
 
   public Resource toResource(List<Role> roles) {
+
+    ResourceAsserts.assertNotNull(roles, "roles");
 
     ResourceFactory resourceFactory = getResourceFactory();
 

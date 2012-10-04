@@ -1,19 +1,18 @@
-package org.multibit.mbm.api.response;
+package org.multibit.mbm.api.request.cart;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.multibit.mbm.db.dto.CartItem;
 import org.multibit.mbm.db.dto.Item;
 
 /**
- *  <p>Value object to provide the following to {@link org.multibit.mbm.resources.CustomerCartResource}:</p>
+ *  <p>Value object to provide the following to {@link CustomerUpdateCartRequest}:</p>
  *  <ul>
- *  <li>Defines part of a Customer request entity</li>
+ *  <li>Defines the updates to the CartItem</li>
  *  </ul>
  *
  * @since 0.0.1
  *         
  */
-@Deprecated
 public class CustomerCartItem {
 
   @JsonProperty

@@ -16,6 +16,7 @@ import org.multibit.mbm.db.dto.Item;
 import org.multibit.mbm.db.dto.ItemBuilder;
 import org.multibit.mbm.db.dto.User;
 import org.multibit.mbm.resources.BaseResource;
+import org.multibit.mbm.resources.ResourceAsserts;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
@@ -59,10 +60,7 @@ public class AdminItemResource extends BaseResource {
 
     // Perform basic verification
     Optional<Item> verificationItem = itemDao.getBySKU(item.getSKU());
-
-    if (verificationItem.isPresent()) {
-      throw new WebApplicationException(Response.Status.CONFLICT);
-    }
+    ResourceAsserts.assertNotConflicted(verificationItem,"item");
 
     // Persist the item
     Item persistentItem = itemDao.saveOrUpdate(item);
@@ -125,10 +123,7 @@ public class AdminItemResource extends BaseResource {
 
     // Retrieve the item
     Optional<Item> item = itemDao.getById(itemId);
-
-    if (!item.isPresent()) {
-      throw new WebApplicationException(Response.Status.BAD_REQUEST);
-    }
+    ResourceAsserts.assertPresent(item, "item");
 
     // Verify and apply any changes to the Item
     // TODO Fill in all details and provide general null safe field checking
@@ -164,10 +159,7 @@ public class AdminItemResource extends BaseResource {
 
     // Retrieve the item
     Optional<Item> item = itemDao.getById(itemId);
-
-    if (!item.isPresent()) {
-      throw new WebApplicationException(Response.Status.BAD_REQUEST);
-    }
+    ResourceAsserts.assertPresent(item,"item");
 
     // Verify and apply any changes to the Item
     Item persistentItem = item.get();

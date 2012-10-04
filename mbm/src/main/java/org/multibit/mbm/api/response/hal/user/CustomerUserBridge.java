@@ -42,7 +42,7 @@ public class CustomerUserBridge extends BaseBridge<User> {
       .withProperty("id",user.getId())
       .withProperty("username", user.getUsername())
       // Do not return password - it is useless
-      .withProperty("secretKey", user.getSecretKey())
+      .withProperty("secret_key", user.getSecretKey())
       // End of build
       ;
 

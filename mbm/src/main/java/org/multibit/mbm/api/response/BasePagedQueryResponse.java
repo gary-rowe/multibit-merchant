@@ -9,6 +9,7 @@ package org.multibit.mbm.api.response;
  * @since 0.0.1
  *         
  */
+@Deprecated
 public abstract class BasePagedQueryResponse extends BaseResponse {
   protected final int firstResult;
   protected final int maxResults;

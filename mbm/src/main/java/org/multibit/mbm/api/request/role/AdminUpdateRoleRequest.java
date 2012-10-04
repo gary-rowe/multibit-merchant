@@ -22,7 +22,7 @@ public class AdminUpdateRoleRequest extends AdminCreateRoleRequest {
   /**
    * Provides a reason for being deleted
    */
-  @JsonProperty
+  @JsonProperty("reason_for_delete")
   private String reasonForDelete = null;
 
   /**

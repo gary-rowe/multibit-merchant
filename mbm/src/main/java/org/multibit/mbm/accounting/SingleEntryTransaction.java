@@ -1,6 +1,6 @@
 package org.multibit.mbm.accounting;
 
-import org.multibit.mbm.util.ValidationUtils;
+import org.springframework.util.Assert;
 
 /**
  * <p>Single entry transaction to provide the following to {@link Transaction}:</p>
@@ -24,8 +24,8 @@ public class SingleEntryTransaction<T extends Entry<T>> extends Transaction<T> {
   protected void validate(T withdrawalEntry, T depositEntry) {
 
     // Validation
-    ValidationUtils.isNull(withdrawalEntry, "withdrawalEntry");
-    ValidationUtils.isNotNull(depositEntry, "depositEntry");
+    Assert.isNull(withdrawalEntry, "withdrawalEntry");
+    Assert.notNull(depositEntry, "depositEntry");
 
   }
 

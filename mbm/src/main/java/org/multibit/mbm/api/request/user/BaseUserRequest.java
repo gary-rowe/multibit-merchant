@@ -28,22 +28,8 @@ public abstract class BaseUserRequest {
   /**
    * A third-party provided UUID to act as an authentication token
    */
-  @JsonProperty
+  @JsonProperty("open_id")
   private String openId = null;
-
-  @JsonProperty
-  private boolean oneTimeUse = false;
-
-  /**
-   * @return True if this User will not have any identifying credentials other than a server-provided session UUID
-   */
-  public boolean isOneTimeUse() {
-    return oneTimeUse;
-  }
-
-  public void setOneTimeUse(boolean oneTimeUse) {
-    this.oneTimeUse = oneTimeUse;
-  }
 
   /**
    * @return An OpenId to use instead of a username/password combination

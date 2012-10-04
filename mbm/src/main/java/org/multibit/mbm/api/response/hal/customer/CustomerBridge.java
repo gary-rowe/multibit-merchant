@@ -5,6 +5,7 @@ import com.theoryinpractise.halbuilder.spi.Resource;
 import org.multibit.mbm.api.response.hal.BaseBridge;
 import org.multibit.mbm.db.dto.Customer;
 import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.resources.ResourceAsserts;
 
 import javax.ws.rs.core.UriInfo;
 
@@ -27,10 +28,8 @@ public class CustomerBridge extends BaseBridge<Customer> {
   }
 
   public Resource toResource(Customer customer) {
-
-    if (customer.getId() == null) {
-      throw new IllegalArgumentException("Cannot respond with a transient Customer. Id is null.");
-    }
+    ResourceAsserts.assertNotNull(customer, "customer");
+    ResourceAsserts.assertNotNull(customer.getId(),"id");
 
     String basePath = "/customer/" + customer.getId();
 

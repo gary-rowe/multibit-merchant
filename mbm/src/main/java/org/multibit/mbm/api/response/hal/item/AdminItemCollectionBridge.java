@@ -6,6 +6,7 @@ import com.theoryinpractise.halbuilder.spi.Resource;
 import org.multibit.mbm.api.response.hal.BaseBridge;
 import org.multibit.mbm.db.dto.Item;
 import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.resources.ResourceAsserts;
 
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
@@ -32,6 +33,8 @@ public class AdminItemCollectionBridge extends BaseBridge<List<Item>> {
   }
 
   public Resource toResource(List<Item> items) {
+
+    ResourceAsserts.assertNotNull(items, "items");
 
     ResourceFactory resourceFactory = getResourceFactory();
 

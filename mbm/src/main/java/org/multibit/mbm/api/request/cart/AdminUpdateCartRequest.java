@@ -1,5 +1,7 @@
 package org.multibit.mbm.api.request.cart;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 /**
  * <p>Request to provide the following to Resources:</p>
  * <ul>
@@ -9,8 +11,20 @@ package org.multibit.mbm.api.request.cart;
  * @since 0.0.1
  *         
  */
-public class AdminUpdateCartRequest extends BaseCartRequest {
+public class AdminUpdateCartRequest extends CustomerUpdateCartRequest {
 
-  // TODO Add Cart admin fields
+  /**
+   * The ID of a particular cart
+   */
+  // TODO Consider if this is necessary
+  @JsonProperty
+  private Long id;
 
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
 }
