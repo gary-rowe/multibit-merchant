@@ -10,8 +10,10 @@ import org.multibit.mbm.api.response.hal.cart.AdminCartBridge;
 import org.multibit.mbm.api.response.hal.cart.AdminCartCollectionBridge;
 import org.multibit.mbm.auth.annotation.RestrictedTo;
 import org.multibit.mbm.db.dao.CartDao;
+import org.multibit.mbm.db.dao.ItemDao;
 import org.multibit.mbm.db.dto.Authority;
 import org.multibit.mbm.db.dto.Cart;
+import org.multibit.mbm.db.dto.Item;
 import org.multibit.mbm.db.dto.User;
 import org.multibit.mbm.resources.BaseResource;
 import org.multibit.mbm.resources.ResourceAsserts;
@@ -36,6 +38,7 @@ import java.util.concurrent.TimeUnit;
 public class AdminCartResource extends BaseResource {
 
   CartDao cartDao;
+  ItemDao itemDao;
 
   /**
    * Provide a paged response of all Carts in the system
@@ -91,15 +94,7 @@ public class AdminCartResource extends BaseResource {
 
     // Verify and apply any changes to the Cart
     Cart persistentCart = cart.get();
-
-    for (CustomerCartItem cartItem : updateCartRequest.getCartItems()) {
-      Long itemId = cartItem.getId();
-      ResourceAsserts.assertPositive(itemId,"itemId");
-
-
-
-    }
-
+    apply(updateCartRequest,persistentCart);
 
     // Persist the updated cart
     persistentCart = cartDao.saveOrUpdate(persistentCart);
@@ -111,7 +106,29 @@ public class AdminCartResource extends BaseResource {
 
   }
 
+  /**
+   * TODO Refactor into a common handler
+   * @param updateRequest The update request containing the changes
+   * @param entity        The entity to which these changes will be applied
+   */
+  private void apply(AdminUpdateCartRequest updateRequest, Cart entity) {
+
+    for (CustomerCartItem customerCartItem : updateRequest.getCartItems()) {
+      ResourceAsserts.assertNotNull(customerCartItem.getId(), "id");
+      ResourceAsserts.assertPositive(customerCartItem.getQuantity(), "quantity");
+
+      Optional<Item> item = itemDao.getById(customerCartItem.getId());
+      ResourceAsserts.assertPresent(item,"item");
+
+      entity.setItemQuantity(item.get(),customerCartItem.getQuantity());
+    }
+  }
+
   public void setCartDao(CartDao cartDao) {
     this.cartDao = cartDao;
+  }
+
+  public void setItemDao(ItemDao itemDao) {
+    this.itemDao = itemDao;
   }
 }

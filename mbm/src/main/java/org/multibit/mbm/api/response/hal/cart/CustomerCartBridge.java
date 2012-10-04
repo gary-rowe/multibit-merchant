@@ -3,7 +3,7 @@ package org.multibit.mbm.api.response.hal.cart;
 import com.google.common.base.Optional;
 import com.theoryinpractise.halbuilder.spi.Resource;
 import org.multibit.mbm.api.response.hal.BaseBridge;
-import org.multibit.mbm.api.response.hal.item.CustomerItemBridge;
+import org.multibit.mbm.api.response.hal.item.CustomerCartItemBridge;
 import org.multibit.mbm.db.dto.Cart;
 import org.multibit.mbm.db.dto.CartItem;
 import org.multibit.mbm.db.dto.User;
@@ -21,7 +21,7 @@ import javax.ws.rs.core.UriInfo;
  */
 public class CustomerCartBridge extends BaseBridge<Cart> {
 
-  private final CustomerItemBridge customerItemBridge;
+  private final CustomerCartItemBridge customerCartItemBridge;
 
   /**
    * @param uriInfo   The {@link javax.ws.rs.core.UriInfo} containing the originating request information
@@ -29,7 +29,7 @@ public class CustomerCartBridge extends BaseBridge<Cart> {
    */
   public CustomerCartBridge(UriInfo uriInfo, Optional<User> principal) {
     super(uriInfo, principal);
-    customerItemBridge = new CustomerItemBridge(uriInfo, principal);
+    customerCartItemBridge = new CustomerCartItemBridge(uriInfo, principal);
   }
 
   public Resource toResource(Cart cart) {
@@ -51,8 +51,8 @@ public class CustomerCartBridge extends BaseBridge<Cart> {
 
     // Create sub-resources based on items
     for (CartItem cartItem : cart.getCartItems()) {
-      Resource itemResource = customerItemBridge.toResource(cartItem.getItem());
-      cartResource.withSubresource("items", itemResource);
+      Resource customerCartItemResource = customerCartItemBridge.toResource(cartItem);
+      cartResource.withSubresource("cartitems", customerCartItemResource);
     }
 
     return cartResource;

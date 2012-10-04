@@ -1,5 +1,6 @@
 package org.multibit.mbm.db.dto;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.Sets;
 import org.multibit.mbm.util.ObjectUtils;
 import org.springframework.util.Assert;
@@ -49,34 +50,37 @@ public class Cart implements Serializable {
    * Mandatory field constructor required for builders
    */
   public Cart(Customer customer) {
-    Assert.notNull(customer,"customer cannot be null");
+    Assert.notNull(customer, "customer cannot be null");
     this.customer = customer;
     customer.setCart(this);
   }
 
   /**
-   * @param item     The Item
-   * @param quantity The quantity
+   * Handles the process of updating the Item quantities
+   *
+   * @param item     The Item (usually source from ItemDao)
+   * @param quantity The quantity (>0 is add/update, otherwise remove)
    */
   @Transient
   public void setItemQuantity(Item item, int quantity) {
     Assert.notNull(item, "item cannot be null");
 
-    CartItem cartItem = getCartItemByItem(item);
+    Optional<CartItem> cartItem = getCartItemByItem(item);
 
     if (quantity > 0) {
-      // Insert or update Item without removal
-      if (cartItem != null) {
-        cartItem.setQuantity(quantity);
+      if (cartItem.isPresent()) {
+        // Update
+        cartItem.get().setQuantity(quantity);
       } else {
-        cartItem = new CartItem(this, item);
-        cartItem.setQuantity(quantity);
-        cartItems.add(cartItem);
+        // Insert
+        CartItem newCartItem = new CartItem(this, item);
+        newCartItem.setQuantity(quantity);
+        cartItems.add(newCartItem);
       }
     } else {
-      if (cartItem != null) {
-        // Remove Item
-        cartItems.remove(cartItem);
+      if (cartItem.isPresent()) {
+        // Remove
+        cartItems.remove(cartItem.get());
       }
     }
 
@@ -85,18 +89,18 @@ public class Cart implements Serializable {
   /**
    * @param item The Item to search for
    *
-   * @return The CartItem that contains the Item, or null
+   * @return The CartItem that contains the Item, or absent
    */
   @Transient
-  public CartItem getCartItemByItem(Item item) {
+  public Optional<CartItem> getCartItemByItem(Item item) {
     Assert.notNull(item, "item cannot be null");
 
     for (CartItem cartItem : cartItems) {
       if (cartItem.getItem().equals(item)) {
-        return cartItem;
+        return Optional.of(cartItem);
       }
     }
-    return null;
+    return Optional.absent();
   }
 
   /**

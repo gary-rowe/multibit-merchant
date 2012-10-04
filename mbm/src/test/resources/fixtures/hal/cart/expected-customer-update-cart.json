@@ -5,7 +5,7 @@
   "customer":{
     "href":"http://localhost:9998/customer/1"
   }
-}, "btc_total":"4.78", "id":1, "local_symbol":"&euro;", "local_total":"13.94", "_embedded":{
+}, "btc_total":"4.78", "local_symbol":"&euro;", "local_total":"13.94", "_embedded":{
   "cartitems":[
     {
       "_links":{
