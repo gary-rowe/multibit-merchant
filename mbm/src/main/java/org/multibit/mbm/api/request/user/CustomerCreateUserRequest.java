@@ -15,7 +15,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
  */
 public class CustomerCreateUserRequest extends BaseUserRequest {
 
-  @JsonProperty
+  @JsonProperty("one_time_use")
   private boolean oneTimeUse = false;
 
   /**

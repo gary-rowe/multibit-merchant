@@ -5,6 +5,7 @@ import com.yammer.dropwizard.jersey.caching.CacheControl;
 import com.yammer.metrics.annotation.Timed;
 import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.api.request.cart.AdminUpdateCartRequest;
+import org.multibit.mbm.api.request.cart.CustomerCartItem;
 import org.multibit.mbm.api.response.hal.cart.AdminCartBridge;
 import org.multibit.mbm.api.response.hal.cart.AdminCartCollectionBridge;
 import org.multibit.mbm.auth.annotation.RestrictedTo;
@@ -13,6 +14,7 @@ import org.multibit.mbm.db.dto.Authority;
 import org.multibit.mbm.db.dto.Cart;
 import org.multibit.mbm.db.dto.User;
 import org.multibit.mbm.resources.BaseResource;
+import org.multibit.mbm.resources.ResourceAsserts;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
@@ -85,17 +87,22 @@ public class AdminCartResource extends BaseResource {
 
     // Retrieve the cart
     Optional<Cart> cart = cartDao.getById(cartId);
-
-    if (!cart.isPresent()) {
-      throw new WebApplicationException(Response.Status.BAD_REQUEST);
-    }
+    ResourceAsserts.assertPresent(cart,"cart");
 
     // Verify and apply any changes to the Cart
-    // TODO Fill in all details and provide general null safe field checking
     Cart persistentCart = cart.get();
 
+    for (CustomerCartItem cartItem : updateCartRequest.getCartItems()) {
+      Long itemId = cartItem.getId();
+      ResourceAsserts.assertPositive(itemId,"itemId");
+
+
+
+    }
+
+
     // Persist the updated cart
-    persistentCart = cartDao.saveOrUpdate(cart.get());
+    persistentCart = cartDao.saveOrUpdate(persistentCart);
 
     // Provide a representation to the client
     AdminCartBridge bridge = new AdminCartBridge(uriInfo, Optional.of(adminUser));

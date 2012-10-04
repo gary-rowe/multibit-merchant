@@ -196,7 +196,7 @@ public class DatabaseLoader {
 
   private void buildUsers() {
 
-    User userTrent = buildUserTrent(adminRole);
+    User userTrent = buildTrentAdministrator(adminRole);
     userDao.saveOrUpdate(userTrent);
 
     // TODO Introduce various staff roles (dispatch, sales etc)
@@ -246,7 +246,7 @@ public class DatabaseLoader {
       .build();
   }
 
-  public static User buildUserTrent(Role adminRole) {
+  public static User buildTrentAdministrator(Role adminRole) {
     // Admin
     return UserBuilder.newInstance()
       .withUUID("trent123")

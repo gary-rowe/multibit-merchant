@@ -55,8 +55,8 @@ public class AdminUserResourceTest extends BaseJerseyResourceTest {
     when(userDao.saveOrUpdate((User) isNotNull())).thenReturn(aliceUser);
     when(userDao.getByCredentials(anyString(), anyString())).thenReturn(Optional.<User>absent());
     // Retrieve
-    when(userDao.getAllByPage(1,1)).thenReturn(usersPage1);
-    when(userDao.getAllByPage(1,2)).thenReturn(usersPage2);
+    when(userDao.getAllByPage(1,0)).thenReturn(usersPage1);
+    when(userDao.getAllByPage(1,1)).thenReturn(usersPage2);
     // Update
     when(userDao.getById(1L)).thenReturn(Optional.of(aliceUser));
 
@@ -90,7 +90,7 @@ public class AdminUserResourceTest extends BaseJerseyResourceTest {
     String actualResponse = client()
       .resource("/admin/user")
       .queryParam("pageSize","1")
-      .queryParam("pageNumber", "1")
+      .queryParam("pageNumber", "0")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 
@@ -99,7 +99,7 @@ public class AdminUserResourceTest extends BaseJerseyResourceTest {
     actualResponse = client()
       .resource("/admin/user")
       .queryParam("pageSize","1")
-      .queryParam("pageNumber", "2")
+      .queryParam("pageNumber", "1")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 

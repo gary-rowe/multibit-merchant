@@ -6,7 +6,6 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.joda.time.DateTime;
 import org.multibit.mbm.db.dto.*;
 
-import javax.persistence.*;
 import java.util.Map;
 import java.util.Set;
 
@@ -35,29 +34,23 @@ public class AdminUpdateUserRequest extends AdminCreateUserRequest {
    * <p>Used as a shared secret between this user and the application. Typically
    * part of an HMAC authentication scheme.</p>
    */
-  @JsonProperty
+  @JsonProperty("secret_key")
   private String secretKey = null;
 
-  @JsonProperty
+  @JsonProperty("contact_method_map")
   private Map<ContactMethod, ContactMethodDetail> contactMethodMap = Maps.newLinkedHashMap();
 
   /**
    * Manages password resets (optional)
    */
-  @JsonProperty
+  @JsonProperty("password_reset_at")
   private DateTime passwordResetAt = null;
 
   /**
    * Tracks when the user was created (optional for anonymity reasons)
    */
-  @Column(name = "created_at", nullable = true)
+  @JsonProperty("created_at")
   private DateTime createdAt = null;
-
-  /**
-   * How the User wishes to be displayed to the public (optional for anonymity reasons)
-   */
-  @JsonProperty
-  private String publicName = null;
 
   /**
    * Indicates if the User has been locked (defaults to unlocked)
@@ -68,7 +61,7 @@ public class AdminUpdateUserRequest extends AdminCreateUserRequest {
   /**
    * Indicates if the User is a staff member (defaults to no)
    */
-  @JsonProperty
+  @JsonProperty("staff_member")
   private boolean staffMember = false;
 
   /**
@@ -80,10 +73,10 @@ public class AdminUpdateUserRequest extends AdminCreateUserRequest {
   /**
    * This collection provides additional optional fields so can be lazy
    */
-  @JsonProperty
+  @JsonProperty("user_field_map")
   private Map<UserField, UserFieldDetail> userFieldMap = Maps.newLinkedHashMap();
 
-  @JsonProperty
+  @JsonProperty("user_roles")
   private Set<UserRole> userRoles = Sets.newLinkedHashSet();
 
   public String getUuid() {
@@ -124,14 +117,6 @@ public class AdminUpdateUserRequest extends AdminCreateUserRequest {
 
   public void setCreatedAt(DateTime createdAt) {
     this.createdAt = createdAt;
-  }
-
-  public String getPublicName() {
-    return publicName;
-  }
-
-  public void setPublicName(String publicName) {
-    this.publicName = publicName;
   }
 
   public boolean isLocked() {

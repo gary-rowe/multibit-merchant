@@ -4,6 +4,7 @@ import com.google.common.base.Optional;
 import com.theoryinpractise.halbuilder.spi.Resource;
 import org.multibit.mbm.api.response.hal.BaseBridge;
 import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.resources.ResourceAsserts;
 
 import javax.ws.rs.core.UriInfo;
 
@@ -29,10 +30,8 @@ public class AdminUserBridge extends BaseBridge<User> {
   }
 
   public Resource toResource(User user) {
-
-    if (user.getId() == null) {
-      throw new IllegalArgumentException("Cannot respond with a transient Cart. Id is null.");
-    }
+    ResourceAsserts.assertNotNull(user, "user");
+    ResourceAsserts.assertNotNull(user.getId(),"id");
 
     // Build on the Customer representation
     Resource userResource = customerUserBridge.toResource(user)

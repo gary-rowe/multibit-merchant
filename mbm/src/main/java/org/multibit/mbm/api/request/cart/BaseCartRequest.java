@@ -11,6 +11,5 @@ package org.multibit.mbm.api.request.cart;
  */
 public abstract class BaseCartRequest {
 
-
-
+  // TODO Consider some fields?
 }

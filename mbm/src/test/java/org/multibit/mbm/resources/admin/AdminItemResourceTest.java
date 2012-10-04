@@ -55,8 +55,8 @@ public class AdminItemResourceTest extends BaseJerseyResourceTest {
     when(itemDao.saveOrUpdate((Item) isNotNull())).thenReturn(book1);
     when(itemDao.getBySKU("sku123")).thenReturn(Optional.<Item>absent());
     // Retrieve
-    when(itemDao.getAllByPage(1,1)).thenReturn(itemsPage1);
-    when(itemDao.getAllByPage(1,2)).thenReturn(itemsPage2);
+    when(itemDao.getAllByPage(1,0)).thenReturn(itemsPage1);
+    when(itemDao.getAllByPage(1,1)).thenReturn(itemsPage2);
     // Update
     when(itemDao.getById(1L)).thenReturn(Optional.of(book1));
     when(itemDao.getById(2L)).thenReturn(Optional.of(book2));
@@ -91,7 +91,7 @@ public class AdminItemResourceTest extends BaseJerseyResourceTest {
     String actualResponse = client()
       .resource("/admin/item")
       .queryParam("pageSize","1")
-      .queryParam("pageNumber", "1")
+      .queryParam("pageNumber", "0")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 
@@ -100,7 +100,7 @@ public class AdminItemResourceTest extends BaseJerseyResourceTest {
     actualResponse = client()
       .resource("/admin/item")
       .queryParam("pageSize","1")
-      .queryParam("pageNumber", "2")
+      .queryParam("pageNumber", "1")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 

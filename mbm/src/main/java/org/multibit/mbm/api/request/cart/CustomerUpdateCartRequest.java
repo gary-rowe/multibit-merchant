@@ -2,8 +2,6 @@ package org.multibit.mbm.api.request.cart;
 
 import com.google.common.collect.Lists;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.multibit.mbm.api.response.CustomerCartItem;
-import org.multibit.mbm.db.dto.Cart;
 
 import java.util.List;
 
@@ -18,7 +16,10 @@ import java.util.List;
  */
 public class CustomerUpdateCartRequest {
 
-  @JsonProperty
+  /**
+   * The cart items (item id, quantity etc)
+   */
+  @JsonProperty("cart_items")
   List<CustomerCartItem> cartItems = Lists.newArrayList();
 
   public List<CustomerCartItem> getCartItems() {

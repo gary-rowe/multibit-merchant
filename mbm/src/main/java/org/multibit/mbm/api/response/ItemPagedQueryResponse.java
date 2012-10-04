@@ -6,6 +6,7 @@ import org.multibit.mbm.db.dto.Item;
 /**
  * <p>Parameter object to provide query state for Items</p>
  */
+@Deprecated
 public class ItemPagedQueryResponse extends BasePagedQueryResponse {
 
   @JsonProperty

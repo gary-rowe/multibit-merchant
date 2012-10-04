@@ -15,6 +15,7 @@ import org.multibit.mbm.db.dto.Authority;
 import org.multibit.mbm.db.dto.User;
 import org.multibit.mbm.db.dto.UserBuilder;
 import org.multibit.mbm.resources.BaseResource;
+import org.multibit.mbm.resources.ResourceAsserts;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
@@ -60,10 +61,7 @@ public class AdminUserResource extends BaseResource {
 
     // Perform basic verification
     Optional<User> verificationUser = userDao.getByCredentials(user.getUsername(), user.getPassword());
-
-    if (verificationUser.isPresent()) {
-      throw new WebApplicationException(Response.Status.CONFLICT);
-    }
+    ResourceAsserts.assertNotConflicted(verificationUser,"user");
 
     // Persist the user
     User persistentUser = userDao.saveOrUpdate(user);
@@ -125,17 +123,14 @@ public class AdminUserResource extends BaseResource {
 
     // Retrieve the user
     Optional<User> user = userDao.getById(userId);
-
-    if (!user.isPresent()) {
-      throw new WebApplicationException(Response.Status.BAD_REQUEST);
-    }
+    ResourceAsserts.assertPresent(user, "user");
 
     // Verify and apply any changes to the User
     // TODO Fill in all details
     User persistentUser = user.get();
-    persistentUser.setPassword(updateUserRequest.getPassword());
-    persistentUser.setUsername(updateUserRequest.getUsername());
-    persistentUser.setOpenId(updateUserRequest.getOpenId());
+
+    // Apply the request to the entity
+    apply(updateUserRequest, persistentUser);
 
     // Persist the updated user
     persistentUser = userDao.saveOrUpdate(user.get());
@@ -165,10 +160,7 @@ public class AdminUserResource extends BaseResource {
 
     // Retrieve the user
     Optional<User> user = userDao.getById(userId);
-
-    if (!user.isPresent()) {
-      throw new WebApplicationException(Response.Status.BAD_REQUEST);
-    }
+    ResourceAsserts.assertPresent(user,"user");
 
     // Verify and apply any changes to the User
     User persistentUser = user.get();
@@ -185,7 +177,21 @@ public class AdminUserResource extends BaseResource {
 
   }
 
+  /**
+   * @param updateRequest The update request containing the changes
+   * @param entity        The entity to which these changes will be applied
+   */
+  private void apply(AdminUpdateUserRequest updateRequest, User entity) {
+    if (updateRequest.getPassword() != null) {
+      entity.setPassword(updateRequest.getPassword());
+    }
+    entity.setUsername(updateRequest.getUsername());
+    entity.setOpenId(updateRequest.getOpenId());
+  }
+
   public void setUserDao(UserDao userDao) {
     this.userDao = userDao;
   }
+
+
 }

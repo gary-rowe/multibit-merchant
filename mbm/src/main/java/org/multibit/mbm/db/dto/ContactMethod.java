@@ -26,39 +26,43 @@ public enum ContactMethod {
   /**
    * Appears after the names in correspondence, e.g. "Smith"
    */
-  LAST_NAME("lastName",false),
+  LAST_NAME("last_name",false),
   /**
    * Appears after the last name in correspondence, e.g. "PhD"
    */
   SUFFIX("suffix",false),
   /**
+   * Appears on the website if user posts something
+   */
+  NICK_NAME("nick_name",false),
+  /**
    * Postal address to use for correspondence (not the same as Invoice/Billing addresses)
    */
-  POSTAL_ADDRESS("postalAddress",true),
+  POSTAL_ADDRESS("postal_address",true),
   /**
    * A geographical point to use for correspondence (dead letter drop? physical meeting?)
    */
-  LAT_LONG("latlong",false),
+  LAT_LONG("lat_long",false),
   /**
    * An SMS number
    */
   SMS("sms",true),
   /**
-   * A land line, e.g. "+441234 567 890"
+   * A land line, e.g. "+441234 567 890 ext 567"
    */
-  LAND_LINE("landLine",true),
+  LAND_LINE("land_line",true),
   /**
    * A fax line, e.g. "+441234 567 891"
    */
   FAX("fax",true),
   /**
-   * A voip URI, e.g. "skype:"
+   * A VOIP URI, e.g. "skype:"
    */
-  VOIP_URI("voipUri",true),
+  VOIP("voip",true),
   /**
    * An FTP URI, e.g. "ftp:"
    */
-  FTP_URI("ftpUri",true),
+  FTP("ftp",true),
   /**
    * An email address
    */
@@ -66,23 +70,23 @@ public enum ContactMethod {
   /**
    * An instant message address
    */
-  IM_URI("imUri",true),
+  INSTANT_MESSAGE("instant_message",true),
   /**
    * A LinkedIn(TM) profile URI
    */
-  LINKED_IN_URI("linkedInUri",true),
+  LINKED_IN("linked_in",true),
   /**
    * A Twitter(TM) channel name, e.g. "@Example"
    */
-  TWITTER_CHANNEL("twitterChannel",true),
+  TWITTER("twitter",true),
   /**
    * A Facebook(TM) profile URI
    */
-  FACEBOOK_URI("facebookUri",true),
+  FACEBOOK("facebook",true),
   /**
    * A Google+(TM) profile URI
    */
-  GOOGLE_PLUS_URI("googlePlusUri",true),
+  GOOGLE_PLUS("google_plus",true),
 
   // End of enum
   ;

@@ -121,17 +121,19 @@ public class HibernateUserDaoIntegrationTest extends BaseIntegrationTests {
   @Test
   public void testPaging() {
 
-    List<User> users = testObject.getAllByPage(1,1);
+    List<User> users = testObject.getAllByPage(1,0);
 
+    // Trent the admin is built first
     assertNotNull("Expected pre-populated data (page 1)",users);
     assertThat("Unexpected number of Users",users.size(), equalTo(1));
-    assertThat("Unexpected ordering of Users",users.get(0).getUsername(), equalTo("alice"));
+    assertThat("Unexpected ordering of Users",users.get(0).getUsername(), equalTo("trent"));
 
-    users = testObject.getAllByPage(1,2);
+    users = testObject.getAllByPage(1,1);
 
+    // Alice the customer is built second
     assertNotNull("Expected pre-populated data (page 2)",users);
     assertThat("Unexpected number of Users",users.size(), equalTo(1));
-    assertThat("Unexpected ordering of Users",users.get(0).getUsername(), equalTo("bob"));
+    assertThat("Unexpected ordering of Users",users.get(0).getUsername(), equalTo("alice"));
 
   }
 
