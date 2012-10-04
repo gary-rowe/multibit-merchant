@@ -32,7 +32,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @since 0.0.1
  */
-@Path("/admin")
+@Path("/admin/role")
 @Produces({HalMediaType.APPLICATION_HAL_JSON, HalMediaType.APPLICATION_HAL_XML})
 public class AdminRoleResource extends BaseResource {
 
@@ -47,7 +47,6 @@ public class AdminRoleResource extends BaseResource {
    */
   @POST
   @Timed
-  @Path("/role")
   public Response create(
     @RestrictedTo({Authority.ROLE_ADMIN})
     User adminUser,
@@ -85,7 +84,6 @@ public class AdminRoleResource extends BaseResource {
    */
   @GET
   @Timed
-  @Path("/role")
   @CacheControl(maxAge = 6, maxAgeUnit = TimeUnit.HOURS)
   public Response retrieveAllByPage(
     @RestrictedTo({Authority.ROLE_ADMIN})
@@ -115,7 +113,7 @@ public class AdminRoleResource extends BaseResource {
    */
   @PUT
   @Timed
-  @Path("/role/{roleId}")
+  @Path("/{roleId}")
   public Response update(
     @RestrictedTo({Authority.ROLE_ADMIN})
     User adminUser,
@@ -159,7 +157,7 @@ public class AdminRoleResource extends BaseResource {
    */
   @DELETE
   @Timed
-  @Path("/role/{roleId}")
+  @Path("/{roleId}")
   public Response delete(
     @RestrictedTo({Authority.ROLE_ADMIN})
     User adminUser,

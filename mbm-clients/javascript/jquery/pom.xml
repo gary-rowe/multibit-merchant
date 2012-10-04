@@ -20,7 +20,8 @@
 
   <build>
     <plugins>
-      <!-- MBM uses Dropwizard and executes as a standalone JAR -->
+
+      <!-- MBM uses Dropwizard and executes it as a standalone JAR -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
@@ -44,18 +45,8 @@
             <argument>mbm.yml</argument>
           </arguments>
         </configuration>
-        <dependencies>
-          <!-- MBM platform -->
-          <dependency>
-            <groupId>org.multibit.merchant</groupId>
-            <artifactId>mbm</artifactId>
-            <version>develop-SNAPSHOT</version>
-            <scope>compile</scope>
-            <type>jar</type>
-          </dependency>
-        </dependencies>
-
       </plugin>
+
       <!-- Built-in SSL server for local development -->
       <plugin>
         <groupId>org.mortbay.jetty</groupId>
@@ -74,11 +65,11 @@
           </webAppConfig>
           <connectors>
             <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
-              <port>8080</port>
+              <port>8081</port>
             </connector>
             <!-- SSL for localhost support -->
             <connector implementation="org.eclipse.jetty.server.ssl.SslSelectChannelConnector">
-              <port>8443</port>
+              <port>8444</port>
               <keystore>src/test/resources/jetty-ssl.keystore</keystore>
               <password>jetty6</password>
               <keyPassword>jetty6</keyPassword>

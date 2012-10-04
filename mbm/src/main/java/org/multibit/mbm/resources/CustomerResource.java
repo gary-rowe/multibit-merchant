@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
  * @since 0.0.1
  *         
  */
-@Path("/")
+@Path("/customer")
 @Produces({HalMediaType.APPLICATION_HAL_JSON, HalMediaType.APPLICATION_HAL_XML})
 public class CustomerResource extends BaseResource {
 
@@ -38,7 +38,6 @@ public class CustomerResource extends BaseResource {
 
   @GET
   @Timed
-  @Path("/customer")
   @CacheControl(maxAge = 6, maxAgeUnit = TimeUnit.HOURS)
   public Response retrieveCustomer(
     @RestrictedTo({Authority.ROLE_CUSTOMER})

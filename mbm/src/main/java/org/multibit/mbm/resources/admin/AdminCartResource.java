@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @since 0.0.1
  */
-@Path("/admin")
+@Path("/admin/cart")
 @Produces({HalMediaType.APPLICATION_HAL_JSON, HalMediaType.APPLICATION_HAL_XML})
 public class AdminCartResource extends BaseResource {
 
@@ -51,7 +51,6 @@ public class AdminCartResource extends BaseResource {
    */
   @GET
   @Timed
-  @Path("/cart")
   @CacheControl(maxAge = 6, maxAgeUnit = TimeUnit.HOURS)
   public Response retrieveAllByPage(
     @RestrictedTo({Authority.ROLE_ADMIN})
@@ -81,7 +80,7 @@ public class AdminCartResource extends BaseResource {
    */
   @PUT
   @Timed
-  @Path("/cart/{cartId}")
+  @Path("/{cartId}")
   public Response update(
     @RestrictedTo({Authority.ROLE_ADMIN})
     User adminUser,

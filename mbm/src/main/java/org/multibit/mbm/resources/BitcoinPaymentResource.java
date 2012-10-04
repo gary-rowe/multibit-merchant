@@ -25,7 +25,7 @@ import java.io.IOException;
  * @since 0.0.1
  * TODO Consider a base class with configured UriInfo and HttpHeaders (need to verify Prototype pattern)
  */
-@Path("/")
+@Path("/bitcoin")
 @Produces({HalMediaType.APPLICATION_HAL_JSON, HalMediaType.APPLICATION_HAL_XML})
 public class BitcoinPaymentResource extends BaseResource {
 
