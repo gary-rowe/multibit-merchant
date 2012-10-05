@@ -55,7 +55,12 @@ public class Item implements Serializable {
   @Column(name = "reasonForDelete", nullable = true)
   private String reasonForDelete = null;
 
-  @OneToMany(targetEntity = CartItem.class, cascade = {CascadeType.ALL}, mappedBy = "primaryKey.item", orphanRemoval = true)
+  @OneToMany(
+    targetEntity = CartItem.class,
+    cascade = {CascadeType.ALL},
+    mappedBy = "primaryKey.item",
+    fetch = FetchType.EAGER,
+    orphanRemoval = true)
   private Set<CartItem> cartItems = Sets.newLinkedHashSet();
 
   /**

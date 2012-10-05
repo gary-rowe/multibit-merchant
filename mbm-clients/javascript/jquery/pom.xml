@@ -19,33 +19,8 @@
   <inceptionYear>2011</inceptionYear>
 
   <build>
+
     <plugins>
-
-      <!-- MBM uses Dropwizard and executes it as a standalone JAR -->
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>1.2.1</version>
-
-        <executions>
-          <execution>
-            <goals>
-              <!-- Ignore this warning -->
-              <goal>exec</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <executable>java</executable>
-          <workingDirectory>../../../mbm</workingDirectory>
-          <arguments>
-            <argument>-jar</argument>
-            <argument>target/mbm-${project.version}.jar</argument>
-            <argument>server</argument>
-            <argument>mbm.yml</argument>
-          </arguments>
-        </configuration>
-      </plugin>
 
       <!-- Built-in SSL server for local development -->
       <plugin>
@@ -57,7 +32,7 @@
         <version>7.6.0.RC1</version>
         <configuration>
           <stopKey>STOP</stopKey>
-          <stopPort>8009</stopPort>
+          <stopPort>9009</stopPort>
           <scanIntervalSeconds>10</scanIntervalSeconds>
           <!--<jettyXml>src/test/resources/jetty.xml</jettyXml>-->
           <webAppConfig>
@@ -65,11 +40,11 @@
           </webAppConfig>
           <connectors>
             <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
-              <port>8081</port>
+              <port>9090</port>
             </connector>
             <!-- SSL for localhost support -->
             <connector implementation="org.eclipse.jetty.server.ssl.SslSelectChannelConnector">
-              <port>8444</port>
+              <port>9443</port>
               <keystore>src/test/resources/jetty-ssl.keystore</keystore>
               <password>jetty6</password>
               <keyPassword>jetty6</keyPassword>

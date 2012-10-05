@@ -1,3 +1,9 @@
+# Define the HTTP settings
+http:
+  port: 8080
+  adminPort: 8081
+  rootPath: /mbm/*
+
 template: Hello, %s!
 defaultName: Stranger
 

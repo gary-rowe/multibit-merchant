@@ -10,6 +10,7 @@ import org.multibit.mbm.db.dto.Authority;
 import org.multibit.mbm.db.dto.Customer;
 import org.multibit.mbm.db.dto.User;
 import org.multibit.mbm.services.CustomerService;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
@@ -28,6 +29,7 @@ import java.util.concurrent.TimeUnit;
  * @since 0.0.1
  *         
  */
+@Component
 @Path("/customer")
 @Produces({HalMediaType.APPLICATION_HAL_JSON, HalMediaType.APPLICATION_HAL_XML})
 public class CustomerResource extends BaseResource {

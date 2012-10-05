@@ -14,6 +14,7 @@ import org.multibit.mbm.db.dto.Authority;
 import org.multibit.mbm.db.dto.Cart;
 import org.multibit.mbm.db.dto.Item;
 import org.multibit.mbm.db.dto.User;
+import org.springframework.stereotype.Component;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -33,6 +34,7 @@ import java.util.concurrent.TimeUnit;
  * @since 0.0.1
  *         
  */
+@Component
 @Path("/cart")
 @Produces({HalMediaType.APPLICATION_HAL_JSON, HalMediaType.APPLICATION_HAL_XML})
 public class CustomerCartResource extends BaseResource {

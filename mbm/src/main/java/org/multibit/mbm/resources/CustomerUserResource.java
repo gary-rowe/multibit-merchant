@@ -8,6 +8,7 @@ import org.multibit.mbm.api.response.hal.user.CustomerUserBridge;
 import org.multibit.mbm.auth.annotation.RestrictedTo;
 import org.multibit.mbm.db.dto.Authority;
 import org.multibit.mbm.db.dto.User;
+import org.springframework.stereotype.Component;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -23,6 +24,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @since 0.0.1
  */
+@Component
 @Path("/user")
 @Produces({HalMediaType.APPLICATION_HAL_JSON, HalMediaType.APPLICATION_HAL_XML})
 public class CustomerUserResource extends BaseResource {

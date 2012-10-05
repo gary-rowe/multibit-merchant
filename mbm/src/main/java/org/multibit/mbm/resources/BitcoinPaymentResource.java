@@ -9,6 +9,7 @@ import org.multibit.mbm.db.dto.Authority;
 import org.multibit.mbm.db.dto.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import javax.ws.rs.*;
@@ -25,6 +26,7 @@ import java.io.IOException;
  * @since 0.0.1
  * TODO Consider a base class with configured UriInfo and HttpHeaders (need to verify Prototype pattern)
  */
+@Component
 @Path("/bitcoin")
 @Produces({HalMediaType.APPLICATION_HAL_JSON, HalMediaType.APPLICATION_HAL_XML})
 public class BitcoinPaymentResource extends BaseResource {

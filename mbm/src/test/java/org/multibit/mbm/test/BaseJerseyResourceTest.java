@@ -97,7 +97,12 @@ public abstract class BaseJerseyResourceTest extends BaseResourceTest {
     };
 
     // Allow final client request filtering for HMAC authentication (this allows for secure tests)
-    test.client().addFilter(new HmacClientFilter(apiKey.get(), sharedSecret.get(), test.client().getProviders()));
+    test.client().addFilter(new HmacClientFilter(
+        apiKey.get(),
+        sharedSecret.get(),
+        test.client().getProviders()
+      )
+    );
 
     test.setUp();
 
@@ -128,7 +133,7 @@ public abstract class BaseJerseyResourceTest extends BaseResourceTest {
   }
 
   /**
-   * @param apiKey    The API key to assign to the User (default is "abc123")
+   * @param apiKey       The API key to assign to the User (default is "abc123")
    * @param sharedSecret The shared secret to assign (default is "def456")
    */
   protected User setUpAuthenticator(Optional<String> apiKey, Optional<String> sharedSecret, List<Role> roles) {
