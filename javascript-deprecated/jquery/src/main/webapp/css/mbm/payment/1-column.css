@@ -1,0 +1,146 @@
+body {
+  margin: 0;
+  padding: 0;
+  border: 0; /* This removes the border around the viewport in old versions of IE */
+  width: 100%;
+  min-width: 600px; /* Minimum width of layout - remove line if not required */
+  /* The min-width property does not work in old versions of Internet Explorer */
+  font-size: 90%;
+  font-family: sans-serif;
+}
+
+/* Header styles */
+#mbm-header1 {
+  text-align: center;
+  text-transform: uppercase;
+}
+
+#mbm-header1 a {
+  text-decoration: none;
+}
+
+.mbm-header {
+  clear: both;
+  float: left;
+  width: 100%;
+}
+
+/* column container */
+.colmask {
+  position: relative; /* This fixes the IE7 overflow hidden bug */
+  clear: both;
+  float: left;
+  width: 100%; /* width of whole page */
+  overflow: hidden; /* This chops off any overhanging divs */
+}
+
+/* common column settings */
+.colright,
+.colmid,
+.colleft {
+  float: left;
+  width: 100%; /* width of page */
+  position: relative;
+}
+
+.col1,
+.col2,
+.col3 {
+  float: left;
+  position: relative;
+  padding: 0 0 1em 0;
+  /* no left and right padding on columns, we just make them narrower instead
+           only padding top and bottom is included here, make it whatever value you need */
+  overflow: hidden;
+}
+
+/* 3 Column settings */
+.threecol .colmid {
+  right: 25%; /* width of the right column */
+}
+
+.threecol .colleft {
+  right: 50%; /* width of the middle column */
+}
+
+.threecol .col1 {
+  width: 46%; /* width of center column content (column width minus padding on either side) */
+  left: 102%; /* 100% plus left padding of center column */
+}
+
+.threecol .col2 {
+  width: 21%; /* Width of left column content (column width minus padding on either side) */
+  left: 31%; /* width of (right column) plus (center column left and right padding) plus (left column left padding) */
+}
+
+.threecol .col3 {
+  width: 21%; /* Width of right column content (column width minus padding on either side) */
+  left: 85%;
+  /* Please make note of the brackets here:
+           (100% - left column width) plus (center column left and right padding) plus (left column left and right padding) plus (right column left padding) */
+}
+
+/* Footer styles */
+.mbm-footer {
+  text-align: center;
+  clear: both;
+  float: left;
+  width: 100%;
+}
+
+/* Alerts */
+#alert {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-size: large;
+  display: none;
+  z-index: 2;
+}
+
+img.float-left {
+  float: left;
+  margin: 4px;
+}
+
+img.float-right {
+  float: right;
+  margin: 4px;
+}
+
+.centered {
+  text-align: center;
+}
+
+.mbm-order-swatch {
+  cursor:move;
+  width:240px;
+}
+
+.mbm-item {
+  border: 1px dashed black;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px;
+}
+
+.mbm-order-security {
+  border: 2px solid red;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px;
+}
+
+.mbm-order-summary {
+  border: 2px double black;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 20px;
+}
+
+#item-1 {
+  cursor: crosshair;
+}
+

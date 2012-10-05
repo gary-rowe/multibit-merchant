@@ -29,3 +29,8 @@ You will need to have MBM running in a separate process. From the console you ca
 
 Finally, you will need to start the Dojo Store
 
+## Where does the ASCII art come from?
+
+The ASCII art for the startup banner was created using the online tool available at
+[Webestools][http://www.webestools.com/ascii-text-generator-ascii-art-code-online-txt2ascii-text2ascii-maker-free-text-to-ascii-converter.html]
+with a font of Tiza

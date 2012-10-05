@@ -1,11 +1,8 @@
 # Define the HTTP settings
 http:
-  port: 8080
-  adminPort: 8081
-  rootPath: /mbm/*
-
-template: Hello, %s!
-defaultName: Stranger
+  port: 9090
+  adminPort: 9091
+  rootPath: /store/*
 
 # TODO Put only the database connectivity in here
 # Load up all default values directly into the database
