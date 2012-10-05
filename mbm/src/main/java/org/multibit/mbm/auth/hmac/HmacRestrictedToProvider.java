@@ -10,6 +10,7 @@ import com.sun.jersey.spi.inject.InjectableProvider;
 import com.yammer.dropwizard.auth.Authenticator;
 import com.yammer.dropwizard.logging.Log;
 import org.multibit.mbm.auth.annotation.RestrictedTo;
+
 /**
  * <p>Authentication provider to provide the following to Jersey:</p>
  * <ul>
@@ -27,7 +28,7 @@ public class HmacRestrictedToProvider<T> implements InjectableProvider<Restricte
   private final String realm;
 
   /**
-   * Creates a new {@link HmacRestrictedToProvider} with the given {@link com.yammer.dropwizard.auth.Authenticator} and realm.
+   * Creates a new {@link org.multibit.mbm.auth.hmac.HmacRestrictedToProvider} with the given {@link com.yammer.dropwizard.auth.Authenticator} and realm.
    *
    * @param authenticator the authenticator which will take the {@link HmacCredentials} and
    *                      convert them into instances of {@code T}

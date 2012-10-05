@@ -11,7 +11,6 @@ import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
 import java.sql.SQLException;
 import java.util.List;
 

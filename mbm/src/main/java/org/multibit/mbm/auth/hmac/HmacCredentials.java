@@ -10,7 +10,7 @@ import java.security.MessageDigest;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * <p>Value object to provide the following to {@link HmacAuthenticator}:</p>
+ * <p>Value object to provide the following to {@link org.multibit.mbm.auth.hmac.HmacAuthenticator}:</p>
  * <ul>
  * <li>Storage of the necessary credentials for HMAC authentication</li>
  * </ul>

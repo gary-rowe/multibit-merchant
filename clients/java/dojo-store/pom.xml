@@ -5,17 +5,17 @@
     <groupId>org.multibit.merchant</groupId>
     <artifactId>mbm-parent</artifactId>
     <version>develop-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
+    <relativePath>../../../pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.multibit.merchant</groupId>
-  <artifactId>mbm</artifactId>
+  <groupId>org.multibit.merchant.client.java</groupId>
+  <artifactId>dojo-store</artifactId>
 
   <url>http://multibitmerchant.org</url>
 
-  <name>MultiBit Merchant</name>
-  <description>The core functionality for the MultiBit Merchant trading platform</description>
+  <name>MultiBit Merchant Dojo Client</name>
+  <description>A Java MBM client based on Dojo</description>
   <inceptionYear>2012</inceptionYear>
 
   <build>
@@ -147,41 +147,10 @@
     <!--<artifactId>atmosphere-runtime</artifactId>-->
     <!--</dependency>-->
 
-    <!-- Bitcoin -->
-    <dependency>
-      <groupId>com.google</groupId>
-      <artifactId>bitcoinj</artifactId>
-    </dependency>
-
-    <!-- XChange for currency operations -->
-    <dependency>
-      <groupId>com.xeiam.xchange</groupId>
-      <artifactId>xchange</artifactId>
-      <version>1.0.0</version>
-      <!-- TODO XChange should not demand logback -->
-      <exclusions>
-        <exclusion>
-          <artifactId>logback-classic</artifactId>
-          <groupId>ch.qos.logback</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>com.xeiam.xchange</groupId>
-      <artifactId>xchange-mtgox</artifactId>
-      <version>1.0.0</version>
-    </dependency>
-
     <!-- All time handling is through Joda -->
     <dependency>
       <groupId>joda-time</groupId>
       <artifactId>joda-time</artifactId>
-    </dependency>
-
-    <!-- ZXing (Zebra Crossing) used for Bitcoin swatches -->
-    <dependency>
-      <groupId>com.google.zxing</groupId>
-      <artifactId>javase</artifactId>
     </dependency>
 
     <!-- Jasypt for protecting shared secrets -->
