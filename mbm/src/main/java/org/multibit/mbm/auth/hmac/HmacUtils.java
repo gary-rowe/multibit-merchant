@@ -5,7 +5,6 @@ import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.container.ContainerException;
 import com.sun.jersey.core.util.ReaderWriter;
 import com.sun.jersey.spi.container.ContainerRequest;
-import org.apache.commons.codec.binary.Base64;
 
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
@@ -53,27 +52,30 @@ public class HmacUtils {
    * @param algorithm    The algorithm to use (e.g. "HmacSHA512")
    * @param data         The data to sign
    * @param sharedSecret The shared secret key to use for signing
+   *
    * @return A base 64 encoded signature encoded as UTF-8
    */
   public static byte[] computeSignature(String algorithm, byte[] data, byte[] sharedSecret) {
 
-    SecretKey secretKey = new SecretKeySpec(Base64.decodeBase64(sharedSecret), algorithm);
-    Mac mac = null;
     try {
-      mac = Mac.getInstance(algorithm);
+      SecretKey secretKey = new SecretKeySpec(Base64.decode(sharedSecret), algorithm);
+      Mac mac = Mac.getInstance(algorithm);
       mac.init(secretKey);
+      mac.update(data);
+      return Base64.encodeBytesToBytes(mac.doFinal());
     } catch (NoSuchAlgorithmException e) {
       throw new WebApplicationException(e, Response.Status.INTERNAL_SERVER_ERROR);
     } catch (InvalidKeyException e) {
       throw new WebApplicationException(e, Response.Status.INTERNAL_SERVER_ERROR);
+    } catch (IOException e) {
+      throw new WebApplicationException(e, Response.Status.INTERNAL_SERVER_ERROR);
     }
-    mac.update(data);
-    return Base64.encodeBase64(mac.doFinal());
   }
 
   /**
    * @param clientRequest Providing the HTTP information necessary
    * @param providers     The Providers for marshalling/unmarshalling the request body
+   *
    * @return The canonical representation of the request for the client to use
    */
   public static String createCanonicalRepresentation(ClientRequest clientRequest, Providers providers) {
@@ -187,6 +189,7 @@ public class HmacUtils {
 
   /**
    * @param containerRequest Providing the required HTTP request information
+   *
    * @return The canonical representation of the request
    */
   public static String createCanonicalRepresentation(ContainerRequest containerRequest) {

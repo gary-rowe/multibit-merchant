@@ -14,7 +14,9 @@
 
   <modules>
     <module>mbm</module>
-    <module>mbm-clients/java/jsp-jquery</module>
+    <module>common/dropwizard-hal</module>
+    <module>common/dropwizard-hal-testing</module>
+    <module>clients/java/dojo-store</module>
   </modules>
 
   <distributionManagement>
@@ -337,6 +339,12 @@
         <version>${dropwizard.version}</version>
       </dependency>
 
+      <!-- HAL Builder provides resource representation -->
+      <dependency>
+        <groupId>com.theoryinpractise</groupId>
+        <artifactId>halbuilder</artifactId>
+        <version>1.0.5</version>
+      </dependency>
 
     </dependencies>
 

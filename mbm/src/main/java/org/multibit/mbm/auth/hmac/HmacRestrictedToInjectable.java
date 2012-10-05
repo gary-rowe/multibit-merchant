@@ -12,10 +12,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.*;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
- * <p>Injectable to provide the following to {@link HmacRestrictedToProvider}:</p>
+ * <p>Injectable to provide the following to {@link org.multibit.mbm.auth.hmac.HmacRestrictedToProvider}:</p>
  * <ul>
  * <li>Performs decode from HTTP request</li>
  * <li>Carries HMAC authentication data</li>
