@@ -16,7 +16,9 @@ import org.multibit.mbm.db.dto.User;
 import org.multibit.mbm.db.dto.UserBuilder;
 import org.multibit.mbm.resources.BaseResource;
 import org.multibit.mbm.resources.ResourceAsserts;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.net.URI;
@@ -31,10 +33,12 @@ import java.util.concurrent.TimeUnit;
  *
  * @since 0.0.1
  */
+@Component
 @Path("/admin")
 @Produces({HalMediaType.APPLICATION_HAL_JSON, HalMediaType.APPLICATION_HAL_XML})
 public class AdminUserResource extends BaseResource {
 
+  @Resource(name = "hibernateUserDao")
   UserDao userDao;
 
   /**

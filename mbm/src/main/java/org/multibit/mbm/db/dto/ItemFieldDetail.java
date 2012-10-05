@@ -29,7 +29,7 @@ public class ItemFieldDetail {
   @Enumerated(EnumType.ORDINAL)
   private ItemField itemField;
   
-  @ElementCollection
+  @ElementCollection(fetch = FetchType.EAGER)
   @CollectionTable(
     name = "item_field_secondary_details",
     joinColumns = @JoinColumn(name = "item_field_id"

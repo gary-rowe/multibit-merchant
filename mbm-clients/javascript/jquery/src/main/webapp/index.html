@@ -1,5 +1,6 @@
 <html>
 <head>
+  <!-- CSS -->
   <link rel="stylesheet" type="text/css" href="css/mbm/3-column.css"/>
   <link rel="stylesheet" type="text/css" href="themes/trontastic/jquery-ui-1.8.custom.css"/>
 
@@ -11,6 +12,7 @@
   <script type="text/javascript" src="js/plugins/jquery/atmosphere/jquery.atmosphere.js"></script>
   <script type="text/javascript" src="js/plugins/jquery/templates/jquery.tmpl.min.js"></script>
 
+  <!-- Supporting scripts for MBM client -->
 </head>
 <body>
 
@@ -22,7 +24,15 @@
       <li>Plumbing for beginners</li>
       <li>A critique of Quantum Thief</li>
     </ul>
+    <br/>
+
+    <p class="ui-widget-header">Admin links</p>
+    <ul class="ui-widget-content">
+      <li><a href="http://localhost:8081/metrics" target="_blank">View MBM metrics</a></li>
+      <li><a href="javascript:handleAdminRetrieveUser()">Retrieve Admin User</a></li>
+    </ul>
   </div>
+
 
 </div>
 
@@ -51,11 +61,12 @@
 
 </div>
 
+<!-- HTML Template for item search -->
 <script id="searchItemTemplate" type="text/x-jquery-tmpl">
   <div id='item-${id}' class='mbm-item ui-widget-content ui-corner-all'>
-    <a href='#' onclick='handleItemDetailClick("/mbm/api/v1/catalog/item/${id}/${slug}")'
+    <a href='#' onclick='handleItemDetailClick("/mbm/item/${id}/${slug}")'
        class='mbm-item-link'>${title}</a>
-    <a href='#' onclick='handleItemDetailClick("/mbm/api/v1/catalog/item/${id}/${slug}")'><img
+    <a href='#' onclick='handleItemDetailClick("/mbm/item/${id}/${slug}")'><img
       class='mbm-item-thumbnail float-right' src='${imgThumbnailUri}'/></a>
 
     <p>Get it by <strong>${offeredDeliveryDate}</strong> if you order it today.</p>
@@ -67,10 +78,11 @@
   </div>
 </script>
 
+<!-- HTML Template for Item details -->
 <script id="itemDetailTemplate" type="text/x-jquery-tmpl">
   <div class='mbm-item ui-widget-content ui-corner-all'>
-    <a href='#' onclick='handleAddToBasketClick("/mbm/api/v1/catalog/item/${id}/${slug}")' class='mbm-item-link'>${title}</a>
-    <a href="#" onclick='handleAddToBasketClick("/mbm/api/v1/catalog/item/${id}/${slug}")'><img
+    <a href='#' onclick='handleAddToBasketClick("/mbm/item/${id}/${slug}")' class='mbm-item-link'>${title}</a>
+    <a href="#" onclick='handleAddToBasketClick("/mbm/item/${id}/${slug}")'><img
       class='mbm-item-thumbnail float-right' src='${imgThumbnailUri}'/></a>
 
     <p>Get it by <strong>${offeredDeliveryDate}</strong> if you order it today.</p>
@@ -83,6 +95,7 @@
   </div>
 </script>
 
+<!-- HTML Template for the Cart Total -->
 <script id="cartTotalTemplate" type="text/x-jquery-tmpl">
   <p><span class="align-right"><strong>Total: ${btcTotal} BTC (${localSymbol} ${localTotal})</strong></span></p>
 
@@ -90,6 +103,7 @@
   <button id="confirm-order" onclick="handleConfirmOrder(this)">Confirm Order</button>
 </script>
 
+<!-- HTML Template for Cart Items -->
 <script id="cartItemTemplate" type="text/x-jquery-tmpl">
   <div id='cart-item=${id}' class='mbm-item ui-widget-content ui-corner-all'>
     <p><a href='#' onclick='handleItemDetailClick("/mbm/api/v1/catalog/item/${id}/${slug}")' class='mbm-item-link'>${title}</a>
@@ -102,12 +116,18 @@
   </div>
 </script>
 
+<!-- The main script driving the shopping cart -->
 <script type="text/javascript">
 
-  function handleAddToCartClick(id, quantity) {
+  /**
+   * Update cart items
+   * @param id The Item ID
+   * @param quantity The quantity (use 0 to remove)
+   */
+  function handleUpdateCartClick(id, quantity) {
     console.log("Adding item to cart");
     $.post(
-      'http://localhost:8080/mbm/api/v1/cart',
+      'http://localhost:8080/mbm/cart',
       {
         itemId:id,
         quantity:quantity,
@@ -120,6 +140,41 @@
           $('#cart-items').append($("#cartItemTemplate").tmpl(cartItems[i]));
         }
         $('#cart-total').html($("#cartTotalTemplate").tmpl(data));
+      });
+  }
+
+
+  /**
+   * Provide more detail on the item
+   * @param uri The URI of the Item
+   */
+  function handleItemDetailClick(uri) {
+    console.log("Requesting detail");
+    $.get(uri,
+      function (data) {
+        $("#catalog-item-search-output").fadeOut("fast");
+        $("#item-detail").html($("#itemDetailTemplate").tmpl(data)).fadeIn("fast").toggleClass("active");
+      });
+  }
+
+  /**
+   * Handles the transition to the payment page
+   * @param event The trigger event
+   */
+  function handleConfirmOrder(event) {
+    window.location = "payment.html";
+  }
+
+  /**
+   * Retrieve the initial collection of promoted items for this user
+   */
+  function handlePromotions() {
+    $.get('http://localhost:8080/mbm/item/promotion',
+      function (data) {
+        var results = data.results;
+        for (var i = 0; i < results.length; i++) {
+          $('#catalog-item-search-output').append($("#searchItemTemplate").tmpl(results[i]));
+        }
       });
   }
 
@@ -189,31 +244,6 @@
     $("#alert").slideToggle("slow").toggleClass("active").delay(4000).slideToggle("slow").toggleClass("active");
 
   }
-
-  function handleItemDetailClick(uri) {
-    console.log("Requesting detail");
-    $.get(uri,
-      function (data) {
-        $("#catalog-item-search-output").fadeOut("fast");
-        $("#item-detail").html($("#itemDetailTemplate").tmpl(data)).fadeIn("fast").toggleClass("active");
-      });
-  }
-
-
-  function handleConfirmOrder(event) {
-    window.location = "payment.html";
-  }
-
-  function handlePromotions() {
-    $.get('http://localhost:8080/mbm/api/v1/catalog/item/search',
-      function (data) {
-        var results = data.results;
-        for (var i = 0; i < results.length; i++) {
-          $('#catalog-item-search-output').append($("#searchItemTemplate").tmpl(results[i]));
-        }
-      });
-  }
-
 
   // Initialisation
   $(document).ready(function () {

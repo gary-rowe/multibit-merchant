@@ -10,14 +10,13 @@ import org.multibit.mbm.auth.hmac.HmacCredentials;
 import org.multibit.mbm.auth.hmac.HmacRestrictedToProvider;
 import org.multibit.mbm.db.dto.User;
 import org.multibit.mbm.health.TemplatePropertyHealthCheck;
-import org.multibit.mbm.resources.BitcoinPaymentResource;
-import org.multibit.mbm.resources.CustomerCartResource;
-import org.multibit.mbm.resources.CustomerResource;
-import org.multibit.mbm.resources.CustomerUserResource;
+import org.multibit.mbm.resources.*;
 import org.multibit.mbm.resources.admin.AdminCartResource;
 import org.multibit.mbm.resources.admin.AdminItemResource;
 import org.multibit.mbm.resources.admin.AdminRoleResource;
 import org.multibit.mbm.resources.admin.AdminUserResource;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 /**
  * <p>Service to provide the following to application:</p>
@@ -33,7 +32,9 @@ public class MultiBitMerchantService extends Service<MultiBitMerchantConfigurati
 
   /**
    * Main entry point to the application
+   *
    * @param args
+   *
    * @throws Exception
    */
   public static void main(String[] args) throws Exception {
@@ -56,23 +57,32 @@ public class MultiBitMerchantService extends Service<MultiBitMerchantConfigurati
     Authenticator<HmacCredentials, User> authenticator = new HmacAuthenticator();
     CachingAuthenticator<HmacCredentials, User> cachingAuthenticator = CachingAuthenticator.wrap(authenticator, CacheBuilderSpec.parse(configuration.getAuthenticationCachePolicy()));
 
+    // Start Spring context based on the provided location
+    // TODO Externalise this into the configuration - Spring provides too much to ignore
+    ApplicationContext context = new FileSystemXmlApplicationContext(new String[]{
+      "src/test/resources/spring/test-mbm-context.xml"
+    });
+
     // Configure environment accordingly
-    // Resources - admin
-    environment.addResource(new AdminUserResource());
-    environment.addResource(new AdminCartResource());
-    environment.addResource(new AdminRoleResource());
-    environment.addResource(new AdminItemResource());
-    // Resource - other
-    environment.addResource(new CustomerResource());
-    environment.addResource(new CustomerCartResource());
-    environment.addResource(new CustomerUserResource());
-    environment.addResource(new BitcoinPaymentResource());
+    // Resources - admin (needs ROLE_ADMIN)
+    environment.addResource(context.getBean(AdminUserResource.class));
+    environment.addResource(context.getBean(AdminRoleResource.class));
+    environment.addResource(context.getBean(AdminItemResource.class));
+    environment.addResource(context.getBean(AdminCartResource.class));
+    // Resources - customer (needs ROLE_CUSTOMER)
+    environment.addResource(context.getBean(CustomerUserResource.class));
+    environment.addResource(context.getBean(CustomerResource.class));
+    environment.addResource(context.getBean(CustomerCartResource.class));
+    environment.addResource(context.getBean(BitcoinPaymentResource.class));
+    // Resources - public (no authentication)
+    environment.addResource(context.getBean(PublicItemResource.class));
 
     // Health checks
     environment.addHealthCheck(new TemplatePropertyHealthCheck(template));
 
     // Providers
     environment.addProvider(new HmacRestrictedToProvider<User>(cachingAuthenticator, "REST"));
+
   }
 
 
