@@ -19,7 +19,15 @@ public class DojoStoreConfiguration extends Configuration {
   @JsonProperty
   private String authenticationCachePolicy="maximumSize=10000, expireAfterAccess=10m";
 
+  @NotEmpty
+  @JsonProperty
+  private String assetCachePolicy="maximumSize=10000, expireAfterAccess=5s";
+
   public String getAuthenticationCachePolicy() {
     return authenticationCachePolicy;
+  }
+
+  public String getAssetCachePolicy() {
+    return assetCachePolicy;
   }
 }
