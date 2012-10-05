@@ -83,6 +83,10 @@ public class MultiBitMerchantService extends Service<MultiBitMerchantConfigurati
     // Providers
     environment.addProvider(new HmacRestrictedToProvider<User>(cachingAuthenticator, "REST"));
 
+    // TODO Add the database loader code here
+//    if (configuration.loadInitialData) {
+//      new DataBaseLoader.initialise();
+//    }
   }
 
 

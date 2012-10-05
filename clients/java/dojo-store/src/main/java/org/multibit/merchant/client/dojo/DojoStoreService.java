@@ -1,7 +1,13 @@
 package org.multibit.merchant.client.dojo;
 
+import com.google.common.cache.CacheBuilderSpec;
 import com.yammer.dropwizard.Service;
+import com.yammer.dropwizard.bundles.AssetsBundle;
 import com.yammer.dropwizard.config.Environment;
+import com.yammer.dropwizard.views.ViewBundle;
+import com.yammer.dropwizard.views.ViewMessageBodyWriter;
+import org.multibit.merchant.client.dojo.health.DojoStoreHealthCheck;
+import org.multibit.merchant.client.dojo.resources.RootResource;
 
 /**
  * <p>Service to provide the following to application:</p>
@@ -27,7 +33,7 @@ public class DojoStoreService extends Service<DojoStoreConfiguration> {
   }
 
   private DojoStoreService() {
-    super("mbm");
+    super("store");
   }
 
   @Override
@@ -41,12 +47,21 @@ public class DojoStoreService extends Service<DojoStoreConfiguration> {
     // Start Spring context based on the provided location
 
     // Configure environment accordingly
+    environment.addResource(new RootResource());
 
     // Health checks
+    environment.addHealthCheck(new DojoStoreHealthCheck());
 
     // Providers
+    environment.addProvider(new ViewMessageBodyWriter());
 
+    // Bundles
+    addBundle(new ViewBundle());
+
+    // Create the asset bundle (tune the cache for development and production)
+    CacheBuilderSpec cbs = CacheBuilderSpec.parse(configuration.getAssetCachePolicy());
+    addBundle(new AssetsBundle("/assets/css", cbs, "/css"));
+    addBundle(new AssetsBundle("/assets/js", cbs, "/js"));
   }
-
 
 }
