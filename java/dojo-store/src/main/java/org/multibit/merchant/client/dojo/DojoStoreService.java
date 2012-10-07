@@ -62,6 +62,7 @@ public class DojoStoreService extends Service<DojoStoreConfiguration> {
     CacheBuilderSpec cbs = CacheBuilderSpec.parse(configuration.getAssetCachePolicy());
     addBundle(new AssetsBundle("/assets/css", cbs, "/css"));
     addBundle(new AssetsBundle("/assets/js", cbs, "/js"));
+    addBundle(new AssetsBundle("/assets/images", cbs, "/image"));
   }
 
 }
