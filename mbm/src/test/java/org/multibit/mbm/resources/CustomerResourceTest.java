@@ -29,7 +29,7 @@ public class CustomerResourceTest extends BaseJerseyResourceTest {
     testObject.setCustomerService(customerService);
 
     // Configure resources
-    addResource(testObject);
+    addSingleton(testObject);
 
   }
 

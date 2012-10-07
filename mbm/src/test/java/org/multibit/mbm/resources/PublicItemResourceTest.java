@@ -45,7 +45,7 @@ public class PublicItemResourceTest extends BaseJerseyResourceTest {
     testObject.setItemDao(itemDao);
 
     // Configure resources
-    addResource(testObject);
+    addSingleton(testObject);
 
   }
 

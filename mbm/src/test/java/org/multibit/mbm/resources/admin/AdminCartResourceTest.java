@@ -13,6 +13,7 @@ import org.multibit.mbm.db.dto.*;
 import org.multibit.mbm.test.BaseJerseyResourceTest;
 import org.multibit.mbm.test.FixtureAsserts;
 
+import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 import static org.mockito.Mockito.mock;
@@ -101,7 +102,7 @@ public class AdminCartResourceTest extends BaseJerseyResourceTest {
     testObject.setItemDao(itemDao);
 
     // Configure resources
-    addResource(testObject);
+    addSingleton(testObject);
 
   }
   @Test
@@ -143,7 +144,7 @@ public class AdminCartResourceTest extends BaseJerseyResourceTest {
     String actualResponse = client()
       .resource("/admin/cart/1")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
-      .entity(updateCartRequest)
+      .entity(updateCartRequest, MediaType.APPLICATION_JSON_TYPE)
       .put(String.class);
 
     FixtureAsserts.assertStringMatchesJsonFixture("UpdateCart by admin response render to HAL+JSON",actualResponse, "fixtures/hal/cart/expected-admin-update-cart.json");

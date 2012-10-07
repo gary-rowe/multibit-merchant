@@ -14,6 +14,7 @@ import org.multibit.mbm.db.dto.User;
 import org.multibit.mbm.test.BaseJerseyResourceTest;
 import org.multibit.mbm.test.FixtureAsserts;
 
+import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 import static org.mockito.Matchers.anyString;
@@ -63,7 +64,7 @@ public class AdminUserResourceTest extends BaseJerseyResourceTest {
     testObject.setUserDao(userDao);
 
     // Configure resources
-    addResource(testObject);
+    addSingleton(testObject);
 
   }
 
@@ -77,7 +78,7 @@ public class AdminUserResourceTest extends BaseJerseyResourceTest {
     String actualResponse = client()
       .resource("/admin/user")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
-      .entity(createUserRequest)
+      .entity(createUserRequest, MediaType.APPLICATION_JSON_TYPE)
       .post(String.class);
 
     FixtureAsserts.assertStringMatchesJsonFixture("CreateUser by admin response render to HAL+JSON",actualResponse, "fixtures/hal/user/expected-admin-create-user.json");
@@ -117,7 +118,7 @@ public class AdminUserResourceTest extends BaseJerseyResourceTest {
     String actualResponse = client()
       .resource("/admin/user/1")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
-      .entity(updateUserRequest)
+      .entity(updateUserRequest, MediaType.APPLICATION_JSON_TYPE)
       .put(String.class);
 
     FixtureAsserts.assertStringMatchesJsonFixture("UpdateUser by admin response render to HAL+JSON",actualResponse, "fixtures/hal/user/expected-admin-update-user.json");
@@ -133,7 +134,7 @@ public class AdminUserResourceTest extends BaseJerseyResourceTest {
     String actualResponse = client()
       .resource("/admin/user/1")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
-      .entity(deleteUserRequest)
+      .entity(deleteUserRequest, MediaType.APPLICATION_JSON_TYPE)
       .delete(String.class);
 
     FixtureAsserts.assertStringMatchesJsonFixture("DeleteUser by admin response render to HAL+JSON",actualResponse, "fixtures/hal/user/expected-admin-delete-user.json");

@@ -18,7 +18,7 @@ public class CustomerUserResourceTest extends BaseJerseyResourceTest {
     user.setId(1L);
 
     // Configure resources
-    addResource(testObject);
+    addSingleton(testObject);
 
   }
 
