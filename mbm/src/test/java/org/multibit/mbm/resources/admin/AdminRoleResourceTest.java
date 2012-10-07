@@ -15,6 +15,7 @@ import org.multibit.mbm.db.dto.User;
 import org.multibit.mbm.test.BaseJerseyResourceTest;
 import org.multibit.mbm.test.FixtureAsserts;
 
+import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 import static org.mockito.Matchers.isNotNull;
@@ -67,7 +68,7 @@ public class AdminRoleResourceTest extends BaseJerseyResourceTest {
     testObject.setRoleDao(roleDao);
 
     // Configure resources
-    addResource(testObject);
+    addSingleton(testObject);
 
   }
 
@@ -81,7 +82,7 @@ public class AdminRoleResourceTest extends BaseJerseyResourceTest {
     String actualResponse = client()
       .resource("/admin/role")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
-      .entity(createRoleRequest)
+      .entity(createRoleRequest, MediaType.APPLICATION_JSON_TYPE)
       .post(String.class);
 
     FixtureAsserts.assertStringMatchesJsonFixture("CreateRole by admin response render to HAL+JSON",actualResponse, "fixtures/hal/role/expected-admin-create-role.json");
@@ -123,7 +124,7 @@ public class AdminRoleResourceTest extends BaseJerseyResourceTest {
     String actualResponse = client()
       .resource("/admin/role/1")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
-      .entity(updateRoleRequest)
+      .entity(updateRoleRequest, MediaType.APPLICATION_JSON_TYPE)
       .put(String.class);
 
     FixtureAsserts.assertStringMatchesJsonFixture("UpdateRole by admin response render to HAL+JSON",actualResponse, "fixtures/hal/role/expected-admin-update-role.json");
@@ -139,7 +140,7 @@ public class AdminRoleResourceTest extends BaseJerseyResourceTest {
     String actualResponse = client()
       .resource("/admin/role/1")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
-      .entity(deleteRoleRequest)
+      .entity(deleteRoleRequest, MediaType.APPLICATION_JSON_TYPE)
       .delete(String.class);
 
     FixtureAsserts.assertStringMatchesJsonFixture("DeleteRole by admin response render to HAL+JSON",actualResponse, "fixtures/hal/role/expected-admin-delete-role.json");

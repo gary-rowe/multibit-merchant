@@ -17,7 +17,7 @@ public class BitcoinPaymentResourceTest extends BaseJerseyResourceTest {
     // Configure the test object
     BitcoinPaymentResource testObject = new BitcoinPaymentResource();
 
-    addResource(testObject);
+    addSingleton(testObject);
 
     setUpAuthenticator();
   }
