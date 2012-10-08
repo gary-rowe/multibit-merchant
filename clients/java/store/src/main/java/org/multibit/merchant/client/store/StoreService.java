@@ -7,7 +7,7 @@ import com.yammer.dropwizard.config.Environment;
 import com.yammer.dropwizard.views.ViewBundle;
 import com.yammer.dropwizard.views.ViewMessageBodyWriter;
 import org.multibit.merchant.client.store.health.StoreHealthCheck;
-import org.multibit.merchant.client.store.resources.RootResource;
+import org.multibit.merchant.client.store.resources.PublicHomeResource;
 
 /**
  * <p>Service to provide the following to application:</p>
@@ -24,7 +24,7 @@ public class StoreService extends Service<StoreConfiguration> {
   /**
    * Main entry point to the application
    *
-   * @param args
+   * @param args CLI arguments
    *
    * @throws Exception
    */
@@ -34,6 +34,11 @@ public class StoreService extends Service<StoreConfiguration> {
 
   private StoreService() {
     super("store");
+    // TODO Work out why this has to be in the constructor or it fails
+    CacheBuilderSpec cacheBuilderSpec = (System.getenv("FILE_CACHE_ENABLED") == null) ? CacheBuilderSpec.parse("maximumSize=0") : AssetsBundle.DEFAULT_CACHE_SPEC;
+    addBundle(new AssetsBundle("/assets/css", cacheBuilderSpec, "/css"));
+    addBundle(new AssetsBundle("/assets/js", cacheBuilderSpec, "/js"));
+    addBundle(new AssetsBundle("/assets/images", cacheBuilderSpec, "/images"));
   }
 
   @Override
@@ -47,7 +52,7 @@ public class StoreService extends Service<StoreConfiguration> {
     // Start Spring context based on the provided location
 
     // Configure environment accordingly
-    environment.addResource(new RootResource());
+    environment.scanPackagesForResourcesAndProviders(PublicHomeResource.class);
 
     // Health checks
     environment.addHealthCheck(new StoreHealthCheck());
@@ -58,9 +63,6 @@ public class StoreService extends Service<StoreConfiguration> {
     // Bundles
     addBundle(new ViewBundle());
 
-    CacheBuilderSpec cacheBuilderSpec = (System.getenv("FILE_CACHE_ENABLED") == null) ? CacheBuilderSpec.parse("maximumSize=0") : AssetsBundle.DEFAULT_CACHE_SPEC;
-    addBundle(new AssetsBundle("/assets/css", cacheBuilderSpec, "/css"));
-    addBundle(new AssetsBundle("/assets/js", cacheBuilderSpec, "/js"));
   }
 
 }
