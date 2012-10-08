@@ -33,7 +33,7 @@ public class BitcoinPaymentResource extends BaseResource {
 
   private static final Logger log = LoggerFactory.getLogger(BitcoinPaymentResource.class);
 
-  @Resource(name="defaultBitcoinService")
+  //@Resource(name="defaultBitcoinService")
   BitcoinService bitcoinService;
 
   /**

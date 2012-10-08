@@ -16,7 +16,7 @@
     <module>mbm</module>
     <module>common/dropwizard-hal</module>
     <module>common/dropwizard-hal-testing</module>
-    <module>clients/java/dojo-store</module>
+    <module>clients/java/store</module>
   </modules>
 
   <!-- Entries listed here occur more than once in the POM -->
@@ -28,7 +28,7 @@
     <spring-social.version>1.0.0.RELEASE</spring-social.version>
     <slf4j.version>1.6.1</slf4j.version>
     <logback.version>1.0.6</logback.version>
-    <bitcoinj.version>0.5</bitcoinj.version>
+    <bitcoinj.version>0.5.0</bitcoinj.version>
   </properties>
 
   <developers>
