@@ -13,17 +13,15 @@ import java.util.concurrent.TimeUnit;
 /**
  * <p>Resource to provide the following to application:</p>
  * <ul>
- * <li>Provision of REST endpoints to manage Item retrieval operations
- * by the public</li>
+ * <li>Provision of configuration for public contact page</li>
  * </ul>
- * <p>This is the main interaction point for the public to get detail on Items for sale.</p>
  *
  * @since 0.0.1
  */
 @Component
-@Path("/home")
+@Path("/contact")
 @Produces(MediaType.TEXT_HTML)
-public class RootResource {
+public class PublicContactResource {
 
   /**
    * Provide the initial view on to the system
@@ -33,9 +31,9 @@ public class RootResource {
   @GET
   @Timed
   @CacheControl(maxAge = 5, maxAgeUnit = TimeUnit.MINUTES)
-  public RootView retrieveAllByPage() {
-
-    return new RootView("Hello");
-
+  public PublicFreemarkerView retrieveAllByPage() {
+    // TODO Add i18n
+    return new PublicFreemarkerView("store/contact.ftl");
   }
+
 }
