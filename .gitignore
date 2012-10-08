@@ -7,7 +7,8 @@
 /pom.xml.bak
 /multibit.blockchain
 /mbm/target
-/mbm-clients/java/jsp-jquery/target
+/clients/java/jsp-jquery/target
+/clients/java/store/target
 
 mbm/log
 
