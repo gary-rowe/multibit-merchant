@@ -1,4 +1,4 @@
-package org.multibit.merchant.client.dojo.health;
+package org.multibit.merchant.client.store.health;
 
 /**
  * <p>HealthCheck to provide the following to application:</p>

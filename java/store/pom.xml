@@ -10,12 +10,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.multibit.merchant.client.java</groupId>
-  <artifactId>dojo-store</artifactId>
+  <artifactId>store</artifactId>
 
   <url>http://multibitmerchant.org</url>
 
   <name>MultiBit Merchant Dojo Client</name>
-  <description>A Java MBM client based on Dojo</description>
+  <description>An online store using Dropwizard and MBM</description>
   <inceptionYear>2012</inceptionYear>
 
   <build>

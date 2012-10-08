@@ -1,4 +1,4 @@
-package org.multibit.merchant.client.dojo.health;
+package org.multibit.merchant.client.store.health;
 
 /**
  * <p>HealthCheck to provide the following to application:</p>
@@ -12,9 +12,9 @@ package org.multibit.merchant.client.dojo.health;
 
 import com.yammer.metrics.core.HealthCheck;
 
-public class DojoStoreHealthCheck extends HealthCheck {
+public class StoreHealthCheck extends HealthCheck {
 
-  public DojoStoreHealthCheck() {
+  public StoreHealthCheck() {
     super("Dojo Store");
   }
 

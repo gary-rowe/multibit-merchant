@@ -1,4 +1,4 @@
-package org.multibit.merchant.client.dojo.resources;
+package org.multibit.merchant.client.store.resources;
 
 import com.yammer.dropwizard.views.View;
 
