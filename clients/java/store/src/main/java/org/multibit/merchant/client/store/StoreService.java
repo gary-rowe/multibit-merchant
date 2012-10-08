@@ -1,4 +1,4 @@
-package org.multibit.merchant.client.dojo;
+package org.multibit.merchant.client.store;
 
 import com.google.common.cache.CacheBuilderSpec;
 import com.yammer.dropwizard.Service;
@@ -6,8 +6,8 @@ import com.yammer.dropwizard.bundles.AssetsBundle;
 import com.yammer.dropwizard.config.Environment;
 import com.yammer.dropwizard.views.ViewBundle;
 import com.yammer.dropwizard.views.ViewMessageBodyWriter;
-import org.multibit.merchant.client.dojo.health.DojoStoreHealthCheck;
-import org.multibit.merchant.client.dojo.resources.RootResource;
+import org.multibit.merchant.client.store.health.StoreHealthCheck;
+import org.multibit.merchant.client.store.resources.RootResource;
 
 /**
  * <p>Service to provide the following to application:</p>
@@ -19,7 +19,7 @@ import org.multibit.merchant.client.dojo.resources.RootResource;
  * @since 0.0.1
  *         
  */
-public class DojoStoreService extends Service<DojoStoreConfiguration> {
+public class StoreService extends Service<StoreConfiguration> {
 
   /**
    * Main entry point to the application
@@ -29,15 +29,15 @@ public class DojoStoreService extends Service<DojoStoreConfiguration> {
    * @throws Exception
    */
   public static void main(String[] args) throws Exception {
-    new DojoStoreService().run(args);
+    new StoreService().run(args);
   }
 
-  private DojoStoreService() {
+  private StoreService() {
     super("store");
   }
 
   @Override
-  protected void initialize(DojoStoreConfiguration configuration,
+  protected void initialize(StoreConfiguration configuration,
                             Environment environment) {
 
     // Read the configuration
@@ -50,7 +50,7 @@ public class DojoStoreService extends Service<DojoStoreConfiguration> {
     environment.addResource(new RootResource());
 
     // Health checks
-    environment.addHealthCheck(new DojoStoreHealthCheck());
+    environment.addHealthCheck(new StoreHealthCheck());
 
     // Providers
     environment.addProvider(new ViewMessageBodyWriter());
@@ -58,11 +58,9 @@ public class DojoStoreService extends Service<DojoStoreConfiguration> {
     // Bundles
     addBundle(new ViewBundle());
 
-    // Create the asset bundle (tune the cache for development and production)
-    CacheBuilderSpec cbs = CacheBuilderSpec.parse(configuration.getAssetCachePolicy());
-    addBundle(new AssetsBundle("/assets/css", cbs, "/css"));
-    addBundle(new AssetsBundle("/assets/js", cbs, "/js"));
-    addBundle(new AssetsBundle("/assets/images", cbs, "/image"));
+    CacheBuilderSpec cacheBuilderSpec = (System.getenv("FILE_CACHE_ENABLED") == null) ? CacheBuilderSpec.parse("maximumSize=0") : AssetsBundle.DEFAULT_CACHE_SPEC;
+    addBundle(new AssetsBundle("/assets/css", cacheBuilderSpec, "/css"));
+    addBundle(new AssetsBundle("/assets/js", cacheBuilderSpec, "/js"));
   }
 
 }

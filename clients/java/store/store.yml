@@ -2,7 +2,6 @@
 http:
   port: 9090
   adminPort: 9091
-  rootPath: /store/*
 
 # TODO Put only the database connectivity in here
 # Load up all default values directly into the database

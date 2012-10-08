@@ -1,4 +1,4 @@
-package org.multibit.merchant.client.dojo.resources;
+package org.multibit.merchant.client.store.resources;
 
 import com.yammer.dropwizard.jersey.caching.CacheControl;
 import com.yammer.metrics.annotation.Timed;

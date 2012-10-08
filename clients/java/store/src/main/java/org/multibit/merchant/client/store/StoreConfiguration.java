@@ -1,4 +1,4 @@
-package org.multibit.merchant.client.dojo;
+package org.multibit.merchant.client.store;
 
 import com.yammer.dropwizard.config.Configuration;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -13,7 +13,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  * @since 0.0.1
  *         
  */
-public class DojoStoreConfiguration extends Configuration {
+public class StoreConfiguration extends Configuration {
 
   @NotEmpty
   @JsonProperty
