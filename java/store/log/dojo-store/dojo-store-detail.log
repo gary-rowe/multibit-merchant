@@ -1,0 +1,7 @@
+%d{HH:mm:ss.SSS} study.local [%thread] %-5level %logger{36} - %msg %xEx%n
+%d{HH:mm:ss.SSS} study.local [%thread] %-5level %logger{36} - %msg %xEx%n
+%d{HH:mm:ss.SSS} study.local [%thread] %-5level %logger{36} - %msg %xEx%n
+%d{HH:mm:ss.SSS} study.local [%thread] %-5level %logger{36} - %msg %xEx%n
+%d{HH:mm:ss.SSS} study.local [%thread] %-5level %logger{36} - %msg %xEx%n
+%d{HH:mm:ss.SSS} study.local [%thread] %-5level %logger{36} - %msg %xEx%n
+%d{HH:mm:ss.SSS} study.local [%thread] %-5level %logger{36} - %msg %xEx%n

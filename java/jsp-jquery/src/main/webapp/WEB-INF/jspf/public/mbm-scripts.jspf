@@ -1,0 +1,8 @@
+<%@include file="taglibs.jspf" %>
+<script type="text/javascript" src="<c:url value="/plugins/jquery/form/jquery.form.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/plugins/jquery/atmosphere/jquery.atmosphere.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/plugins/jquery/templates/jquery.tmpl.min.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/mbm/alert.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/mbm/root.js"/>"></script>
+
+
