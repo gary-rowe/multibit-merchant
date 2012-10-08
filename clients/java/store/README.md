@@ -1,11 +1,12 @@
-# Dojo Store
+# MultiBit Store
 
 This module is an online shop built with the following:
 
 * Java
 * MBM - Providing the heavy lifting for back end merchant operations
 * Dropwizard - Serves HTML and JavaScript, intermediates with the MBM platform
-* Dojo - A JavaScript framework providing a large collection of UI components driven through Ajax
+* Bootstrap - A JavaScript framework providing a simple CSS scheme
+* jQuery - A JavaScript framework providing a variety of utilities
 
 It is intended as a general-purpose online shop, but also as a demonstrator of the MBM platform.
 
