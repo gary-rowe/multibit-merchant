@@ -4,8 +4,8 @@
     <connections />
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../dojo-store/target/classes" />
-    <output-test url="file://$MODULE_DIR$/../dojo-store/target/test-classes" />
+    <output url="file://$MODULE_DIR$/target/classes" />
+    <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" isTestSource="false" />
@@ -22,8 +22,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="dojo" level="application" />
-    <orderEntry type="module" module-name="dropwizard-hal" />
-    <orderEntry type="module" module-name="dropwizard-hal-testing" />
     <orderEntry type="module" module-name="dropwizard-hal" />
     <orderEntry type="module" module-name="dropwizard-hal-testing" />
     <orderEntry type="library" name="Maven: com.yammer.dropwizard:dropwizard-core:0.5.1" level="project" />

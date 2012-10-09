@@ -1,1 +1,1 @@
-web:    java -jar clients/java/store/target/store-develop-SNAPSHOT.jar server clients/java/store/store.yml
+web:    java -jar clients/java/store/target/store-develop-SNAPSHOT.jar server clients/java/store/store-heroku.yml
