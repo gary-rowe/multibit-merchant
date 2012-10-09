@@ -1,8 +1,9 @@
 # Define the HTTP settings
-# Heroku demands port 8080 for resources
+# Heroku demands a single port of 8080 for resources
+# This triggers the /admin behaviour of Dropwizard
 http:
   port: 8080
-  adminPort: 8081
+  adminPort: 8080
 
 # TODO Put only the database connectivity in here
 # Load up all default values directly into the database
