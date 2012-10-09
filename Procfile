@@ -1,0 +1,1 @@
+web:    java -jar clients/java/store/target/store-develop-SNAPSHOT.jar server clients/java/store/store.yml
