@@ -1,0 +1,1 @@
+{"_links":{"self":{"href":"http://localhost:9998/user"}},"_embedded":{"http://localhost:9998/user/1":{"_links":{"http://localhost:9998/user/1 self":{"href":"http://localhost:9998/user/1"}},"email":"alice@example.org","id":1,"last_name":"Customer","names":"Alice","secret_key":null,"username":"alice"}}}

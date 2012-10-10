@@ -1,0 +1,63 @@
+{"_links":{
+  "self":{
+    "href":"http://localhost:9998/cart/1"
+  },
+  "customer":{
+    "href":"http://localhost:9998/customer/1"
+  }
+}, "btc_total":"4.78", "id":1, "local_symbol":"&euro;", "local_total":"13.94", "_embedded":{
+  "cartitems":[
+    {
+      "_links":{
+        "cartitems self":{
+          "href":"http://localhost:9998/cart/1/cartitem/2"
+        }
+      },
+      "quantity":2,
+      "_embedded":{
+        "item":{
+          "_links":{
+            "item self":{
+              "href":"http://localhost:9998/item/2"
+            },
+            "image_thumbnail_uri":{
+              "href":"http://localhost:9998/mbm/images/catalog/items/4/thumbnail4.png"
+            }
+          },
+          "author":"Hannu Rajaniemi",
+          "id":2,
+          "sku":"0575088893",
+          "slug":"the-quantum-thief",
+          "summary":"The most exciting SF debut of the last five years - a star to stand alongside Alistair Reynolds and Richard Morgan.",
+          "title":"The Quantum Thief"
+        }
+      }
+    },
+    {
+      "_links":{
+        "cartitems self":{
+          "href":"http://localhost:9998/cart/1/cartitem/3"
+        }
+      },
+      "quantity":3,
+      "_embedded":{
+        "item":{
+          "_links":{
+            "item self":{
+              "href":"http://localhost:9998/item/3"
+            },
+            "image_thumbnail_uri":{
+              "href":"http://localhost:9998/mbm/images/catalog/items/5/thumbnail5.png"
+            }
+          },
+          "author":"Emily Dickinson, edited by Thomas H Johnson",
+          "id":3,
+          "sku":"0316184136",
+          "slug":"the-complete-works-of-emily-dickinson",
+          "summary":"The Complete Poems of Emily Dickinson is the only one-volume edition containing all Emily Dickinson's poems.",
+          "title":"The Complete Works of Emily Dickinson"
+        }
+      }
+    }
+  ]
+}}

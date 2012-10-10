@@ -1,0 +1,1 @@
+<resource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" href="http://localhost:9998/user"><resource href="http://localhost:9998/user/1" rel="http://localhost:9998/user/1 self"><id>1</id><name xsi:nil="true" /></resource><resource href="http://localhost:9998/user/2" rel="http://localhost:9998/user/2 self"><id>2</id><name xsi:nil="true" /></resource></resource>

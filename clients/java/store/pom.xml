@@ -1,0 +1,162 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <parent>
+    <groupId>org.multibit.merchant</groupId>
+    <artifactId>mbm-parent</artifactId>
+    <version>develop-SNAPSHOT</version>
+    <relativePath>../../../pom.xml</relativePath>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.multibit.merchant.client.java</groupId>
+  <artifactId>store</artifactId>
+
+  <url>http://multibitmerchant.org</url>
+
+  <name>MultiBit Merchant Dojo Client</name>
+  <description>An online store using Dropwizard and MBM</description>
+  <inceptionYear>2012</inceptionYear>
+
+  <build>
+
+    <!-- Shade plugin is required to make a "slim" JAR -->
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>1.6</version>
+        <configuration>
+          <createDependencyReducedPom>true</createDependencyReducedPom>
+          <filters>
+            <filter>
+              <artifact>*:*</artifact>
+              <excludes>
+                <exclude>META-INF/*.SF</exclude>
+                <exclude>META-INF/*.DSA</exclude>
+                <exclude>META-INF/*.RSA</exclude>
+              </excludes>
+            </filter>
+          </filters>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>org.multibit.merchant.client.store.StoreService</mainClass>
+                </transformer>
+              </transformers>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+
+    <!-- MBM Common libraries -->
+    <!-- Provides common HAL support -->
+    <dependency>
+      <groupId>org.multibit.merchant</groupId>
+      <artifactId>dropwizard-hal</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
+    <!-- Provides common HAL representation testing support -->
+    <dependency>
+      <groupId>org.multibit.merchant</groupId>
+      <artifactId>dropwizard-hal-testing</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
+
+    <!-- Dropwizard framework -->
+    <!-- Core functionality -->
+    <dependency>
+      <groupId>com.yammer.dropwizard</groupId>
+      <artifactId>dropwizard-core</artifactId>
+    </dependency>
+    <!-- Authentication support -->
+    <dependency>
+      <groupId>com.yammer.dropwizard</groupId>
+      <artifactId>dropwizard-auth</artifactId>
+    </dependency>
+    <!-- Resource testing support -->
+    <dependency>
+      <groupId>com.yammer.dropwizard</groupId>
+      <artifactId>dropwizard-testing</artifactId>
+    </dependency>
+    <!-- HTML Freemarker views support -->
+    <dependency>
+      <groupId>com.yammer.dropwizard</groupId>
+      <artifactId>dropwizard-views</artifactId>
+    </dependency>
+
+    <!-- Spring framework -->
+    <!-- Spring JPA for ORM -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-orm</artifactId>
+    </dependency>
+    <!-- Spring testing support (e.g. transactional tests) -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+    </dependency>
+
+    <!-- Hibernate framework -->
+    <dependency>
+      <groupId>org.hibernate.java-persistence</groupId>
+      <artifactId>jpa-api</artifactId>
+    </dependency>
+    <!-- Must match Dropwizard's entry but must be present
+         to allow unit tests -->
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-entitymanager</artifactId>
+      <version>3.6.0.Final</version>
+    </dependency>
+
+    <!-- HSQLDB database -->
+    <dependency>
+      <groupId>org.hsqldb</groupId>
+      <artifactId>hsqldb</artifactId>
+      <version>2.2.8</version>
+    </dependency>
+
+
+    <!-- Atmosphere for push broadcast -->
+    <!-- TODO Consider re-instating this later -->
+    <!--<dependency>-->
+    <!--<groupId>org.atmosphere</groupId>-->
+    <!--<artifactId>atmosphere-runtime</artifactId>-->
+    <!--</dependency>-->
+
+    <!-- All time handling is through Joda -->
+    <dependency>
+      <groupId>joda-time</groupId>
+      <artifactId>joda-time</artifactId>
+    </dependency>
+
+    <!-- Jasypt for protecting shared secrets -->
+    <dependency>
+      <groupId>org.jasypt</groupId>
+      <artifactId>jasypt</artifactId>
+      <version>1.9.0</version>
+    </dependency>
+
+    <!-- HAL provides the resource representation -->
+    <dependency>
+      <groupId>com.theoryinpractise</groupId>
+      <artifactId>halbuilder</artifactId>
+      <version>1.0.5</version>
+    </dependency>
+
+  </dependencies>
+
+</project>
