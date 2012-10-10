@@ -23,3 +23,7 @@ MultiBitMerchant.iml
 mbm-parent.iml
 
 multibit-merchant.iml
+
+*.iml
+
+.DS_Store
