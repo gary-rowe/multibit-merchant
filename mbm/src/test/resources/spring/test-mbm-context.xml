@@ -14,14 +14,14 @@
        http://www.springframework.org/schema/jdbc
        http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
-  <!-- Requires a configured TransactionManager -->
-  <import resource="classpath:/spring/mbm-hibernate-service.xml" />
-
   <!-- Enables annotation driven configuration for tests -->
   <context:annotation-config/>
 
   <!-- DAOs and DTOs are in these packages and below for tests -->
-  <context:component-scan base-package="org.multibit"/>
+  <context:component-scan base-package="org.multibit.mbm"/>
+
+  <!-- Requires a configured TransactionManager -->
+  <import resource="classpath:/spring/mbm-hibernate-service.xml" />
 
   <!-- Exception translation bean post processor -->
   <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>

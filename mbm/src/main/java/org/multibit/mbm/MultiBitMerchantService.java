@@ -16,6 +16,7 @@ import org.multibit.mbm.resources.admin.AdminItemResource;
 import org.multibit.mbm.resources.admin.AdminRoleResource;
 import org.multibit.mbm.resources.admin.AdminUserResource;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 /**
@@ -57,8 +58,8 @@ public class MultiBitMerchantService extends Service<MultiBitMerchantConfigurati
 
     // Start Spring context based on the provided location
     // TODO Externalise this into the configuration - Spring provides too much to ignore
-    ApplicationContext context = new FileSystemXmlApplicationContext(new String[]{
-      "src/test/resources/spring/test-mbm-context.xml"
+    ApplicationContext context = new ClassPathXmlApplicationContext(new String[]{
+      "/spring/mbm-context.xml"
     });
 
     // Configure environment accordingly

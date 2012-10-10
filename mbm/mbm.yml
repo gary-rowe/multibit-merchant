@@ -4,9 +4,6 @@ http:
   adminPort: 8081
   rootPath: /mbm/*
 
-template: Hello, %s!
-defaultName: Stranger
-
 # TODO Put only the database connectivity in here
 # Load up all default values directly into the database
 
