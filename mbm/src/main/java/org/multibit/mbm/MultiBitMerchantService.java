@@ -50,8 +50,6 @@ public class MultiBitMerchantService extends Service<MultiBitMerchantConfigurati
                             Environment environment) {
 
     // Read the configuration
-    final String template = configuration.getTemplate();
-    final String defaultName = configuration.getDefaultName();
 
     // Configure authenticator
     Authenticator<HmacCredentials, User> authenticator = new HmacAuthenticator();
@@ -78,7 +76,7 @@ public class MultiBitMerchantService extends Service<MultiBitMerchantConfigurati
     environment.addResource(context.getBean(PublicItemResource.class));
 
     // Health checks
-    environment.addHealthCheck(new TemplatePropertyHealthCheck(template));
+    environment.addHealthCheck(new TemplatePropertyHealthCheck());
 
     // Providers
     environment.addProvider(new HmacRestrictedToProvider<User>(cachingAuthenticator, "REST"));
