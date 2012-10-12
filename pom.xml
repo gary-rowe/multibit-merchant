@@ -16,7 +16,6 @@
     <module>mbm</module>
     <module>common/dropwizard-hal</module>
     <module>common/dropwizard-hal-testing</module>
-    <module>clients/java/store</module>
   </modules>
 
   <!-- Entries listed here occur more than once in the POM -->
