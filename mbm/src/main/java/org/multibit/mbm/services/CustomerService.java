@@ -7,8 +7,8 @@ import org.multibit.mbm.db.dao.ItemDao;
 import org.multibit.mbm.db.dto.Cart;
 import org.multibit.mbm.db.dto.Customer;
 import org.multibit.mbm.db.dto.Item;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.yammer.dropwizard.logging.Log;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +28,7 @@ import javax.annotation.Resource;
 @Transactional(readOnly = true)
 public class CustomerService {
 
-  private static final Logger log = LoggerFactory.getLogger(CustomerService.class);
+  private static final Log LOG = Log.forClass(CustomerService.class);
 
   @Resource(name = "hibernateCustomerDao")
   private CustomerDao customerDao;

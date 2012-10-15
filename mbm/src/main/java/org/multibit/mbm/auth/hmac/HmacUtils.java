@@ -73,12 +73,17 @@ public class HmacUtils {
   }
 
   /**
-   *
    * @param clientRequest Providing the HTTP information necessary from the client side
    *
    * @return A curl command that emulates the client request
    */
   public static String createCurlCommand(ClientRequest clientRequest, Providers providers, String canonicalRepresentation, String sharedSecret, String apiKey) {
+
+    // Extract the original headers
+    MultivaluedMap<String, Object> originalHeaders = clientRequest.getHeaders();
+
+    // Create a lexicographically sorted set of the header names for lookup later
+    Set<String> headerNames = filterAndSortHeaderNames(originalHeaders.keySet());
 
     // Compute the representation signature
     String signature = new String(HmacUtils.computeSignature("HmacSHA1", canonicalRepresentation.getBytes(), sharedSecret.getBytes()));
@@ -87,11 +92,73 @@ public class HmacUtils {
     String httpMethod = clientRequest.getMethod().toUpperCase();
     StringBuilder curlCommand = new StringBuilder("curl --verbose ");
     curlCommand.append("--output \"response.txt\" ");
-    curlCommand.append("--header \"Accept:application/hal+json\" ");
-    curlCommand.append("--header \"Content-Type:application/json\" ");
-    curlCommand.append("--header \"Authorization:");
-    curlCommand.append(authorization);
-    curlCommand.append("\" ");
+
+    // Add in the Authorization header
+    curlCommand
+      .append("--header Authorization:\"")
+      .append(authorization)
+      .append("\" ");
+
+    // Add in the Content-Type header
+    curlCommand
+      .append("--header \"Content-Type:application/json\" ");
+
+    // Add in HMAC date
+    if (originalHeaders.containsKey(X_HMAC_DATE)) {
+      // Use the TTL date
+      curlCommand
+        .append("--header \"")
+        .append(X_HMAC_DATE)
+        .append(":")
+        .append(originalHeaders.getFirst(X_HMAC_DATE))
+        .append("\" ");
+    }
+
+    // Add in HTTP date
+    if (originalHeaders.containsKey(HttpHeaders.DATE)) {
+      // Use the HTTP date
+      curlCommand
+        .append("--header \"")
+        .append(HttpHeaders.DATE)
+        .append(":")
+        .append(originalHeaders.getFirst(HttpHeaders.DATE))
+        .append("\" ");
+    }
+
+    // Add the nonce for the request in the form
+    // "nonce:#nonce-in-request" followed by a single newline.
+    // If no nonce is passed use the empty string as nonce value.
+    if (originalHeaders.containsKey(X_HMAC_NONCE)) {
+      curlCommand
+        .append("--header \"")
+        .append(X_HMAC_NONCE)
+        .append(":")
+        .append(originalHeaders.getFirst(X_HMAC_NONCE))
+        .append("\" ");
+    } else {
+      curlCommand
+        .append("--header \"")
+        .append(X_HMAC_NONCE)
+        .append(":\" ");
+    }
+
+    // Sort the remaining headers lexicographically by header name.
+    // Trim header values by removing any whitespace before the first non-whitespace character and after the last non-whitespace character.
+    // Combine lowercase header names and header values using a single colon (“:”) as separator. Do not include whitespace characters around the separator.
+    // Combine all headers using a single newline (U+000A) character and append them to the canonical representation, followed by a single newline (U+000A) character.
+    for (String headerName : headerNames) {
+      curlCommand
+        .append("--header \"")
+        .append(headerName.toLowerCase())
+        .append(":");
+      // TODO Consider effect of different separators on this list
+      for (Object value : originalHeaders.get(headerName)) {
+        curlCommand
+          .append(value.toString());
+      }
+      curlCommand
+        .append("\" ");
+    }
 
     // Check for payload
     if ("POST".equalsIgnoreCase(httpMethod) ||
@@ -147,17 +214,7 @@ public class HmacUtils {
     // Extract the original URI
     URI uri = clientRequest.getURI();
 
-    // Create a lexicographically sorted set of the header names for lookup later
-    SortedSet<String> headerNames = Sets.newTreeSet(originalHeaders.keySet());
-    // Remove some headers that should not be included or will have special treatment
-    headerNames.remove(HttpHeaders.DATE);
-    headerNames.remove(X_HMAC_DATE);
-    headerNames.remove(X_HMAC_NONCE);
-    // TODO Check if the following should be removed (would the client know them in advance?)
-    headerNames.remove(HttpHeaders.USER_AGENT);
-    headerNames.remove(HttpHeaders.HOST);
-    headerNames.remove(HttpHeaders.ACCEPT);
-    headerNames.remove(HttpHeaders.CONTENT_TYPE);
+    SortedSet<String> headerNames = filterAndSortHeaderNames(originalHeaders.keySet());
 
     String httpMethod = clientRequest.getMethod().toUpperCase();
 
@@ -176,7 +233,7 @@ public class HmacUtils {
         .append("date:")
         .append(originalHeaders.getFirst(X_HMAC_DATE))
         .append("\n");
-    } else {
+    } else if (originalHeaders.containsKey(HttpHeaders.DATE)) {
       // Use the HTTP date
       canonicalRepresentation
         .append("date:")
@@ -184,11 +241,17 @@ public class HmacUtils {
         .append("\n");
     }
 
-    // Add the nonce for the request in the form "nonce:#nonce-in-request" followed by a single newline. If no nonce is passed use the empty string as nonce value.
+    // Add the nonce for the request in the form
+    // "nonce:#nonce-in-request" followed by a single newline.
+    // If no nonce is passed use the empty string as nonce value.
     if (originalHeaders.containsKey(X_HMAC_NONCE)) {
       canonicalRepresentation
         .append("nonce:")
         .append(originalHeaders.getFirst(X_HMAC_NONCE))
+        .append("\n");
+    } else {
+      canonicalRepresentation
+        .append("nonce:")
         .append("\n");
     }
 
@@ -259,17 +322,7 @@ public class HmacUtils {
     MultivaluedMap<String, String> originalHeaders = containerRequest.getRequestHeaders();
 
     // Create a lexicographically sorted set of the header names for lookup later
-    Set<String> headerNames = Sets.newTreeSet(originalHeaders.keySet());
-    // Remove some headers that should not be included or will have special treatment
-    headerNames.remove(HttpHeaders.DATE);
-    headerNames.remove(HmacUtils.X_HMAC_DATE);
-    headerNames.remove(HmacUtils.X_HMAC_NONCE);
-    headerNames.remove(HttpHeaders.AUTHORIZATION);
-    // TODO Check if the following should be removed (would the client know them in advance?)
-    headerNames.remove(HttpHeaders.USER_AGENT);
-    headerNames.remove(HttpHeaders.HOST);
-    headerNames.remove(HttpHeaders.ACCEPT);
-    headerNames.remove(HttpHeaders.CONTENT_TYPE);
+    Set<String> headerNames = filterAndSortHeaderNames(originalHeaders.keySet());
 
     // Keep track of the method in a fixed format
     String httpMethod = containerRequest.getMethod().toUpperCase();
@@ -290,7 +343,7 @@ public class HmacUtils {
         .append(originalHeaders.getFirst(HmacUtils.X_HMAC_DATE))
         .append("\n");
 
-    } else {
+    } else if (originalHeaders.containsKey(HttpHeaders.DATE)) {
       // Use the HTTP date
       canonicalRepresentation
         .append("date:")
@@ -298,11 +351,17 @@ public class HmacUtils {
         .append("\n");
     }
 
-    // Add the nonce for the request in the form "nonce:#nonce-in-request" followed by a single newline. If no nonce is passed use the empty string as nonce value.
+    // Add the nonce for the request in the form
+    // "nonce:#nonce-in-request" followed by a single newline.
+    // If no nonce is passed use the empty string as nonce value.
     if (originalHeaders.containsKey(HmacUtils.X_HMAC_NONCE)) {
       canonicalRepresentation
         .append("nonce:")
         .append(originalHeaders.getFirst(HmacUtils.X_HMAC_NONCE))
+        .append("\n");
+    } else {
+      canonicalRepresentation
+        .append("nonce:")
         .append("\n");
     }
 
@@ -374,6 +433,27 @@ public class HmacUtils {
     }
 
     return canonicalRepresentation.toString();
+  }
+
+  /**
+   * @param originalHeaderNames The original HTTP header names
+   * @return A filtered collection of headers that should be included in the canonical representation
+   */
+  private static SortedSet<String> filterAndSortHeaderNames(Set<String> originalHeaderNames) {
+    // Create a lexicographically sorted set of the header names for lookup later
+    SortedSet<String> headerNames = Sets.newTreeSet(originalHeaderNames);
+    // Remove some headers that should not be included or will have special treatment
+    headerNames.remove(X_HMAC_DATE);
+    headerNames.remove(X_HMAC_NONCE);
+    // Remove the following standard HTTP headers since not all clients will know them in advance
+    headerNames.remove(HttpHeaders.ACCEPT);
+    headerNames.remove(HttpHeaders.AUTHORIZATION);
+    headerNames.remove(HttpHeaders.CONTENT_LENGTH);
+    headerNames.remove(HttpHeaders.CONTENT_TYPE);
+    headerNames.remove(HttpHeaders.DATE);
+    headerNames.remove(HttpHeaders.HOST);
+    headerNames.remove(HttpHeaders.USER_AGENT);
+    return headerNames;
   }
 
 

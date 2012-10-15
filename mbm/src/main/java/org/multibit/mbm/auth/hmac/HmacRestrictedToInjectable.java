@@ -8,8 +8,8 @@ import com.sun.jersey.spi.container.ContainerRequest;
 import com.yammer.dropwizard.auth.AuthenticationException;
 import com.yammer.dropwizard.auth.Authenticator;
 import org.multibit.mbm.db.dto.Authority;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.yammer.dropwizard.logging.Log;
+
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
@@ -87,7 +87,7 @@ import javax.ws.rs.core.Response;
  */
 class HmacRestrictedToInjectable<T> extends AbstractHttpContextInjectable<T> {
 
-  private final Logger log = LoggerFactory.getLogger(HmacRestrictedToInjectable.class);
+  private static final Log LOG = Log.forClass(HmacRestrictedToInjectable.class);
 
   private final Authenticator<HmacCredentials, T> authenticator;
   private final String realm;
@@ -132,7 +132,7 @@ class HmacRestrictedToInjectable<T> extends AbstractHttpContextInjectable<T> {
 
         // Build the canonical representation for the server side
         final String canonicalRepresentation = HmacUtils.createCanonicalRepresentation(containerRequest);
-        log.debug("Server side canonical representation: '{}'",canonicalRepresentation);
+        LOG.debug("Server side canonical representation: '{}'",canonicalRepresentation);
 
         final HmacCredentials credentials = new HmacCredentials("HmacSHA1", apiKey, signature, canonicalRepresentation, authorities);
 

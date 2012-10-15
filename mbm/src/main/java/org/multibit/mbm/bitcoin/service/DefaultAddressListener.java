@@ -2,14 +2,11 @@ package org.multibit.mbm.bitcoin.service;
 
 import com.google.bitcoin.core.Address;
 import com.google.bitcoin.core.Transaction;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
+import com.yammer.dropwizard.logging.Log;
 
 public class DefaultAddressListener implements AddressListener {
 
-  public Logger log = LoggerFactory.getLogger(DefaultAddressListener.class.getName());
+  private static final Log LOG = Log.forClass(DefaultAddressListener.class);
 
   private Address address;
   private Long id;
@@ -28,11 +25,11 @@ public class DefaultAddressListener implements AddressListener {
 //      try {
 //        BroadcastService.INSTANCE.broadcast(id, alertMessage);
 //      } catch (IOException e) {
-//        log.error(e.getClass().getName() + " " + e.getMessage());
+//        LOG.error(e.getClass().getName() + " " + e.getMessage());
 //      }
 //    } else {
 //      // wrongly wired up
-//      log.warn("Address listener for address " + address.toString() + " is wrongly wired up");
+//      LOG.warn("Address listener for address " + address.toString() + " is wrongly wired up");
 //    }
   }
 
@@ -45,11 +42,11 @@ public class DefaultAddressListener implements AddressListener {
 //      try {
 //        BroadcastService.INSTANCE.broadcast(id, alertMessage);
 //      } catch (IOException e) {
-//        log.error(e.getClass().getName() + " " + e.getMessage());
+//        LOG.error(e.getClass().getName() + " " + e.getMessage());
 //      }
 //    } else {
 //      // wrongly wired up
-//      log.warn("Address listener for address " + address.toString() + " is wrongly wired up");
+//      LOG.warn("Address listener for address " + address.toString() + " is wrongly wired up");
 //    }
   }
 

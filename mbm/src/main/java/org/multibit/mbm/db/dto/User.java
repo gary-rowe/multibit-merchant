@@ -4,8 +4,8 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.joda.time.DateTime;
 import org.multibit.mbm.util.ObjectUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.yammer.dropwizard.logging.Log;
+
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -27,7 +27,7 @@ public class User implements Serializable {
   private static final long serialVersionUID = 38345280321234L;
 
   @Transient
-  private static final Logger log = LoggerFactory.getLogger(User.class);
+  private static final Log LOG = Log.forClass(User.class);
 
   /**
    * Numerical ID to allow faster indexing (for internal use)

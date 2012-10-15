@@ -5,8 +5,8 @@ import org.multibit.mbm.db.dao.ItemDao;
 import org.multibit.mbm.db.dao.RoleDao;
 import org.multibit.mbm.db.dao.UserDao;
 import org.multibit.mbm.db.dto.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.yammer.dropwizard.logging.Log;
+
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -14,15 +14,13 @@ import javax.annotation.Resource;
 /**
  *  <p>Loads the database to provide default standard data to the application:</p>
  *
- * TODO Move this into the test source tree after the database has been stabilised
- *
  * @since 0.0.1
  *         
  */
 @Component
 public class DatabaseLoader {
 
-  private static final Logger log = LoggerFactory.getLogger(DatabaseLoader.class);
+  private static final Log LOG = Log.forClass(DatabaseLoader.class);
 
   @Resource(name = "hibernateItemDao")
   private ItemDao itemDao;
@@ -45,13 +43,13 @@ public class DatabaseLoader {
    */
   public void initialise() {
 
-    log.info("Populating database");
+    LOG.info("Populating database");
 
     buildRolesAndAuthorities();
     buildUsers();
     buildCatalogBooks();
 
-    log.info("Complete");
+    LOG.info("Complete");
 
   }
 
@@ -220,6 +218,7 @@ public class DatabaseLoader {
 
     return UserBuilder.newInstance()
       .withUUID("bob123")
+      .withSecretKey("bob456")
       .withUsername("bob")
       .withPassword("bob1")
       .withContactMethod(ContactMethod.NAMES, "Bob")
@@ -236,6 +235,7 @@ public class DatabaseLoader {
 
     return UserBuilder.newInstance()
       .withUUID("alice123")
+      .withSecretKey("alice456")
       .withUsername("alice")
       .withPassword("alice1")
       .withContactMethod(ContactMethod.NAMES, "Alice")
@@ -250,9 +250,11 @@ public class DatabaseLoader {
     // Admin
     return UserBuilder.newInstance()
       .withUUID("trent123")
+      .withSecretKey("trent456")
       .withUsername("trent")
       .withPassword("trent1")
       .withContactMethod(ContactMethod.NAMES, "Trent")
+      .withContactMethod(ContactMethod.LAST_NAME, "Admin")
       .withContactMethod(ContactMethod.EMAIL, "admin@example.org")
       .withRole(adminRole)
       .build();

@@ -1,7 +1,7 @@
 package org.multibit.mbm.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.yammer.dropwizard.logging.Log;
+
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +19,7 @@ import java.net.URLDecoder;
  */
 public class CookieUtils {
 
-  private static final Logger log = LoggerFactory.getLogger(CookieUtils.class);
+  private static final Log LOG = Log.forClass(CookieUtils.class);
 
   /**
    * Default is to last for 2 years
@@ -38,7 +38,7 @@ public class CookieUtils {
     if (cookie != null) {
       value = getCookieValue(cookie);
     } else {
-      log.debug("No Cookie in the request");
+      LOG.debug("No Cookie in the request");
     }
 
     return value;
@@ -71,7 +71,7 @@ public class CookieUtils {
     try {
       rawCookieValue=URLDecoder.decode(cookie.getValue(),"UTF-8");
     } catch (UnsupportedEncodingException e) {
-      log.warn("Platform does not support UTF-8");
+      LOG.warn("Platform does not support UTF-8");
       rawCookieValue = cookie.getValue();
     }
     

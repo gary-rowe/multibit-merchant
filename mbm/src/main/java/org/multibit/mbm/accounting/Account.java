@@ -1,10 +1,9 @@
 package org.multibit.mbm.accounting;
 
 import com.google.common.collect.Sets;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.yammer.dropwizard.logging.Log;
 
-import java.util.*;
+import java.util.Set;
 
 /**
  * <p>Account to provide the following to service layers:</p>
@@ -27,7 +26,7 @@ public class Account<T extends Entry<T>> {
   /**
    * The logger for this class
    */
-  private static final Logger log = LoggerFactory.getLogger(Account.class);
+  private static final Log LOG = Log.forClass(Account.class);
 
   /**
    * The account name (optional)
@@ -67,7 +66,7 @@ public class Account<T extends Entry<T>> {
     for (T entry : entrySet) {
       balance += entry.getAmount();
     }
-    log.debug("Balance recalculated as {}",balance);
+    LOG.debug("Balance recalculated as {}",balance);
   }
 
   /**
@@ -78,7 +77,7 @@ public class Account<T extends Entry<T>> {
     for (PostingRule<T> postingRule: postingRuleSet) {
       postingRule.apply(entry);
     }
-    log.debug("Posting rules notified");
+    LOG.debug("Posting rules notified");
   }
 
   /**

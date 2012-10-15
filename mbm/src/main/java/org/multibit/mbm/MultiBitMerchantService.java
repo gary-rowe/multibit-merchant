@@ -4,6 +4,7 @@ import com.google.common.cache.CacheBuilderSpec;
 import com.yammer.dropwizard.Service;
 import com.yammer.dropwizard.auth.CachingAuthenticator;
 import com.yammer.dropwizard.config.Environment;
+import com.yammer.dropwizard.logging.Log;
 import org.multibit.mbm.auth.hmac.HmacAuthenticator;
 import org.multibit.mbm.auth.hmac.HmacCredentials;
 import org.multibit.mbm.auth.hmac.HmacRestrictedToProvider;
@@ -29,6 +30,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class MultiBitMerchantService extends Service<MultiBitMerchantConfiguration> {
 
+  public static final Log LOG = Log.forClass(MultiBitMerchantService.class);
+
   /**
    * Main entry point to the application
    *
@@ -47,6 +50,8 @@ public class MultiBitMerchantService extends Service<MultiBitMerchantConfigurati
   @Override
   protected void initialize(MultiBitMerchantConfiguration configuration,
                             Environment environment) {
+
+    LOG.info("Reading configuration");
 
     // Read the configuration
 

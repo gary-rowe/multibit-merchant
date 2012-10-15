@@ -7,8 +7,8 @@ import org.multibit.mbm.bitcoin.service.BitcoinService;
 import org.multibit.mbm.bitcoin.service.SwatchBuilder;
 import org.multibit.mbm.db.dto.Authority;
 import org.multibit.mbm.db.dto.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.yammer.dropwizard.logging.Log;
+
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
@@ -30,7 +30,7 @@ import java.io.IOException;
 @Produces({HalMediaType.APPLICATION_HAL_JSON, HalMediaType.APPLICATION_HAL_XML})
 public class BitcoinPaymentResource extends BaseResource {
 
-  private static final Logger log = LoggerFactory.getLogger(BitcoinPaymentResource.class);
+  private static final Log LOG = Log.forClass(BitcoinPaymentResource.class);
 
   //@Resource(name="defaultBitcoinService")
   BitcoinService bitcoinService;
@@ -90,7 +90,7 @@ public class BitcoinPaymentResource extends BaseResource {
     @RestrictedTo({Authority.ROLE_CUSTOMER}) User user) {
 
     String newBitcoinAddress = bitcoinService.getNextAddress(user.getId());
-    log.debug("New bitcoin address requested '{}'", newBitcoinAddress);
+    LOG.debug("New bitcoin address requested '{}'", newBitcoinAddress);
     return newBitcoinAddress;
   }
 }

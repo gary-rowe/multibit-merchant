@@ -4,8 +4,8 @@ import com.google.common.collect.Lists;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.dialect.H2Dialect;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.yammer.dropwizard.logging.Log;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +15,7 @@ import java.util.List;
 
 public class SchemaExporter {
   
-  private static final Logger log = LoggerFactory.getLogger(SchemaExporter.class);
+  private static final Log LOG = Log.forClass(SchemaExporter.class);
   
   private Configuration cfg;
 
@@ -39,7 +39,7 @@ public class SchemaExporter {
    */
   private void execute(int revision) throws IOException {
     
-    log.info("Starting schema export process");
+    LOG.info("Starting schema export process");
     
     cfg.setProperty("hibernate.dialect", H2Dialect.class.getCanonicalName());
 
@@ -55,7 +55,7 @@ public class SchemaExporter {
     // Generates alter table drops which should be removed at version 0
     export.execute(true, false, false, false);
 
-    log.info("Schema export complete. Results in '{}'",patchSchema.getAbsolutePath());
+    LOG.info("Schema export complete. Results in '{}'",patchSchema.getAbsolutePath());
   }
 
   /**

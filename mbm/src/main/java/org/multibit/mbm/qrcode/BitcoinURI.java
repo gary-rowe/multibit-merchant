@@ -5,8 +5,8 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.yammer.dropwizard.logging.Log;
+
 
 import com.google.bitcoin.core.Address;
 import com.google.bitcoin.core.AddressFormatException;
@@ -24,7 +24,7 @@ import com.google.bitcoin.core.Utils;
  */
 public class BitcoinURI {
 
-  private static final Logger log = LoggerFactory.getLogger(BitcoinURI.class);
+  private static final Log LOG = Log.forClass(BitcoinURI.class);
 
   private Address address;
   private BigInteger amount;
@@ -79,7 +79,7 @@ public class BitcoinURI {
         try {
           address = new Address(networkParameters, uriString);
           parsedOk = true; // we are done
-          log.debug("BitcoinURI - Ping 1");
+          LOG.debug("BitcoinURI - Ping 1");
         } catch (final AddressFormatException x) {
           // do nothing
         }

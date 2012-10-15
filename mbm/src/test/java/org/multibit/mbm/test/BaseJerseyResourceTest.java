@@ -44,9 +44,9 @@ public abstract class BaseJerseyResourceTest extends BaseResourceTest {
   private JerseyTest test;
   protected UriInfo uriInfo;
 
-  // Authentication support
-  private Optional<String> apiKey = Optional.of("abc123");
-  private Optional<String> sharedSecret = Optional.of("def456");
+  // Authentication support using HMAC
+  private Optional<String> apiKey = Optional.of("trent123");
+  private Optional<String> sharedSecret = Optional.of("trent456");
 
   /**
    * <p>Subclasses must use this to configure mocks of any objects that the
