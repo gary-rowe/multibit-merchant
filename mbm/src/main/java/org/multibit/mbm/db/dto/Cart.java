@@ -35,9 +35,13 @@ public class Cart implements Serializable {
   private Customer customer = null;
 
   /**
-   * A Cart has many CartItems
+   * A Cart has many CartItems that need to be eager to have meaning
    */
-  @OneToMany(targetEntity = CartItem.class, cascade = {CascadeType.ALL}, mappedBy = "primaryKey.cart", orphanRemoval = true)
+  @OneToMany(targetEntity = CartItem.class,
+    cascade = {CascadeType.ALL},
+    mappedBy = "primaryKey.cart",
+    orphanRemoval = true,
+    fetch = FetchType.EAGER)
   private Set<CartItem> cartItems = Sets.newLinkedHashSet();
 
   /*
