@@ -73,7 +73,68 @@ public class HmacUtils {
   }
 
   /**
-   * @param clientRequest Providing the HTTP information necessary
+   *
+   * @param clientRequest Providing the HTTP information necessary from the client side
+   *
+   * @return A curl command that emulates the client request
+   */
+  public static String createCurlCommand(ClientRequest clientRequest, Providers providers, String canonicalRepresentation, String sharedSecret, String apiKey) {
+
+    // Compute the representation signature
+    String signature = new String(HmacUtils.computeSignature("HmacSHA1", canonicalRepresentation.getBytes(), sharedSecret.getBytes()));
+    String authorization = "HMAC " + apiKey + " " + signature;
+
+    String httpMethod = clientRequest.getMethod().toUpperCase();
+    StringBuilder curlCommand = new StringBuilder("curl --verbose ");
+    curlCommand.append("--output \"response.txt\" ");
+    curlCommand.append("--header \"Accept:application/hal+json\" ");
+    curlCommand.append("--header \"Content-Type:application/json\" ");
+    curlCommand.append("--header \"Authorization:");
+    curlCommand.append(authorization);
+    curlCommand.append("\" ");
+
+    // Check for payload
+    if ("POST".equalsIgnoreCase(httpMethod) ||
+      "PUT".equalsIgnoreCase(httpMethod)) {
+      // Configure the request method
+      curlCommand.append("--request ");
+      curlCommand.append(httpMethod);
+      curlCommand.append(" ");
+      // Provide the data
+      curlCommand.append("--data '");
+      // Get the message body writer that will be used later
+      Object entity = clientRequest.getEntity();
+      final MessageBodyWriter messageBodyWriter = providers
+        .getMessageBodyWriter(entity.getClass(), entity.getClass(),
+          new Annotation[0], MediaType.APPLICATION_JSON_TYPE);
+      final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+      if (messageBodyWriter == null) {
+        throw new WebApplicationException(Response.Status.BAD_REQUEST);
+      }
+
+      try {
+        // TODO Need to infer media type
+        messageBodyWriter.writeTo(entity, entity.getClass(),
+          entity.getClass(), new Annotation[0],
+          MediaType.APPLICATION_JSON_TYPE, clientRequest.getHeaders(), baos);
+      } catch (IOException e) {
+        throw new WebApplicationException(Response.Status.BAD_REQUEST);
+      }
+      curlCommand.append(baos);
+      curlCommand.append("' ");
+
+    }
+
+    curlCommand.append("http://localhost:8080/mbm");
+    curlCommand.append(clientRequest.getURI());
+
+    return curlCommand.toString();
+
+  }
+
+
+  /**
+   * @param clientRequest Providing the HTTP information necessary from the client side
    * @param providers     The Providers for marshalling/unmarshalling the request body
    *
    * @return The canonical representation of the request for the client to use
@@ -178,7 +239,7 @@ public class HmacUtils {
           entity.getClass(), new Annotation[0],
           MediaType.APPLICATION_JSON_TYPE, originalHeaders, baos);
       } catch (IOException e) {
-        e.printStackTrace();
+        throw new WebApplicationException(Response.Status.BAD_REQUEST);
       }
       canonicalRepresentation.append(baos);
 
@@ -188,7 +249,7 @@ public class HmacUtils {
   }
 
   /**
-   * @param containerRequest Providing the required HTTP request information
+   * @param containerRequest Providing the required HTTP request information on the server side
    *
    * @return The canonical representation of the request
    */
@@ -314,5 +375,6 @@ public class HmacUtils {
 
     return canonicalRepresentation.toString();
   }
+
 
 }

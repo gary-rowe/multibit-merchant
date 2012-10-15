@@ -2,7 +2,6 @@ package org.multibit.mbm;
 
 import com.google.common.cache.CacheBuilderSpec;
 import com.yammer.dropwizard.Service;
-import com.yammer.dropwizard.auth.Authenticator;
 import com.yammer.dropwizard.auth.CachingAuthenticator;
 import com.yammer.dropwizard.config.Environment;
 import org.multibit.mbm.auth.hmac.HmacAuthenticator;
@@ -17,7 +16,6 @@ import org.multibit.mbm.resources.admin.AdminRoleResource;
 import org.multibit.mbm.resources.admin.AdminUserResource;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 /**
  * <p>Service to provide the following to application:</p>
@@ -34,9 +32,9 @@ public class MultiBitMerchantService extends Service<MultiBitMerchantConfigurati
   /**
    * Main entry point to the application
    *
-   * @param args
+   * @param args Command line arguments
    *
-   * @throws Exception
+   * @throws Exception If something goes wrong
    */
   public static void main(String[] args) throws Exception {
     new MultiBitMerchantService().run(args);
@@ -52,15 +50,16 @@ public class MultiBitMerchantService extends Service<MultiBitMerchantConfigurati
 
     // Read the configuration
 
-    // Configure authenticator
-    Authenticator<HmacCredentials, User> authenticator = new HmacAuthenticator();
-    CachingAuthenticator<HmacCredentials, User> cachingAuthenticator = CachingAuthenticator.wrap(authenticator, CacheBuilderSpec.parse(configuration.getAuthenticationCachePolicy()));
-
     // Start Spring context based on the provided location
     // TODO Externalise this into the configuration - Spring provides too much to ignore
     ApplicationContext context = new ClassPathXmlApplicationContext(new String[]{
       "/spring/mbm-context.xml"
     });
+
+    // Configure authenticator
+    HmacAuthenticator hmacAuthenticator = context.getBean(HmacAuthenticator.class);
+    CachingAuthenticator<HmacCredentials, User> cachingAuthenticator = CachingAuthenticator
+      .wrap(hmacAuthenticator, CacheBuilderSpec.parse(configuration.getAuthenticationCachePolicy()));
 
     // Configure environment accordingly
     // Resources - admin (needs ROLE_ADMIN)
@@ -86,6 +85,7 @@ public class MultiBitMerchantService extends Service<MultiBitMerchantConfigurati
 //    if (configuration.loadInitialData) {
 //      new DataBaseLoader.initialise();
 //    }
+
   }
 
 

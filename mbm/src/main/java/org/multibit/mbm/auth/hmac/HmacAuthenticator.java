@@ -5,6 +5,9 @@ import com.yammer.dropwizard.auth.AuthenticationException;
 import com.yammer.dropwizard.auth.Authenticator;
 import org.multibit.mbm.db.dao.UserDao;
 import org.multibit.mbm.db.dto.User;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /**
  * <p>Authenticator to provide the following to application:</p>
@@ -14,8 +17,10 @@ import org.multibit.mbm.db.dto.User;
  *
  * @since 0.0.1
  */
+@Component
 public class HmacAuthenticator implements Authenticator<HmacCredentials, User> {
 
+  @Resource(name="hibernateUserDao")
   private UserDao userDao;
 
   @Override

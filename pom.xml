@@ -282,7 +282,7 @@
       <!-- Logback for implementation -->
       <dependency>
         <groupId>ch.qos.logback</groupId>
-        <artifactId>logback-classic</artifactId>
+        <artifactId>logback-core</artifactId>
         <version>${logback.version}</version>
       </dependency>
       <!-- Logback for implementation -->
@@ -374,6 +374,13 @@
         <groupId>com.google</groupId>
         <artifactId>bitcoinj</artifactId>
         <version>${bitcoinj.version}</version>
+        <!-- TODO This should be optional -->
+        <exclusions>
+          <exclusion>
+            <artifactId>slf4j-jdk14</artifactId>
+            <groupId>org.slf4j</groupId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.bouncycastle</groupId>
@@ -401,6 +408,16 @@
         <groupId>com.yammer.dropwizard</groupId>
         <artifactId>dropwizard-core</artifactId>
         <version>${dropwizard.version}</version>
+        <exclusions>
+          <exclusion>
+            <artifactId>logback-classic</artifactId>
+            <groupId>ch.qos.logback</groupId>
+          </exclusion>
+          <exclusion>
+            <artifactId>logback-core</artifactId>
+            <groupId>ch.qos.logback</groupId>
+          </exclusion>
+        </exclusions>
       </dependency>
 
       <dependency>
@@ -433,6 +450,31 @@
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
         <version>13.0</version>
+      </dependency>
+
+      <!-- XChange for currency operations -->
+      <dependency>
+        <groupId>com.xeiam.xchange</groupId>
+        <artifactId>xchange</artifactId>
+        <version>1.0.0</version>
+        <!-- TODO XChange should not demand logback -->
+        <exclusions>
+          <exclusion>
+            <artifactId>logback-classic</artifactId>
+            <groupId>ch.qos.logback</groupId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>com.xeiam.xchange</groupId>
+        <artifactId>xchange-mtgox</artifactId>
+        <version>1.0.0</version>
+        <exclusions>
+          <exclusion>
+            <artifactId>logback-classic</artifactId>
+            <groupId>ch.qos.logback</groupId>
+          </exclusion>
+        </exclusions>
       </dependency>
 
     </dependencies>

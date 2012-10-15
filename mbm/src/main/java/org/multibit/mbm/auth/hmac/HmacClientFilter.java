@@ -63,6 +63,9 @@ public class HmacClientFilter extends ClientFilter {
     String authorization = "HMAC " + apiKey + " " + signature;
     clientRequest.getHeaders().put(HttpHeaders.AUTHORIZATION, Lists.<Object>newArrayList(authorization));
 
+    String curlCommand = HmacUtils.createCurlCommand(clientRequest,providers, canonicalRepresentation, sharedSecret, apiKey);
+    log.debug("Client side curl command: '{}'", curlCommand);
+
     return clientRequest;
   }
 

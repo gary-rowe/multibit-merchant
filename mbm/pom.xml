@@ -164,19 +164,10 @@
     <dependency>
       <groupId>com.xeiam.xchange</groupId>
       <artifactId>xchange</artifactId>
-      <version>1.0.0</version>
-      <!-- TODO XChange should not demand logback -->
-      <exclusions>
-        <exclusion>
-          <artifactId>logback-classic</artifactId>
-          <groupId>ch.qos.logback</groupId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.xeiam.xchange</groupId>
       <artifactId>xchange-mtgox</artifactId>
-      <version>1.0.0</version>
     </dependency>
 
     <!-- All time handling is through Joda -->
@@ -204,6 +195,17 @@
       <artifactId>halbuilder</artifactId>
       <version>1.0.5</version>
     </dependency>
+
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+    </dependency>
+
 
   </dependencies>
 
