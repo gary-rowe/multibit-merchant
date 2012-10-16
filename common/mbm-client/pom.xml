@@ -21,10 +21,15 @@
 
   <dependencies>
 
-    <!-- JAX-RS types (provided) -->
+    <!-- Dropwizard client provides metrics -->
     <dependency>
       <groupId>com.yammer.dropwizard</groupId>
-      <artifactId>dropwizard-core</artifactId>
+      <artifactId>dropwizard-client</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.yammer.dropwizard</groupId>
+      <artifactId>dropwizard-testing</artifactId>
       <scope>provided</scope>
     </dependency>
 
