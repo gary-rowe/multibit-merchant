@@ -82,7 +82,7 @@ public class AdminItemResourceTest extends BaseJerseyResourceTest {
       .entity(createItemRequest, MediaType.APPLICATION_JSON_TYPE)
       .post(String.class);
 
-    FixtureAsserts.assertStringMatchesJsonFixture("CreateItem by admin response render to HAL+JSON",actualResponse, "fixtures/hal/item/expected-admin-create-item.json");
+    FixtureAsserts.assertStringMatchesJsonFixture("CreateItem by admin response render to HAL+JSON",actualResponse, "/fixtures/hal/item/expected-admin-create-item.json");
 
   }
 
@@ -96,7 +96,7 @@ public class AdminItemResourceTest extends BaseJerseyResourceTest {
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 
-    FixtureAsserts.assertStringMatchesJsonFixture("Item list 1 can be retrieved as HAL+JSON", actualResponse, "fixtures/hal/item/expected-admin-retrieve-items-page-1.json");
+    FixtureAsserts.assertStringMatchesJsonFixture("Item list 1 can be retrieved as HAL+JSON", actualResponse, "/fixtures/hal/item/expected-admin-retrieve-items-page-1.json");
 
     actualResponse = client()
       .resource("/admin/item")
@@ -105,7 +105,7 @@ public class AdminItemResourceTest extends BaseJerseyResourceTest {
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 
-    FixtureAsserts.assertStringMatchesJsonFixture("Item list 2 can be retrieved as HAL+JSON", actualResponse, "fixtures/hal/item/expected-admin-retrieve-items-page-2.json");
+    FixtureAsserts.assertStringMatchesJsonFixture("Item list 2 can be retrieved as HAL+JSON", actualResponse, "/fixtures/hal/item/expected-admin-retrieve-items-page-2.json");
 
   }
 
@@ -122,7 +122,7 @@ public class AdminItemResourceTest extends BaseJerseyResourceTest {
       .entity(updateItemRequest, MediaType.APPLICATION_JSON_TYPE)
       .put(String.class);
 
-    FixtureAsserts.assertStringMatchesJsonFixture("UpdateItem by admin response render to HAL+JSON",actualResponse, "fixtures/hal/item/expected-admin-update-item.json");
+    FixtureAsserts.assertStringMatchesJsonFixture("UpdateItem by admin response render to HAL+JSON",actualResponse, "/fixtures/hal/item/expected-admin-update-item.json");
 
   }
 
@@ -138,7 +138,7 @@ public class AdminItemResourceTest extends BaseJerseyResourceTest {
       .entity(deleteItemRequest, MediaType.APPLICATION_JSON_TYPE)
       .delete(String.class);
 
-    FixtureAsserts.assertStringMatchesJsonFixture("DeleteItem by admin response render to HAL+JSON",actualResponse, "fixtures/hal/item/expected-admin-delete-item.json");
+    FixtureAsserts.assertStringMatchesJsonFixture("DeleteItem by admin response render to HAL+JSON",actualResponse, "/fixtures/hal/item/expected-admin-delete-item.json");
 
   }
 

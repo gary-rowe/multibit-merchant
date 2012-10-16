@@ -30,7 +30,7 @@ public class CustomerUserResourceTest extends BaseJerseyResourceTest {
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 
-    FixtureAsserts.assertStringMatchesJsonFixture("Customer retrieve User as HAL+JSON", actualResponse, "fixtures/hal/user/expected-customer-retrieve-user.json");
+    FixtureAsserts.assertStringMatchesJsonFixture("Customer retrieve User as HAL+JSON", actualResponse, "/fixtures/hal/user/expected-customer-retrieve-user.json");
 
   }
 

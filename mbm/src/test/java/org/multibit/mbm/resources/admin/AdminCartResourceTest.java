@@ -115,7 +115,7 @@ public class AdminCartResourceTest extends BaseJerseyResourceTest {
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 
-    FixtureAsserts.assertStringMatchesJsonFixture("Cart list 1 can be retrieved as HAL+JSON", actualResponse, "fixtures/hal/cart/expected-admin-retrieve-carts-page-1.json");
+    FixtureAsserts.assertStringMatchesJsonFixture("Cart list 1 can be retrieved as HAL+JSON", actualResponse, "/fixtures/hal/cart/expected-admin-retrieve-carts-page-1.json");
 
     actualResponse = client()
       .resource("/admin/cart")
@@ -124,7 +124,7 @@ public class AdminCartResourceTest extends BaseJerseyResourceTest {
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 
-    FixtureAsserts.assertStringMatchesJsonFixture("Cart list 2 can be retrieved as HAL+JSON", actualResponse, "fixtures/hal/cart/expected-admin-retrieve-carts-page-2.json");
+    FixtureAsserts.assertStringMatchesJsonFixture("Cart list 2 can be retrieved as HAL+JSON", actualResponse, "/fixtures/hal/cart/expected-admin-retrieve-carts-page-2.json");
 
   }
 
@@ -147,7 +147,7 @@ public class AdminCartResourceTest extends BaseJerseyResourceTest {
       .entity(updateCartRequest, MediaType.APPLICATION_JSON_TYPE)
       .put(String.class);
 
-    FixtureAsserts.assertStringMatchesJsonFixture("UpdateCart by admin response render to HAL+JSON",actualResponse, "fixtures/hal/cart/expected-admin-update-cart.json");
+    FixtureAsserts.assertStringMatchesJsonFixture("UpdateCart by admin response render to HAL+JSON",actualResponse, "/fixtures/hal/cart/expected-admin-update-cart.json");
 
   }
 

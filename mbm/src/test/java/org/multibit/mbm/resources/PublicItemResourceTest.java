@@ -59,7 +59,7 @@ public class PublicItemResourceTest extends BaseJerseyResourceTest {
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 
-    FixtureAsserts.assertStringMatchesJsonFixture("Item list 1 can be retrieved as HAL+JSON", actualResponse, "fixtures/hal/item/expected-public-retrieve-items-page-1.json");
+    FixtureAsserts.assertStringMatchesJsonFixture("Item list 1 can be retrieved as HAL+JSON", actualResponse, "/fixtures/hal/item/expected-public-retrieve-items-page-1.json");
 
     actualResponse = client()
       .resource("/items/promotion")
@@ -68,7 +68,7 @@ public class PublicItemResourceTest extends BaseJerseyResourceTest {
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 
-    FixtureAsserts.assertStringMatchesJsonFixture("Item list 2 can be retrieved as HAL+JSON", actualResponse, "fixtures/hal/item/expected-public-retrieve-items-page-2.json");
+    FixtureAsserts.assertStringMatchesJsonFixture("Item list 2 can be retrieved as HAL+JSON", actualResponse, "/fixtures/hal/item/expected-public-retrieve-items-page-2.json");
 
   }
 

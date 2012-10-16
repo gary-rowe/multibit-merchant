@@ -21,6 +21,21 @@
 
   <dependencies>
 
+    <!-- Common library -->
+    <!-- Provides common HAL support -->
+    <dependency>
+      <groupId>org.multibit.merchant</groupId>
+      <artifactId>mbm-hal</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
+    <!-- Provides common HAL representation testing support -->
+    <dependency>
+      <groupId>org.multibit.merchant</groupId>
+      <artifactId>mbm-testing</artifactId>
+      <version>${project.parent.version}</version>
+      <scope>test</scope>
+    </dependency>
+
     <!-- Dropwizard client provides metrics -->
     <dependency>
       <groupId>com.yammer.dropwizard</groupId>
@@ -31,6 +46,12 @@
       <groupId>com.yammer.dropwizard</groupId>
       <artifactId>dropwizard-testing</artifactId>
       <scope>provided</scope>
+    </dependency>
+
+    <!-- All time handling is through Joda -->
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
     </dependency>
 
     <!-- All time handling is through Joda -->

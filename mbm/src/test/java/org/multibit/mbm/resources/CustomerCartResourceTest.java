@@ -85,7 +85,7 @@ public class CustomerCartResourceTest extends BaseJerseyResourceTest {
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 
-    FixtureAsserts.assertStringMatchesJsonFixture("Customer retrieve Cart as HAL+JSON", actualResponse, "fixtures/hal/cart/expected-customer-retrieve-cart.json");
+    FixtureAsserts.assertStringMatchesJsonFixture("Customer retrieve Cart as HAL+JSON", actualResponse, "/fixtures/hal/cart/expected-customer-retrieve-cart.json");
 
   }
 
@@ -107,7 +107,7 @@ public class CustomerCartResourceTest extends BaseJerseyResourceTest {
       .entity(updateCartRequest, MediaType.APPLICATION_JSON_TYPE)
       .put(String.class);
 
-    FixtureAsserts.assertStringMatchesJsonFixture("UpdateCart by admin response render to HAL+JSON",actualResponse, "fixtures/hal/cart/expected-customer-update-cart.json");
+    FixtureAsserts.assertStringMatchesJsonFixture("UpdateCart by admin response render to HAL+JSON",actualResponse, "/fixtures/hal/cart/expected-customer-update-cart.json");
 
   }
 

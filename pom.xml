@@ -14,8 +14,9 @@
 
   <modules>
     <module>mbm</module>
+    <module>common/mbm-hal</module>
     <module>common/mbm-client</module>
-    <module>common/dropwizard-hal-testing</module>
+    <module>common/mbm-testing</module>
   </modules>
 
   <!-- Entries listed here occur more than once in the POM -->
@@ -433,6 +434,13 @@
         <groupId>com.yammer.dropwizard</groupId>
         <artifactId>dropwizard-client</artifactId>
         <version>${dropwizard.version}</version>
+      </dependency>
+
+      <!-- Jersey core -->
+      <dependency>
+        <groupId>com.sun.jersey</groupId>
+        <artifactId>jersey-core</artifactId>
+        <version>1.13</version>
       </dependency>
 
       <!-- HAL Builder provides resource representation -->

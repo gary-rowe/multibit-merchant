@@ -81,7 +81,7 @@ public class AdminUserResourceTest extends BaseJerseyResourceTest {
       .entity(createUserRequest, MediaType.APPLICATION_JSON_TYPE)
       .post(String.class);
 
-    FixtureAsserts.assertStringMatchesJsonFixture("CreateUser by admin response render to HAL+JSON",actualResponse, "fixtures/hal/user/expected-admin-create-user.json");
+    FixtureAsserts.assertStringMatchesJsonFixture("CreateUser by admin response render to HAL+JSON",actualResponse, "/fixtures/hal/user/expected-admin-create-user.json");
 
   }
 
@@ -95,7 +95,7 @@ public class AdminUserResourceTest extends BaseJerseyResourceTest {
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 
-    FixtureAsserts.assertStringMatchesJsonFixture("User list 1 can be retrieved as HAL+JSON", actualResponse, "fixtures/hal/user/expected-admin-retrieve-users-page-1.json");
+    FixtureAsserts.assertStringMatchesJsonFixture("User list 1 can be retrieved as HAL+JSON", actualResponse, "/fixtures/hal/user/expected-admin-retrieve-users-page-1.json");
 
     actualResponse = client()
       .resource("/admin/user")
@@ -104,7 +104,7 @@ public class AdminUserResourceTest extends BaseJerseyResourceTest {
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 
-    FixtureAsserts.assertStringMatchesJsonFixture("User list 2 can be retrieved as HAL+JSON", actualResponse, "fixtures/hal/user/expected-admin-retrieve-users-page-2.json");
+    FixtureAsserts.assertStringMatchesJsonFixture("User list 2 can be retrieved as HAL+JSON", actualResponse, "/fixtures/hal/user/expected-admin-retrieve-users-page-2.json");
 
   }
 
@@ -121,7 +121,7 @@ public class AdminUserResourceTest extends BaseJerseyResourceTest {
       .entity(updateUserRequest, MediaType.APPLICATION_JSON_TYPE)
       .put(String.class);
 
-    FixtureAsserts.assertStringMatchesJsonFixture("UpdateUser by admin response render to HAL+JSON",actualResponse, "fixtures/hal/user/expected-admin-update-user.json");
+    FixtureAsserts.assertStringMatchesJsonFixture("UpdateUser by admin response render to HAL+JSON",actualResponse, "/fixtures/hal/user/expected-admin-update-user.json");
 
   }
 
@@ -137,7 +137,7 @@ public class AdminUserResourceTest extends BaseJerseyResourceTest {
       .entity(deleteUserRequest, MediaType.APPLICATION_JSON_TYPE)
       .delete(String.class);
 
-    FixtureAsserts.assertStringMatchesJsonFixture("DeleteUser by admin response render to HAL+JSON",actualResponse, "fixtures/hal/user/expected-admin-delete-user.json");
+    FixtureAsserts.assertStringMatchesJsonFixture("DeleteUser by admin response render to HAL+JSON",actualResponse, "/fixtures/hal/user/expected-admin-delete-user.json");
 
   }
 

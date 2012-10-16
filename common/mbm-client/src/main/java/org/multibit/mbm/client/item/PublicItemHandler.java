@@ -1,12 +1,11 @@
 package org.multibit.mbm.client.item;
 
+import com.google.common.base.Optional;
 import com.yammer.dropwizard.client.JerseyClient;
 import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.model.PublicItem;
 
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.util.Locale;
 
@@ -36,28 +35,26 @@ public class PublicItemHandler {
   /**
    * Retrieve single item using its ID
    *
-   * @param id The ID
-   * @return A mtching {@link org.multibit.mbm.model.PublicItem}
+   * @param sku The required Stock Keeping Unit (SKU)
+   * @return A matching {@link org.multibit.mbm.model.PublicItem}
    */
-  public PublicItem retrieveById(long id) {
+  public Optional<PublicItem> retrieveBySku(String sku) {
 
     // Sanity check
-    // TODO Consider Guava ranges?
-    if (id < 0) {
-      throw new WebApplicationException(Response.Status.BAD_REQUEST);
-    }
+    // TODO How to sanity check an SKU?
 
     // TODO Replace "magic string" with auto-discover based on link rel
-    String rawUri = String.format("http://localhost:8080/mbm/items/%d"
-      ,id);
+    String rawUri = String.format("http://localhost:8080/mbm/item/%s"
+      ,sku);
     URI uri = URI.create(rawUri);
 
+    // TODO Need to reconstruct from JSON
     PublicItem item = jerseyClient
       .resource(uri)
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .header(HttpHeaders.ACCEPT_LANGUAGE, locale.toString())
       .get(PublicItem.class);
 
-    return item;
+    return Optional.of(item);
   }
 }

@@ -28,6 +28,6 @@ public class BinaryFixtureHelpers {
    * @throws java.io.IOException if {@code filename} doesn't exist or can't be opened
    */
   public static byte[] fixture(String filename) throws IOException {
-    return Resources.toByteArray(Resources.getResource(filename));
+    return Resources.toByteArray(BinaryFixtureHelpers.class.getResource(filename));
   }
 }

@@ -41,7 +41,7 @@ public class HmacUtilsTest {
 
     String representation = HmacUtils.createCanonicalRepresentation(clientRequest, providers);
 
-    FixtureAsserts.assertStringMatchesStringFixture("GET canonical representation",representation,"fixtures/hmac/expected-canonical-get.txt");
+    FixtureAsserts.assertStringMatchesStringFixture("GET canonical representation",representation, "/fixtures/hmac/expected-canonical-get.txt");
 
   }
 
@@ -70,7 +70,7 @@ public class HmacUtilsTest {
 
     String representation = HmacUtils.createCanonicalRepresentation(clientRequest, providers);
 
-    FixtureAsserts.assertStringMatchesStringFixture("POST canonical representation", representation, "fixtures/hmac/expected-canonical-post.txt");
+    FixtureAsserts.assertStringMatchesStringFixture("POST canonical representation", representation, "/fixtures/hmac/expected-canonical-post.txt");
 
   }
 
@@ -99,7 +99,7 @@ public class HmacUtilsTest {
 
     String representation = HmacUtils.createCanonicalRepresentation(containerRequest);
 
-    FixtureAsserts.assertStringMatchesStringFixture("GET all fields canonical representation", representation, "fixtures/hmac/expected-canonical-get.txt");
+    FixtureAsserts.assertStringMatchesStringFixture("GET all fields canonical representation", representation, "/fixtures/hmac/expected-canonical-get.txt");
 
   }
 
@@ -132,7 +132,7 @@ public class HmacUtilsTest {
 
     String actualCanonicalRepresentation = HmacUtils.createCanonicalRepresentation(containerRequest);
 
-    FixtureAsserts.assertStringMatchesStringFixture("POST all fields canonical representation",actualCanonicalRepresentation,"fixtures/hmac/expected-canonical-post.txt");
+    FixtureAsserts.assertStringMatchesStringFixture("POST all fields canonical representation",actualCanonicalRepresentation, "/fixtures/hmac/expected-canonical-post.txt");
 
   }
 

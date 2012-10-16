@@ -11,54 +11,32 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.multibit.merchant</groupId>
-  <artifactId>dropwizard-hal-testing</artifactId>
+  <artifactId>mbm-testing</artifactId>
   <version>develop-SNAPSHOT</version>
 
   <url>http://multibitmerchant.org</url>
 
-  <name>Dropwizard HAL Testing</name>
-  <description>Provides additional test support for Dropwizard projects.</description>
+  <name>MultiBit Merchant Testing</name>
+  <description>Provides common test support for MBM and client projects.</description>
   <inceptionYear>2012</inceptionYear>
 
   <dependencies>
 
     <!-- Common library support -->
+    <!-- Provides common HAL support -->
     <dependency>
       <groupId>org.multibit.merchant</groupId>
-      <artifactId>dropwizard-hal</artifactId>
+      <artifactId>mbm-hal</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
 
-    <!-- Dropwizard framework -->
-    <dependency>
-      <groupId>com.yammer.dropwizard</groupId>
-      <artifactId>dropwizard-core</artifactId>
-      <exclusions>
-        <exclusion>
-          <artifactId>logback-classic</artifactId>
-          <groupId>ch.qos.logback</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>logback-core</artifactId>
-          <groupId>ch.qos.logback</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>asm</artifactId>
-          <groupId>asm</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-
-    <dependency>
-      <groupId>com.yammer.dropwizard</groupId>
-      <artifactId>dropwizard-auth</artifactId>
-    </dependency>
-
+    <!-- Require Dropwizard test support -->
     <dependency>
       <groupId>com.yammer.dropwizard</groupId>
       <artifactId>dropwizard-testing</artifactId>
     </dependency>
 
+    <!-- JUnit with forced compile scope -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>

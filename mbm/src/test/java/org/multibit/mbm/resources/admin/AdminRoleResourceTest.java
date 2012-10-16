@@ -85,7 +85,7 @@ public class AdminRoleResourceTest extends BaseJerseyResourceTest {
       .entity(createRoleRequest, MediaType.APPLICATION_JSON_TYPE)
       .post(String.class);
 
-    FixtureAsserts.assertStringMatchesJsonFixture("CreateRole by admin response render to HAL+JSON",actualResponse, "fixtures/hal/role/expected-admin-create-role.json");
+    FixtureAsserts.assertStringMatchesJsonFixture("CreateRole by admin response render to HAL+JSON",actualResponse, "/fixtures/hal/role/expected-admin-create-role.json");
 
   }
 
@@ -99,7 +99,7 @@ public class AdminRoleResourceTest extends BaseJerseyResourceTest {
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 
-    FixtureAsserts.assertStringMatchesJsonFixture("Role list 1 can be retrieved as HAL+JSON", actualResponse, "fixtures/hal/role/expected-admin-retrieve-roles-page-1.json");
+    FixtureAsserts.assertStringMatchesJsonFixture("Role list 1 can be retrieved as HAL+JSON", actualResponse, "/fixtures/hal/role/expected-admin-retrieve-roles-page-1.json");
 
     actualResponse = client()
       .resource("/admin/role")
@@ -108,7 +108,7 @@ public class AdminRoleResourceTest extends BaseJerseyResourceTest {
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 
-    FixtureAsserts.assertStringMatchesJsonFixture("Role list 2 can be retrieved as HAL+JSON", actualResponse, "fixtures/hal/role/expected-admin-retrieve-roles-page-2.json");
+    FixtureAsserts.assertStringMatchesJsonFixture("Role list 2 can be retrieved as HAL+JSON", actualResponse, "/fixtures/hal/role/expected-admin-retrieve-roles-page-2.json");
 
   }
 
@@ -127,7 +127,7 @@ public class AdminRoleResourceTest extends BaseJerseyResourceTest {
       .entity(updateRoleRequest, MediaType.APPLICATION_JSON_TYPE)
       .put(String.class);
 
-    FixtureAsserts.assertStringMatchesJsonFixture("UpdateRole by admin response render to HAL+JSON",actualResponse, "fixtures/hal/role/expected-admin-update-role.json");
+    FixtureAsserts.assertStringMatchesJsonFixture("UpdateRole by admin response render to HAL+JSON",actualResponse, "/fixtures/hal/role/expected-admin-update-role.json");
 
   }
 
@@ -143,7 +143,7 @@ public class AdminRoleResourceTest extends BaseJerseyResourceTest {
       .entity(deleteRoleRequest, MediaType.APPLICATION_JSON_TYPE)
       .delete(String.class);
 
-    FixtureAsserts.assertStringMatchesJsonFixture("DeleteRole by admin response render to HAL+JSON",actualResponse, "fixtures/hal/role/expected-admin-delete-role.json");
+    FixtureAsserts.assertStringMatchesJsonFixture("DeleteRole by admin response render to HAL+JSON",actualResponse, "/fixtures/hal/role/expected-admin-delete-role.json");
 
   }
 
