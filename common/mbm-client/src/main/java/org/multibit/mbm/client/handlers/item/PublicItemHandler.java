@@ -1,4 +1,4 @@
-package org.multibit.mbm.client.item;
+package org.multibit.mbm.client.handlers.item;
 
 import com.google.common.base.Optional;
 import com.yammer.dropwizard.client.JerseyClient;

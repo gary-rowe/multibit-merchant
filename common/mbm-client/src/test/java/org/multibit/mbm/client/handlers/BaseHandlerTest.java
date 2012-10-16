@@ -1,4 +1,4 @@
-package org.multibit.mbm.client;
+package org.multibit.mbm.client.handlers;
 
 import com.sun.jersey.api.client.WebResource;
 import com.yammer.dropwizard.client.JerseyClient;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
  *         
  */
 @Ignore
-public abstract class BaseClientTest {
+public abstract class BaseHandlerTest {
 
   protected JerseyClient client=mock(JerseyClient.class);
   protected WebResource webResource = mock(WebResource.class);

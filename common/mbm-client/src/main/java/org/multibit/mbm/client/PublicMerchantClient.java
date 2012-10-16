@@ -1,8 +1,8 @@
 package org.multibit.mbm.client;
 
 import com.yammer.dropwizard.client.JerseyClient;
-import org.multibit.mbm.client.item.PublicItemCollectionHandler;
-import org.multibit.mbm.client.item.PublicItemHandler;
+import org.multibit.mbm.client.handlers.item.PublicItemCollectionHandler;
+import org.multibit.mbm.client.handlers.item.PublicItemHandler;
 
 import java.util.Locale;
 
