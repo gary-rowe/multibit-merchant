@@ -10,13 +10,13 @@ import java.util.List;
 import java.util.Locale;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
 
 public class PublicMerchantClientTest extends BaseClientTest {
 
-
   @Test
-  public void items_retrieveAllByPage() {
+  public void items_retrievePromotionalItemsByPage() {
 
     // Arrange
     Locale locale = Locale.UK;
@@ -39,6 +39,30 @@ public class PublicMerchantClientTest extends BaseClientTest {
 
     // Assert
     assertEquals("Unexpected number of items", 2, items.size());
+
+  }
+
+  @Test
+  public void item_retrieveById() {
+
+    // Arrange
+    Locale locale = Locale.UK;
+
+    PublicItem item = new PublicItem();
+    URI uri = URI.create("http://localhost:8080/mbm/items/1");
+
+    // Test-specific JerseyClient behaviour
+    when(client.resource(uri)).thenReturn(webResource);
+    when(builder.get(PublicItem.class)).thenReturn(item);
+
+    // Act
+    PublicItem actualItem = PublicMerchantClient
+      .newInstance(client, locale)
+      .item()
+      .retrieveById(1);
+
+    // Assert
+    assertNotNull("Unexpected number of items", actualItem);
 
   }
 

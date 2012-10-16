@@ -4,6 +4,7 @@ import com.google.common.base.Optional;
 import com.yammer.dropwizard.jersey.caching.CacheControl;
 import com.yammer.metrics.annotation.Timed;
 import org.multibit.mbm.api.hal.HalMediaType;
+import org.multibit.mbm.api.response.hal.item.CustomerItemBridge;
 import org.multibit.mbm.api.response.hal.item.CustomerItemCollectionBridge;
 import org.multibit.mbm.db.dao.ItemDao;
 import org.multibit.mbm.db.dto.Item;
@@ -11,10 +12,7 @@ import org.multibit.mbm.db.dto.User;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -31,7 +29,7 @@ import java.util.concurrent.TimeUnit;
  * @since 0.0.1
  */
 @Component
-@Path("/item")
+@Path("/items")
 @Produces({HalMediaType.APPLICATION_HAL_JSON, HalMediaType.APPLICATION_HAL_XML, MediaType.APPLICATION_JSON})
 public class PublicItemResource extends BaseResource {
 
@@ -50,7 +48,7 @@ public class PublicItemResource extends BaseResource {
   @Timed
   @Path("/promotion")
   @CacheControl(maxAge = 6, maxAgeUnit = TimeUnit.HOURS)
-  public Response retrieveAllByPage(
+  public Response retrievePromotionalItemsByPage(
     @QueryParam("pageSize") Optional<String> rawPageSize,
     @QueryParam("pageNumber") Optional<String> rawPageNumber) {
 
@@ -64,6 +62,33 @@ public class PublicItemResource extends BaseResource {
     CustomerItemCollectionBridge bridge = new CustomerItemCollectionBridge(uriInfo, Optional.<User>absent());
 
     return ok(bridge, items);
+
+  }
+
+  /**
+   * Provide a paged response of all items in the system
+   *
+   * @param rawSku The unvalidated Stock Keeping Unit (SKU)
+   *
+   * @return A response containing a paged list of all items
+   */
+  @GET
+  @Timed
+  @Path("/{sku}")
+  @CacheControl(maxAge = 6, maxAgeUnit = TimeUnit.HOURS)
+  public Response retrieveBySku(@PathParam("sku") String rawSku) {
+
+    // Validation
+    // TODO Work out how to validate a SKU
+    String sku = rawSku;
+
+    Optional<Item> item = itemDao.getBySKU(sku);
+    ResourceAsserts.assertPresent(item,"item");
+
+    // Provide a representation to the client
+    CustomerItemBridge bridge = new CustomerItemBridge(uriInfo, Optional.<User>absent());
+
+    return ok(bridge, item.get());
 
   }
 

@@ -2,6 +2,7 @@ package org.multibit.mbm.client;
 
 import com.yammer.dropwizard.client.JerseyClient;
 import org.multibit.mbm.client.item.PublicItemCollectionHandler;
+import org.multibit.mbm.client.item.PublicItemHandler;
 
 import java.util.Locale;
 
@@ -41,9 +42,17 @@ public class PublicMerchantClient {
   }
 
   /**
-   * @return A suitable handler for item collections
+   * @return A suitable handler for single item requests
+   */
+  public PublicItemHandler item() {
+    return new PublicItemHandler(jerseyClient,locale);
+  }
+
+  /**
+   * @return A suitable handler for item collection searches
    */
   public PublicItemCollectionHandler items() {
     return new PublicItemCollectionHandler(jerseyClient,locale);
   }
+
 }
