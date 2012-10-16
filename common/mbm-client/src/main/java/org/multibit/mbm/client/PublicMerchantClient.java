@@ -3,6 +3,8 @@ package org.multibit.mbm.client;
 import com.yammer.dropwizard.client.JerseyClient;
 import org.multibit.mbm.client.item.PublicItemCollectionHandler;
 
+import java.util.Locale;
+
 /**
  * <p>RESTful client to provide the following to applications:</p>
  * <ul>
@@ -19,26 +21,29 @@ import org.multibit.mbm.client.item.PublicItemCollectionHandler;
 public class PublicMerchantClient {
 
   private final JerseyClient jerseyClient;
+  private final Locale locale;
 
   /**
-   * @param jerseyClient The {@link JerseyClient} to use
+   * @param jerseyClient A {@link JerseyClient} to provide connectivity with metrics
+   * @param locale The client locale for appropriate representation
    */
-  private PublicMerchantClient(JerseyClient jerseyClient) {
+  private PublicMerchantClient(JerseyClient jerseyClient, Locale locale) {
     this.jerseyClient = jerseyClient;
+    this.locale = locale;
   }
 
   /**
    * @param jerseyClient A {@link JerseyClient} to provide connectivity with metrics
-   * @return A new instance of the client
+   * @param locale The client locale for appropriate representation
    */
-  public static PublicMerchantClient newInstance(JerseyClient jerseyClient) {
-    return new PublicMerchantClient(jerseyClient);
+  public static PublicMerchantClient newInstance(JerseyClient jerseyClient, Locale locale) {
+    return new PublicMerchantClient(jerseyClient,locale);
   }
 
   /**
    * @return A suitable handler for item collections
    */
   public PublicItemCollectionHandler items() {
-    return new PublicItemCollectionHandler(jerseyClient);
+    return new PublicItemCollectionHandler(jerseyClient,locale);
   }
 }
