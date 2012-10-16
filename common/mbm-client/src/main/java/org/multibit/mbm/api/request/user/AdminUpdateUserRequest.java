@@ -4,7 +4,6 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.joda.time.DateTime;
-import org.multibit.mbm.db.dto.*;
 
 import java.util.Map;
 import java.util.Set;
@@ -38,7 +37,7 @@ public class AdminUpdateUserRequest extends AdminCreateUserRequest {
   private String secretKey = null;
 
   @JsonProperty("contact_method_map")
-  private Map<ContactMethod, ContactMethodDetail> contactMethodMap = Maps.newLinkedHashMap();
+  private Map<String, String> contactMethodMap = Maps.newLinkedHashMap();
 
   /**
    * Manages password resets (optional)
@@ -68,16 +67,16 @@ public class AdminUpdateUserRequest extends AdminCreateUserRequest {
    * A User may be linked to a Customer (bi-directional)
    */
   @JsonProperty
-  private Customer customer = null;
+  private String customer = null;
 
   /**
    * This collection provides additional optional fields so can be lazy
    */
   @JsonProperty("user_field_map")
-  private Map<UserField, UserFieldDetail> userFieldMap = Maps.newLinkedHashMap();
+  private Map<String, String> userFieldMap = Maps.newLinkedHashMap();
 
   @JsonProperty("user_roles")
-  private Set<UserRole> userRoles = Sets.newLinkedHashSet();
+  private Set<String> userRoles = Sets.newLinkedHashSet();
 
   public String getUuid() {
     return uuid;
@@ -95,11 +94,11 @@ public class AdminUpdateUserRequest extends AdminCreateUserRequest {
     this.secretKey = secretKey;
   }
 
-  public Map<ContactMethod, ContactMethodDetail> getContactMethodMap() {
+  public Map<String, String> getContactMethodMap() {
     return contactMethodMap;
   }
 
-  public void setContactMethodMap(Map<ContactMethod, ContactMethodDetail> contactMethodMap) {
+  public void setContactMethodMap(Map<String, String> contactMethodMap) {
     this.contactMethodMap = contactMethodMap;
   }
 
@@ -135,27 +134,27 @@ public class AdminUpdateUserRequest extends AdminCreateUserRequest {
     this.staffMember = staffMember;
   }
 
-  public Customer getCustomer() {
+  public String getCustomer() {
     return customer;
   }
 
-  public void setCustomer(Customer customer) {
+  public void setCustomer(String customer) {
     this.customer = customer;
   }
 
-  public Map<UserField, UserFieldDetail> getUserFieldMap() {
+  public Map<String, String> getUserFieldMap() {
     return userFieldMap;
   }
 
-  public void setUserFieldMap(Map<UserField, UserFieldDetail> userFieldMap) {
+  public void setUserFieldMap(Map<String, String> userFieldMap) {
     this.userFieldMap = userFieldMap;
   }
 
-  public Set<UserRole> getUserRoles() {
+  public Set<String> getUserRoles() {
     return userRoles;
   }
 
-  public void setUserRoles(Set<UserRole> userRoles) {
+  public void setUserRoles(Set<String> userRoles) {
     this.userRoles = userRoles;
   }
 }

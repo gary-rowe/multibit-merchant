@@ -2,8 +2,6 @@ package org.multibit.mbm.api.request.item;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
-import javax.persistence.Column;
-
 /**
  * <p>Base request to provide the following to Resources:</p>
  * <ul>

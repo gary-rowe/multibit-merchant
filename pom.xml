@@ -14,7 +14,7 @@
 
   <modules>
     <module>mbm</module>
-    <module>common/dropwizard-hal</module>
+    <module>common/mbm-client</module>
     <module>common/dropwizard-hal-testing</module>
   </modules>
 
@@ -62,7 +62,7 @@
   <distributionManagement>
     <repository>
       <id>releases</id>
-      <url>http://nexus.bitcoinj.org/content/repositories/releases</url>
+      <url>http://nexus.bitcoinoda.org/content/repositories/releases</url>
     </repository>
     <snapshotRepository>
       <id>snapshots</id>
@@ -404,37 +404,34 @@
       </dependency>
 
       <!-- Dropwizard framework -->
+      <!-- Core functionality -->
       <dependency>
         <groupId>com.yammer.dropwizard</groupId>
         <artifactId>dropwizard-core</artifactId>
         <version>${dropwizard.version}</version>
-        <exclusions>
-          <exclusion>
-            <artifactId>logback-classic</artifactId>
-            <groupId>ch.qos.logback</groupId>
-          </exclusion>
-          <exclusion>
-            <artifactId>logback-core</artifactId>
-            <groupId>ch.qos.logback</groupId>
-          </exclusion>
-        </exclusions>
       </dependency>
-
+      <!-- Authentication support -->
       <dependency>
         <groupId>com.yammer.dropwizard</groupId>
         <artifactId>dropwizard-auth</artifactId>
         <version>${dropwizard.version}</version>
       </dependency>
-
+      <!-- Resource testing support -->
       <dependency>
         <groupId>com.yammer.dropwizard</groupId>
         <artifactId>dropwizard-testing</artifactId>
         <version>${dropwizard.version}</version>
       </dependency>
-
+      <!-- HTML Freemarker views support -->
       <dependency>
         <groupId>com.yammer.dropwizard</groupId>
         <artifactId>dropwizard-views</artifactId>
+        <version>${dropwizard.version}</version>
+      </dependency>
+      <!-- REST client support for upstream data -->
+      <dependency>
+        <groupId>com.yammer.dropwizard</groupId>
+        <artifactId>dropwizard-client</artifactId>
         <version>${dropwizard.version}</version>
       </dependency>
 

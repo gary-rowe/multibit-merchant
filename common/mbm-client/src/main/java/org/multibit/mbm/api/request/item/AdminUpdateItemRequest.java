@@ -2,7 +2,6 @@ package org.multibit.mbm.api.request.item;
 
 import com.google.common.collect.Maps;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.multibit.mbm.db.dto.*;
 
 import java.util.Map;
 
@@ -27,7 +26,7 @@ public class AdminUpdateItemRequest extends AdminCreateItemRequest {
    * This collection is effectively the fields for the Item
    */
   @JsonProperty("item_field_map")
-  private Map<ItemField, ItemFieldDetail> itemFieldMap = Maps.newLinkedHashMap();
+  private Map<String, String> itemFieldMap = Maps.newLinkedHashMap();
 
   public String getGTIN() {
     return gtin;
@@ -37,11 +36,11 @@ public class AdminUpdateItemRequest extends AdminCreateItemRequest {
     this.gtin = gtin;
   }
 
-  public Map<ItemField, ItemFieldDetail> getItemFieldMap() {
+  public Map<String, String> getItemFieldMap() {
     return itemFieldMap;
   }
 
-  public void setItemFieldMap(Map<ItemField, ItemFieldDetail> itemFieldMap) {
+  public void setItemFieldMap(Map<String, String> itemFieldMap) {
     this.itemFieldMap = itemFieldMap;
   }
 }

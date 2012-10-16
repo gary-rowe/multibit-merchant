@@ -69,10 +69,10 @@
   <dependencies>
 
     <!-- MBM Common libraries -->
-    <!-- Provides common HAL support -->
+    <!-- Provides client support and allows integration testing -->
     <dependency>
       <groupId>org.multibit.merchant</groupId>
-      <artifactId>dropwizard-hal</artifactId>
+      <artifactId>mbm-client</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
     <!-- Provides common HAL representation testing support -->

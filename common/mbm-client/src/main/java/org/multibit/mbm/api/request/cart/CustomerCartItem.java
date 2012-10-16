@@ -1,8 +1,6 @@
 package org.multibit.mbm.api.request.cart;
 
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.multibit.mbm.db.dto.CartItem;
-import org.multibit.mbm.db.dto.Item;
 
 /**
  *  <p>Value object to provide the following to {@link CustomerUpdateCartRequest}:</p>
@@ -36,17 +34,6 @@ public class CustomerCartItem {
   public CustomerCartItem(Long itemId, int quantity) {
     this.id = itemId;
     this.quantity = quantity;
-  }
-
-  /**
-   * Utility constructor using DTOs
-   *
-   * @param cartItem The link between a Cart and the Item
-   */
-  public CustomerCartItem(CartItem cartItem) {
-    Item item = cartItem.getItem();
-    this.id = item.getId();
-    this.quantity = cartItem.getQuantity();
   }
 
   /**
