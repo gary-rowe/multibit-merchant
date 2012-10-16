@@ -33,8 +33,32 @@ public class PublicItemCollectionHandler {
     this.locale = locale;
   }
 
-  public List<PublicItem> retrieveAllByPage() {
-    URI uri = URI.create("http://localhost:8080/mbm/items?pn=0&ps=1");
+  /**
+   *
+   * Retrieve promotional items by page
+   *
+   * @param pageNumber The page number (e.g. 0 (first), 1, 2 etc)
+   * @param pageSize The number of results per page
+   * @return A list of {@link PublicItem}
+   */
+  public List<PublicItem> retrievePromotionalItemsByPage(int pageNumber, int pageSize) {
+
+    // Sanity check
+    // TODO Consider Guava ranges?
+    if (pageNumber < 0) {
+      pageNumber = 0;
+    }
+    if (pageSize < 0) {
+      pageSize = 0;
+    }
+    if (pageSize > 50) {
+      pageSize = 50;
+    }
+
+    // TODO Replace "magic string" with auto-discover based on link rel
+    String rawUri = String.format("http://localhost:8080/mbm/items?pn=%d&ps=%d"
+      ,pageNumber, pageSize);
+    URI uri = URI.create(rawUri);
 
     List list = jerseyClient
       .resource(uri)
