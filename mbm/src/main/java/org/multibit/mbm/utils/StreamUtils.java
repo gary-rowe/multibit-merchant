@@ -1,4 +1,4 @@
-package org.multibit.mbm.util;
+package org.multibit.mbm.utils;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;

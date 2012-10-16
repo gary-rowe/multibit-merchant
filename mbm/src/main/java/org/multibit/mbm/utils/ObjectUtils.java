@@ -1,4 +1,4 @@
-package org.multibit.mbm.util;
+package org.multibit.mbm.utils;
 
 import com.yammer.dropwizard.logging.Log;
 

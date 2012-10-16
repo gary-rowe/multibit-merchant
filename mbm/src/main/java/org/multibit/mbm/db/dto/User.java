@@ -3,7 +3,7 @@ package org.multibit.mbm.db.dto;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.joda.time.DateTime;
-import org.multibit.mbm.util.ObjectUtils;
+import org.multibit.mbm.utils.ObjectUtils;
 import com.yammer.dropwizard.logging.Log;
 
 

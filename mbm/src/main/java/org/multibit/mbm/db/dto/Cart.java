@@ -2,7 +2,7 @@ package org.multibit.mbm.db.dto;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Sets;
-import org.multibit.mbm.util.ObjectUtils;
+import org.multibit.mbm.utils.ObjectUtils;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;

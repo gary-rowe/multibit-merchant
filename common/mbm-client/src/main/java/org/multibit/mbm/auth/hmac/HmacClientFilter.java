@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.filter.ClientFilter;
-import org.multibit.mbm.util.DateUtils;
+import org.multibit.mbm.utils.DateUtils;
 import com.yammer.dropwizard.logging.Log;
 
 

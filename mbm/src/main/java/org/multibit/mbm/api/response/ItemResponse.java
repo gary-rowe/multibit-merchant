@@ -3,7 +3,7 @@ package org.multibit.mbm.api.response;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.multibit.mbm.db.dto.Item;
 import org.multibit.mbm.db.dto.ItemField;
-import org.multibit.mbm.util.DateUtils;
+import org.multibit.mbm.utils.DateUtils;
 
 /**
  * <p>Response to provide the following to {@link org.multibit.mbm.api.SearchResults}:</p>

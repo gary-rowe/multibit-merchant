@@ -1,7 +1,7 @@
 package org.multibit.mbm.db.dto;
 
 import com.google.common.collect.Sets;
-import org.multibit.mbm.util.ObjectUtils;
+import org.multibit.mbm.utils.ObjectUtils;
 
 import javax.persistence.*;
 import java.util.Set;

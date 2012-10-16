@@ -1,9 +1,8 @@
-package org.multibit.mbm.util;
+package org.multibit.mbm.utils;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeUtils;
 import org.junit.Test;
-import org.multibit.mbm.util.DateUtils;
 
 import java.util.Locale;
 
