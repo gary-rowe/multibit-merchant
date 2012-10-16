@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.multibit.mbm.client.PublicMerchantClient;
 import org.multibit.mbm.client.handlers.BaseHandlerTest;
 import org.multibit.mbm.model.PublicItem;
+import org.multibit.mbm.test.FixtureAsserts;
 
 import java.net.URI;
 import java.util.List;
@@ -57,17 +58,16 @@ public class PublicItemHandlerTest extends BaseHandlerTest {
   }
 
   @Test
-  public void item_retrieveBySku() {
+  public void item_retrieveBySku() throws Exception {
 
     // Arrange
     Locale locale = Locale.UK;
 
-    PublicItem item = new PublicItem();
     URI uri = URI.create("http://localhost:8080/mbm/item/0575088893");
 
     // Test-specific JerseyClient behaviour
     when(client.resource(uri)).thenReturn(webResource);
-    when(builder.get(PublicItem.class)).thenReturn(item);
+    when(builder.get(String.class)).thenReturn(FixtureAsserts.fixture("/fixtures/hal/item/expected-customer-retrieve-item.json"));
 
     // Act
     Optional<PublicItem> actualItem = PublicMerchantClient

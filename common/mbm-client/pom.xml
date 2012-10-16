@@ -60,6 +60,12 @@
       <artifactId>joda-time</artifactId>
     </dependency>
 
+    <!-- HAL Builder provides resource representation -->
+    <dependency>
+      <groupId>com.theoryinpractise</groupId>
+      <artifactId>halbuilder</artifactId>
+    </dependency>
+
   </dependencies>
 
 </project>

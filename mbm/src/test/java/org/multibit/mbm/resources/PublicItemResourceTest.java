@@ -1,5 +1,6 @@
 package org.multibit.mbm.resources;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import org.junit.Test;
 import org.multibit.mbm.api.hal.HalMediaType;
@@ -41,6 +42,7 @@ public class PublicItemResourceTest extends BaseJerseyResourceTest {
     // Retrieve
     when(itemDao.getAllByPage(1, 0)).thenReturn(itemsPage1);
     when(itemDao.getAllByPage(1, 1)).thenReturn(itemsPage2);
+    when(itemDao.getBySKU("0575088893")).thenReturn(Optional.of(book2));
 
     testObject.setItemDao(itemDao);
 
@@ -69,6 +71,18 @@ public class PublicItemResourceTest extends BaseJerseyResourceTest {
       .get(String.class);
 
     FixtureAsserts.assertStringMatchesJsonFixture("Item list 2 can be retrieved as HAL+JSON", actualResponse, "/fixtures/hal/item/expected-public-retrieve-items-page-2.json");
+
+  }
+
+  @Test
+  public void publicRetrieveItemBySkuAsHalJson() throws Exception {
+
+    String actualResponse = client()
+      .resource("/items/0575088893")
+      .accept(HalMediaType.APPLICATION_HAL_JSON)
+      .get(String.class);
+
+    FixtureAsserts.assertStringMatchesJsonFixture("Item list 1 can be retrieved as HAL+JSON", actualResponse, "/fixtures/hal/item/expected-customer-retrieve-item.json");
 
   }
 
