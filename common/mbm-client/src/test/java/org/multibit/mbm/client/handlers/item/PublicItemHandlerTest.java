@@ -70,14 +70,18 @@ public class PublicItemHandlerTest extends BaseHandlerTest {
     when(builder.get(String.class)).thenReturn(FixtureAsserts.fixture("/fixtures/hal/item/expected-customer-retrieve-item.json"));
 
     // Act
-    Optional<PublicItem> actualItem = PublicMerchantClient
+    Optional<PublicItem> optionalItem = PublicMerchantClient
       .newInstance(client, locale)
       .item()
       .retrieveBySku("0575088893");
 
     // Assert
-    assertTrue("Unexpected number of items", actualItem.isPresent());
+    assertTrue(optionalItem.isPresent());
 
+    PublicItem actualItem = optionalItem.get();
+
+    assertEquals("0575088893",actualItem.getSKU());
+    assertEquals("The Quantum Thief",actualItem.getOptionalProperties().get("title"));
   }
 
 }
