@@ -34,21 +34,20 @@ public class PublicItemHandlerTest extends BaseHandlerTest {
   public void items_retrievePromotionalItemsByPage() {
 
     // Arrange
-    Locale locale = Locale.UK;
 
     List<PublicItem> publicItems = Lists.newArrayList(
       new PublicItem(),
       new PublicItem()
     );
-    URI uri = URI.create("http://localhost:8080/mbm/items?pn=0&ps=1");
+    URI expectedUri = URI.create("http://localhost:8080/mbm/items?pn=0&ps=1");
 
     // Test-specific JerseyClient behaviour
-    when(client.resource(uri)).thenReturn(webResource);
+    when(client.resource(expectedUri)).thenReturn(webResource);
     when(builder.get(List.class)).thenReturn(publicItems);
 
     // Act
     List<PublicItem> items = PublicMerchantClient
-      .newInstance(client, locale)
+      .newInstance(client, locale, mbmBaseUri)
       .items()
       .retrievePromotionalItemsByPage(0,1);
 
@@ -63,15 +62,15 @@ public class PublicItemHandlerTest extends BaseHandlerTest {
     // Arrange
     Locale locale = Locale.UK;
 
-    URI uri = URI.create("http://localhost:8080/mbm/item/0575088893");
+    URI expectedUri = URI.create("http://localhost:8080/mbm/items/0575088893");
 
     // Test-specific JerseyClient behaviour
-    when(client.resource(uri)).thenReturn(webResource);
+    when(client.resource(expectedUri)).thenReturn(webResource);
     when(builder.get(String.class)).thenReturn(FixtureAsserts.fixture("/fixtures/hal/item/expected-customer-retrieve-item.json"));
 
     // Act
     Optional<PublicItem> optionalItem = PublicMerchantClient
-      .newInstance(client, locale)
+      .newInstance(client, locale, mbmBaseUri)
       .item()
       .retrieveBySku("0575088893");
 

@@ -3,6 +3,7 @@ package org.multibit.mbm.client.handlers.item;
 import com.google.common.collect.Lists;
 import com.yammer.dropwizard.client.JerseyClient;
 import org.multibit.mbm.api.hal.HalMediaType;
+import org.multibit.mbm.client.handlers.BaseHandler;
 import org.multibit.mbm.model.PublicItem;
 
 import javax.ws.rs.core.HttpHeaders;
@@ -19,20 +20,16 @@ import java.util.Locale;
  * @since 0.0.1
  *         
  */
-public class PublicItemCollectionHandler {
-
-  private final JerseyClient jerseyClient;
-  private final Locale locale;
+public class PublicItemCollectionHandler extends BaseHandler {
 
   /**
-   * @param jerseyClient The {@link JerseyClient} for consuming the upstream data
-   * @param locale       The locale that applies to the request
+   * @param jerseyClient The client for retrieving upstream data
+   * @param locale       The locale providing i18n information
+   * @param mbmBaseUri   The URI identifying the upstream server
    */
-  public PublicItemCollectionHandler(JerseyClient jerseyClient, Locale locale) {
-    this.jerseyClient = jerseyClient;
-    this.locale = locale;
+  public PublicItemCollectionHandler(JerseyClient jerseyClient, Locale locale, URI mbmBaseUri) {
+    super(locale, jerseyClient, mbmBaseUri);
   }
-
   /**
    *
    * Retrieve promotional items by page
@@ -56,9 +53,8 @@ public class PublicItemCollectionHandler {
     }
 
     // TODO Replace "magic string" with auto-discover based on link rel
-    String rawUri = String.format("http://localhost:8080/mbm/items?pn=%d&ps=%d"
-      ,pageNumber, pageSize);
-    URI uri = URI.create(rawUri);
+    String rawUri = String.format("/mbm/items?pn=%d&ps=%d",pageNumber, pageSize);
+    URI uri = URI.create(mbmBaseUri+rawUri);
 
     List list = jerseyClient
       .resource(uri)

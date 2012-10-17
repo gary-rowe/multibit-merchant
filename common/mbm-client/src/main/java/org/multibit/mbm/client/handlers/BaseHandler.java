@@ -3,6 +3,7 @@ package org.multibit.mbm.client.handlers;
 import com.theoryinpractise.halbuilder.ResourceFactory;
 import com.yammer.dropwizard.client.JerseyClient;
 
+import java.net.URI;
 import java.util.Locale;
 
 /**
@@ -18,26 +19,25 @@ public abstract class BaseHandler {
 
   protected final JerseyClient jerseyClient;
   protected final Locale locale;
+  protected final URI mbmBaseUri;
 
-  public BaseHandler(Locale locale, JerseyClient jerseyClient) {
+  /**
+   *
+   * @param locale The locale providing i18n information
+   * @param jerseyClient The client for retrieving upstream data
+   * @param mbmBaseUri The URI identifying the upstream server
+   */
+  public BaseHandler(Locale locale, JerseyClient jerseyClient, URI mbmBaseUri) {
     this.locale = locale;
     this.jerseyClient = jerseyClient;
+    this.mbmBaseUri=mbmBaseUri;
   }
 
   /**
    * @return A {@link com.theoryinpractise.halbuilder.ResourceFactory} configured for production use
    */
   protected ResourceFactory getResourceFactory() {
-    ResourceFactory resourceFactory = new ResourceFactory("http://localhost:8080");
-    // TODO Consider re-instating this
-//    // Override the default configuration
-//    resourceFactory.withRenderer(HalMediaType.APPLICATION_HAL_JSON,
-//      MinifiedJsonRenderer.class);
-//    resourceFactory.withRenderer(HalMediaType.APPLICATION_HAL_XML,
-//      MinifiedXmlRenderer.class);
-    return resourceFactory;
+    return new ResourceFactory(mbmBaseUri);
   }
-
-
 
 }

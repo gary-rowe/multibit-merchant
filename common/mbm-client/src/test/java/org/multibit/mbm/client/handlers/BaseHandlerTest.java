@@ -8,6 +8,9 @@ import org.multibit.mbm.api.hal.HalMediaType;
 
 import javax.ws.rs.core.HttpHeaders;
 
+import java.net.URI;
+import java.util.Locale;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -24,6 +27,9 @@ import static org.mockito.Mockito.when;
 public abstract class BaseHandlerTest {
 
   protected JerseyClient client=mock(JerseyClient.class);
+  protected final URI mbmBaseUri = URI.create("http://localhost:8080");
+  protected final Locale locale = Locale.UK;
+
   protected WebResource webResource = mock(WebResource.class);
   protected WebResource.Builder builder = mock(WebResource.Builder.class);
 

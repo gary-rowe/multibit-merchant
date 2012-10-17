@@ -27,11 +27,12 @@ import java.util.Map;
 public class PublicItemHandler extends BaseHandler {
 
   /**
-   * @param jerseyClient The {@link com.yammer.dropwizard.client.JerseyClient} for consuming the upstream data
-   * @param locale       The locale that applies to the request
+   * @param jerseyClient The client for retrieving upstream data
+   * @param locale       The locale providing i18n information
+   * @param mbmBaseUri   The URI identifying the upstream server
    */
-  public PublicItemHandler(JerseyClient jerseyClient, Locale locale) {
-    super(locale, jerseyClient);
+  public PublicItemHandler(JerseyClient jerseyClient, Locale locale, URI mbmBaseUri) {
+    super(locale, jerseyClient, mbmBaseUri);
   }
 
   /**
@@ -47,9 +48,8 @@ public class PublicItemHandler extends BaseHandler {
     // TODO How to sanity check an SKU?
 
     // TODO Replace "magic string" with auto-discover based on link rel
-    String rawUri = String.format("http://localhost:8080/mbm/item/%s"
-      , sku);
-    URI uri = URI.create(rawUri);
+    String rawUri = String.format("/mbm/items/%s", sku);
+    URI uri = URI.create(mbmBaseUri+rawUri);
 
     // Treat HAL as a raw string
     String hal = jerseyClient
