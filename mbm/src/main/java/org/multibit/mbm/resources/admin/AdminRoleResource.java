@@ -11,7 +11,7 @@ import org.multibit.mbm.api.response.hal.role.AdminRoleBridge;
 import org.multibit.mbm.api.response.hal.role.AdminRoleCollectionBridge;
 import org.multibit.mbm.auth.annotation.RestrictedTo;
 import org.multibit.mbm.db.dao.RoleDao;
-import org.multibit.mbm.db.dto.Authority;
+import org.multibit.mbm.auth.Authority;
 import org.multibit.mbm.db.dto.Role;
 import org.multibit.mbm.db.dto.RoleBuilder;
 import org.multibit.mbm.db.dto.User;

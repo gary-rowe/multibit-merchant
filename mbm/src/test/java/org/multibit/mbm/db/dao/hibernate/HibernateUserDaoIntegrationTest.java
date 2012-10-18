@@ -33,14 +33,14 @@ public class HibernateUserDaoIntegrationTest extends BaseIntegrationTests {
   @Test
   public void testPersistAndFind() {
 
-    String openId="abc123";
-    String uuid="1234-5678";
+    String apiKey="abc123";
+    String secretKey="1234-5678";
 
     User expected = UserBuilder.newInstance()
-      .withOpenId(openId)
-      .withUUID(uuid)
+      .withApiKey(apiKey)
+      .withSecretKey(secretKey)
       .build();
-    expected.setOpenId(openId);
+    expected.setApiKey(apiKey);
 
     // Persist with insert
     int originalUserRows = countRowsInTable("users");
@@ -88,7 +88,7 @@ public class HibernateUserDaoIntegrationTest extends BaseIntegrationTests {
     assertThat("Unexpected data in contact_method_secondary_details", updatedContactMethodDetailSecondaryRows, equalTo(originalContactMethodDetailSecondaryRows+1));
 
     // Query against the "openId"
-    Optional<User> actual=testObject.getByOpenId("abc123");
+    Optional<User> actual=testObject.getByApiKey("abc123");
 
     // Session flush: Expect no change to users, contact_method_details, contact_method_secondary_details
     updatedUserRows = countRowsInTable("users");
@@ -108,7 +108,7 @@ public class HibernateUserDaoIntegrationTest extends BaseIntegrationTests {
   @Test
   public void testUsersAndRoles() {
 
-    Optional<User> aliceCustomer = testObject.getByUUID("alice123");
+    Optional<User> aliceCustomer = testObject.getByApiKey("alice123");
     
     assertTrue("Expected pre-populated data", aliceCustomer.isPresent());
     assertThat("Unexpected number of Roles",aliceCustomer.get().getUserRoles().size(), equalTo(1));

@@ -1,4 +1,4 @@
-package org.multibit.mbm.auth.hmac;
+package org.multibit.mbm.utils;
 
 /**
  * <p>

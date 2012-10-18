@@ -20,7 +20,7 @@ public class LocalisedText implements Serializable {
   @Column(name = "locale_key", nullable = false)
   private String localeKey="en";
 
-  @Column(name = "content", nullable = false)
+  @Column(name = "content", nullable = false, length = 4096)
   private String content="Empty";
 
   /*

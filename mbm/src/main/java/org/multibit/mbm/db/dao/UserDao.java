@@ -17,22 +17,13 @@ public interface UserDao {
   Optional<User> getById(Long id);
 
   /**
-   * Attempt to locate the User
-   *
-   * @param openId The OpenId token
-   *
-   * @return A matching User
-   */
-  Optional<User> getByOpenId(String openId);
-
-  /**
    * Attempt to locate the User by a UUID
    *
-   * @param uuid The UUID that acts as a unique identifier when Open ID is not available
+   * @param apiKey The apiKey that identifies the user during HMAC authentication
    *
    * @return A matching User
    */
-  Optional<User> getByUUID(String uuid);
+  Optional<User> getByApiKey(String apiKey);
 
   /**
    * Attempt to locate the User by a UUID

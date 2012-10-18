@@ -39,7 +39,7 @@ public class HibernateCartDaoIntegrationTest extends BaseIntegrationTests {
   @Test
   public void testPersist() {
 
-    Optional<User> user = userDao.getByUUID("alice123");
+    Optional<User> user = userDao.getByApiKey("alice123");
     assertTrue("Unexpected missing user",user.isPresent());
 
     Cart expectedCart = new Cart(user.get().getCustomer());
@@ -122,7 +122,7 @@ public class HibernateCartDaoIntegrationTest extends BaseIntegrationTests {
   @Test
   public void testGetInitialisedCartByCustomer() {
 
-    Optional<User> user = userDao.getByUUID("alice123");
+    Optional<User> user = userDao.getByApiKey("alice123");
 
     Customer customer = user.get().getCustomer();
 

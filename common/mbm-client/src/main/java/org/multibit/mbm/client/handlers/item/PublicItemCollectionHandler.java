@@ -1,13 +1,10 @@
 package org.multibit.mbm.client.handlers.item;
 
 import com.google.common.collect.Lists;
-import com.yammer.dropwizard.client.JerseyClient;
-import org.multibit.mbm.api.hal.HalMediaType;
+import org.multibit.mbm.client.MerchantResourceFactory;
 import org.multibit.mbm.client.handlers.BaseHandler;
 import org.multibit.mbm.model.PublicItem;
 
-import javax.ws.rs.core.HttpHeaders;
-import java.net.URI;
 import java.util.List;
 import java.util.Locale;
 
@@ -23,12 +20,10 @@ import java.util.Locale;
 public class PublicItemCollectionHandler extends BaseHandler {
 
   /**
-   * @param jerseyClient The client for retrieving upstream data
    * @param locale       The locale providing i18n information
-   * @param mbmBaseUri   The URI identifying the upstream server
    */
-  public PublicItemCollectionHandler(JerseyClient jerseyClient, Locale locale, URI mbmBaseUri) {
-    super(locale, jerseyClient, mbmBaseUri);
+  public PublicItemCollectionHandler(Locale locale) {
+    super(locale);
   }
   /**
    *
@@ -53,13 +48,10 @@ public class PublicItemCollectionHandler extends BaseHandler {
     }
 
     // TODO Replace "magic string" with auto-discover based on link rel
-    String rawUri = String.format("/mbm/items?pn=%d&ps=%d",pageNumber, pageSize);
-    URI uri = URI.create(mbmBaseUri+rawUri);
+    String path = String.format("/items?pn=%d&ps=%d",pageNumber, pageSize);
 
-    List list = jerseyClient
-      .resource(uri)
-      .accept(HalMediaType.APPLICATION_HAL_JSON)
-      .header(HttpHeaders.ACCEPT_LANGUAGE, locale.toString())
+    List list = MerchantResourceFactory.INSTANCE
+      .newClientResource(locale, path)
       .get(List.class);
 
     List<PublicItem> publicItems = Lists.newArrayList(list);

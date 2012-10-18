@@ -79,8 +79,7 @@ public class AdminRoleResourceTest extends BaseJerseyResourceTest {
     createRoleRequest.setName("Stock Manager");
     createRoleRequest.setDescription("Stock Manager roles");
 
-    String actualResponse = client()
-      .resource("/admin/role")
+    String actualResponse = configureAsClient("/admin/role")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .entity(createRoleRequest, MediaType.APPLICATION_JSON_TYPE)
       .post(String.class);
@@ -92,8 +91,7 @@ public class AdminRoleResourceTest extends BaseJerseyResourceTest {
   @Test
   public void adminRetrieveRoleAsHalJson() throws Exception {
 
-    String actualResponse = client()
-      .resource("/admin/role")
+    String actualResponse = configureAsClient("/admin/role")
       .queryParam("pageSize","1")
       .queryParam("pageNumber", "1")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
@@ -101,8 +99,7 @@ public class AdminRoleResourceTest extends BaseJerseyResourceTest {
 
     FixtureAsserts.assertStringMatchesJsonFixture("Role list 1 can be retrieved as HAL+JSON", actualResponse, "/fixtures/hal/role/expected-admin-retrieve-roles-page-1.json");
 
-    actualResponse = client()
-      .resource("/admin/role")
+    actualResponse = configureAsClient("/admin/role")
       .queryParam("pageSize","1")
       .queryParam("pageNumber", "2")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
@@ -121,8 +118,7 @@ public class AdminRoleResourceTest extends BaseJerseyResourceTest {
     // TODO Re-instate this
     // updateRoleRequest.getAuthorities().add(Authority.ROLE_STORES_MANAGER.name());
 
-    String actualResponse = client()
-      .resource("/admin/role/1")
+    String actualResponse = configureAsClient("/admin/role/1")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .entity(updateRoleRequest, MediaType.APPLICATION_JSON_TYPE)
       .put(String.class);
@@ -137,8 +133,7 @@ public class AdminRoleResourceTest extends BaseJerseyResourceTest {
     AdminDeleteEntityRequest deleteRoleRequest = new AdminDeleteEntityRequest();
     deleteRoleRequest.setReason("At role request");
 
-    String actualResponse = client()
-      .resource("/admin/role/1")
+    String actualResponse = configureAsClient("/admin/role/1")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .entity(deleteRoleRequest, MediaType.APPLICATION_JSON_TYPE)
       .delete(String.class);

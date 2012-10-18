@@ -1,12 +1,12 @@
 package org.multibit.mbm.db;
 
+import com.yammer.dropwizard.logging.Log;
+import org.multibit.mbm.auth.Authority;
 import org.multibit.mbm.db.dao.CustomerDao;
 import org.multibit.mbm.db.dao.ItemDao;
 import org.multibit.mbm.db.dao.RoleDao;
 import org.multibit.mbm.db.dao.UserDao;
 import org.multibit.mbm.db.dto.*;
-import com.yammer.dropwizard.logging.Log;
-
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -154,9 +154,19 @@ public class DatabaseLoader {
   public static Item buildBookItemQuantumThief() {
     return ItemBuilder.newInstance()
       .withSKU("0575088893")
+      .withGTIN("978-0575088894")
       .withPrimaryFieldDetail(ItemField.TITLE, "The Quantum Thief", "en")
       .withPrimaryFieldDetail(ItemField.AUTHOR, "Hannu Rajaniemi", "en")
       .withPrimaryFieldDetail(ItemField.SUMMARY, "The most exciting SF debut of the last five years - a star to stand alongside Alistair Reynolds and Richard Morgan.", "en")
+      .withPrimaryFieldDetail(ItemField.PUBLISHER, "Gollancz (1 Nov 2011)", "en")
+      .withPrimaryFieldDetail(ItemField.FORMAT, "Paperback", "en")
+      .withPrimaryFieldDetail(ItemField.PAGE_COUNT, "336", "en")
+      .withPrimaryFieldDetail(ItemField.DESCRIPTION, "<p>The Quantum Thief is a dazzling hard SF novel set in the solar system of the far future - a heist novel peopled by bizarre post-humans but powered by very human motives of betrayal, revenge and jealousy. It is a stunning debut.</p><br/>" +
+        "<p>Jean le Flambeur is a post-human criminal, mind burglar, confidence artist and trickster. His origins are shrouded in mystery, but his exploits are known throughout the Heterarchy - from breaking into the vast Zeusbrains of the Inner System to steal their thoughts, to stealing rare Earth antiques from the aristocrats of the Moving Cities of Mars.</p>" +
+        "<p>Except that Jean made one mistake. Now he is condemned to play endless variations of a game-theoretic riddle in the vast virtual jail of the Axelrod Archons - the Dilemma Prison - against countless copies of himself.</p>" +
+        "<p>Jean's routine of death, defection and cooperation is upset by the arrival of Mieli and her spidership, Perhonen. She offers him a chance to win back his freedom and the powers of his old self - in exchange for finishing the one heist he never quite managed...</p>", "en")
+      .withPrimaryFieldDetail(ItemField.GENRE, "Sci-Fi", "en")
+      .withPrimaryFieldDetail(ItemField.SIZE, "12.9 x 2.1 x 19.6 cm", "en")
       .withPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/4/thumbnail4.png", "en")
       .build();
   }
@@ -217,7 +227,7 @@ public class DatabaseLoader {
       .build();
 
     return UserBuilder.newInstance()
-      .withUUID("bob123")
+      .withApiKey("bob123")
       .withSecretKey("bob456")
       .withUsername("bob")
       .withPassword("bob1")
@@ -234,7 +244,7 @@ public class DatabaseLoader {
       .build();
 
     return UserBuilder.newInstance()
-      .withUUID("alice123")
+      .withApiKey("alice123")
       .withSecretKey("alice456")
       .withUsername("alice")
       .withPassword("alice1")
@@ -249,7 +259,7 @@ public class DatabaseLoader {
   public static User buildTrentAdministrator(Role adminRole) {
     // Admin
     return UserBuilder.newInstance()
-      .withUUID("trent123")
+      .withApiKey("trent123")
       .withSecretKey("trent456")
       .withUsername("trent")
       .withPassword("trent1")

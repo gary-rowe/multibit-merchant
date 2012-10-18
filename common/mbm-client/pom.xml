@@ -21,7 +21,6 @@
 
   <dependencies>
 
-    <!-- Common library -->
     <!-- Provides common HAL support -->
     <dependency>
       <groupId>org.multibit.merchant</groupId>
@@ -40,6 +39,12 @@
     <dependency>
       <groupId>com.yammer.dropwizard</groupId>
       <artifactId>dropwizard-client</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <!-- Dropwizard authentication support -->
+    <dependency>
+      <groupId>com.yammer.dropwizard</groupId>
+      <artifactId>dropwizard-auth</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -64,6 +69,18 @@
     <dependency>
       <groupId>com.theoryinpractise</groupId>
       <artifactId>halbuilder</artifactId>
+    </dependency>
+
+    <!-- Jasypt for protecting shared secrets -->
+    <dependency>
+      <groupId>org.jasypt</groupId>
+      <artifactId>jasypt</artifactId>
+    </dependency>
+
+    <!-- Hibernate JPA annotation support -->
+    <dependency>
+      <groupId>org.hibernate.java-persistence</groupId>
+      <artifactId>jpa-api</artifactId>
     </dependency>
 
   </dependencies>

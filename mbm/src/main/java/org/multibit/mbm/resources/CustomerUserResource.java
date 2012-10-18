@@ -6,7 +6,7 @@ import com.yammer.metrics.annotation.Timed;
 import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.api.response.hal.user.CustomerUserBridge;
 import org.multibit.mbm.auth.annotation.RestrictedTo;
-import org.multibit.mbm.db.dto.Authority;
+import org.multibit.mbm.auth.Authority;
 import org.multibit.mbm.db.dto.User;
 import org.springframework.stereotype.Component;
 

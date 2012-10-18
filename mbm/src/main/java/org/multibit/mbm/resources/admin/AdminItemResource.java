@@ -11,7 +11,7 @@ import org.multibit.mbm.api.response.hal.item.AdminItemBridge;
 import org.multibit.mbm.api.response.hal.item.AdminItemCollectionBridge;
 import org.multibit.mbm.auth.annotation.RestrictedTo;
 import org.multibit.mbm.db.dao.ItemDao;
-import org.multibit.mbm.db.dto.Authority;
+import org.multibit.mbm.auth.Authority;
 import org.multibit.mbm.db.dto.Item;
 import org.multibit.mbm.db.dto.ItemBuilder;
 import org.multibit.mbm.db.dto.User;

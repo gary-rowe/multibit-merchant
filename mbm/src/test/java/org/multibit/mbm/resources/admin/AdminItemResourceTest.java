@@ -76,8 +76,7 @@ public class AdminItemResourceTest extends BaseJerseyResourceTest {
     AdminCreateItemRequest createItemRequest = new AdminCreateItemRequest();
     createItemRequest.setSKU("sku123");
 
-    String actualResponse = client()
-      .resource("/admin/item")
+    String actualResponse = configureAsClient("/admin/item")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .entity(createItemRequest, MediaType.APPLICATION_JSON_TYPE)
       .post(String.class);
@@ -89,8 +88,7 @@ public class AdminItemResourceTest extends BaseJerseyResourceTest {
   @Test
   public void adminRetrieveItemAsHalJson() throws Exception {
 
-    String actualResponse = client()
-      .resource("/admin/item")
+    String actualResponse = configureAsClient("/admin/item")
       .queryParam("pageSize","1")
       .queryParam("pageNumber", "0")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
@@ -98,8 +96,7 @@ public class AdminItemResourceTest extends BaseJerseyResourceTest {
 
     FixtureAsserts.assertStringMatchesJsonFixture("Item list 1 can be retrieved as HAL+JSON", actualResponse, "/fixtures/hal/item/expected-admin-retrieve-items-page-1.json");
 
-    actualResponse = client()
-      .resource("/admin/item")
+    actualResponse = configureAsClient("/admin/item")
       .queryParam("pageSize","1")
       .queryParam("pageNumber", "1")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
@@ -116,8 +113,7 @@ public class AdminItemResourceTest extends BaseJerseyResourceTest {
     updateItemRequest.setSKU("sku123");
     updateItemRequest.setGTIN("gtin123");
 
-    String actualResponse = client()
-      .resource("/admin/item/1")
+    String actualResponse = configureAsClient("/admin/item/1")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .entity(updateItemRequest, MediaType.APPLICATION_JSON_TYPE)
       .put(String.class);
@@ -132,8 +128,7 @@ public class AdminItemResourceTest extends BaseJerseyResourceTest {
     AdminDeleteEntityRequest deleteItemRequest = new AdminDeleteEntityRequest();
     deleteItemRequest.setReason("No longer available");
 
-    String actualResponse = client()
-      .resource("/admin/item/1")
+    String actualResponse = configureAsClient("/admin/item/1")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .entity(deleteItemRequest, MediaType.APPLICATION_JSON_TYPE)
       .delete(String.class);

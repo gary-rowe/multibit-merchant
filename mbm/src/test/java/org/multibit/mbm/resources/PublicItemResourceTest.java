@@ -54,8 +54,7 @@ public class PublicItemResourceTest extends BaseJerseyResourceTest {
   @Test
   public void publicRetrievePromotionalItemsAsHalJson() throws Exception {
 
-    String actualResponse = client()
-      .resource("/items/promotion")
+    String actualResponse = configureAsClient("/items/promotion")
       .queryParam("pageSize","1")
       .queryParam("pageNumber", "0")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
@@ -63,8 +62,7 @@ public class PublicItemResourceTest extends BaseJerseyResourceTest {
 
     FixtureAsserts.assertStringMatchesJsonFixture("Item list 1 can be retrieved as HAL+JSON", actualResponse, "/fixtures/hal/item/expected-public-retrieve-items-page-1.json");
 
-    actualResponse = client()
-      .resource("/items/promotion")
+    actualResponse = configureAsClient("/items/promotion")
       .queryParam("pageSize","1")
       .queryParam("pageNumber", "1")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
@@ -77,8 +75,7 @@ public class PublicItemResourceTest extends BaseJerseyResourceTest {
   @Test
   public void publicRetrieveItemBySkuAsHalJson() throws Exception {
 
-    String actualResponse = client()
-      .resource("/items/0575088893")
+    String actualResponse = configureAsClient("/items/0575088893")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 

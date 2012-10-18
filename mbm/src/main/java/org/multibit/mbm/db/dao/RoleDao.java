@@ -1,7 +1,7 @@
 package org.multibit.mbm.db.dao;
 
 import com.google.common.base.Optional;
-import org.multibit.mbm.db.dto.Authority;
+import org.multibit.mbm.auth.Authority;
 import org.multibit.mbm.db.dto.Role;
 
 import java.util.List;

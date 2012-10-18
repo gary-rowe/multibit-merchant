@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.test.framework.AppDescriptor;
 import com.sun.jersey.test.framework.JerseyTest;
 import com.sun.jersey.test.framework.LowLevelAppDescriptor;
@@ -16,9 +17,9 @@ import com.yammer.dropwizard.json.Json;
 import org.codehaus.jackson.map.Module;
 import org.junit.After;
 import org.junit.Before;
-import org.multibit.mbm.auth.hmac.HmacAuthenticator;
 import org.multibit.mbm.auth.hmac.HmacClientFilter;
-import org.multibit.mbm.auth.hmac.HmacRestrictedToProvider;
+import org.multibit.mbm.auth.hmac.HmacServerAuthenticator;
+import org.multibit.mbm.auth.hmac.HmacServerRestrictedToProvider;
 import org.multibit.mbm.db.DatabaseLoader;
 import org.multibit.mbm.db.dao.UserDao;
 import org.multibit.mbm.db.dto.*;
@@ -45,8 +46,8 @@ public abstract class BaseJerseyResourceTest extends BaseResourceTest {
   protected UriInfo uriInfo;
 
   // Authentication support using HMAC
-  private Optional<String> apiKey = Optional.of("trent123");
-  private Optional<String> sharedSecret = Optional.of("trent456");
+  protected Optional<String> clientApiKey = Optional.of("trent123");
+  protected Optional<String> clientSecretKey = Optional.of("trent456");
 
   /**
    * <p>Subclasses must use this to configure mocks of any objects that the
@@ -117,8 +118,6 @@ public abstract class BaseJerseyResourceTest extends BaseResourceTest {
 
     // Allow final client request filtering for HMAC authentication (this allows for secure tests)
     test.client().addFilter(new HmacClientFilter(
-      apiKey.get(),
-      sharedSecret.get(),
       test.client().getProviders()
     )
     );
@@ -140,21 +139,21 @@ public abstract class BaseJerseyResourceTest extends BaseResourceTest {
 
     Role customerRole = DatabaseLoader.buildCustomerRole();
 
-    return setUpAuthenticator(apiKey, sharedSecret, Lists.newArrayList(customerRole));
+    return setUpAuthenticator(clientApiKey, clientSecretKey, Lists.newArrayList(customerRole));
   }
 
   /**
    * Provides the default authentication settings
    */
   protected User setUpAuthenticator(List<Role> roles) {
-    return setUpAuthenticator(apiKey, sharedSecret, roles);
+    return setUpAuthenticator(clientApiKey, clientSecretKey, roles);
   }
 
   /**
-   * @param apiKey       The API key to assign to the User (default is "abc123")
-   * @param sharedSecret The shared secret to assign (default is "def456")
+   * @param apiKey    The API key to assign to the User
+   * @param secretKey The secret key to assign to the User
    */
-  protected User setUpAuthenticator(Optional<String> apiKey, Optional<String> sharedSecret, List<Role> roles) {
+  protected User setUpAuthenticator(Optional<String> apiKey, Optional<String> secretKey, List<Role> roles) {
 
     Customer customer = CustomerBuilder
       .newInstance()
@@ -162,21 +161,34 @@ public abstract class BaseJerseyResourceTest extends BaseResourceTest {
 
     User user = UserBuilder
       .newInstance()
-      .withUUID(apiKey.get())
-      .withSecretKey(sharedSecret.get())
+      .withApiKey(apiKey.get())
+      .withSecretKey(secretKey.get())
       .withRoles(roles)
       .withCustomer(customer)
       .build();
 
     UserDao userDao = mock(UserDao.class);
-    when(userDao.getByUUID(apiKey.get())).thenReturn(Optional.of(user));
+    when(userDao.getByApiKey(apiKey.get())).thenReturn(Optional.of(user));
 
-    HmacAuthenticator authenticator = new HmacAuthenticator();
+    HmacServerAuthenticator authenticator = new HmacServerAuthenticator();
     authenticator.setUserDao(userDao);
 
-    addSingleton(new HmacRestrictedToProvider<User>(authenticator, "REST"));
+    addSingleton(new HmacServerRestrictedToProvider<User>(authenticator, "REST"));
 
     return user;
   }
 
+  /**
+   * Configure request as a client to access the resource on behalf of a user
+   *
+   * @param path The relative path to the resource
+   *
+   * @return A web resource suitable for method chaining
+   */
+  protected WebResource configureAsClient(String path) {
+    WebResource resource = client().resource(path);
+    resource.setProperty(HmacClientFilter.MBM_PUBLIC_KEY, clientApiKey.get());
+    resource.setProperty(HmacClientFilter.MBM_SHARED_SECRET, clientSecretKey.get());
+    return resource;
+  }
 }

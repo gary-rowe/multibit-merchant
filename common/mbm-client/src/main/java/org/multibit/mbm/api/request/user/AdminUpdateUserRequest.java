@@ -27,7 +27,7 @@ public class AdminUpdateUserRequest extends AdminCreateUserRequest {
    * Typically used as an API key</p>
    */
   @JsonProperty
-  private String uuid = null;
+  private String apiKey = null;
 
   /**
    * <p>Used as a shared secret between this user and the application. Typically
@@ -78,12 +78,12 @@ public class AdminUpdateUserRequest extends AdminCreateUserRequest {
   @JsonProperty("user_roles")
   private Set<String> userRoles = Sets.newLinkedHashSet();
 
-  public String getUuid() {
-    return uuid;
+  public String getApiKey() {
+    return apiKey;
   }
 
-  public void setUuid(String uuid) {
-    this.uuid = uuid;
+  public void setApiKey(String apiKey) {
+    this.apiKey = apiKey;
   }
 
   public String getSecretKey() {

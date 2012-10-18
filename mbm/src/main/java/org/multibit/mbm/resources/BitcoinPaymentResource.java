@@ -5,7 +5,7 @@ import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.auth.annotation.RestrictedTo;
 import org.multibit.mbm.bitcoin.service.BitcoinService;
 import org.multibit.mbm.bitcoin.service.SwatchBuilder;
-import org.multibit.mbm.db.dto.Authority;
+import org.multibit.mbm.auth.Authority;
 import org.multibit.mbm.db.dto.User;
 import com.yammer.dropwizard.logging.Log;
 

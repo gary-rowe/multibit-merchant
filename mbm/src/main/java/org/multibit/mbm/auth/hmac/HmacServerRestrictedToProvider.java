@@ -15,26 +15,26 @@ import org.multibit.mbm.auth.annotation.RestrictedTo;
  * <p>Authentication provider to provide the following to Jersey:</p>
  * <ul>
  * <li>Bridge between Dropwizard and Jersey for HMAC authentication</li>
- * <li>Provides additional {@link org.multibit.mbm.db.dto.Authority} information</li>
+ * <li>Provides additional {@link org.multibit.mbm.auth.Authority} information</li>
  * </ul>
  *
  * @param <T>    the principal type.
  * @since 0.0.1
  */
-public class HmacRestrictedToProvider<T> implements InjectableProvider<RestrictedTo, Parameter> {
-  static final Log LOG = Log.forClass(HmacRestrictedToProvider.class);
+public class HmacServerRestrictedToProvider<T> implements InjectableProvider<RestrictedTo, Parameter> {
+  static final Log LOG = Log.forClass(HmacServerRestrictedToProvider.class);
 
-  private final Authenticator<HmacCredentials, T> authenticator;
+  private final Authenticator<HmacServerCredentials, T> authenticator;
   private final String realm;
 
   /**
-   * Creates a new {@link org.multibit.mbm.auth.hmac.HmacRestrictedToProvider} with the given {@link com.yammer.dropwizard.auth.Authenticator} and realm.
+   * Creates a new {@link HmacServerRestrictedToProvider} with the given {@link com.yammer.dropwizard.auth.Authenticator} and realm.
    *
-   * @param authenticator the authenticator which will take the {@link HmacCredentials} and
+   * @param authenticator the authenticator which will take the {@link HmacServerCredentials} and
    *                      convert them into instances of {@code T}
    * @param realm         the name of the authentication realm
    */
-  public HmacRestrictedToProvider(Authenticator<HmacCredentials, T> authenticator, String realm) {
+  public HmacServerRestrictedToProvider(Authenticator<HmacServerCredentials, T> authenticator, String realm) {
     this.authenticator = authenticator;
     this.realm = realm;
   }
@@ -48,7 +48,7 @@ public class HmacRestrictedToProvider<T> implements InjectableProvider<Restricte
   public Injectable<?> getInjectable(ComponentContext ic,
                                      RestrictedTo a,
                                      Parameter c) {
-    return new HmacRestrictedToInjectable<T>(authenticator, realm, a.value());
+    return new HmacServerRestrictedToInjectable<T>(authenticator, realm, a.value());
   }
 }
 

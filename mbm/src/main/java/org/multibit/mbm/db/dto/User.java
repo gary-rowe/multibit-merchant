@@ -3,9 +3,7 @@ package org.multibit.mbm.db.dto;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.joda.time.DateTime;
-import org.multibit.mbm.utils.ObjectUtils;
-import com.yammer.dropwizard.logging.Log;
-
+import org.multibit.mbm.auth.Authority;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,10 +11,12 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- *  <p>DTO to provide the following to application:</p>
- *  <ul>
- *  <li>Storage of state for the User entity</li>
- *  </ul>
+ * <p>DTO to provide the following to application:</p>
+ * <ul>
+ * <li>Storage of state for the User entity</li>
+ * </ul>
+ * <p>This is the main server side User entity, it extends the much simplified client side
+ * User entity </p>
  *
  * @since 0.0.1
  *         
@@ -26,36 +26,52 @@ import java.util.Set;
 public class User implements Serializable {
   private static final long serialVersionUID = 38345280321234L;
 
-  @Transient
-  private static final Log LOG = Log.forClass(User.class);
-
   /**
    * Numerical ID to allow faster indexing (for internal use)
    */
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false)
-  private Long id = null;
-
-  @Column(name = "open_id", nullable = true)
-  private String openId = null;
+  protected Long id = null;
 
   /**
    * <p>UUID to allow public User reference without
    * revealing a sequential ID that could be guessed.
    * Typically used as an API key</p>
    */
-  @Column(name = "uuid", nullable = false)
-  private String uuid = null;
+  @Column(name = "api_key", nullable = false)
+  protected String apiKey = null;
 
   /**
-   * <p>Used as a shared secret between this user and the application. Typically
+   * <p>Used as a shared secret to authenticate this user to the upstream server. Typically
    * part of an HMAC authentication scheme.</p>
    */
   @Column(name = "secret_key", nullable = true)
-  private String secretKey = null;
+  protected String secretKey = null;
 
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  /**
+   * <p>A user password (not plaintext and optional for anonymity reasons)</p>
+   */
+  @Column(name = "password", nullable = true)
+  protected String password = null;
+
+  /**
+   * <p>A username (optional for anonymity reasons)</p>
+   */
+  @Column(name = "username", nullable = true)
+  protected String username = null;
+
+  /**
+   * A shared secret between this client the user's browser that is revoked when the session ends
+   */
+  @Column(name = "session_key", nullable = true)
+  private String sessionKey;
+
+  @OneToMany(
+    cascade = CascadeType.ALL,
+    fetch = FetchType.EAGER,
+    orphanRemoval = true
+  )
   @MapKeyEnumerated()
   private Map<ContactMethod, ContactMethodDetail> contactMethodMap = Maps.newLinkedHashMap();
 
@@ -71,18 +87,6 @@ public class User implements Serializable {
    */
   @Column(name = "created_at", nullable = true)
   private DateTime createdAt = null;
-
-  /**
-   * A user password (not plaintext and optional for anonymity reasons)
-   */
-  @Column(name = "password", nullable = true)
-  private String password = null;
-
-  /**
-   * A username (optional for anonymity reasons)
-   */
-  @Column(name = "username", nullable = true)
-  private String username = null;
 
   /**
    * Indicates if the User has been locked (defaults to unlocked)
@@ -115,22 +119,6 @@ public class User implements Serializable {
   private Customer customer = null;
 
   /**
-   * This collection provides additional optional fields so can be lazy
-   */
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  @MapKeyEnumerated
-  private Map<UserField, UserFieldDetail> userFieldMap = Maps.newLinkedHashMap();
-
-  @OneToMany(targetEntity = UserRole.class, cascade = {CascadeType.ALL}, mappedBy = "primaryKey.user", fetch = FetchType.EAGER, orphanRemoval = true)
-  private Set<UserRole> userRoles = Sets.newLinkedHashSet();
-
-  /**
-   * Default constructor for Hibernate
-   */
-  public User() {
-  }
-
-  /**
    * @return The internal unique ID
    */
   public Long getId() {
@@ -141,16 +129,19 @@ public class User implements Serializable {
     this.id = id;
   }
 
-  public String getOpenId() {
-    return openId;
+  /**
+   * @return The public API key
+   */
+  public String getApiKey() {
+    return apiKey;
   }
 
-  public void setOpenId(String openId) {
-    this.openId = openId;
+  public void setApiKey(String apiKey) {
+    this.apiKey = apiKey;
   }
 
   /**
-   * @return A base64 encoded String representing the shared secret key
+   * @return The private shared secret for upstream communications
    */
   public String getSecretKey() {
     return secretKey;
@@ -158,6 +149,69 @@ public class User implements Serializable {
 
   public void setSecretKey(String secretKey) {
     this.secretKey = secretKey;
+  }
+
+  /**
+   * @return The user name to authenticate with the client
+   */
+  public String getUsername() {
+    return username;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+  /**
+   * @return The encrypted password to authentication with the client
+   */
+  public String getPassword() {
+    return password;
+  }
+
+  /**
+   * <h3>Note that it is expected that Jasypt or similar is used prior to storage</h3>
+   * @param passwordDigest
+   */
+  public void setPassword(String passwordDigest) {
+    this.password = passwordDigest;
+  }
+
+  /**
+   * @return The session key
+   */
+  public String getSessionKey() {
+    return sessionKey;
+  }
+
+  public void setSessionKey(String sessionKey) {
+    this.sessionKey = sessionKey;
+  }
+
+  /**
+   * This collection provides additional optional fields so can be lazy
+   */
+  @OneToMany(
+    cascade = CascadeType.ALL,
+    fetch = FetchType.LAZY,
+    orphanRemoval = true
+  )
+  @MapKeyEnumerated
+  private Map<UserField, UserFieldDetail> userFieldMap = Maps.newLinkedHashMap();
+
+  @OneToMany(
+    targetEntity = UserRole.class,
+    cascade = {CascadeType.ALL},
+    mappedBy = "primaryKey.user",
+    fetch = FetchType.EAGER,
+    orphanRemoval = true
+  )
+  private Set<UserRole> userRoles = Sets.newLinkedHashSet();
+
+  /**
+   * Default constructor for Hibernate
+   */
+  public User() {
   }
 
   /**
@@ -169,17 +223,6 @@ public class User implements Serializable {
 
   public void setContactMethodMap(Map<ContactMethod, ContactMethodDetail> contactMethodMap) {
     this.contactMethodMap = contactMethodMap;
-  }
-
-  /**
-   * @return The UUID associated with this Customer
-   */
-  public String getUUID() {
-    return uuid;
-  }
-
-  public void setUUID(String uuid) {
-    this.uuid = uuid;
   }
 
   /**
@@ -241,14 +284,6 @@ public class User implements Serializable {
     this.reasonForDelete = reasonForDelete;
   }
 
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
   public DateTime getPasswordResetAt() {
     return passwordResetAt;
   }
@@ -273,14 +308,6 @@ public class User implements Serializable {
     this.userFieldMap = userFieldMap;
   }
 
-  public String getUsername() {
-    return username;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
-  }
-
   public Set<UserRole> getUserRoles() {
     return userRoles;
   }
@@ -290,30 +317,8 @@ public class User implements Serializable {
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final User other = (User) obj;
-
-    return ObjectUtils.isEqual(
-      id, other.id,
-      uuid, other.uuid,
-      openId, other.openId
-    );
-  }
-
-  @Override
-  public int hashCode() {
-    return ObjectUtils.getHashCode(id);
-  }
-
-  @Override
   public String toString() {
-    return String.format("Customer[id=%s, openId='%s', uuid='%s']]", id, openId, uuid);
+    return String.format("User[id=%s, apiKey='%s', secretKey='***']]", id, apiKey);
   }
 
   /**

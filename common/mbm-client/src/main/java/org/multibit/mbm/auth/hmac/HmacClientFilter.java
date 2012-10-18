@@ -10,6 +10,7 @@ import com.yammer.dropwizard.logging.Log;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.ext.Providers;
+import java.util.Map;
 
 /**
  * <p>Client filter to provide the following to requests:</p>
@@ -21,15 +22,14 @@ import javax.ws.rs.ext.Providers;
  */
 public class HmacClientFilter extends ClientFilter {
 
+  public static final String MBM_PUBLIC_KEY = "mbm_public_key";
+  public static final String MBM_SHARED_SECRET = "mbm_shared_secret";
+
   private static final Log LOG = Log.forClass(HmacClientFilter.class);
 
-  private final String apiKey;
-  private final String sharedSecret;
   private final Providers providers;
 
-  public HmacClientFilter(String apiKey, String sharedSecret, Providers providers) {
-    this.apiKey = apiKey;
-    this.sharedSecret = sharedSecret;
+  public HmacClientFilter(Providers providers) {
     this.providers = providers;
   }
 
@@ -51,6 +51,20 @@ public class HmacClientFilter extends ClientFilter {
    */
   private ClientRequest modifyRequest(ClientRequest clientRequest) {
 
+    // Check for modifications to the API key through properties
+    Map<String, Object> properties = clientRequest.getProperties();
+    if (properties == null) {
+      throw new IllegalStateException("Client request properties are null");
+    }
+    if (!properties.containsKey(MBM_PUBLIC_KEY) ) {
+      throw new IllegalStateException("Client request '"+ MBM_PUBLIC_KEY +"' is null");
+    }
+    if (!properties.containsKey(MBM_SHARED_SECRET) ) {
+      throw new IllegalStateException("Client request '"+ MBM_SHARED_SECRET +"' is null");
+    }
+    String publicKey = properties.get(MBM_PUBLIC_KEY).toString();
+    String sharedSecret = properties.get(MBM_SHARED_SECRET).toString();
+
     // Provide a short TTL
     String httpNow = DateUtils.formatHttpDateHeader(DateUtils.nowUtc().plusSeconds(5));
     clientRequest.getHeaders().put(HmacUtils.X_HMAC_DATE, Lists.<Object>newArrayList(httpNow));
@@ -60,10 +74,10 @@ public class HmacClientFilter extends ClientFilter {
 
     // Build the authorization header
     String signature = new String(HmacUtils.computeSignature("HmacSHA1", canonicalRepresentation.getBytes(), sharedSecret.getBytes()));
-    String authorization = "HMAC " + apiKey + " " + signature;
+    String authorization = "HMAC " + publicKey + " " + signature;
     clientRequest.getHeaders().put(HttpHeaders.AUTHORIZATION, Lists.<Object>newArrayList(authorization));
 
-    String curlCommand = HmacUtils.createCurlCommand(clientRequest,providers, canonicalRepresentation, sharedSecret, apiKey);
+    String curlCommand = HmacUtils.createCurlCommand(clientRequest,providers, canonicalRepresentation, sharedSecret, publicKey);
     LOG.debug("Client side curl command: '{}'", curlCommand);
 
     return clientRequest;

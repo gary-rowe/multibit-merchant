@@ -25,15 +25,8 @@ public class HibernateUserDao extends BaseHibernateDao implements UserDao {
 
   @SuppressWarnings("unchecked")
   @Override
-  public Optional<User> getByOpenId(String openId) {
-    List users = hibernateTemplate.find("from User u where u.openId = ?", openId);
-    return first(users,User.class);
-  }
-
-  @SuppressWarnings("unchecked")
-  @Override
-  public Optional<User> getByUUID(String uuid) {
-    List users = hibernateTemplate.find("from User u where u.uuid = ?", uuid);
+  public Optional<User> getByApiKey(String uuid) {
+    List users = hibernateTemplate.find("from User u where u.apiKey = ?", uuid);
     return first(users,User.class);
   }
 

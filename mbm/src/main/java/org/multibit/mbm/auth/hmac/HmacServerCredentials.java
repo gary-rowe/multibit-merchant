@@ -3,7 +3,7 @@ package org.multibit.mbm.auth.hmac;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Objects;
-import org.multibit.mbm.db.dto.Authority;
+import org.multibit.mbm.auth.Authority;
 
 import java.security.MessageDigest;
 
@@ -17,30 +17,31 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *
  * @since 0.0.1
  */
-public class HmacCredentials {
+public class HmacServerCredentials {
   private final String apiKey;
   private final String digest;
   private final String canonicalRepresentation;
   private final String algorithm;
-  private final Authority[] authorities;
+  private final Authority[] requiredAuthorities;
 
   /**
-   * @param algorithm The algorithm used for computing the digest (e.g. "HmacSHA1", "HmacSHA256", "HmacSHA512")
-   * @param apiKey    The API key used for looking up the shared secret key associated with the user
-   * @param digest    The digest of (contents + shared secret key)
-   * @param canonicalRepresentation  The canonical representation of the request that was signed
+   * @param algorithm               The algorithm used for computing the digest (e.g. "HmacSHA1", "HmacSHA256", "HmacSHA512")
+   * @param apiKey                  The API key used for looking up the shared secret key associated with the user
+   * @param digest                  The digest of (contents + shared secret key)
+   * @param canonicalRepresentation The canonical representation of the request that was signed
+   * @param requiredAuthorities     The authorities required to authenticate (provided by the {@link org.multibit.mbm.auth.annotation.RestrictedTo} annotation)
    */
-  public HmacCredentials(
+  public HmacServerCredentials(
     String algorithm,
     String apiKey,
     String digest,
     String canonicalRepresentation,
-    Authority[] authorities) {
+    Authority[] requiredAuthorities) {
     this.algorithm = checkNotNull(algorithm);
     this.apiKey = checkNotNull(apiKey);
     this.digest = checkNotNull(digest);
     this.canonicalRepresentation = checkNotNull(canonicalRepresentation);
-    this.authorities = checkNotNull(authorities);
+    this.requiredAuthorities = checkNotNull(requiredAuthorities);
   }
 
   /**
@@ -74,8 +75,8 @@ public class HmacCredentials {
   /**
    * @return The authorities required to successfully authenticate
    */
-  public Authority[] getAuthorities() {
-    return authorities;
+  public Authority[] getRequiredAuthorities() {
+    return requiredAuthorities;
   }
 
   @Override
@@ -86,7 +87,7 @@ public class HmacCredentials {
     if ((obj == null) || (getClass() != obj.getClass())) {
       return false;
     }
-    final HmacCredentials that = (HmacCredentials) obj;
+    final HmacServerCredentials that = (HmacServerCredentials) obj;
 
     final byte[] thisBytes = digest.getBytes(Charsets.UTF_8);
     final byte[] thatBytes = that.digest.getBytes(Charsets.UTF_8);
@@ -104,7 +105,7 @@ public class HmacCredentials {
       .add("apiKey", apiKey)
       .add("digest", digest)
       .add("contents", canonicalRepresentation)
-      .add("authorities", authorities)
+      .add("authorities", requiredAuthorities)
       .toString();
   }
 

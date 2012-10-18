@@ -5,6 +5,7 @@ import com.yammer.dropwizard.client.JerseyClient;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.multibit.mbm.api.hal.HalMediaType;
+import org.multibit.mbm.client.MerchantResourceFactory;
 
 import javax.ws.rs.core.HttpHeaders;
 
@@ -27,17 +28,24 @@ import static org.mockito.Mockito.when;
 public abstract class BaseHandlerTest {
 
   protected JerseyClient client=mock(JerseyClient.class);
-  protected final URI mbmBaseUri = URI.create("http://localhost:8080");
   protected final Locale locale = Locale.UK;
 
   protected WebResource webResource = mock(WebResource.class);
   protected WebResource.Builder builder = mock(WebResource.Builder.class);
 
   @Before
-  public void setUpJersey() {
+  public void setUpMocks() {
+
+    // Configure standard mock behaviour from the Jersey client
     when(webResource.accept(HalMediaType.APPLICATION_HAL_JSON)).thenReturn(builder);
+    when(webResource.header(HttpHeaders.ACCEPT_LANGUAGE,"en_GB")).thenReturn(builder);
     when(builder.header(HttpHeaders.ACCEPT_LANGUAGE,"en_GB")).thenReturn(builder);
 
+    // Configure the Merchant client factory
+    MerchantResourceFactory.INSTANCE.setBaseUri(URI.create("http://localhost:8080/mbm"));
+    MerchantResourceFactory.INSTANCE.setJerseyClient(client);
+    MerchantResourceFactory.INSTANCE.setClientApiKey("trent123");
+    MerchantResourceFactory.INSTANCE.setClientSecretKey("trent456");
   }
 
 }

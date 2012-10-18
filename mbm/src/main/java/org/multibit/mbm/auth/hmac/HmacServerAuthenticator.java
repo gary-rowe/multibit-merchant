@@ -18,22 +18,22 @@ import javax.annotation.Resource;
  * @since 0.0.1
  */
 @Component
-public class HmacAuthenticator implements Authenticator<HmacCredentials, User> {
+public class HmacServerAuthenticator implements Authenticator<HmacServerCredentials, User> {
 
   @Resource(name="hibernateUserDao")
   private UserDao userDao;
 
   @Override
-  public Optional<User> authenticate(HmacCredentials credentials) throws AuthenticationException {
+  public Optional<User> authenticate(HmacServerCredentials credentials) throws AuthenticationException {
 
     // Get the User referred to by the API key
-    Optional<User> user = userDao.getByUUID(credentials.getApiKey());
+    Optional<User> user = userDao.getByApiKey(credentials.getApiKey());
     if (!user.isPresent()) {
       return Optional.absent();
     }
 
     // Check that their authorities match their credentials
-    if (!user.get().hasAllAuthorities(credentials.getAuthorities())) {
+    if (!user.get().hasAllAuthorities(credentials.getRequiredAuthorities())) {
       return Optional.absent();
     }
 

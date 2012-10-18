@@ -1,6 +1,7 @@
 package org.multibit.mbm.db.dto;
 
 import com.google.common.collect.Lists;
+import org.multibit.mbm.auth.Authority;
 import org.springframework.util.Assert;
 
 import java.util.List;

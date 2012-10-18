@@ -60,13 +60,18 @@ public class Item implements Serializable {
     cascade = {CascadeType.ALL},
     mappedBy = "primaryKey.item",
     fetch = FetchType.EAGER,
-    orphanRemoval = true)
+    orphanRemoval = true
+  )
   private Set<CartItem> cartItems = Sets.newLinkedHashSet();
 
   /**
    * This collection is effectively the fields for the Item so must be eager
    */
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  @OneToMany(
+    cascade = CascadeType.ALL,
+    fetch = FetchType.EAGER,
+    orphanRemoval = true
+  )
   @MapKeyEnumerated
   private Map<ItemField, ItemFieldDetail> itemFieldMap = Maps.newLinkedHashMap();
 

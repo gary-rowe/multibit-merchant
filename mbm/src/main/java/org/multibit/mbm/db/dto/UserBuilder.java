@@ -17,8 +17,7 @@ import java.util.UUID;
  */
 public class UserBuilder {
 
-  private String openId;
-  private String uuid = UUID.randomUUID().toString();
+  private String apiKey;
   private String secretKey;
   private List<AddContactMethod> addContactMethods = Lists.newArrayList();
   private List<AddRole> addRoles = Lists.newArrayList();
@@ -44,18 +43,21 @@ public class UserBuilder {
     // User is a DTO and so requires a default constructor
     User user = new User();
 
-    user.setOpenId(openId);
-
-    if (uuid == null) {
-      throw new IllegalStateException("UUID cannot be null");
+    // The API key should be a UUID but represented as a String
+    // to ease persistence
+    if (apiKey == null) {
+      apiKey = createApiKey();
     }
-    user.setUUID(uuid);
-
+    user.setApiKey(apiKey);
+    if (secretKey == null) {
+      secretKey = createSecretKey();
+    }
     user.setSecretKey(secretKey);
+
     user.setUsername(username);
 
     if (password != null) {
-      // Digest the plain password
+      // Digest the plain password (even though it calls itself an encrypter)
       String encryptedPassword = new StrongPasswordEncryptor().encryptPassword(password);
       user.setPassword(encryptedPassword);
     }
@@ -86,22 +88,30 @@ public class UserBuilder {
   }
 
   /**
-   * @param openId The openId (e.g. "abc123")
+   * Increased visibility to allow mocking
    *
-   * @return The builder
+   * @return A suitable API key
    */
-  public UserBuilder withOpenId(String openId) {
-    this.openId = openId;
-    return this;
+  /* package */ String createApiKey() {
+    return UUID.randomUUID().toString();
   }
 
   /**
-   * @param uuid The UUID (e.g. "1234-5678")
+   * Increased visibility to allow mocking
+   *
+   * @return A suitable secret key
+   */
+  /* package */ String createSecretKey() {
+    return createApiKey() + createApiKey();
+  }
+
+  /**
+   * @param apiKey The public API key (e.g. "1234-5678")
    *
    * @return The builder
    */
-  public UserBuilder withUUID(String uuid) {
-    this.uuid = uuid;
+  public UserBuilder withApiKey(String apiKey) {
+    this.apiKey = apiKey;
     return this;
   }
 

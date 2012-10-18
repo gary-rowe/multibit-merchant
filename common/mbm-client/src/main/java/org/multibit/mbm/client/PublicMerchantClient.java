@@ -1,10 +1,8 @@
 package org.multibit.mbm.client;
 
-import com.yammer.dropwizard.client.JerseyClient;
 import org.multibit.mbm.client.handlers.item.PublicItemCollectionHandler;
 import org.multibit.mbm.client.handlers.item.PublicItemHandler;
 
-import java.net.URI;
 import java.util.Locale;
 
 /**
@@ -22,42 +20,34 @@ import java.util.Locale;
  */
 public class PublicMerchantClient {
 
-  private final JerseyClient jerseyClient;
   private final Locale locale;
-  private final URI mbmBaseUri;
 
   /**
-   * @param locale       The locale providing i18n information
-   * @param jerseyClient The client for retrieving upstream data
-   * @param mbmBaseUri   The URI identifying the upstream server
+   * @param locale The client locale for appropriate representation
    */
-  public PublicMerchantClient(JerseyClient jerseyClient, Locale locale, URI mbmBaseUri) {
-    this.jerseyClient= jerseyClient;
+  public PublicMerchantClient(Locale locale) {
     this.locale=locale;
-    this.mbmBaseUri=mbmBaseUri;
   }
 
   /**
-   * @param jerseyClient A {@link JerseyClient} to provide connectivity with metrics
    * @param locale The client locale for appropriate representation
-   * @param mbmBaseUri   The URI identifying the upstream server
    */
-  public static PublicMerchantClient newInstance(JerseyClient jerseyClient, Locale locale, URI mbmBaseUri) {
-    return new PublicMerchantClient(jerseyClient,locale,mbmBaseUri);
+  public static PublicMerchantClient newInstance(Locale locale) {
+    return new PublicMerchantClient(locale);
   }
 
   /**
    * @return A suitable handler for single item requests
    */
   public PublicItemHandler item() {
-    return new PublicItemHandler(jerseyClient, locale, mbmBaseUri);
+    return new PublicItemHandler(locale);
   }
 
   /**
    * @return A suitable handler for item collection searches
    */
   public PublicItemCollectionHandler items() {
-    return new PublicItemCollectionHandler(jerseyClient,locale,mbmBaseUri);
+    return new PublicItemCollectionHandler(locale);
   }
 
 }

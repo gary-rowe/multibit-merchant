@@ -10,7 +10,6 @@ import org.multibit.mbm.test.FixtureAsserts;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Locale;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
@@ -43,11 +42,11 @@ public class PublicItemHandlerTest extends BaseHandlerTest {
 
     // Test-specific JerseyClient behaviour
     when(client.resource(expectedUri)).thenReturn(webResource);
-    when(builder.get(List.class)).thenReturn(publicItems);
+    when(webResource.get(List.class)).thenReturn(publicItems);
 
     // Act
     List<PublicItem> items = PublicMerchantClient
-      .newInstance(client, locale, mbmBaseUri)
+      .newInstance(locale)
       .items()
       .retrievePromotionalItemsByPage(0,1);
 
@@ -60,17 +59,16 @@ public class PublicItemHandlerTest extends BaseHandlerTest {
   public void item_retrieveBySku() throws Exception {
 
     // Arrange
-    Locale locale = Locale.UK;
 
     URI expectedUri = URI.create("http://localhost:8080/mbm/items/0575088893");
 
     // Test-specific JerseyClient behaviour
     when(client.resource(expectedUri)).thenReturn(webResource);
-    when(builder.get(String.class)).thenReturn(FixtureAsserts.fixture("/fixtures/hal/item/expected-customer-retrieve-item.json"));
+    when(webResource.get(String.class)).thenReturn(FixtureAsserts.fixture("/fixtures/hal/item/expected-customer-retrieve-item.json"));
 
     // Act
     Optional<PublicItem> optionalItem = PublicMerchantClient
-      .newInstance(client, locale, mbmBaseUri)
+      .newInstance(locale)
       .item()
       .retrieveBySku("0575088893");
 

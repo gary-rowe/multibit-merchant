@@ -24,9 +24,9 @@ import static org.mockito.Mockito.when;
 
 public class AdminUserResourceTest extends BaseJerseyResourceTest {
 
-  private final UserDao userDao=mock(UserDao.class);
+  private final UserDao userDao = mock(UserDao.class);
 
-  private final AdminUserResource testObject=new AdminUserResource();
+  private final AdminUserResource testObject = new AdminUserResource();
 
   @Override
   protected void setUpResources() {
@@ -56,8 +56,8 @@ public class AdminUserResourceTest extends BaseJerseyResourceTest {
     when(userDao.saveOrUpdate((User) isNotNull())).thenReturn(aliceUser);
     when(userDao.getByCredentials(anyString(), anyString())).thenReturn(Optional.<User>absent());
     // Retrieve
-    when(userDao.getAllByPage(1,0)).thenReturn(usersPage1);
-    when(userDao.getAllByPage(1,1)).thenReturn(usersPage2);
+    when(userDao.getAllByPage(1, 0)).thenReturn(usersPage1);
+    when(userDao.getAllByPage(1, 1)).thenReturn(usersPage2);
     // Update
     when(userDao.getById(1L)).thenReturn(Optional.of(aliceUser));
 
@@ -73,33 +73,30 @@ public class AdminUserResourceTest extends BaseJerseyResourceTest {
 
     AdminCreateUserRequest createUserRequest = new AdminCreateUserRequest();
     createUserRequest.setUsername("charlie");
-    createUserRequest.setPassword("charlie1");
+    createUserRequest.setPasswordDigest("charlie1");
 
-    String actualResponse = client()
-      .resource("/admin/user")
+    String actualResponse = configureAsClient("/admin/user")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .entity(createUserRequest, MediaType.APPLICATION_JSON_TYPE)
       .post(String.class);
 
-    FixtureAsserts.assertStringMatchesJsonFixture("CreateUser by admin response render to HAL+JSON",actualResponse, "/fixtures/hal/user/expected-admin-create-user.json");
+    FixtureAsserts.assertStringMatchesJsonFixture("CreateUser by admin response render to HAL+JSON", actualResponse, "/fixtures/hal/user/expected-admin-create-user.json");
 
   }
 
   @Test
   public void adminRetrieveUserAsHalJson() throws Exception {
 
-    String actualResponse = client()
-      .resource("/admin/user")
-      .queryParam("pageSize","1")
+    String actualResponse = configureAsClient("/admin/user")
+      .queryParam("pageSize", "1")
       .queryParam("pageNumber", "0")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 
     FixtureAsserts.assertStringMatchesJsonFixture("User list 1 can be retrieved as HAL+JSON", actualResponse, "/fixtures/hal/user/expected-admin-retrieve-users-page-1.json");
 
-    actualResponse = client()
-      .resource("/admin/user")
-      .queryParam("pageSize","1")
+    actualResponse = configureAsClient("/admin/user")
+      .queryParam("pageSize", "1")
       .queryParam("pageNumber", "1")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
@@ -113,15 +110,14 @@ public class AdminUserResourceTest extends BaseJerseyResourceTest {
 
     AdminUpdateUserRequest updateUserRequest = new AdminUpdateUserRequest();
     updateUserRequest.setUsername("charlie");
-    updateUserRequest.setPassword("charlie1");
+    updateUserRequest.setPasswordDigest("charlie1");
 
-    String actualResponse = client()
-      .resource("/admin/user/1")
+    String actualResponse = configureAsClient("/admin/user/1")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .entity(updateUserRequest, MediaType.APPLICATION_JSON_TYPE)
       .put(String.class);
 
-    FixtureAsserts.assertStringMatchesJsonFixture("UpdateUser by admin response render to HAL+JSON",actualResponse, "/fixtures/hal/user/expected-admin-update-user.json");
+    FixtureAsserts.assertStringMatchesJsonFixture("UpdateUser by admin response render to HAL+JSON", actualResponse, "/fixtures/hal/user/expected-admin-update-user.json");
 
   }
 
@@ -131,13 +127,12 @@ public class AdminUserResourceTest extends BaseJerseyResourceTest {
     AdminDeleteEntityRequest deleteUserRequest = new AdminDeleteEntityRequest();
     deleteUserRequest.setReason("At user request");
 
-    String actualResponse = client()
-      .resource("/admin/user/1")
+    String actualResponse = configureAsClient("/admin/user/1")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .entity(deleteUserRequest, MediaType.APPLICATION_JSON_TYPE)
       .delete(String.class);
 
-    FixtureAsserts.assertStringMatchesJsonFixture("DeleteUser by admin response render to HAL+JSON",actualResponse, "/fixtures/hal/user/expected-admin-delete-user.json");
+    FixtureAsserts.assertStringMatchesJsonFixture("DeleteUser by admin response render to HAL+JSON", actualResponse, "/fixtures/hal/user/expected-admin-delete-user.json");
 
   }
 

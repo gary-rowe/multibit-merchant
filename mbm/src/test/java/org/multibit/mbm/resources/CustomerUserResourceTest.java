@@ -25,8 +25,7 @@ public class CustomerUserResourceTest extends BaseJerseyResourceTest {
   @Test
   public void customerRetrieveUserAsHalJson() throws Exception {
 
-    String actualResponse = client()
-      .resource("/user")
+    String actualResponse = configureAsClient("/user")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 

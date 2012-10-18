@@ -9,9 +9,9 @@ import org.multibit.mbm.api.request.user.AdminCreateUserRequest;
 import org.multibit.mbm.api.request.user.AdminUpdateUserRequest;
 import org.multibit.mbm.api.response.hal.user.AdminUserBridge;
 import org.multibit.mbm.api.response.hal.user.AdminUserCollectionBridge;
+import org.multibit.mbm.auth.Authority;
 import org.multibit.mbm.auth.annotation.RestrictedTo;
 import org.multibit.mbm.db.dao.UserDao;
-import org.multibit.mbm.db.dto.Authority;
 import org.multibit.mbm.db.dto.User;
 import org.multibit.mbm.db.dto.UserBuilder;
 import org.multibit.mbm.resources.BaseResource;
@@ -59,8 +59,7 @@ public class AdminUserResource extends BaseResource {
     // Build a user from the given request information
     User user = UserBuilder.newInstance()
       .withUsername(createUserRequest.getUsername())
-      .withPassword(createUserRequest.getPassword())
-      .withOpenId(createUserRequest.getOpenId())
+      .withPassword(createUserRequest.getPasswordDigest())
       .build();
 
     // Perform basic verification
@@ -186,11 +185,12 @@ public class AdminUserResource extends BaseResource {
    * @param entity        The entity to which these changes will be applied
    */
   private void apply(AdminUpdateUserRequest updateRequest, User entity) {
-    if (updateRequest.getPassword() != null) {
-      entity.setPassword(updateRequest.getPassword());
+    if (updateRequest.getPasswordDigest() != null) {
+      entity.setPassword(updateRequest.getPasswordDigest());
     }
     entity.setUsername(updateRequest.getUsername());
-    entity.setOpenId(updateRequest.getOpenId());
+    entity.setApiKey(updateRequest.getApiKey());
+    entity.setSecretKey(updateRequest.getSecretKey());
   }
 
   public void setUserDao(UserDao userDao) {

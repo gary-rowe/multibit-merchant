@@ -5,13 +5,10 @@ import com.google.common.collect.Maps;
 import java.util.Map;
 
 /**
- * <p>[Pattern] to provide the following to {@link Object}:</p>
+ * <p>DTO to provide the following to Resources:</p>
  * <ul>
- * <li></li>
+ * <li>Provision of state for a single item as viewed by the public</li>
  * </ul>
- * <p>Example:</p>
- * <pre>
- * </pre>
  *
  * @since 0.0.1
  *         

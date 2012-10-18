@@ -1,7 +1,7 @@
-package org.multibit.mbm.db.dto;
+package org.multibit.mbm.auth;
 
 /**
- * <p>Enumeration to provide the following to {@link Role}:</p>
+ * <p>Enumeration to provide the following to application:</p>
  * <ul>
  * <li>Provision of standard authorities grouped by Role</li>
  * </ul>
@@ -75,7 +75,7 @@ public enum Authority {
   private boolean internal = false;
 
   /**
-   * @param internal
+   * @param internal True if the authority is appropriate for staff only
    */
   Authority(boolean internal) {
     this.internal = internal;

@@ -80,8 +80,7 @@ public class CustomerCartResourceTest extends BaseJerseyResourceTest {
   @Test
   public void customerRetrieveCartAsHalJson() throws Exception {
 
-    String actualResponse = client()
-      .resource("/cart")
+    String actualResponse = configureAsClient("/cart")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 
@@ -101,8 +100,7 @@ public class CustomerCartResourceTest extends BaseJerseyResourceTest {
     // Remove by setting to zero
     updateCartRequest.getCartItems().add(new CustomerCartItem(1L,0));
 
-    String actualResponse = client()
-      .resource("/cart")
+    String actualResponse = configureAsClient("/cart")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .entity(updateCartRequest, MediaType.APPLICATION_JSON_TYPE)
       .put(String.class);

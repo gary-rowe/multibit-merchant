@@ -5,9 +5,9 @@ import com.yammer.dropwizard.Service;
 import com.yammer.dropwizard.auth.CachingAuthenticator;
 import com.yammer.dropwizard.config.Environment;
 import com.yammer.dropwizard.logging.Log;
-import org.multibit.mbm.auth.hmac.HmacAuthenticator;
-import org.multibit.mbm.auth.hmac.HmacCredentials;
-import org.multibit.mbm.auth.hmac.HmacRestrictedToProvider;
+import org.multibit.mbm.auth.hmac.HmacServerAuthenticator;
+import org.multibit.mbm.auth.hmac.HmacServerCredentials;
+import org.multibit.mbm.auth.hmac.HmacServerRestrictedToProvider;
 import org.multibit.mbm.db.dto.User;
 import org.multibit.mbm.health.TemplatePropertyHealthCheck;
 import org.multibit.mbm.resources.*;
@@ -62,8 +62,8 @@ public class MultiBitMerchantService extends Service<MultiBitMerchantConfigurati
     });
 
     // Configure authenticator
-    HmacAuthenticator hmacAuthenticator = context.getBean(HmacAuthenticator.class);
-    CachingAuthenticator<HmacCredentials, User> cachingAuthenticator = CachingAuthenticator
+    HmacServerAuthenticator hmacAuthenticator = context.getBean(HmacServerAuthenticator.class);
+    CachingAuthenticator<HmacServerCredentials, User> cachingAuthenticator = CachingAuthenticator
       .wrap(hmacAuthenticator, CacheBuilderSpec.parse(configuration.getAuthenticationCachePolicy()));
 
     // Configure environment accordingly
@@ -84,7 +84,7 @@ public class MultiBitMerchantService extends Service<MultiBitMerchantConfigurati
     environment.addHealthCheck(new TemplatePropertyHealthCheck());
 
     // Providers
-    environment.addProvider(new HmacRestrictedToProvider<User>(cachingAuthenticator, "REST"));
+    environment.addProvider(new HmacServerRestrictedToProvider<User>(cachingAuthenticator, "REST"));
 
     // TODO Add the database loader code here
 //    if (configuration.loadInitialData) {

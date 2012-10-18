@@ -3,15 +3,12 @@ package org.multibit.mbm.client.handlers.item;
 import com.google.common.base.Optional;
 import com.theoryinpractise.halbuilder.ResourceFactory;
 import com.theoryinpractise.halbuilder.spi.ReadableResource;
-import com.yammer.dropwizard.client.JerseyClient;
-import org.multibit.mbm.api.hal.HalMediaType;
+import org.multibit.mbm.client.MerchantResourceFactory;
 import org.multibit.mbm.client.handlers.BaseHandler;
 import org.multibit.mbm.model.PublicItem;
 
-import javax.ws.rs.core.HttpHeaders;
 import java.io.Reader;
 import java.io.StringReader;
-import java.net.URI;
 import java.util.Locale;
 import java.util.Map;
 
@@ -27,12 +24,10 @@ import java.util.Map;
 public class PublicItemHandler extends BaseHandler {
 
   /**
-   * @param jerseyClient The client for retrieving upstream data
    * @param locale       The locale providing i18n information
-   * @param mbmBaseUri   The URI identifying the upstream server
    */
-  public PublicItemHandler(JerseyClient jerseyClient, Locale locale, URI mbmBaseUri) {
-    super(locale, jerseyClient, mbmBaseUri);
+  public PublicItemHandler(Locale locale) {
+    super(locale);
   }
 
   /**
@@ -48,14 +43,9 @@ public class PublicItemHandler extends BaseHandler {
     // TODO How to sanity check an SKU?
 
     // TODO Replace "magic string" with auto-discover based on link rel
-    String rawUri = String.format("/mbm/items/%s", sku);
-    URI uri = URI.create(mbmBaseUri+rawUri);
-
-    // Treat HAL as a raw string
-    String hal = jerseyClient
-      .resource(uri)
-      .accept(HalMediaType.APPLICATION_HAL_JSON)
-      .header(HttpHeaders.ACCEPT_LANGUAGE, locale.toString())
+    String path = "/items/"+ sku;
+    String hal = MerchantResourceFactory.INSTANCE
+      .newClientResource(locale, path)
       .get(String.class);
 
     // Read the HAL

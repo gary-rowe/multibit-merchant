@@ -9,6 +9,7 @@ import javax.ws.rs.core.Response;
 
 /**
  * <p>Specialised validation for use in Resources</p>
+ * TODO Consider refactoring to follow the Guava Preconditions library
  */
 public final class ResourceAsserts {
 

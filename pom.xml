@@ -482,6 +482,13 @@
         </exclusions>
       </dependency>
 
+      <!-- Jasypt for protecting shared secrets -->
+      <dependency>
+        <groupId>org.jasypt</groupId>
+        <artifactId>jasypt</artifactId>
+        <version>1.9.0</version>
+      </dependency>
+
     </dependencies>
 
   </dependencyManagement>

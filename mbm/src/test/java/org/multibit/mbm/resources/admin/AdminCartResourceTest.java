@@ -108,8 +108,7 @@ public class AdminCartResourceTest extends BaseJerseyResourceTest {
   @Test
   public void adminRetrieveCartAsHalJson() throws Exception {
 
-    String actualResponse = client()
-      .resource("/admin/cart")
+    String actualResponse = configureAsClient("/admin/cart")
       .queryParam("pageSize","1")
       .queryParam("pageNumber", "0")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
@@ -117,8 +116,7 @@ public class AdminCartResourceTest extends BaseJerseyResourceTest {
 
     FixtureAsserts.assertStringMatchesJsonFixture("Cart list 1 can be retrieved as HAL+JSON", actualResponse, "/fixtures/hal/cart/expected-admin-retrieve-carts-page-1.json");
 
-    actualResponse = client()
-      .resource("/admin/cart")
+    actualResponse = configureAsClient("/admin/cart")
       .queryParam("pageSize","1")
       .queryParam("pageNumber", "1")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
@@ -141,8 +139,7 @@ public class AdminCartResourceTest extends BaseJerseyResourceTest {
     // Remove by setting to zero
     updateCartRequest.getCartItems().add(new CustomerCartItem(1L,0));
 
-    String actualResponse = client()
-      .resource("/admin/cart/1")
+    String actualResponse = configureAsClient("/admin/cart/1")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .entity(updateCartRequest, MediaType.APPLICATION_JSON_TYPE)
       .put(String.class);

@@ -20,37 +20,38 @@ public abstract class BaseUserRequest {
   private String username = null;
 
   /**
-   * A user password (not plaintext and optional for anonymity reasons)
+   * A user password (optional for anonymity reasons)
    */
   @JsonProperty
-  private String password = null;
+  private String passwordDigest = null;
 
   /**
-   * A third-party provided UUID to act as an authentication token
+   * An API key providing an anonymous method of identifying a user
+   * Typically a UUID
    */
-  @JsonProperty("open_id")
-  private String openId = null;
+  @JsonProperty
+  private String apiKey = null;
 
   /**
-   * @return An OpenId to use instead of a username/password combination
+   * @return The API key to use to identify the user during HMAC authentication
    */
-  public String getOpenId() {
-    return openId;
+  public String getApiKey() {
+    return apiKey;
   }
 
-  public void setOpenId(String openId) {
-    this.openId = openId;
+  public void setApiKey(String apiKey) {
+    this.apiKey = apiKey;
   }
 
   /**
-   * @return The password (plaintext over HTTPS)
+   * @return The password digest
    */
-  public String getPassword() {
-    return password;
+  public String getPasswordDigest() {
+    return passwordDigest;
   }
 
-  public void setPassword(String password) {
-    this.password = password;
+  public void setPasswordDigest(String passwordDigest) {
+    this.passwordDigest = passwordDigest;
   }
 
   /**

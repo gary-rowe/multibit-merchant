@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.multibit.mbm.client.handlers.item.PublicItemCollectionHandler;
 import org.multibit.mbm.client.handlers.item.PublicItemHandler;
 
-import java.net.URI;
 import java.util.Locale;
 
 import static junit.framework.Assert.assertNotNull;
@@ -15,7 +14,6 @@ import static org.mockito.Mockito.mock;
 public class PublicMerchantClientTest {
 
   private final JerseyClient client = mock(JerseyClient.class);
-  private final URI mbmBaseUri = URI.create("http://localhost:8080/mbm");
   private final Locale locale = Locale.UK;
 
   @Test
@@ -25,7 +23,7 @@ public class PublicMerchantClientTest {
 
     // Act
     PublicItemCollectionHandler handler = PublicMerchantClient
-      .newInstance(client, locale, mbmBaseUri)
+      .newInstance(locale)
       .items();
 
     // Assert
@@ -40,7 +38,7 @@ public class PublicMerchantClientTest {
 
     // Act
     PublicItemHandler handler = PublicMerchantClient
-      .newInstance(client, locale, mbmBaseUri)
+      .newInstance(locale)
       .item();
 
     // Assert

@@ -40,8 +40,9 @@ public class Cart implements Serializable {
   @OneToMany(targetEntity = CartItem.class,
     cascade = {CascadeType.ALL},
     mappedBy = "primaryKey.cart",
-    orphanRemoval = true,
-    fetch = FetchType.EAGER)
+    fetch = FetchType.EAGER,
+    orphanRemoval = true
+  )
   private Set<CartItem> cartItems = Sets.newLinkedHashSet();
 
   /*

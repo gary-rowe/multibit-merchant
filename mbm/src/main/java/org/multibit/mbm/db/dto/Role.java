@@ -1,6 +1,7 @@
 package org.multibit.mbm.db.dto;
 
 import com.google.common.collect.Sets;
+import org.multibit.mbm.auth.Authority;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -60,7 +61,12 @@ public class Role implements Serializable {
   @Column(name = "internal", nullable = false)
   private boolean internal = true;
 
-  @OneToMany(targetEntity = UserRole.class, cascade = {CascadeType.ALL}, mappedBy = "primaryKey.role", orphanRemoval = true)
+  @OneToMany(
+    targetEntity = UserRole.class,
+    cascade = {CascadeType.ALL},
+    mappedBy = "primaryKey.role",
+    orphanRemoval = true
+  )
   private Set<UserRole> userRoles = Sets.newLinkedHashSet();
 
   /**
@@ -69,7 +75,9 @@ public class Role implements Serializable {
    * may change which will make mapping them rather hard between database versions.
    */
   @Enumerated(value = EnumType.STRING)
-  @ElementCollection(targetClass = Authority.class, fetch = FetchType.EAGER)
+  @ElementCollection(
+    targetClass = Authority.class,
+    fetch = FetchType.EAGER)
   @CollectionTable(name = "authorities",
     joinColumns = @JoinColumn(name = "role_id"))
   @Column(name = "auth_name" )

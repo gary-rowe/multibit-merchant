@@ -5,6 +5,7 @@ import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.container.ContainerException;
 import com.sun.jersey.core.util.ReaderWriter;
 import com.sun.jersey.spi.container.ContainerRequest;
+import org.multibit.mbm.utils.Base64;
 
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;

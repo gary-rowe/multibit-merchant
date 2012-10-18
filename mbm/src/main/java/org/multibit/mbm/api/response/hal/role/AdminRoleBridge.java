@@ -3,7 +3,7 @@ package org.multibit.mbm.api.response.hal.role;
 import com.google.common.base.Optional;
 import com.theoryinpractise.halbuilder.spi.Resource;
 import org.multibit.mbm.api.response.hal.BaseBridge;
-import org.multibit.mbm.db.dto.Authority;
+import org.multibit.mbm.auth.Authority;
 import org.multibit.mbm.db.dto.Role;
 import org.multibit.mbm.db.dto.User;
 import org.multibit.mbm.resources.ResourceAsserts;
