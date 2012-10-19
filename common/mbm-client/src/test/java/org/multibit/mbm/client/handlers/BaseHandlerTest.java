@@ -5,7 +5,7 @@ import com.yammer.dropwizard.client.JerseyClient;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.multibit.mbm.api.hal.HalMediaType;
-import org.multibit.mbm.client.MerchantResourceFactory;
+import org.multibit.mbm.client.HalHmacResourceFactory;
 
 import javax.ws.rs.core.HttpHeaders;
 
@@ -38,14 +38,14 @@ public abstract class BaseHandlerTest {
 
     // Configure standard mock behaviour from the Jersey client
     when(webResource.accept(HalMediaType.APPLICATION_HAL_JSON)).thenReturn(builder);
-    when(webResource.header(HttpHeaders.ACCEPT_LANGUAGE,"en_GB")).thenReturn(builder);
-    when(builder.header(HttpHeaders.ACCEPT_LANGUAGE,"en_GB")).thenReturn(builder);
+    when(webResource.header(HttpHeaders.ACCEPT_LANGUAGE, locale.toString())).thenReturn(builder);
+    when(builder.header(HttpHeaders.ACCEPT_LANGUAGE,locale.toString())).thenReturn(builder);
 
     // Configure the Merchant client factory
-    MerchantResourceFactory.INSTANCE.setBaseUri(URI.create("http://localhost:8080/mbm"));
-    MerchantResourceFactory.INSTANCE.setJerseyClient(client);
-    MerchantResourceFactory.INSTANCE.setClientApiKey("trent123");
-    MerchantResourceFactory.INSTANCE.setClientSecretKey("trent456");
+    HalHmacResourceFactory.INSTANCE.setBaseUri(URI.create("http://localhost:8080/mbm"));
+    HalHmacResourceFactory.INSTANCE.setJerseyClient(client);
+    HalHmacResourceFactory.INSTANCE.setClientApiKey("trent123");
+    HalHmacResourceFactory.INSTANCE.setClientSecretKey("trent456");
   }
 
 }

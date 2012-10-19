@@ -13,13 +13,15 @@ import java.util.Locale;
 /**
  * <p>Global singleton factory to provide the following to upstream client:</p>
  * <ul>
- * <li>Provisioning and configuration of Jersey client resources</li>
+ * <li>Provisioning Jersey client resources using HMAC authentication</li>
+ * <li>Configuration for accepting HAL with a given Locale</li>
+ * <li>Configuration for providing specific user details or acting as a client (anonymous user)</li>
  * </ul>
  *
  * @since 0.0.1
  *         
  */
-public enum MerchantResourceFactory {
+public enum HalHmacResourceFactory {
 
   INSTANCE;
 
@@ -31,7 +33,7 @@ public enum MerchantResourceFactory {
   /**
    * @param client The Jersey client to use for building all upstream requests
    */
-  public MerchantResourceFactory setJerseyClient(JerseyClient client) {
+  public HalHmacResourceFactory setJerseyClient(JerseyClient client) {
     this.client = client;
     return this;
   }
@@ -39,7 +41,7 @@ public enum MerchantResourceFactory {
   /**
    * @param clientApiKey The client API key used in the absence of a user request
    */
-  public MerchantResourceFactory setClientApiKey(String clientApiKey) {
+  public HalHmacResourceFactory setClientApiKey(String clientApiKey) {
     this.clientApiKey = clientApiKey;
     return this;
   }
@@ -47,7 +49,7 @@ public enum MerchantResourceFactory {
   /**
    * @param clientSecretKey The client secret key used in the absence of a user request
    */
-  public MerchantResourceFactory setClientSecretKey(String clientSecretKey) {
+  public HalHmacResourceFactory setClientSecretKey(String clientSecretKey) {
     this.clientSecretKey = clientSecretKey;
     return this;
   }
@@ -55,7 +57,7 @@ public enum MerchantResourceFactory {
   /**
    * @param baseUri The base URI of the upstream server
    */
-  public MerchantResourceFactory setBaseUri(URI baseUri) {
+  public HalHmacResourceFactory setBaseUri(URI baseUri) {
     this.baseUri = baseUri;
     return this;
   }

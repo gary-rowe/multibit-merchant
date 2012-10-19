@@ -4,7 +4,7 @@ import com.google.common.base.Optional;
 import com.theoryinpractise.halbuilder.ResourceFactory;
 import com.theoryinpractise.halbuilder.spi.ReadableResource;
 import org.multibit.mbm.auth.webform.WebFormClientCredentials;
-import org.multibit.mbm.client.MerchantResourceFactory;
+import org.multibit.mbm.client.HalHmacResourceFactory;
 import org.multibit.mbm.client.handlers.BaseHandler;
 import org.multibit.mbm.model.ClientUser;
 import org.multibit.mbm.model.CustomerUser;
@@ -46,7 +46,7 @@ public class CustomerUserHandler extends BaseHandler {
     // TODO Replace "magic string" with auto-discover based on link rel
     String path = String.format("/mbm/users/authenticate");
 
-    String hal = MerchantResourceFactory.INSTANCE
+    String hal = HalHmacResourceFactory.INSTANCE
       .newClientResource(locale, path)
       .entity(credentials)
       .post(String.class);
@@ -62,7 +62,7 @@ public class CustomerUserHandler extends BaseHandler {
     clientUser.setApiKey((String) properties.get("apiKey").get());
     clientUser.setSecretKey((String) properties.get("secretKey").get());
     clientUser.setUsername((String) properties.get("username").get());
-    clientUser.setPassword((String) properties.get("password").get());
+    clientUser.setPasswordDigest((String) properties.get("password").get());
 
     return Optional.of(clientUser);
   }
@@ -80,7 +80,7 @@ public class CustomerUserHandler extends BaseHandler {
 
     // TODO Replace "magic string" with auto-discover based on link rel
     String path = String.format("/mbm/users");
-    String hal = MerchantResourceFactory.INSTANCE
+    String hal = HalHmacResourceFactory.INSTANCE
       .newUserResource(locale, path, clientUser)
       .get(String.class);
 

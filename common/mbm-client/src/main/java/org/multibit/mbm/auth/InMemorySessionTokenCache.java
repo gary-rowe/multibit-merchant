@@ -24,32 +24,67 @@ public enum InMemorySessionTokenCache {
   // Provide a global singleton for the application
   INSTANCE;
 
-  private final Cache<UUID, ClientUser> sessionTokenCache;
+  // A lot of threads will hit this cache
+  private volatile Cache<UUID, ClientUser> sessionTokenCache;
 
   InMemorySessionTokenCache() {
+    reset(15,TimeUnit.MINUTES);
+  }
+
+  /**
+   * Resets the cache and allows the expiry time to be set (perhaps for testing)
+   *
+   * @param duration The duration before a user must manually authenticate through a web form due to inactivity
+   * @param unit     The {@link TimeUnit} that duration is expressed in
+   */
+  public InMemorySessionTokenCache reset(int duration, TimeUnit unit) {
 
     // Build the cache
+    if (sessionTokenCache != null) {
+      sessionTokenCache.invalidateAll();
+    }
+
+    // If there is no activity against a key then we want
+    // it to be expired from the cache, but each fresh write
+    // will reset the expiry timer
     sessionTokenCache = CacheBuilder
       .newBuilder()
-      .expireAfterWrite(10, TimeUnit.MINUTES)
+      .expireAfterWrite(duration, unit)
       .maximumSize(1000)
       .build();
+
+    return INSTANCE;
   }
 
   /**
    * @param sessionToken The session token to locate the user
+   *
    * @return The matching ClientUser or absent
    */
   public Optional<ClientUser> getBySessionToken(UUID sessionToken) {
-    return Optional.fromNullable(sessionTokenCache.getIfPresent(sessionToken));
+    Optional<ClientUser> clientUser = Optional.fromNullable(sessionTokenCache.getIfPresent(sessionToken));
+
+    // TODO What is a better way of implementing this?
+    if (clientUser.isPresent()) {
+      // Ensure we refresh the cache on a check to maintain the session timeout
+      sessionTokenCache.put(clientUser.get().getSessionToken(), clientUser.get());
+    }
+
+    return clientUser;
+
   }
 
   /**
    * @param sessionToken The session token to use to locate the user
-   * @param clientUser The client user to cache
+   * @param clientUser   The client user to cache
    */
   public void put(UUID sessionToken, ClientUser clientUser) {
     Preconditions.checkNotNull(clientUser);
+    Preconditions.checkNotNull(clientUser.getUsername());
+    Preconditions.checkNotNull(clientUser.getPasswordDigest());
+    Preconditions.checkNotNull(clientUser.getApiKey());
+    Preconditions.checkNotNull(clientUser.getSecretKey());
+    Preconditions.checkNotNull(clientUser.getCachedAuthorities());
     sessionTokenCache.put(sessionToken, clientUser);
   }
 

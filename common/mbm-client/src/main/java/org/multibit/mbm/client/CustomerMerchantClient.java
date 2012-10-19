@@ -9,6 +9,8 @@ import java.util.Locale;
  * <ul>
  * <li>Access to Customer API for MultiBit Merchant</li>
  * </ul>
+ * <p>This client provides access to protected resources for a customer. For example, the customer
+ * can view their order history, or edit their own details through this API.</p>
  *
  * @since 0.0.1
  *         

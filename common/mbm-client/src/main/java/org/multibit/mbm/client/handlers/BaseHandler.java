@@ -1,7 +1,7 @@
 package org.multibit.mbm.client.handlers;
 
 import com.theoryinpractise.halbuilder.ResourceFactory;
-import org.multibit.mbm.client.MerchantResourceFactory;
+import org.multibit.mbm.client.HalHmacResourceFactory;
 
 import java.util.Locale;
 
@@ -30,7 +30,7 @@ public abstract class BaseHandler {
    * @return A {@link com.theoryinpractise.halbuilder.ResourceFactory} configured for production use
    */
   protected ResourceFactory getResourceFactory() {
-    return new ResourceFactory(MerchantResourceFactory.INSTANCE.getBaseUri());
+    return new ResourceFactory(HalHmacResourceFactory.INSTANCE.getBaseUri());
   }
 
 }

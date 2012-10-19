@@ -3,7 +3,7 @@ package org.multibit.mbm.client.handlers.item;
 import com.google.common.base.Optional;
 import com.theoryinpractise.halbuilder.ResourceFactory;
 import com.theoryinpractise.halbuilder.spi.ReadableResource;
-import org.multibit.mbm.client.MerchantResourceFactory;
+import org.multibit.mbm.client.HalHmacResourceFactory;
 import org.multibit.mbm.client.handlers.BaseHandler;
 import org.multibit.mbm.model.PublicItem;
 
@@ -44,7 +44,7 @@ public class PublicItemHandler extends BaseHandler {
 
     // TODO Replace "magic string" with auto-discover based on link rel
     String path = "/items/"+ sku;
-    String hal = MerchantResourceFactory.INSTANCE
+    String hal = HalHmacResourceFactory.INSTANCE
       .newClientResource(locale, path)
       .get(String.class);
 

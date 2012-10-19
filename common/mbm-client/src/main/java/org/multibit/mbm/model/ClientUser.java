@@ -6,6 +6,7 @@ import org.multibit.mbm.utils.ObjectUtils;
 
 import java.util.Arrays;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * <p>DTO to provide the following to Resources:</p>
@@ -41,7 +42,7 @@ public class ClientUser {
   /**
    * <p>A user password (not plaintext and optional for anonymity reasons)</p>
    */
-  protected String password = null;
+  protected String passwordDigest = null;
 
   /**
    * <p>A username (optional for anonymity reasons)</p>
@@ -51,7 +52,7 @@ public class ClientUser {
   /**
    * A shared secret between this client the user's browser that is revoked when the session ends
    */
-  private String sessionKey;
+  private UUID sessionToken;
 
   private Set<Authority> cachedAuthorities=Sets.newLinkedHashSet();
 
@@ -67,7 +68,7 @@ public class ClientUser {
   }
 
   /**
-   * @return The public API key
+   * @return The public API key used when identifying the user during HMAC authentication
    */
   public String getApiKey() {
     return apiKey;
@@ -100,29 +101,29 @@ public class ClientUser {
   }
 
   /**
-   * @return The encrypted password to authentication with the client
+   * @return The digested password to provide authentication between the user and the client
    */
-  public String getPassword() {
-    return password;
+  public String getPasswordDigest() {
+    return passwordDigest;
   }
 
   /**
    * <h3>Note that it is expected that Jasypt or similar is used prior to storage</h3>
-   * @param passwordDigest
+   * @param passwordDigest The password digest
    */
-  public void setPassword(String passwordDigest) {
-    this.password = passwordDigest;
+  public void setPasswordDigest(String passwordDigest) {
+    this.passwordDigest = passwordDigest;
   }
 
   /**
    * @return The session key
    */
-  public String getSessionKey() {
-    return sessionKey;
+  public UUID getSessionToken() {
+    return sessionToken;
   }
 
-  public void setSessionKey(String sessionKey) {
-    this.sessionKey = sessionKey;
+  public void setSessionToken(UUID sessionToken) {
+    this.sessionToken = sessionToken;
   }
 
   /**

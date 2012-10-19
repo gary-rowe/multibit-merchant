@@ -10,23 +10,16 @@ import java.util.Locale;
  * <ul>
  * <li>Access to public API for the MultiBit Merchant</li>
  * </ul>
- * <p>Example:</p>
- * <pre>
- *   TODO Add in some examples for different use cases
- * </pre>
+ * <p>This client provides access to public resources for an anonymous visitor. For example, the visitor
+ * can search and view items, or manage their shopping cart through this API.</p>
  *
  * @since 0.0.1
  *         
  */
-public class PublicMerchantClient {
+public class PublicMerchantClient extends BaseMerchantClient {
 
-  private final Locale locale;
-
-  /**
-   * @param locale The client locale for appropriate representation
-   */
-  public PublicMerchantClient(Locale locale) {
-    this.locale=locale;
+  protected PublicMerchantClient(Locale locale) {
+    super(locale);
   }
 
   /**

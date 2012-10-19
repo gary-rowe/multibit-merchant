@@ -1,7 +1,7 @@
 package org.multibit.mbm.client.handlers.item;
 
 import com.google.common.collect.Lists;
-import org.multibit.mbm.client.MerchantResourceFactory;
+import org.multibit.mbm.client.HalHmacResourceFactory;
 import org.multibit.mbm.client.handlers.BaseHandler;
 import org.multibit.mbm.model.PublicItem;
 
@@ -50,7 +50,7 @@ public class PublicItemCollectionHandler extends BaseHandler {
     // TODO Replace "magic string" with auto-discover based on link rel
     String path = String.format("/items?pn=%d&ps=%d",pageNumber, pageSize);
 
-    List list = MerchantResourceFactory.INSTANCE
+    List list = HalHmacResourceFactory.INSTANCE
       .newClientResource(locale, path)
       .get(List.class);
 
