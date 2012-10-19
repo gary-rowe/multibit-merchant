@@ -20,24 +20,76 @@ public enum Authority {
 
   // Roles (act as EnumSets from the fine grained authorities defined later)
   // Internal roles
+  /**
+   * The administrator role that can reach administration API functions
+   */
   ROLE_ADMIN(true),
+  /**
+   * Reserved for client applications when making upstream server calls
+   */
+  ROLE_CLIENT(true),
+  /**
+   * A member of the sales team
+   */
   ROLE_SALES(true),
+  /**
+   * The manager of the sales team
+   */
   ROLE_SALES_MANAGER(true),
+  /**
+   * A member of the marketing team
+   */
   ROLE_MARKETING(true),
+  /**
+   * The manager of the marketing team
+   */
   ROLE_MARKETING_MANAGER(true),
+  /**
+   * A member of the finance team
+   */
   ROLE_FINANCE(true),
+  /**
+   * The manager of the finance team
+   */
   ROLE_FINANCE_MANAGER(true),
+  /**
+   * A member of the stores team
+   */
   ROLE_STORES(true),
+  /**
+   * The manager of the stores team
+   */
   ROLE_STORES_MANAGER(true),
+  /**
+   * A member of the delivery team
+   */
   ROLE_DELIVERY(true),
+  /**
+   * The manager of the delivery team
+   */
   ROLE_DELIVERY_MANAGER(true),
 
   // External roles
+  /**
+   * An authenticated customer
+   */
   ROLE_CUSTOMER(false),
 
   // Granted authorities
   // Users
   CHANGE_OWN_PASSWORD(false), // Customers can change their password
+
+  // User administration
+  CREATE_USERS(true),
+  RETRIEVE_USERS(true),
+  UPDATE_USERS(true),
+  DELETE_USERS(true),
+
+  // Role administration
+  CREATE_ROLES(true),
+  RETRIEVE_ROLES(true),
+  UPDATE_ROLES(true),
+  DELETE_ROLES(true),
 
   // Invoices (finance)
   CREATE_INVOICES(true),

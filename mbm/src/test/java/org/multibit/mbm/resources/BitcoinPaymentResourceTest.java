@@ -1,7 +1,7 @@
 package org.multibit.mbm.resources;
 
 import org.junit.Test;
-import org.multibit.mbm.test.BaseJerseyResourceTest;
+import org.multibit.mbm.test.BaseJerseyHmacResourceTest;
 
 import javax.ws.rs.core.MediaType;
 
@@ -9,7 +9,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
-public class BitcoinPaymentResourceTest extends BaseJerseyResourceTest {
+public class BitcoinPaymentResourceTest extends BaseJerseyHmacResourceTest {
 
   @Override
   protected void setUpResources() {
@@ -19,7 +19,7 @@ public class BitcoinPaymentResourceTest extends BaseJerseyResourceTest {
 
     addSingleton(testObject);
 
-    setUpAuthenticator();
+    setUpAliceHmacAuthenticator();
   }
 
   // TODO Improve this test when swatch is re-implemented

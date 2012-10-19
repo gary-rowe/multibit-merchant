@@ -29,11 +29,11 @@ public interface UserDao {
    * Attempt to locate the User by a UUID
    *
    * @param username The username
-   * @param password The password (as provided by the security token)
+   * @param passwordDigest The password digest
    *
    * @return A matching User with Roles and Authorities initialised
    */
-  Optional<User> getByCredentials(String username, String password);
+  Optional<User> getByCredentials(String username, String passwordDigest);
 
   /**
    * Provide a paged list of all Users

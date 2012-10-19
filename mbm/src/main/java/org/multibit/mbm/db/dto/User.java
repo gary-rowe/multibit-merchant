@@ -53,7 +53,7 @@ public class User implements Serializable {
    * <p>A user password (not plaintext and optional for anonymity reasons)</p>
    */
   @Column(name = "password", nullable = true)
-  protected String password = null;
+  protected String passwordDigest = null;
 
   /**
    * <p>A username (optional for anonymity reasons)</p>
@@ -163,18 +163,18 @@ public class User implements Serializable {
   }
 
   /**
-   * @return The encrypted password to authentication with the client
+   * @return The digested password to authenticate with the client
    */
-  public String getPassword() {
-    return password;
+  public String getPasswordDigest() {
+    return passwordDigest;
   }
 
   /**
    * <h3>Note that it is expected that Jasypt or similar is used prior to storage</h3>
-   * @param passwordDigest
+   * @param passwordDigest The password digest
    */
-  public void setPassword(String passwordDigest) {
-    this.password = passwordDigest;
+  public void setPasswordDigest(String passwordDigest) {
+    this.passwordDigest = passwordDigest;
   }
 
   /**

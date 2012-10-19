@@ -73,8 +73,8 @@ public enum HalHmacResourceFactory {
 
     // Configure the resource
     WebResource resource = client.resource(uri);
-    resource.setProperty(HmacClientFilter.MBM_PUBLIC_KEY, clientUser.getApiKey());
-    resource.setProperty(HmacClientFilter.MBM_SHARED_SECRET, clientUser.getSecretKey());
+    resource.setProperty(HmacClientFilter.MBM_API_KEY, clientUser.getApiKey());
+    resource.setProperty(HmacClientFilter.MBM_SECRET_KEY, clientUser.getSecretKey());
     resource.accept(HalMediaType.APPLICATION_HAL_JSON);
     resource.header(HttpHeaders.ACCEPT_LANGUAGE, locale.toString());
 
@@ -89,8 +89,8 @@ public enum HalHmacResourceFactory {
 
     // Configure the resource
     WebResource resource = client.resource(uri);
-    resource.setProperty(HmacClientFilter.MBM_PUBLIC_KEY, clientApiKey);
-    resource.setProperty(HmacClientFilter.MBM_SHARED_SECRET, clientSecretKey);
+    resource.setProperty(HmacClientFilter.MBM_API_KEY, clientApiKey);
+    resource.setProperty(HmacClientFilter.MBM_SECRET_KEY, clientSecretKey);
     resource.accept(HalMediaType.APPLICATION_HAL_JSON);
     resource.header(HttpHeaders.ACCEPT_LANGUAGE, locale.toString());
 

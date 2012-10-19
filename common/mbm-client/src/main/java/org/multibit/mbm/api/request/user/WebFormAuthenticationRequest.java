@@ -11,7 +11,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
  * @since 0.0.1
  *         
  */
-public abstract class BaseUserRequest {
+public class WebFormAuthenticationRequest {
 
   /**
    * A username (optional for anonymity reasons)
@@ -24,24 +24,6 @@ public abstract class BaseUserRequest {
    */
   @JsonProperty
   private String passwordDigest = null;
-
-  /**
-   * An API key providing an anonymous method of identifying a user
-   * Typically a UUID
-   */
-  @JsonProperty
-  private String apiKey = null;
-
-  /**
-   * @return The API key to use to identify the user during HMAC authentication
-   */
-  public String getApiKey() {
-    return apiKey;
-  }
-
-  public void setApiKey(String apiKey) {
-    this.apiKey = apiKey;
-  }
 
   /**
    * @return The password digest

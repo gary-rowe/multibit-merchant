@@ -39,7 +39,7 @@ import java.util.concurrent.TimeUnit;
 public class AdminUserResource extends BaseResource {
 
   @Resource(name = "hibernateUserDao")
-  UserDao userDao;
+  private UserDao userDao;
 
   /**
    * Create a new User from the given mandatory fields
@@ -56,15 +56,15 @@ public class AdminUserResource extends BaseResource {
     User adminUser,
     AdminCreateUserRequest createUserRequest) {
 
-    // Build a user from the given request information
+    // Build a new User from the given request information
     User user = UserBuilder.newInstance()
       .withUsername(createUserRequest.getUsername())
       .withPassword(createUserRequest.getPasswordDigest())
       .build();
 
     // Perform basic verification
-    Optional<User> verificationUser = userDao.getByCredentials(user.getUsername(), user.getPassword());
-    ResourceAsserts.assertNotConflicted(verificationUser,"user");
+    Optional<User> verificationUser = userDao.getByCredentials(user.getUsername(), user.getPasswordDigest());
+    ResourceAsserts.assertNotConflicted(verificationUser, "user");
 
     // Persist the user
     User persistentUser = userDao.saveOrUpdate(user);
@@ -129,7 +129,6 @@ public class AdminUserResource extends BaseResource {
     ResourceAsserts.assertPresent(user, "user");
 
     // Verify and apply any changes to the User
-    // TODO Fill in all details
     User persistentUser = user.get();
 
     // Apply the request to the entity
@@ -163,7 +162,7 @@ public class AdminUserResource extends BaseResource {
 
     // Retrieve the user
     Optional<User> user = userDao.getById(userId);
-    ResourceAsserts.assertPresent(user,"user");
+    ResourceAsserts.assertPresent(user, "user");
 
     // Verify and apply any changes to the User
     User persistentUser = user.get();
@@ -186,11 +185,22 @@ public class AdminUserResource extends BaseResource {
    */
   private void apply(AdminUpdateUserRequest updateRequest, User entity) {
     if (updateRequest.getPasswordDigest() != null) {
-      entity.setPassword(updateRequest.getPasswordDigest());
+      entity.setPasswordDigest(updateRequest.getPasswordDigest());
     }
-    entity.setUsername(updateRequest.getUsername());
-    entity.setApiKey(updateRequest.getApiKey());
-    entity.setSecretKey(updateRequest.getSecretKey());
+    if (updateRequest.getUsername() != null) {
+      entity.setUsername(updateRequest.getUsername());
+    }
+    if (updateRequest.getApiKey() != null) {
+      entity.setApiKey(updateRequest.getApiKey());
+    }
+    if (updateRequest.getSecretKey() != null) {
+      entity.setSecretKey(updateRequest.getSecretKey());
+    }
+    // TODO Fill in the more advanced entries later (lots of primary/secondary fiddlin' about)
+//    for (Map.Entry<String, String> userField: updateRequest.getUserFieldMap().entrySet()) {
+//      UserFieldDetail userFieldDetail=new UserFieldDetail();
+//      entity.getUserFieldMap().put(userField.getKey(),userField.getValue());
+//    }
   }
 
   public void setUserDao(UserDao userDao) {

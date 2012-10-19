@@ -1,7 +1,6 @@
 package org.multibit.mbm.resources;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.Lists;
 import org.junit.Test;
 import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.api.request.cart.CustomerCartItem;
@@ -10,7 +9,7 @@ import org.multibit.mbm.db.DatabaseLoader;
 import org.multibit.mbm.db.dao.CartDao;
 import org.multibit.mbm.db.dao.ItemDao;
 import org.multibit.mbm.db.dto.*;
-import org.multibit.mbm.test.BaseJerseyResourceTest;
+import org.multibit.mbm.test.BaseJerseyHmacResourceTest;
 import org.multibit.mbm.test.FixtureAsserts;
 
 import javax.ws.rs.core.MediaType;
@@ -18,7 +17,7 @@ import javax.ws.rs.core.MediaType;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class CustomerCartResourceTest extends BaseJerseyResourceTest {
+public class CustomerCartResourceTest extends BaseJerseyHmacResourceTest {
 
   private final CartDao cartDao=mock(CartDao.class);
   private final ItemDao itemDao=mock(ItemDao.class);
@@ -28,14 +27,11 @@ public class CustomerCartResourceTest extends BaseJerseyResourceTest {
   @Override
   protected void setUpResources() {
 
-    // Create the supporting Role
-    Role customerRole = DatabaseLoader.buildCustomerRole();
+    // Use Alice for Customer access
+    User aliceUser = setUpAliceHmacAuthenticator();
+    aliceUser.setId(1L);
 
-    // Create the Customer User for authenticated access
-    User customerUser = setUpAuthenticator(Lists.newArrayList(customerRole));
-    customerUser.setId(1L);
-
-    Customer customer = customerUser.getCustomer();
+    Customer customer = aliceUser.getCustomer();
     customer.setId(1L);
 
     // Configure the Cart with Items

@@ -1,7 +1,9 @@
 package org.multibit.mbm.db.dto;
 
 import com.google.common.collect.Lists;
+import org.jasypt.util.password.PasswordEncryptor;
 import org.jasypt.util.password.StrongPasswordEncryptor;
+import org.jasypt.util.password.rfc2307.RFC2307MD5PasswordEncryptor;
 
 import java.util.List;
 import java.util.UUID;
@@ -17,6 +19,8 @@ import java.util.UUID;
  */
 public class UserBuilder {
 
+  private final PasswordEncryptor passwordEncryptor;
+
   private String apiKey;
   private String secretKey;
   private List<AddContactMethod> addContactMethods = Lists.newArrayList();
@@ -27,11 +31,23 @@ public class UserBuilder {
 
   private boolean isBuilt = false;
 
+  public static boolean useWeakDigest = false;
+
   /**
    * @return A new instance of the builder
    */
   public static UserBuilder newInstance() {
-    return new UserBuilder();
+    if (useWeakDigest) {
+      // Provide a weak password digest for repeatable tests
+      return new UserBuilder(new RFC2307MD5PasswordEncryptor());
+    }
+
+    // Provide a strong password digest
+    return new UserBuilder(new StrongPasswordEncryptor());
+  }
+
+  public UserBuilder(PasswordEncryptor passwordEncryptor) {
+    this.passwordEncryptor = passwordEncryptor;
   }
 
   /**
@@ -57,9 +73,8 @@ public class UserBuilder {
     user.setUsername(username);
 
     if (password != null) {
-      // Digest the plain password (even though it calls itself an encrypter)
-      String encryptedPassword = new StrongPasswordEncryptor().encryptPassword(password);
-      user.setPassword(encryptedPassword);
+      String encryptedPassword = passwordEncryptor.encryptPassword(password);
+      user.setPasswordDigest(encryptedPassword);
     }
 
     // Bi-directional relationship

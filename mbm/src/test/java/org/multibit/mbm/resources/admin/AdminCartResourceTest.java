@@ -10,7 +10,7 @@ import org.multibit.mbm.db.DatabaseLoader;
 import org.multibit.mbm.db.dao.CartDao;
 import org.multibit.mbm.db.dao.ItemDao;
 import org.multibit.mbm.db.dto.*;
-import org.multibit.mbm.test.BaseJerseyResourceTest;
+import org.multibit.mbm.test.BaseJerseyHmacResourceTest;
 import org.multibit.mbm.test.FixtureAsserts;
 
 import javax.ws.rs.core.MediaType;
@@ -19,7 +19,7 @@ import java.util.List;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class AdminCartResourceTest extends BaseJerseyResourceTest {
+public class AdminCartResourceTest extends BaseJerseyHmacResourceTest {
 
   private final CartDao cartDao=mock(CartDao.class);
   private final ItemDao itemDao=mock(ItemDao.class);
@@ -29,13 +29,12 @@ public class AdminCartResourceTest extends BaseJerseyResourceTest {
   @Override
   protected void setUpResources() {
 
-    // Create the supporting Role
-    Role adminRole = DatabaseLoader.buildAdminRole();
-    Role customerRole = DatabaseLoader.buildCustomerRole();
-
-    // Create the admin User for authenticated access
-    User adminUser = setUpAuthenticator(Lists.newArrayList(adminRole));
+    // Create the User for authenticated access
+    User adminUser = setUpTrentHmacAuthenticator();
     adminUser.setId(1L);
+
+    // Create the supporting Role
+    Role customerRole = DatabaseLoader.buildCustomerRole();
 
     // Create some Customers
     User aliceUser = DatabaseLoader.buildAliceCustomer(customerRole);

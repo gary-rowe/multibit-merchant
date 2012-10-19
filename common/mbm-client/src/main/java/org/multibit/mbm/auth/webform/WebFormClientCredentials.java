@@ -18,28 +18,49 @@ import static com.google.common.base.Preconditions.checkState;
 public class WebFormClientCredentials {
 
   private final String username;
-  private final String digestedPassword;
+  private final String passwordDigest;
 
   /**
    * @param username The offered username (plaintext)
-   * @param digestedPassword The offered password (digested)
+   * @param passwordDigest The offered password after digest
    */
 
   public WebFormClientCredentials(
     String username,
-    String digestedPassword
+    String passwordDigest
   ) {
     this.username = checkNotNull(username);
-    this.digestedPassword = checkNotNull(digestedPassword);
-    checkState(digestedPassword.length()>12,"String is too short to be a good digest");
+    this.passwordDigest = checkNotNull(passwordDigest);
+    checkState(passwordDigest.length()>12,"String is too short to be a good digest");
   }
 
   public String getUsername() {
     return username;
   }
 
-  public String getDigestedPassword() {
-    return digestedPassword;
+  public String getPasswordDigest() {
+    return passwordDigest;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    WebFormClientCredentials that = (WebFormClientCredentials) o;
+
+    if (passwordDigest != null ? !passwordDigest.equals(that.passwordDigest) : that.passwordDigest != null)
+      return false;
+    if (username != null ? !username.equals(that.username) : that.username != null) return false;
+
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = username != null ? username.hashCode() : 0;
+    result = 31 * result + (passwordDigest != null ? passwordDigest.hashCode() : 0);
+    return result;
   }
 
   @Override

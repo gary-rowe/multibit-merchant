@@ -1,8 +1,10 @@
 package org.multibit.mbm.client.handlers.user;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 import com.theoryinpractise.halbuilder.ResourceFactory;
 import com.theoryinpractise.halbuilder.spi.ReadableResource;
+import org.multibit.mbm.api.request.user.WebFormAuthenticationRequest;
 import org.multibit.mbm.auth.webform.WebFormClientCredentials;
 import org.multibit.mbm.client.HalHmacResourceFactory;
 import org.multibit.mbm.client.handlers.BaseHandler;
@@ -42,6 +44,11 @@ public class CustomerUserHandler extends BaseHandler {
   public Optional<ClientUser> authenticateWithWebForm(WebFormClientCredentials credentials) {
 
     // Sanity check
+    Preconditions.checkNotNull(credentials);
+
+    WebFormAuthenticationRequest entity = new WebFormAuthenticationRequest();
+    entity.setUsername(credentials.getUsername());
+    entity.setPasswordDigest(credentials.getPasswordDigest());
 
     // TODO Replace "magic string" with auto-discover based on link rel
     String path = String.format("/mbm/users/authenticate");

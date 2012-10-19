@@ -1,12 +1,12 @@
 package org.multibit.mbm.api.response.hal.user;
 
 import com.google.common.base.Optional;
-import com.theoryinpractise.halbuilder.ResourceFactory;
 import com.theoryinpractise.halbuilder.spi.Resource;
 import org.multibit.mbm.api.response.hal.BaseBridge;
 import org.multibit.mbm.db.dto.ContactMethod;
 import org.multibit.mbm.db.dto.ContactMethodDetail;
 import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.resources.ResourceAsserts;
 
 import javax.ws.rs.core.UriInfo;
 import java.util.Map;
@@ -22,29 +22,26 @@ import java.util.Set;
  */
 public class CustomerUserBridge extends BaseBridge<User> {
 
+  private final CustomerMinimalUserBridge customerMinimalUserBridge;
+
   /**
    * @param uriInfo   The {@link javax.ws.rs.core.UriInfo} containing the originating request information
    * @param principal An optional {@link User} to provide a security principal
    */
   public CustomerUserBridge(UriInfo uriInfo, Optional<User> principal) {
     super(uriInfo, principal);
+    customerMinimalUserBridge = new CustomerMinimalUserBridge(uriInfo,principal);
   }
 
   public Resource toResource(User user) {
 
-    if (user.getId() == null) {
-      throw new IllegalArgumentException("Cannot respond with a transient User. Id is null.");
-    }
 
-    ResourceFactory resourceFactory = getResourceFactory();
+    // Build on the minimal Customer representation
+    Resource userResource = customerMinimalUserBridge.toResource(user);
 
-    Resource userResource = resourceFactory.newResource("/user/" + user.getId())
-      .withProperty("id",user.getId())
-      .withProperty("username", user.getUsername())
-      // Do not return password - it is useless
-      .withProperty("secret_key", user.getSecretKey())
-      // End of build
-      ;
+    // Apply restrictions against the more detailed representation
+    ResourceAsserts.assertNotNull(user, "user");
+    ResourceAsserts.assertNotNull(user.getId(),"id");
 
     // Convert the ContactMethodDetails map into primary and secondary property entries
     for (Map.Entry<ContactMethod, ContactMethodDetail> entry : user.getContactMethodMap().entrySet()) {

@@ -5,8 +5,8 @@ import com.yammer.dropwizard.jersey.caching.CacheControl;
 import com.yammer.metrics.annotation.Timed;
 import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.api.response.hal.user.CustomerUserBridge;
-import org.multibit.mbm.auth.annotation.RestrictedTo;
 import org.multibit.mbm.auth.Authority;
+import org.multibit.mbm.auth.annotation.RestrictedTo;
 import org.multibit.mbm.db.dto.User;
 import org.springframework.stereotype.Component;
 
@@ -32,11 +32,14 @@ public class CustomerUserResource extends BaseResource {
   @GET
   @Timed
   @CacheControl(maxAge = 6, maxAgeUnit = TimeUnit.HOURS)
-  public Response retrieveUser(@RestrictedTo({Authority.ROLE_CUSTOMER}) User user) {
+  public Response retrieveOwnProfile(
+    @RestrictedTo({Authority.ROLE_CUSTOMER})
+    User user)
+  {
 
     CustomerUserBridge bridge = new CustomerUserBridge(uriInfo, Optional.of(user));
 
     return ok(bridge, user);
-
   }
+
 }

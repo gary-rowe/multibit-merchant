@@ -22,4 +22,5 @@ public class MultiBitMerchantConfiguration extends Configuration {
   public String getAuthenticationCachePolicy() {
     return authenticationCachePolicy;
   }
+
 }

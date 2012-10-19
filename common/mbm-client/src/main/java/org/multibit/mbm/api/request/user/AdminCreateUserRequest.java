@@ -1,5 +1,7 @@
 package org.multibit.mbm.api.request.user;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 /**
  * <p>Request to provide the following to Resources:</p>
  * <ul>
@@ -12,8 +14,40 @@ package org.multibit.mbm.api.request.user;
  * @since 0.0.1
  *         
  */
-public class AdminCreateUserRequest extends CustomerCreateUserRequest {
+public class AdminCreateUserRequest extends WebFormAuthenticationRequest {
 
-  // TODO Add admin specific fields here later
+  /**
+   * An API key providing an anonymous method of identifying a user
+   * Typically a UUID
+   */
+  @JsonProperty
+  private String apiKey = null;
+
+  /**
+   * <p>Used as a shared secret between this user and the application. Typically
+   * part of an HMAC authentication scheme.</p>
+   */
+  @JsonProperty("secret_key")
+  private String secretKey = null;
+
+  /**
+   * @return The API key to use to identify the user during HMAC authentication
+   */
+  public String getApiKey() {
+    return apiKey;
+  }
+
+  public void setApiKey(String apiKey) {
+    this.apiKey = apiKey;
+  }
+
+  public String getSecretKey() {
+    return secretKey;
+  }
+
+  public void setSecretKey(String secretKey) {
+    this.secretKey = secretKey;
+  }
+
 
 }

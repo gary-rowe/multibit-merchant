@@ -32,7 +32,7 @@ public class HibernateUserDao extends BaseHibernateDao implements UserDao {
 
   @Override
   @SuppressWarnings("unchecked")
-  public Optional<User> getByCredentials(String username, String password) {
+  public Optional<User> getByCredentials(String username, String passwordDigest) {
     List<User> users = hibernateTemplate.find("from User u where u.username = ? ", username);
 
     if (isNotFound(users)) return Optional.absent();
@@ -41,7 +41,7 @@ public class HibernateUserDao extends BaseHibernateDao implements UserDao {
 
     // Check the password against all matching Users
     for (User user : users) {
-      if (passwordEncryptor.checkPassword(password, user.getPassword())) {
+      if (passwordEncryptor.checkPassword(passwordDigest, user.getPasswordDigest())) {
         return Optional.of(user);
       }
     }

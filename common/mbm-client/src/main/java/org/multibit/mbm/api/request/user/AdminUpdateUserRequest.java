@@ -21,20 +21,6 @@ import java.util.Set;
  */
 public class AdminUpdateUserRequest extends AdminCreateUserRequest {
 
-  /**
-   * <p>UUID to allow public User reference without
-   * revealing a sequential ID that could be guessed.
-   * Typically used as an API key</p>
-   */
-  @JsonProperty
-  private String apiKey = null;
-
-  /**
-   * <p>Used as a shared secret between this user and the application. Typically
-   * part of an HMAC authentication scheme.</p>
-   */
-  @JsonProperty("secret_key")
-  private String secretKey = null;
 
   @JsonProperty("contact_method_map")
   private Map<String, String> contactMethodMap = Maps.newLinkedHashMap();
@@ -77,22 +63,6 @@ public class AdminUpdateUserRequest extends AdminCreateUserRequest {
 
   @JsonProperty("user_roles")
   private Set<String> userRoles = Sets.newLinkedHashSet();
-
-  public String getApiKey() {
-    return apiKey;
-  }
-
-  public void setApiKey(String apiKey) {
-    this.apiKey = apiKey;
-  }
-
-  public String getSecretKey() {
-    return secretKey;
-  }
-
-  public void setSecretKey(String secretKey) {
-    this.secretKey = secretKey;
-  }
 
   public Map<String, String> getContactMethodMap() {
     return contactMethodMap;

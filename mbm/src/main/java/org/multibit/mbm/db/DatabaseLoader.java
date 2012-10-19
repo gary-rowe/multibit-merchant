@@ -34,9 +34,10 @@ public class DatabaseLoader {
   @Resource(name = "hibernateRoleDao")
   private RoleDao roleDao;
 
+  // Various Roles that get shared between Users
   private Role adminRole = null;
-
   private Role customerRole = null;
+  private Role clientRole = null;
 
   /**
    * Handles the process of initialising the database using the DAOs
@@ -62,6 +63,10 @@ public class DatabaseLoader {
     customerRole = buildCustomerRole();
     customerRole = roleDao.saveOrUpdate(customerRole);
 
+    // Build the Client Role and Authorities
+    clientRole = buildClientRole();
+    clientRole = roleDao.saveOrUpdate(clientRole);
+
     roleDao.flush();
 
   }
@@ -74,6 +79,17 @@ public class DatabaseLoader {
       .withName(Authority.ROLE_CUSTOMER.name())
       .withDescription("Customer role")
       .withCustomerAuthorities()
+      .build();
+  }
+
+  /**
+   * @return A transient instance of the Customer role
+   */
+  public static Role buildClientRole() {
+    return RoleBuilder.newInstance()
+      .withName(Authority.ROLE_CLIENT.name())
+      .withDescription("Client role")
+      .withClientAuthorities()
       .build();
   }
 
@@ -209,6 +225,10 @@ public class DatabaseLoader {
 
     // TODO Introduce various staff roles (dispatch, sales etc)
 
+    // Clients
+    User userStore = buildStoreClient(clientRole);
+    userDao.saveOrUpdate(userStore);
+
     // Customers
     // Alice
     User userAlice = buildAliceCustomer(customerRole);
@@ -267,6 +287,20 @@ public class DatabaseLoader {
       .withContactMethod(ContactMethod.LAST_NAME, "Admin")
       .withContactMethod(ContactMethod.EMAIL, "admin@example.org")
       .withRole(adminRole)
+      .build();
+  }
+
+  public static User buildStoreClient(Role clientRole) {
+    // Admin
+    return UserBuilder.newInstance()
+      .withApiKey("store123")
+      .withSecretKey("store456")
+      .withUsername("store")
+      .withPassword("store1")
+      .withContactMethod(ContactMethod.NAMES, "Store")
+      .withContactMethod(ContactMethod.LAST_NAME, "Client")
+      .withContactMethod(ContactMethod.EMAIL, "store@example.org")
+      .withRole(clientRole)
       .build();
   }
 

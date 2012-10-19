@@ -7,7 +7,7 @@ import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.db.DatabaseLoader;
 import org.multibit.mbm.db.dao.ItemDao;
 import org.multibit.mbm.db.dto.Item;
-import org.multibit.mbm.test.BaseJerseyResourceTest;
+import org.multibit.mbm.test.BaseJerseyHmacResourceTest;
 import org.multibit.mbm.test.FixtureAsserts;
 
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class PublicItemResourceTest extends BaseJerseyResourceTest {
+public class PublicItemResourceTest extends BaseJerseyHmacResourceTest {
   private final ItemDao itemDao=mock(ItemDao.class);
 
   private final PublicItemResource testObject=new PublicItemResource();
@@ -24,7 +24,7 @@ public class PublicItemResourceTest extends BaseJerseyResourceTest {
   protected void setUpResources() {
 
     // Create a throwaway authenticator since this is public access
-    setUpAuthenticator();
+    setUpClientHmacAuthenticator();
 
     // Create the customer Items
     Item book1 = DatabaseLoader.buildBookItemCryptonomicon();

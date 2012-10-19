@@ -22,7 +22,9 @@ import org.multibit.mbm.auth.hmac.HmacServerAuthenticator;
 import org.multibit.mbm.auth.hmac.HmacServerRestrictedToProvider;
 import org.multibit.mbm.db.DatabaseLoader;
 import org.multibit.mbm.db.dao.UserDao;
-import org.multibit.mbm.db.dto.*;
+import org.multibit.mbm.db.dto.Role;
+import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.db.dto.UserBuilder;
 
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
@@ -34,9 +36,9 @@ import static org.mockito.Mockito.when;
 
 /**
  * A base test class for testing Dropwizard resources against
- * an actual Jersey container
+ * an actual Jersey container using HMAC for authentication
  */
-public abstract class BaseJerseyResourceTest extends BaseResourceTest {
+public abstract class BaseJerseyHmacResourceTest extends BaseResourceTest {
   private final Set<Object> singletons = Sets.newHashSet();
   private final Set<Class<?>> providers = Sets.newHashSet();
   private final List<Module> modules = Lists.newArrayList();
@@ -45,9 +47,10 @@ public abstract class BaseJerseyResourceTest extends BaseResourceTest {
   private JerseyTest test;
   protected UriInfo uriInfo;
 
-  // Authentication support using HMAC
-  protected Optional<String> clientApiKey = Optional.of("trent123");
-  protected Optional<String> clientSecretKey = Optional.of("trent456");
+  /**
+   * The User providing authentication via HMAC
+   */
+  protected User hmacUser;
 
   /**
    * <p>Subclasses must use this to configure mocks of any objects that the
@@ -87,7 +90,10 @@ public abstract class BaseJerseyResourceTest extends BaseResourceTest {
 
   @Before
   public void setUpJersey() throws Exception {
+
+    // Provide any specialised resource configuration
     setUpResources();
+
     this.test = new JerseyTest() {
       @Override
       protected AppDescriptor configure() {
@@ -123,6 +129,9 @@ public abstract class BaseJerseyResourceTest extends BaseResourceTest {
     );
 
     test.setUp();
+
+    // Configure for weak hashes
+    UserBuilder.useWeakDigest=true;
   }
 
   @After
@@ -133,47 +142,53 @@ public abstract class BaseJerseyResourceTest extends BaseResourceTest {
   }
 
   /**
-   * Provides the default authentication settings
+   * Provides the default client HMAC authentication settings (not a Customer)
    */
-  protected User setUpAuthenticator() {
+  protected User setUpClientHmacAuthenticator() {
+
+    Role clientRole = DatabaseLoader.buildClientRole();
+    User storeClient = DatabaseLoader.buildStoreClient(clientRole);
+
+    return setUpHmacAuthenticator(storeClient);
+  }
+
+  /**
+   * Provides HMAC authentication settings for Alice Customer
+   */
+  protected User setUpAliceHmacAuthenticator() {
 
     Role customerRole = DatabaseLoader.buildCustomerRole();
+    User aliceCustomer = DatabaseLoader.buildAliceCustomer(customerRole);
 
-    return setUpAuthenticator(clientApiKey, clientSecretKey, Lists.newArrayList(customerRole));
+    return setUpHmacAuthenticator(aliceCustomer);
   }
 
   /**
-   * Provides the default authentication settings
+   * Provides HMAC authentication settings for Trent Admin
    */
-  protected User setUpAuthenticator(List<Role> roles) {
-    return setUpAuthenticator(clientApiKey, clientSecretKey, roles);
+  protected User setUpTrentHmacAuthenticator() {
+
+    Role adminRole = DatabaseLoader.buildAdminRole();
+    User trentAdmin = DatabaseLoader.buildTrentAdministrator(adminRole);
+
+    return setUpHmacAuthenticator(trentAdmin);
   }
 
   /**
-   * @param apiKey    The API key to assign to the User
-   * @param secretKey The secret key to assign to the User
+   * @param user The User to act as the authenticator for HMAC communications (could be a Customer)
    */
-  protected User setUpAuthenticator(Optional<String> apiKey, Optional<String> secretKey, List<Role> roles) {
-
-    Customer customer = CustomerBuilder
-      .newInstance()
-      .build();
-
-    User user = UserBuilder
-      .newInstance()
-      .withApiKey(apiKey.get())
-      .withSecretKey(secretKey.get())
-      .withRoles(roles)
-      .withCustomer(customer)
-      .build();
+  protected User setUpHmacAuthenticator(User user) {
 
     UserDao userDao = mock(UserDao.class);
-    when(userDao.getByApiKey(apiKey.get())).thenReturn(Optional.of(user));
+    when(userDao.getByApiKey(user.getApiKey())).thenReturn(Optional.of(user));
 
     HmacServerAuthenticator authenticator = new HmacServerAuthenticator();
     authenticator.setUserDao(userDao);
 
     addSingleton(new HmacServerRestrictedToProvider<User>(authenticator, "REST"));
+
+    // Set the HMAC authentication user
+    hmacUser = user;
 
     return user;
   }
@@ -184,11 +199,13 @@ public abstract class BaseJerseyResourceTest extends BaseResourceTest {
    * @param path The relative path to the resource
    *
    * @return A web resource suitable for method chaining
+   *
+   * TODO Replace the path with the URIBuilder .class approach
    */
   protected WebResource configureAsClient(String path) {
     WebResource resource = client().resource(path);
-    resource.setProperty(HmacClientFilter.MBM_PUBLIC_KEY, clientApiKey.get());
-    resource.setProperty(HmacClientFilter.MBM_SHARED_SECRET, clientSecretKey.get());
+    resource.setProperty(HmacClientFilter.MBM_API_KEY, hmacUser.getApiKey());
+    resource.setProperty(HmacClientFilter.MBM_SECRET_KEY, hmacUser.getSecretKey());
     return resource;
   }
 }

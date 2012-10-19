@@ -1,1 +1,29 @@
-{"_links":{"self":{"href":"http://localhost:9998/role"}},"_embedded":{"http://localhost:9998/role/2":{"_links":{"http://localhost:9998/role/2 self":{"href":"http://localhost:9998/role/2"}},"description":"Customer role","internal":true,"name":"ROLE_CUSTOMER","_embedded":{"authorities":{"_links":{"authorities self":{"href":"http://localhost:9998/authorities"}},"CHANGE_OWN_PASSWORD":true,"RETRIEVE_ITEMS":true,"RETRIEVE_ORDERS":true,"ROLE_CUSTOMER":true}}}}}
+{"_links":{
+  "self":{
+    "href":"http://localhost:9998/role"
+  }
+}, "_embedded":{
+  "http://localhost:9998/role/2":{
+    "_links":{
+      "http://localhost:9998/role/2 self":{
+        "href":"http://localhost:9998/role/2"
+      }
+    },
+    "description":"Customer role",
+    "internal":true,
+    "name":"ROLE_CUSTOMER",
+    "_embedded":{
+      "authorities":{
+        "_links":{
+          "authorities self":{
+            "href":"http://localhost:9998/authorities"
+          }
+        },
+        "CHANGE_OWN_PASSWORD":true,
+        "RETRIEVE_ITEMS":true,
+        "RETRIEVE_ORDERS":true,
+        "ROLE_CUSTOMER":true
+      }
+    }
+  }
+}}

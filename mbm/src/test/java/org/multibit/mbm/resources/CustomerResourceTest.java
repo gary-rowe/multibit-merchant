@@ -4,12 +4,12 @@ import org.junit.Test;
 import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.db.dto.User;
 import org.multibit.mbm.services.CustomerService;
-import org.multibit.mbm.test.BaseJerseyResourceTest;
+import org.multibit.mbm.test.BaseJerseyHmacResourceTest;
 import org.multibit.mbm.test.FixtureAsserts;
 
 import static org.mockito.Mockito.mock;
 
-public class CustomerResourceTest extends BaseJerseyResourceTest {
+public class CustomerResourceTest extends BaseJerseyHmacResourceTest {
 
   private final CustomerService customerService=mock(CustomerService.class);
 
@@ -20,10 +20,10 @@ public class CustomerResourceTest extends BaseJerseyResourceTest {
   protected void setUpResources() {
 
     // Create the User for authenticated access
-    User user = setUpAuthenticator();
-    user.setId(1L);
-    user.getCustomer().setId(1L);
-    user.getCustomer().getCart().setId(1L);
+    User aliceUser = setUpAliceHmacAuthenticator();
+    aliceUser.setId(1L);
+    aliceUser.getCustomer().setId(1L);
+    aliceUser.getCustomer().getCart().setId(1L);
 
     // Configure the test object
     testObject.setCustomerService(customerService);

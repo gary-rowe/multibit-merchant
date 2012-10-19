@@ -1,1 +1,5 @@
-{"_links":{"self":{"href":"http://localhost:9998/user/1"}},"id":1,"secret_key":"trent456","username":null}
+{"_links":{
+  "self":{
+    "href":"http://localhost:9998/user/alice123"
+  }
+}, "api_key":"alice123", "email":"alice@example.org", "last_name":"Customer", "names":"Alice", "password_digest":"{MD5}yTI5yuRQYx6fVdca7ZnpGA==", "secret_key":"alice456", "username":"alice"}

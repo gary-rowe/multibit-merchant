@@ -1,5 +1,5 @@
 {"_links":{
   "self":{
-    "href":"http://localhost:9998/user/1"
+    "href":"http://localhost:9998/user/alice123"
   }
-}, "apiKey":null, "created_at":null, "email":"alice@example.org", "id":1, "last_name":"Customer", "locked":false, "names":"Alice", "password_reset_at":null, "secret_key":null, "staff_member":false, "username":"charlie"}
+}, "apiKey":"alice123", "api_key":"alice123", "created_at":null, "email":"alice@example.org", "last_name":"Customer", "locked":false, "names":"Alice", "password_digest":"charlie1", "password_reset_at":null, "secret_key":"alice456", "staff_member":false, "username":"charlie"}

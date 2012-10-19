@@ -22,8 +22,8 @@ import java.util.Map;
  */
 public class HmacClientFilter extends ClientFilter {
 
-  public static final String MBM_PUBLIC_KEY = "mbm_public_key";
-  public static final String MBM_SHARED_SECRET = "mbm_shared_secret";
+  public static final String MBM_API_KEY = "mbm_api_key";
+  public static final String MBM_SECRET_KEY = "mbm_secret_key";
 
   private static final Log LOG = Log.forClass(HmacClientFilter.class);
 
@@ -56,14 +56,14 @@ public class HmacClientFilter extends ClientFilter {
     if (properties == null) {
       throw new IllegalStateException("Client request properties are null");
     }
-    if (!properties.containsKey(MBM_PUBLIC_KEY) ) {
-      throw new IllegalStateException("Client request '"+ MBM_PUBLIC_KEY +"' is null");
+    if (!properties.containsKey(MBM_API_KEY) ) {
+      throw new IllegalStateException("Client request '"+ MBM_API_KEY +"' is null");
     }
-    if (!properties.containsKey(MBM_SHARED_SECRET) ) {
-      throw new IllegalStateException("Client request '"+ MBM_SHARED_SECRET +"' is null");
+    if (!properties.containsKey(MBM_SECRET_KEY) ) {
+      throw new IllegalStateException("Client request '"+ MBM_SECRET_KEY +"' is null");
     }
-    String publicKey = properties.get(MBM_PUBLIC_KEY).toString();
-    String sharedSecret = properties.get(MBM_SHARED_SECRET).toString();
+    String publicKey = properties.get(MBM_API_KEY).toString();
+    String sharedSecret = properties.get(MBM_SECRET_KEY).toString();
 
     // Provide a short TTL
     String httpNow = DateUtils.formatHttpDateHeader(DateUtils.nowUtc().plusSeconds(5));

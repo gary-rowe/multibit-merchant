@@ -12,7 +12,7 @@ import org.multibit.mbm.db.dao.RoleDao;
 import org.multibit.mbm.db.dto.Role;
 import org.multibit.mbm.db.dto.RoleBuilder;
 import org.multibit.mbm.db.dto.User;
-import org.multibit.mbm.test.BaseJerseyResourceTest;
+import org.multibit.mbm.test.BaseJerseyHmacResourceTest;
 import org.multibit.mbm.test.FixtureAsserts;
 
 import javax.ws.rs.core.MediaType;
@@ -22,7 +22,7 @@ import static org.mockito.Matchers.isNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class AdminRoleResourceTest extends BaseJerseyResourceTest {
+public class AdminRoleResourceTest extends BaseJerseyHmacResourceTest {
 
   private final RoleDao roleDao=mock(RoleDao.class);
 
@@ -30,6 +30,10 @@ public class AdminRoleResourceTest extends BaseJerseyResourceTest {
 
   @Override
   protected void setUpResources() {
+
+    // Create the User for authenticated access
+    User adminUser = setUpTrentHmacAuthenticator();
+    adminUser.setId(1L);
 
     // Create the supporting Role
     Role adminRole = DatabaseLoader.buildAdminRole();
@@ -44,10 +48,6 @@ public class AdminRoleResourceTest extends BaseJerseyResourceTest {
       .withDescription("Stock Manager roles")
       .build();
     newRole.setId(3L);
-
-    // Create the User for authenticated access
-    User adminUser = setUpAuthenticator(Lists.newArrayList(adminRole));
-    adminUser.setId(1L);
 
     // Create pages
     List<Role> rolesPage1 = Lists.newArrayList();

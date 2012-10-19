@@ -10,9 +10,8 @@ import org.multibit.mbm.api.request.item.AdminUpdateItemRequest;
 import org.multibit.mbm.db.DatabaseLoader;
 import org.multibit.mbm.db.dao.ItemDao;
 import org.multibit.mbm.db.dto.Item;
-import org.multibit.mbm.db.dto.Role;
 import org.multibit.mbm.db.dto.User;
-import org.multibit.mbm.test.BaseJerseyResourceTest;
+import org.multibit.mbm.test.BaseJerseyHmacResourceTest;
 import org.multibit.mbm.test.FixtureAsserts;
 
 import javax.ws.rs.core.MediaType;
@@ -22,7 +21,7 @@ import static org.mockito.Matchers.isNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class AdminItemResourceTest extends BaseJerseyResourceTest {
+public class AdminItemResourceTest extends BaseJerseyHmacResourceTest {
 
   private final ItemDao itemDao=mock(ItemDao.class);
 
@@ -31,12 +30,8 @@ public class AdminItemResourceTest extends BaseJerseyResourceTest {
   @Override
   protected void setUpResources() {
 
-    // Create the supporting Role
-    Role adminRole = DatabaseLoader.buildAdminRole();
-    Role customerRole = DatabaseLoader.buildCustomerRole();
-
-    // Create the Item for authenticated access
-    User adminUser = setUpAuthenticator(Lists.newArrayList(adminRole));
+    // Create the User for authenticated access
+    User adminUser = setUpTrentHmacAuthenticator();
     adminUser.setId(1L);
 
     // Create the customer Items
