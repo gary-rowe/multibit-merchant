@@ -1,6 +1,5 @@
 package org.multibit.mbm.auth.hmac;
 
-import com.google.common.collect.Sets;
 import com.google.common.net.HttpHeaders;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.container.ContainerException;
@@ -27,8 +26,6 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.SortedSet;
 
 /**
  * <p>Utility class to provide the following to HMAC operations:</p>
@@ -49,11 +46,7 @@ import java.util.SortedSet;
  * <li>Add the HTTP-Verb for the request ("GET", "POST", ...) in capital letters, followed by a single newline (U+000A).</li>
  * <li>Add the date for the request using the form "date:#date-of-request" followed by a single newline. The date for the signature must be formatted exactly as in the request.</li>
  * <li>Add the nonce for the request in the form "nonce:#nonce-in-request" followed by a single newline. If no nonce is passed use the empty string as nonce value.</li>
- * <li>Convert all remaining header names to lowercase.</li>
- * <li>Sort the remaining headers lexicographically by header name.</li>
- * <li>Trim header values by removing any whitespace before the first non-whitespace character and after the last non-whitespace character.</li>
- * <li>Combine lowercase header names and header values using a single colon (“:”) as separator. Do not include whitespace characters around the separator.</li>
- * <li>Combine all headers using a single newline (U+000A) character and append them to the canonical representation, followed by a single newline (U+000A) character.</li>
+ * <li><strong>Note: removed headers from HMAC due to hosting services providing a multitude of headers outside of the scope of the user and largely impossible to predict.</strong></li>
  * <li>Append the path (including context) to the canonical representation</li>
  * <li>Append the url-decoded query parameters to the canonical representation</li>
  * <li>URL-decode query parameters if required</li>
@@ -108,101 +101,6 @@ public class HmacUtils {
   static final String HEADER_VALUE = PREFIX + " realm=\"%s\"";
 
   /**
-   * <p>Exclude the following HTTP request headers since they may be added
-   * after the client has released control of the request</p>
-   * <p>Using the Guava list ensures that we cover the following RFCs</p>
-   * <ul>
-   * <li><a href="http://www.ietf.org/rfc/rfc2109.txt">RFC 2109</a>
-   * <li><a href="http://www.ietf.org/rfc/rfc2183.txt">RFC 2183</a>
-   * <li><a href="http://www.ietf.org/rfc/rfc2616.txt">RFC 2616</a>
-   * <li><a href="http://www.ietf.org/rfc/rfc2965.txt">RFC 2965</a>
-   * <li><a href="http://www.ietf.org/rfc/rfc5988.txt">RFC 5988</a>
-   * </ul>
-   */
-  private static Set<String> excludedHttpHeaderNames = Sets.newHashSet(
-    X_HMAC_DATE,
-    X_HMAC_NONCE,
-    HttpHeaders.CACHE_CONTROL,
-    HttpHeaders.CONTENT_ENCODING,
-    HttpHeaders.CONTENT_LENGTH,
-    HttpHeaders.CONTENT_LENGTH,
-    HttpHeaders.CONTENT_TYPE,
-    HttpHeaders.DATE,
-    HttpHeaders.PRAGMA,
-    HttpHeaders.VIA,
-    HttpHeaders.WARNING,
-    HttpHeaders.ACCEPT,
-    HttpHeaders.ACCEPT_CHARSET,
-    HttpHeaders.ACCEPT_ENCODING,
-    HttpHeaders.ACCEPT_LANGUAGE,
-    HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS,
-    HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD,
-    HttpHeaders.AUTHORIZATION,
-    HttpHeaders.CONNECTION,
-    HttpHeaders.COOKIE,
-    HttpHeaders.EXPECT,
-    HttpHeaders.FROM,
-    HttpHeaders.HOST,
-    HttpHeaders.IF_MATCH,
-    HttpHeaders.IF_MODIFIED_SINCE,
-    HttpHeaders.IF_NONE_MATCH,
-    HttpHeaders.IF_RANGE,
-    HttpHeaders.IF_UNMODIFIED_SINCE,
-    HttpHeaders.LAST_EVENT_ID,
-    HttpHeaders.MAX_FORWARDS,
-    HttpHeaders.ORIGIN,
-    HttpHeaders.PROXY_AUTHORIZATION,
-    HttpHeaders.RANGE,
-    HttpHeaders.REFERER,
-    HttpHeaders.TE,
-    HttpHeaders.TRANSFER_ENCODING,
-    HttpHeaders.UPGRADE,
-    HttpHeaders.USER_AGENT,
-    HttpHeaders.ACCEPT_RANGES,
-    HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS,
-    HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS,
-    HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN,
-    HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS,
-    HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS,
-    HttpHeaders.ACCESS_CONTROL_MAX_AGE,
-    HttpHeaders.AGE,
-    HttpHeaders.ALLOW,
-    HttpHeaders.CONTENT_DISPOSITION,
-    HttpHeaders.CONTENT_ENCODING,
-    HttpHeaders.CONTENT_LANGUAGE,
-    HttpHeaders.CONTENT_LOCATION,
-    HttpHeaders.CONTENT_MD5,
-    HttpHeaders.CONTENT_RANGE,
-    HttpHeaders.ETAG,
-    HttpHeaders.EXPIRES,
-    HttpHeaders.LAST_MODIFIED,
-    HttpHeaders.LINK,
-    HttpHeaders.LOCATION,
-    HttpHeaders.P3P,
-    HttpHeaders.PROXY_AUTHENTICATE,
-    HttpHeaders.REFRESH,
-    HttpHeaders.RETRY_AFTER,
-    HttpHeaders.SERVER,
-    HttpHeaders.SET_COOKIE,
-    HttpHeaders.SET_COOKIE2,
-    HttpHeaders.TRAILER,
-    HttpHeaders.TRANSFER_ENCODING,
-    HttpHeaders.VARY,
-    HttpHeaders.WWW_AUTHENTICATE,
-    HttpHeaders.DNT,
-    HttpHeaders.X_CONTENT_TYPE_OPTIONS,
-    HttpHeaders.X_DO_NOT_TRACK,
-    HttpHeaders.X_FORWARDED_FOR,
-    HttpHeaders.X_FORWARDED_PROTO,
-    HttpHeaders.X_FRAME_OPTIONS,
-    HttpHeaders.X_POWERED_BY,
-    HttpHeaders.X_REQUESTED_WITH,
-    HttpHeaders.X_USER_IP,
-    HttpHeaders.X_XSS_PROTECTION
-    // End of collection
-  );
-
-  /**
    * Compute the HMAC signature for the given data and shared secret
    *
    * @param algorithm    The algorithm to use (e.g. "HmacSHA512")
@@ -237,9 +135,6 @@ public class HmacUtils {
 
     // Extract the original headers
     MultivaluedMap<String, Object> originalHeaders = clientRequest.getHeaders();
-
-    // Create a lexicographically sorted set of the header names for lookup later
-    Set<String> headerNames = filterAndSortHeaderNames(originalHeaders.keySet());
 
     // Compute the representation signature
     String signature = new String(HmacUtils.computeSignature("HmacSHA1", canonicalRepresentation.getBytes(), sharedSecret.getBytes()));
@@ -298,23 +193,6 @@ public class HmacUtils {
         .append(":\" ");
     }
 
-    // Sort the remaining headers lexicographically by header name.
-    // Trim header values by removing any whitespace before the first non-whitespace character and after the last non-whitespace character.
-    // Combine lowercase header names and header values using a single colon (“:”) as separator. Do not include whitespace characters around the separator.
-    // Combine all headers using a single newline (U+000A) character and append them to the canonical representation, followed by a single newline (U+000A) character.
-    for (String headerName : headerNames) {
-      curlCommand
-        .append("--header \"")
-        .append(headerName.toLowerCase())
-        .append(":");
-      // TODO Consider effect of different separators on this list
-      for (Object value : originalHeaders.get(headerName)) {
-        curlCommand
-          .append(value.toString());
-      }
-      curlCommand
-        .append("\" ");
-    }
 
     // Check for payload
     if ("POST".equalsIgnoreCase(httpMethod) ||
@@ -369,8 +247,6 @@ public class HmacUtils {
     // Extract the original URI
     URI uri = clientRequest.getURI();
 
-    SortedSet<String> headerNames = filterAndSortHeaderNames(originalHeaders.keySet());
-
     String httpMethod = clientRequest.getMethod().toUpperCase();
 
     // Start with the empty string ("")
@@ -407,23 +283,6 @@ public class HmacUtils {
     } else {
       canonicalRepresentation
         .append("nonce:")
-        .append("\n");
-    }
-
-    // Sort the remaining headers lexicographically by header name.
-    // Trim header values by removing any whitespace before the first non-whitespace character and after the last non-whitespace character.
-    // Combine lowercase header names and header values using a single colon (“:”) as separator. Do not include whitespace characters around the separator.
-    // Combine all headers using a single newline (U+000A) character and append them to the canonical representation, followed by a single newline (U+000A) character.
-    for (String headerName : headerNames) {
-      canonicalRepresentation
-        .append(headerName.toLowerCase())
-        .append(":");
-      // TODO Consider effect of different separators on this list
-      for (Object value : originalHeaders.get(headerName)) {
-        canonicalRepresentation
-          .append(value.toString());
-      }
-      canonicalRepresentation
         .append("\n");
     }
 
@@ -475,9 +334,6 @@ public class HmacUtils {
     // Provide a map of all header names converted to lowercase
     MultivaluedMap<String, String> originalHeaders = containerRequest.getRequestHeaders();
 
-    // Create a lexicographically sorted set of the header names for lookup later
-    Set<String> headerNames = filterAndSortHeaderNames(originalHeaders.keySet());
-
     // Keep track of the method in a fixed format
     String httpMethod = containerRequest.getMethod().toUpperCase();
 
@@ -516,23 +372,6 @@ public class HmacUtils {
     } else {
       canonicalRepresentation
         .append("nonce:")
-        .append("\n");
-    }
-
-    // Sort the remaining headers lexicographically by header name.
-    // Trim header values by removing any whitespace before the first non-whitespace character and after the last non-whitespace character.
-    // Combine lowercase header names and header values using a single colon (“:”) as separator. Do not include whitespace characters around the separator.
-    // Combine all headers using a single newline (U+000A) character and append them to the canonical representation, followed by a single newline (U+000A) character.
-    for (String headerName : headerNames) {
-      canonicalRepresentation
-        .append(headerName.toLowerCase())
-        .append(":");
-      // TODO Consider effect of different separators on this list
-      for (String value : originalHeaders.get(headerName)) {
-        canonicalRepresentation
-          .append(value);
-      }
-      canonicalRepresentation
         .append("\n");
     }
 
@@ -586,21 +425,5 @@ public class HmacUtils {
 
     return canonicalRepresentation.toString();
   }
-
-  /**
-   * @param originalHeaderNames The original HTTP header names
-   *
-   * @return A filtered collection of headers that should be included in the canonical representation
-   */
-  private static SortedSet<String> filterAndSortHeaderNames(Set<String> originalHeaderNames) {
-    // Create a lexicographically sorted set of the header names for lookup later
-    SortedSet<String> headerNames = Sets.newTreeSet(originalHeaderNames);
-
-    // Remove some headers that should not be included or will have special treatment
-    headerNames.removeAll(excludedHttpHeaderNames);
-
-    return headerNames;
-  }
-
 
 }
