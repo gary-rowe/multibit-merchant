@@ -2,4 +2,4 @@
   "self":{
     "href":"http://localhost:9998/user/alice123"
   }
-}, "api_key":"alice123", "password_digest":"{MD5}yTI5yuRQYx6fVdca7ZnpGA==", "secret_key":"alice456", "username":"alice"}
+}, "api_key":"alice123", "secret_key":"alice456"}

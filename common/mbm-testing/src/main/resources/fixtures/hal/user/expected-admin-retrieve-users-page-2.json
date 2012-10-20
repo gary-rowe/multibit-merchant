@@ -13,7 +13,6 @@
     "email":"bob@example.org",
     "last_name":"Customer",
     "names":"Bob",
-    "password_digest":"{MD5}78GmxR4uLsjmv1ks8ULTEw==",
     "secret_key":"bob456",
     "username":"bob"
   }

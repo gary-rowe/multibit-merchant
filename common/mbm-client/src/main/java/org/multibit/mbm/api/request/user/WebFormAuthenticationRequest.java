@@ -14,19 +14,21 @@ import org.codehaus.jackson.annotate.JsonProperty;
 public class WebFormAuthenticationRequest {
 
   /**
-   * A username (optional for anonymity reasons)
+   * A username
    */
   @JsonProperty
   private String username = null;
 
   /**
-   * A user password (optional for anonymity reasons)
+   * The password after being run through a one pass digest algorithm, such as SHA-256
+   * This provides a small level of protection against casual browsing of accidental server log leakage
+   * during development. It is not intended for storage.
    */
   @JsonProperty
   private String passwordDigest = null;
 
   /**
-   * @return The password digest
+   * @return The password digest (see notes)
    */
   public String getPasswordDigest() {
     return passwordDigest;

@@ -184,6 +184,9 @@ public class AdminUserResource extends BaseResource {
    * @param entity        The entity to which these changes will be applied
    */
   private void apply(AdminUpdateUserRequest updateRequest, User entity) {
+    // TODO This will fail due to specialised password digest in UserBuilder
+    // General approach here should be to use UserBuilder to create a new User
+    // then bean copy into the persistent entity ignoring the ID field
     if (updateRequest.getPasswordDigest() != null) {
       entity.setPasswordDigest(updateRequest.getPasswordDigest());
     }

@@ -29,7 +29,7 @@ public interface UserDao {
    * Attempt to locate the User by a UUID
    *
    * @param username The username
-   * @param passwordDigest The password digest
+   * @param passwordDigest The password digest from a one-pass digest algorithm
    *
    * @return A matching User with Roles and Authorities initialised
    */

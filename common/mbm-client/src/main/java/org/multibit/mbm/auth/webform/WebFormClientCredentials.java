@@ -3,7 +3,6 @@ package org.multibit.mbm.auth.webform;
 import com.google.common.base.Objects;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
 
 /**
  * <p>Value object to provide the following to web form authenticator:</p>
@@ -21,8 +20,8 @@ public class WebFormClientCredentials {
   private final String passwordDigest;
 
   /**
-   * @param username The offered username (plaintext)
-   * @param passwordDigest The offered password after digest
+   * @param username The offered username (plaintext) that locates the user server-side
+   * @param passwordDigest The offered password (one-pass digest) that seeds the multi-pass digest server-side
    */
 
   public WebFormClientCredentials(
@@ -31,7 +30,6 @@ public class WebFormClientCredentials {
   ) {
     this.username = checkNotNull(username);
     this.passwordDigest = checkNotNull(passwordDigest);
-    checkState(passwordDigest.length()>12,"String is too short to be a good digest");
   }
 
   public String getUsername() {

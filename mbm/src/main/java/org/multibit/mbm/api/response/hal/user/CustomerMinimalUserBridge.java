@@ -35,8 +35,6 @@ public class CustomerMinimalUserBridge extends BaseBridge<User> {
       // Specialist handling for an unauthenticated User
       userResource = resourceFactory.newResource("/user")
         // Provide empty credentials indicating a failure
-        .withProperty("username", "")
-        .withProperty("password_digest", "")
         .withProperty("api_key", "")
         .withProperty("secret_key", "")
       // End of build
@@ -45,10 +43,9 @@ public class CustomerMinimalUserBridge extends BaseBridge<User> {
     } else {
       // The user will refer to their own profile with their API key
       userResource = resourceFactory.newResource("/user/" + user.getApiKey())
-        // The user credentials are helpful to verify correct user has been authenticated by client
-        .withProperty("username", user.getUsername())
-        .withProperty("password_digest", user.getPasswordDigest())
-          // The API and secret key are required for future user requests via HMAC
+        // The username and password digest are not required for any further authentication
+        // If they are required it will be as part of a user profile update
+        // The API and secret key are required for future user requests via HMAC
         .withProperty("api_key", user.getApiKey())
         .withProperty("secret_key", user.getSecretKey())
       // End of build

@@ -43,6 +43,9 @@ public class CustomerUserBridge extends BaseBridge<User> {
     ResourceAsserts.assertNotNull(user, "user");
     ResourceAsserts.assertNotNull(user.getId(),"id");
 
+    // Add properties
+    userResource.withProperty("username", user.getUsername());
+
     // Convert the ContactMethodDetails map into primary and secondary property entries
     for (Map.Entry<ContactMethod, ContactMethodDetail> entry : user.getContactMethodMap().entrySet()) {
       String propertyName = entry.getKey().getPropertyNameSingular();

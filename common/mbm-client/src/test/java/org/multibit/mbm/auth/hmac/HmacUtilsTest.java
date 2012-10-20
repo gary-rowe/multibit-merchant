@@ -95,7 +95,8 @@ public class HmacUtilsTest {
     when(containerRequest.getRequestHeaders()).thenReturn(headers);
     when(containerRequest.getMethod()).thenReturn("GET");
     when(containerRequest.getQueryParameters()).thenReturn(queryParameters);
-    when(containerRequest.getPath()).thenReturn("example/resource.html");
+    when(containerRequest.getAbsolutePath()).thenReturn(URI.create("/example/resource.html"));
+    when(containerRequest.getPath()).thenReturn("/example/resource.html");
 
     String representation = HmacUtils.createCanonicalRepresentation(containerRequest);
 
@@ -124,7 +125,8 @@ public class HmacUtilsTest {
     when(containerRequest.getRequestHeaders()).thenReturn(headers);
     when(containerRequest.getMethod()).thenReturn("POST");
     when(containerRequest.getQueryParameters()).thenReturn(queryParameters);
-    when(containerRequest.getPath()).thenReturn("example/resource.html");
+    when(containerRequest.getAbsolutePath()).thenReturn(URI.create("/example/resource.html"));
+    when(containerRequest.getPath()).thenReturn("/example/resource.html");
 
     // Simulate a user wrapped in HAL
     ByteArrayInputStream bais = new ByteArrayInputStream("{\"_links\":{\"self\":{\"href\":\"http://example.org/user\"}}}".getBytes());

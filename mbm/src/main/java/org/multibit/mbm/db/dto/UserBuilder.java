@@ -3,7 +3,7 @@ package org.multibit.mbm.db.dto;
 import com.google.common.collect.Lists;
 import org.jasypt.util.password.PasswordEncryptor;
 import org.jasypt.util.password.StrongPasswordEncryptor;
-import org.jasypt.util.password.rfc2307.RFC2307MD5PasswordEncryptor;
+import org.jasypt.util.password.rfc2307.RFC2307SHAPasswordEncryptor;
 
 import java.util.List;
 import java.util.UUID;
@@ -19,35 +19,29 @@ import java.util.UUID;
  */
 public class UserBuilder {
 
-  private final PasswordEncryptor passwordEncryptor;
+  private final PasswordEncryptor weakPasswordEncryptor=new RFC2307SHAPasswordEncryptor();
+  private final PasswordEncryptor strongPasswordEncryptor =new StrongPasswordEncryptor();
 
   private String apiKey;
   private String secretKey;
   private List<AddContactMethod> addContactMethods = Lists.newArrayList();
   private List<AddRole> addRoles = Lists.newArrayList();
   private String username;
-  private String password;
+  private String plainPassword;
   private Customer customer;
 
   private boolean isBuilt = false;
 
-  public static boolean useWeakDigest = false;
+  public static boolean useWeakDigestOnly = false;
 
   /**
    * @return A new instance of the builder
    */
   public static UserBuilder newInstance() {
-    if (useWeakDigest) {
-      // Provide a weak password digest for repeatable tests
-      return new UserBuilder(new RFC2307MD5PasswordEncryptor());
-    }
-
-    // Provide a strong password digest
-    return new UserBuilder(new StrongPasswordEncryptor());
+    return new UserBuilder();
   }
 
-  public UserBuilder(PasswordEncryptor passwordEncryptor) {
-    this.passwordEncryptor = passwordEncryptor;
+  public UserBuilder() {
   }
 
   /**
@@ -72,9 +66,15 @@ public class UserBuilder {
 
     user.setUsername(username);
 
-    if (password != null) {
-      String encryptedPassword = passwordEncryptor.encryptPassword(password);
-      user.setPasswordDigest(encryptedPassword);
+    if (plainPassword != null) {
+      // Make a digest of the plain password since that is what will be received
+      // during authentication requests
+      user.setPasswordDigest(weakPasswordEncryptor.encryptPassword(plainPassword));
+      // In test mode we don't use the strong multi-pass digest
+      if (!useWeakDigestOnly) {
+        // In production the digest is used to seed the strong multi-pass digest
+        user.setPasswordDigest(strongPasswordEncryptor.encryptPassword(user.getPasswordDigest()));
+      }
     }
 
     // Bi-directional relationship
@@ -168,7 +168,7 @@ public class UserBuilder {
   }
 
   public UserBuilder withPassword(String password) {
-    this.password = password;
+    this.plainPassword = password;
     return this;
   }
 

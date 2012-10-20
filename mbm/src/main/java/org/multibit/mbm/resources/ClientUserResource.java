@@ -26,7 +26,7 @@ import javax.ws.rs.core.Response;
  * @since 0.0.1
  */
 @Component
-@Path("/user")
+@Path("/client/user")
 @Produces({HalMediaType.APPLICATION_HAL_JSON, HalMediaType.APPLICATION_HAL_XML})
 public class ClientUserResource extends BaseResource {
 

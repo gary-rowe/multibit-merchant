@@ -23,66 +23,7 @@ import javax.ws.rs.core.Response;
  * <li>Carries HMAC authentication data</li>
  * </ul>
  *
- * <ol>
- * <li>Read the HTTP "Authorization" header</li>
- * <li>Read the HTTP "Content-Type" header (optional)</li>
- * <li>Read the HTTP "Content-MD5" header (optional)</li>
- * <li>Read the HTTP "X-HMAC-Nonce" header (optional) - </li>
- * <li>Read the HTTP "X-HMAC-Date" header (optional) - HTTP-Date format RFC1123 5.2.14 UTC</li>
- * </ol>
- * <p>Create the canonical representation of the request using the following algorithm:</p>
- * <ul>
- * <li>Start with the empty string ("").</li>
- * <li>Add the HTTP-Verb for the request ("GET", "POST", ...) in capital letters, followed by a single newline (U+000A).</li>
- * <li>Add the date for the request using the form "date:#date-of-request" followed by a single newline. The date for the signature must be formatted exactly as in the request.</li>
- * <li>Add the nonce for the request in the form "nonce:#nonce-in-request" followed by a single newline. If no nonce is passed use the empty string as nonce value.</li>
- * <li>Convert all remaining header names to lowercase.</li>
- * <li>Sort the remaining headers lexicographically by header name.</li>
- * <li>Trim header values by removing any whitespace before the first non-whitespace character and after the last non-whitespace character.</li>
- * <li>Combine lowercase header names and header values using a single colon (“:”) as separator. Do not include whitespace characters around the separator.</li>
- * <li>Combine all headers using a single newline (U+000A) character and append them to the canonical representation, followed by a single newline (U+000A) character.</li>
- * <li>Append the path to the canonical representation</li>
- * <li>Append the url-decoded query parameters to the canonical representation</li>
- * <li>URL-decode query parameters if required</li>
- * </ul>
- * <p>There is no support for query-based authentication because this breaks the purpose of a URI as a resource
- * identifier, not as authenticator. It would lead to authenticated URIs being shared as permalinks which would
- * later fail through a TTL threshold being exceeded.</p>
- * <p>Examples</p>
- * <h3>Example with X-HMAC-Nonce</h3>
- * <pre>
- * GET /example/resource.html?sort=header%20footer&order=ASC HTTP/1.1
- * Host: www.example.org
- * Date: Mon, 20 Jun 2011 12:06:11 GMT
- * User-Agent: curl/7.20.0 (x86_64-pc-linux-gnu) libcurl/7.20.0 OpenSSL/1.0.0a zlib/1.2.3
- * X-MAC-Nonce: Thohn2Mohd2zugoo
- * </pre>
- * <p>Applying the above gives a canonical representation of</p>
- * <pre>
- * GET\n
- * date:Mon, 20 Jun 2011 12:06:11 GMT\n
- * nonce:Thohn2Mohd2zugo\n
- * /example/resource.html?order=ASC&sort=header footer
- * </pre>
- * <p>This would be passed into the HMAC signature </p>
- * <h3>Example with X-HMAC-Date</h3>
- * <p>Given the following request:</p>
- * <pre>
- * GET /example/resource.html?sort=header%20footer&order=ASC HTTP/1.1
- * Host: www.example.org
- * Date: Mon, 20 Jun 2011 12:06:11 GMT
- * User-Agent: curl/7.20.0 (x86_64-pc-linux-gnu) libcurl/7.20.0 OpenSSL/1.0.0a zlib/1.2.3
- * X-MAC-Nonce: Thohn2Mohd2zugoo
- * X-MAC-Date: Mon, 20 Jun 2011 14:06:57 GMT
- * </pre>
- * <p>The canonical representation is:</p>
- * <pre> GET\n
- * date:Mon, 20 Jun 2011 14:06:57 GMT\n
- * nonce:Thohn2Mohd2zugo\n
- * /example/resource.html?order=ASC&sort=header footer
- * </pre>
- * <p>Based on <a href=""http://rubydoc.info/gems/warden-hmac-authentication/0.6.1/file/README.md></a>the Warden HMAC Ruby gem</a>.</p>
- *
+
  * @since 0.0.1
  */
 class HmacServerRestrictedToInjectable<T> extends AbstractHttpContextInjectable<T> {

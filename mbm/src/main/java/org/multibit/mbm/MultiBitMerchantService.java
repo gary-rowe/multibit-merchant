@@ -72,6 +72,8 @@ public class MultiBitMerchantService extends Service<MultiBitMerchantConfigurati
     environment.addResource(context.getBean(AdminRoleResource.class));
     environment.addResource(context.getBean(AdminItemResource.class));
     environment.addResource(context.getBean(AdminCartResource.class));
+    // Resources - client (needs ROLE_CLIENT)
+    environment.addResource(context.getBean(ClientUserResource.class));
     // Resources - customer (needs ROLE_CUSTOMER)
     environment.addResource(context.getBean(CustomerUserResource.class));
     environment.addResource(context.getBean(CustomerResource.class));

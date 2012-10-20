@@ -1,6 +1,7 @@
 package org.multibit.mbm.auth.hmac;
 
 import com.google.common.collect.Sets;
+import com.google.common.net.HttpHeaders;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.container.ContainerException;
 import com.sun.jersey.core.util.ReaderWriter;
@@ -11,7 +12,6 @@ import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
@@ -54,7 +54,7 @@ import java.util.SortedSet;
  * <li>Trim header values by removing any whitespace before the first non-whitespace character and after the last non-whitespace character.</li>
  * <li>Combine lowercase header names and header values using a single colon (“:”) as separator. Do not include whitespace characters around the separator.</li>
  * <li>Combine all headers using a single newline (U+000A) character and append them to the canonical representation, followed by a single newline (U+000A) character.</li>
- * <li>Append the path to the canonical representation</li>
+ * <li>Append the path (including context) to the canonical representation</li>
  * <li>Append the url-decoded query parameters to the canonical representation</li>
  * <li>URL-decode query parameters if required</li>
  * </ul>
@@ -106,6 +106,101 @@ public class HmacUtils {
   public static final String X_HMAC_NONCE = "X-HMAC-Nonce";
   public static final String X_HMAC_DATE = "X-HMAC-Date";
   static final String HEADER_VALUE = PREFIX + " realm=\"%s\"";
+
+  /**
+   * <p>Exclude the following HTTP request headers since they may be added
+   * after the client has released control of the request</p>
+   * <p>Using the Guava list ensures that we cover the following RFCs</p>
+   * <ul>
+   * <li><a href="http://www.ietf.org/rfc/rfc2109.txt">RFC 2109</a>
+   * <li><a href="http://www.ietf.org/rfc/rfc2183.txt">RFC 2183</a>
+   * <li><a href="http://www.ietf.org/rfc/rfc2616.txt">RFC 2616</a>
+   * <li><a href="http://www.ietf.org/rfc/rfc2965.txt">RFC 2965</a>
+   * <li><a href="http://www.ietf.org/rfc/rfc5988.txt">RFC 5988</a>
+   * </ul>
+   */
+  private static Set<String> excludedHttpHeaderNames = Sets.newHashSet(
+    X_HMAC_DATE,
+    X_HMAC_NONCE,
+    HttpHeaders.CACHE_CONTROL,
+    HttpHeaders.CONTENT_ENCODING,
+    HttpHeaders.CONTENT_LENGTH,
+    HttpHeaders.CONTENT_LENGTH,
+    HttpHeaders.CONTENT_TYPE,
+    HttpHeaders.DATE,
+    HttpHeaders.PRAGMA,
+    HttpHeaders.VIA,
+    HttpHeaders.WARNING,
+    HttpHeaders.ACCEPT,
+    HttpHeaders.ACCEPT_CHARSET,
+    HttpHeaders.ACCEPT_ENCODING,
+    HttpHeaders.ACCEPT_LANGUAGE,
+    HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS,
+    HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD,
+    HttpHeaders.AUTHORIZATION,
+    HttpHeaders.CONNECTION,
+    HttpHeaders.COOKIE,
+    HttpHeaders.EXPECT,
+    HttpHeaders.FROM,
+    HttpHeaders.HOST,
+    HttpHeaders.IF_MATCH,
+    HttpHeaders.IF_MODIFIED_SINCE,
+    HttpHeaders.IF_NONE_MATCH,
+    HttpHeaders.IF_RANGE,
+    HttpHeaders.IF_UNMODIFIED_SINCE,
+    HttpHeaders.LAST_EVENT_ID,
+    HttpHeaders.MAX_FORWARDS,
+    HttpHeaders.ORIGIN,
+    HttpHeaders.PROXY_AUTHORIZATION,
+    HttpHeaders.RANGE,
+    HttpHeaders.REFERER,
+    HttpHeaders.TE,
+    HttpHeaders.TRANSFER_ENCODING,
+    HttpHeaders.UPGRADE,
+    HttpHeaders.USER_AGENT,
+    HttpHeaders.ACCEPT_RANGES,
+    HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS,
+    HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS,
+    HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN,
+    HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS,
+    HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS,
+    HttpHeaders.ACCESS_CONTROL_MAX_AGE,
+    HttpHeaders.AGE,
+    HttpHeaders.ALLOW,
+    HttpHeaders.CONTENT_DISPOSITION,
+    HttpHeaders.CONTENT_ENCODING,
+    HttpHeaders.CONTENT_LANGUAGE,
+    HttpHeaders.CONTENT_LOCATION,
+    HttpHeaders.CONTENT_MD5,
+    HttpHeaders.CONTENT_RANGE,
+    HttpHeaders.ETAG,
+    HttpHeaders.EXPIRES,
+    HttpHeaders.LAST_MODIFIED,
+    HttpHeaders.LINK,
+    HttpHeaders.LOCATION,
+    HttpHeaders.P3P,
+    HttpHeaders.PROXY_AUTHENTICATE,
+    HttpHeaders.REFRESH,
+    HttpHeaders.RETRY_AFTER,
+    HttpHeaders.SERVER,
+    HttpHeaders.SET_COOKIE,
+    HttpHeaders.SET_COOKIE2,
+    HttpHeaders.TRAILER,
+    HttpHeaders.TRANSFER_ENCODING,
+    HttpHeaders.VARY,
+    HttpHeaders.WWW_AUTHENTICATE,
+    HttpHeaders.DNT,
+    HttpHeaders.X_CONTENT_TYPE_OPTIONS,
+    HttpHeaders.X_DO_NOT_TRACK,
+    HttpHeaders.X_FORWARDED_FOR,
+    HttpHeaders.X_FORWARDED_PROTO,
+    HttpHeaders.X_FRAME_OPTIONS,
+    HttpHeaders.X_POWERED_BY,
+    HttpHeaders.X_REQUESTED_WITH,
+    HttpHeaders.X_USER_IP,
+    HttpHeaders.X_XSS_PROTECTION
+    // End of collection
+  );
 
   /**
    * Compute the HMAC signature for the given data and shared secret
@@ -253,7 +348,6 @@ public class HmacUtils {
 
     }
 
-    curlCommand.append("http://localhost:8080/mbm");
     curlCommand.append(clientRequest.getURI());
 
     return curlCommand.toString();
@@ -333,9 +427,8 @@ public class HmacUtils {
         .append("\n");
     }
 
-    // Append the url-decoded path and query to the canonical representation
-    canonicalRepresentation
-      .append(uri.getPath());
+    // Append the url-decoded path (including context) and query to the canonical representation
+    canonicalRepresentation.append(uri.getPath());
     if (uri.getQuery() != null) {
       canonicalRepresentation
         .append("?")
@@ -443,10 +536,8 @@ public class HmacUtils {
         .append("\n");
     }
 
-    // Append the path to the canonical representation
-    canonicalRepresentation
-      .append("/")
-      .append(containerRequest.getPath());
+    // Append the path (including context) to the canonical representation
+    canonicalRepresentation.append(containerRequest.getAbsolutePath().getPath());
 
     // Append the url-decoded query parameters to the canonical representation
     MultivaluedMap<String, String> decodedQueryParameters = containerRequest.getQueryParameters();
@@ -504,17 +595,10 @@ public class HmacUtils {
   private static SortedSet<String> filterAndSortHeaderNames(Set<String> originalHeaderNames) {
     // Create a lexicographically sorted set of the header names for lookup later
     SortedSet<String> headerNames = Sets.newTreeSet(originalHeaderNames);
+
     // Remove some headers that should not be included or will have special treatment
-    headerNames.remove(X_HMAC_DATE);
-    headerNames.remove(X_HMAC_NONCE);
-    // Remove the following standard HTTP headers since not all clients will know them in advance
-    headerNames.remove(HttpHeaders.ACCEPT);
-    headerNames.remove(HttpHeaders.AUTHORIZATION);
-    headerNames.remove(HttpHeaders.CONTENT_LENGTH);
-    headerNames.remove(HttpHeaders.CONTENT_TYPE);
-    headerNames.remove(HttpHeaders.DATE);
-    headerNames.remove(HttpHeaders.HOST);
-    headerNames.remove(HttpHeaders.USER_AGENT);
+    headerNames.removeAll(excludedHttpHeaderNames);
+
     return headerNames;
   }
 

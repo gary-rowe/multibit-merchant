@@ -131,7 +131,7 @@ public abstract class BaseJerseyHmacResourceTest extends BaseResourceTest {
     test.setUp();
 
     // Configure for weak hashes
-    UserBuilder.useWeakDigest=true;
+    UserBuilder.useWeakDigestOnly =true;
   }
 
   @After

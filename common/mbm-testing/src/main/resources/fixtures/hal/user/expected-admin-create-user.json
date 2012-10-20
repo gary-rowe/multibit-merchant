@@ -2,4 +2,4 @@
   "self":{
     "href":"http://localhost:9998/user/alice123"
   }
-}, "apiKey":"alice123", "api_key":"alice123", "created_at":null, "email":"alice@example.org", "last_name":"Customer", "locked":false, "names":"Alice", "password_digest":"{MD5}yTI5yuRQYx6fVdca7ZnpGA==", "password_reset_at":null, "secret_key":"alice456", "staff_member":false, "username":"alice"}
+}, "api_key":"alice123", "created_at":null, "email":"alice@example.org", "last_name":"Customer", "locked":false, "names":"Alice", "password_reset_at":null, "secret_key":"alice456", "staff_member":false, "username":"alice"}

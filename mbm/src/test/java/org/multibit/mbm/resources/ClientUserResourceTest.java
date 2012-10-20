@@ -54,7 +54,7 @@ public class ClientUserResourceTest extends BaseJerseyHmacResourceTest {
     authenticateUserRequest.setPasswordDigest("alice1");
 
     // Act
-    String actualResponse = configureAsClient("/user/authenticate")
+    String actualResponse = configureAsClient("/client/user/authenticate")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .entity(authenticateUserRequest, MediaType.APPLICATION_JSON_TYPE)
       .post(String.class);

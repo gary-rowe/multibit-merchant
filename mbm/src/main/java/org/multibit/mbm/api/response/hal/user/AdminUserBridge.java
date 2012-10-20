@@ -36,7 +36,7 @@ public class AdminUserBridge extends BaseBridge<User> {
     // Build on the Customer representation
     Resource userResource = customerUserBridge.toResource(user)
       // Must use individual property entries due to collections
-      .withProperty("apiKey", user.getApiKey())
+      // The admin must have full visibility
       .withProperty("staff_member", user.isStaffMember())
       .withProperty("locked",user.isLocked())
       .withProperty("created_at",user.getCreatedAt())

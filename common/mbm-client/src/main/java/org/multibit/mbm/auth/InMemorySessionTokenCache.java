@@ -80,11 +80,8 @@ public enum InMemorySessionTokenCache {
    */
   public void put(UUID sessionToken, ClientUser clientUser) {
     Preconditions.checkNotNull(clientUser);
-    Preconditions.checkNotNull(clientUser.getUsername());
-    Preconditions.checkNotNull(clientUser.getPasswordDigest());
     Preconditions.checkNotNull(clientUser.getApiKey());
     Preconditions.checkNotNull(clientUser.getSecretKey());
-    Preconditions.checkNotNull(clientUser.getCachedAuthorities());
     sessionTokenCache.put(sessionToken, clientUser);
   }
 

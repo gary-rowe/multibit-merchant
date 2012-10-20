@@ -4,6 +4,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.theoryinpractise.halbuilder.ResourceFactory;
 import com.theoryinpractise.halbuilder.spi.ReadableResource;
+import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.api.request.user.WebFormAuthenticationRequest;
 import org.multibit.mbm.auth.webform.WebFormClientCredentials;
 import org.multibit.mbm.client.HalHmacResourceFactory;
@@ -51,11 +52,11 @@ public class CustomerUserHandler extends BaseHandler {
     entity.setPasswordDigest(credentials.getPasswordDigest());
 
     // TODO Replace "magic string" with auto-discover based on link rel
-    String path = String.format("/mbm/users/authenticate");
+    String path = String.format("/client/user/authenticate");
 
     String hal = HalHmacResourceFactory.INSTANCE
       .newClientResource(locale, path)
-      .entity(credentials)
+      .entity(entity, HalMediaType.APPLICATION_JSON_TYPE)
       .post(String.class);
 
     // Read the HAL
@@ -66,10 +67,8 @@ public class CustomerUserHandler extends BaseHandler {
 
     ClientUser clientUser = new ClientUser();
     // Mandatory properties (will cause IllegalStateException if not present)
-    clientUser.setApiKey((String) properties.get("apiKey").get());
-    clientUser.setSecretKey((String) properties.get("secretKey").get());
-    clientUser.setUsername((String) properties.get("username").get());
-    clientUser.setPasswordDigest((String) properties.get("password").get());
+    clientUser.setApiKey((String) properties.get("api_key").get());
+    clientUser.setSecretKey((String) properties.get("secret_key").get());
 
     return Optional.of(clientUser);
   }
@@ -86,7 +85,7 @@ public class CustomerUserHandler extends BaseHandler {
     // Sanity check
 
     // TODO Replace "magic string" with auto-discover based on link rel
-    String path = String.format("/mbm/users");
+    String path = String.format("/users");
     String hal = HalHmacResourceFactory.INSTANCE
       .newUserResource(locale, path, clientUser)
       .get(String.class);
