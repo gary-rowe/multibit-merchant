@@ -25,22 +25,25 @@ import java.util.UUID;
  */
 class CookieClientRestrictedToInjectable<T> extends AbstractHttpContextInjectable<T> {
 
-  // TODO Move these to the authenticator/login handler?
-  public static final String MBM_SESSION = "MBM-Session";
-  public static final String MBM_REMEMBER_ME = "MBM-RememberMe";
-
   private final Authenticator<CookieClientCredentials, T> authenticator;
-  private final String realm;
+  private final String sessionTokenName;
+  private final String rememberMeName;
   private final Authority[] requiredAuthorities;
 
   /**
    * @param authenticator The Authenticator that will compare credentials
-   * @param realm The authentication realm
+   * @param sessionTokenName The session token cookie name (short lived with full access)
+   * @param rememberMeName The "remember me" cookie name (long lived but reduced privilege)
    * @param requiredAuthorities The required authorities as provided by the RestrictedTo annotation
    */
-  CookieClientRestrictedToInjectable(Authenticator<CookieClientCredentials, T> authenticator, String realm, Authority[] requiredAuthorities) {
+  CookieClientRestrictedToInjectable(
+    Authenticator<CookieClientCredentials, T> authenticator,
+    String sessionTokenName,
+    String rememberMeName,
+    Authority[] requiredAuthorities) {
     this.authenticator = authenticator;
-    this.realm = realm;
+    this.sessionTokenName = sessionTokenName;
+    this.rememberMeName = rememberMeName;
     this.requiredAuthorities = requiredAuthorities;
   }
 
@@ -48,8 +51,12 @@ class CookieClientRestrictedToInjectable<T> extends AbstractHttpContextInjectabl
     return authenticator;
   }
 
-  public String getRealm() {
-    return realm;
+  public String getSessionTokenName() {
+    return sessionTokenName;
+  }
+
+  public String getRememberMeName() {
+    return rememberMeName;
   }
 
   public Authority[] getRequiredAuthorities() {
@@ -67,8 +74,8 @@ class CookieClientRestrictedToInjectable<T> extends AbstractHttpContextInjectabl
       Optional<UUID> rememberMeToken = Optional.absent();
 
       // Configure the UUIDs based on cookie values (must be valid UUIDs)
-      Cookie sessionTokenCookie = cookies.get(MBM_SESSION);
-      Cookie rememberMeTokenCookie = cookies.get(MBM_REMEMBER_ME);
+      Cookie sessionTokenCookie = cookies.get(sessionToken);
+      Cookie rememberMeTokenCookie = cookies.get(rememberMeToken);
       if (sessionTokenCookie != null) {
         sessionToken = Optional.of(UUID.fromString(sessionTokenCookie.getValue()));
       }

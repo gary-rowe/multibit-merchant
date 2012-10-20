@@ -29,25 +29,33 @@ import org.multibit.mbm.auth.annotation.RestrictedTo;
  * <li>Provides additional {@link org.multibit.mbm.auth.Authority} information</li>
  * </ul>
  *
- * @param <T>    the principal type.
+ * @param <T> the principal type.
+ *
  * @since 0.0.1
  */
 public class CookieClientRestrictedToProvider<T> implements InjectableProvider<RestrictedTo, Parameter> {
   static final Log LOG = Log.forClass(CookieClientRestrictedToProvider.class);
 
   private final Authenticator<CookieClientCredentials, T> authenticator;
-  private final String realm;
+  private final String sessionTokenName;
+  private final String rememberMeName;
+
 
   /**
    * Creates a new {@link CookieClientRestrictedToProvider} with the given {@link com.yammer.dropwizard.auth.Authenticator} and realm.
    *
-   * @param authenticator the authenticator which will take the {@link CookieClientCredentials} and
-   *                      convert them into instances of {@code T}
-   * @param realm         the name of the authentication realm
+   * @param authenticator    the authenticator which will take the {@link CookieClientCredentials} and
+   *                         convert them into instances of {@code T}
+   * @param sessionTokenName The session token name
+   * @param rememberMeName   The "remember me" token name
    */
-  public CookieClientRestrictedToProvider(Authenticator<CookieClientCredentials, T> authenticator, String realm) {
+  public CookieClientRestrictedToProvider(
+    Authenticator<CookieClientCredentials, T> authenticator,
+    String sessionTokenName,
+    String rememberMeName) {
     this.authenticator = authenticator;
-    this.realm = realm;
+    this.sessionTokenName = sessionTokenName;
+    this.rememberMeName = rememberMeName;
   }
 
   @Override
@@ -59,7 +67,7 @@ public class CookieClientRestrictedToProvider<T> implements InjectableProvider<R
   public Injectable<?> getInjectable(ComponentContext ic,
                                      RestrictedTo a,
                                      Parameter c) {
-    return new CookieClientRestrictedToInjectable<T>(authenticator, realm, a.value());
+    return new CookieClientRestrictedToInjectable<T>(authenticator, sessionTokenName, rememberMeName, a.value());
   }
 }
 

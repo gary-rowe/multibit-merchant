@@ -6,6 +6,7 @@ import com.theoryinpractise.halbuilder.ResourceFactory;
 import com.theoryinpractise.halbuilder.spi.ReadableResource;
 import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.api.request.user.WebFormAuthenticationRequest;
+import org.multibit.mbm.auth.Authority;
 import org.multibit.mbm.auth.webform.WebFormClientCredentials;
 import org.multibit.mbm.client.HalHmacResourceFactory;
 import org.multibit.mbm.client.handlers.BaseHandler;
@@ -64,11 +65,19 @@ public class CustomerUserHandler extends BaseHandler {
 
     Map<String, Optional<Object>> properties = rr.getProperties();
 
-
     ClientUser clientUser = new ClientUser();
-    // Mandatory properties (will cause IllegalStateException if not present)
-    clientUser.setApiKey((String) properties.get("api_key").get());
-    clientUser.setSecretKey((String) properties.get("secret_key").get());
+    String apiKey = (String) properties.get("api_key").get();
+    String secretKey = (String) properties.get("secret_key").get();
+
+    if ("".equals(apiKey) || "".equals(secretKey)) {
+      return Optional.absent();
+    }
+
+    // Must assume that the authentication was successful
+    // Using the credentials later would mean failed authentication anyway
+    clientUser.setApiKey(apiKey);
+    clientUser.setSecretKey(secretKey);
+    clientUser.setCachedAuthorities(new Authority[] {Authority.ROLE_CUSTOMER});
 
     return Optional.of(clientUser);
   }
