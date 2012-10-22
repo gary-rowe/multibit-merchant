@@ -24,8 +24,6 @@ import java.lang.annotation.Annotation;
 import java.net.URI;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
-import java.util.Map;
 
 /**
  * <p>Utility class to provide the following to HMAC operations:</p>
@@ -47,9 +45,7 @@ import java.util.Map;
  * <li>Add the date for the request using the form "date:#date-of-request" followed by a single newline. The date for the signature must be formatted exactly as in the request.</li>
  * <li>Add the nonce for the request in the form "nonce:#nonce-in-request" followed by a single newline. If no nonce is passed use the empty string as nonce value.</li>
  * <li><strong>Note: removed headers from HMAC due to hosting services providing a multitude of headers outside of the scope of the user and largely impossible to predict.</strong></li>
- * <li>Append the path (including context) to the canonical representation</li>
- * <li>Append the url-decoded query parameters to the canonical representation</li>
- * <li>URL-decode query parameters if required</li>
+ * <li>Append the original absolute request URI to the canonical representation (no parameter re-ordering and include any request fragments)</li>
  * </ul>
  * <p>There is no support for query-based authentication because this breaks the purpose of a URI as a resource
  * identifier, not as authenticator. It would lead to authenticated URIs being shared as permalinks which would
@@ -68,7 +64,7 @@ import java.util.Map;
  * GET\n
  * date:Mon, 20 Jun 2011 12:06:11 GMT\n
  * nonce:Thohn2Mohd2zugo\n
- * /example/resource.html?order=ASC&sort=header footer
+ * http://example.org/example/resource.html?order=ASC&sort=header footer
  * </pre>
  * <p>This would be passed into the HMAC signature </p>
  * <h3>Example with X-HMAC-Date</h3>
@@ -85,7 +81,7 @@ import java.util.Map;
  * <pre> GET\n
  * date:Mon, 20 Jun 2011 14:06:57 GMT\n
  * nonce:Thohn2Mohd2zugo\n
- * /example/resource.html?order=ASC&sort=header footer
+ * http://example.org/example/resource.html?order=ASC&sort=header footer
  * </pre>
  * <p>Based on <a href=""http://rubydoc.info/gems/warden-hmac-authentication/0.6.1/file/README.md></a>the Warden HMAC Ruby gem</a>.</p>
  *
@@ -286,13 +282,8 @@ public class HmacUtils {
         .append("\n");
     }
 
-    // Append the url-decoded path (including context) and query to the canonical representation
-    canonicalRepresentation.append(uri.getPath());
-    if (uri.getQuery() != null) {
-      canonicalRepresentation
-        .append("?")
-        .append(uri.getQuery());
-    }
+    // Append the original URI (URL-decoded)
+    canonicalRepresentation.append(uri.toString());
 
     // Check for payload
     if ("POST".equalsIgnoreCase(httpMethod) ||
@@ -375,30 +366,8 @@ public class HmacUtils {
         .append("\n");
     }
 
-    // Append the path (including context) to the canonical representation
-    canonicalRepresentation.append(containerRequest.getAbsolutePath().getPath());
-
-    // Append the url-decoded query parameters to the canonical representation
-    MultivaluedMap<String, String> decodedQueryParameters = containerRequest.getQueryParameters();
-    if (!decodedQueryParameters.isEmpty()) {
-      canonicalRepresentation.append("?");
-      boolean first = true;
-      for (Map.Entry<String, List<String>> queryParameter : decodedQueryParameters.entrySet()) {
-        if (first) {
-          first = false;
-        } else {
-          canonicalRepresentation.append("&");
-        }
-        canonicalRepresentation
-          .append(queryParameter.getKey())
-          .append("=");
-        // TODO Consider effect of different separators on this list
-        for (String value : queryParameter.getValue()) {
-          canonicalRepresentation
-            .append(value);
-        }
-      }
-    }
+    // Append the original absolute URI
+    canonicalRepresentation.append(containerRequest.getRequestUri().toString());
 
     // Check for payload
     if ("POST".equalsIgnoreCase(httpMethod) ||

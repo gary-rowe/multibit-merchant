@@ -79,7 +79,9 @@ public class HibernateCartDaoIntegrationTest extends BaseIntegrationTests {
     assertThat("Unexpected data in items", updatedItemRows, equalTo(originalItemRows));
     assertThat("Unexpected data in customers", updatedCustomerRows, equalTo(originalCustomerRows));
     assertThat("Unexpected data in cart_items", updatedCartItemRows, equalTo(originalCartItemRows + 2));
+    assertThat("Unexpected index for book1", expectedCart.getCartItemByItem(book1.get()).get().getIndex(), equalTo(0));
     assertThat("Unexpected quantity for book1", expectedCart.getCartItemByItem(book1.get()).get().getQuantity(), equalTo(1));
+    assertThat("Unexpected index for book2", expectedCart.getCartItemByItem(book2.get()).get().getIndex(), equalTo(1));
     assertThat("Unexpected quantity for book2", expectedCart.getCartItemByItem(book2.get()).get().getQuantity(), equalTo(2));
 
     expectedCart.setItemQuantity(book1.get(), 4);
@@ -96,7 +98,9 @@ public class HibernateCartDaoIntegrationTest extends BaseIntegrationTests {
     assertThat("Unexpected data in items", updatedItemRows, equalTo(originalItemRows));
     assertThat("Unexpected data in customers", updatedCustomerRows, equalTo(originalCustomerRows));
     assertThat("Unexpected data in cart_items", updatedCartItemRows, equalTo(originalCartItemRows + 2));
+    assertThat("Unexpected index for book1", expectedCart.getCartItemByItem(book1.get()).get().getIndex(), equalTo(0));
     assertThat("Unexpected quantity for book1", expectedCart.getCartItemByItem(book1.get()).get().getQuantity(), equalTo(4));
+    assertThat("Unexpected index for book2", expectedCart.getCartItemByItem(book2.get()).get().getIndex(), equalTo(1));
     assertThat("Unexpected quantity for book2", expectedCart.getCartItemByItem(book2.get()).get().getQuantity(), equalTo(5));
 
     // Perform an update to the Cart that cascades to a delete in join table
@@ -114,6 +118,7 @@ public class HibernateCartDaoIntegrationTest extends BaseIntegrationTests {
     assertThat("Unexpected data in items", updatedItemRows, equalTo(originalItemRows));
     assertThat("Unexpected data in customers", updatedCustomerRows, equalTo(originalCustomerRows));
     assertThat("Unexpected data in cart_items", updatedCartItemRows, equalTo(originalCartItemRows + 1));
+    assertThat("Unexpected index for book1", expectedCart.getCartItemByItem(book1.get()).get().getIndex(), equalTo(0));
     assertThat("Unexpected quantity for book1", expectedCart.getCartItemByItem(book1.get()).get().getQuantity(), equalTo(4));
     assertFalse("Unexpected existence for book2", expectedCart.getCartItemByItem(book2.get()).isPresent());
 

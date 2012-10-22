@@ -38,12 +38,12 @@ public class CustomerItemCollectionBridge extends BaseBridge<List<Item>> {
 
     ResourceFactory resourceFactory = getResourceFactory();
 
-    Resource itemList = resourceFactory.newResource("/item");
+    Resource itemList = resourceFactory.newResource(uriInfo.getRequestUri().toString());
 
     // Use the reduced customer fields
     for (Item item : items) {
-      Resource userResource = customerItemBridge.toResource(item);
-      itemList.withSubresource("/item/"+item.getId(), userResource);
+      Resource itemResource = customerItemBridge.toResource(item);
+      itemList.withSubresource("/item/"+item.getSKU(), itemResource);
     }
 
     return itemList;

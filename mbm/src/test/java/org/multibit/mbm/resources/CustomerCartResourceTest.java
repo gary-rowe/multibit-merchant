@@ -48,13 +48,8 @@ public class CustomerCartResourceTest extends BaseJerseyHmacResourceTest {
     book4.setId(4L);
 
     // Include some books into the Customer Cart
-    CartItem cartItem1 = new CartItem(customerCart, book1);
-    cartItem1.setQuantity(1);
-    CartItem cartItem2 = new CartItem(customerCart, book2);
-    cartItem2.setQuantity(2);
-
-    customerCart.getCartItems().add(cartItem1);
-    customerCart.getCartItems().add(cartItem2);
+    customerCart.setItemQuantity(book1,1);
+    customerCart.setItemQuantity(book2,2);
 
     // Configure Cart DAO
     when(cartDao.saveOrUpdate(customerCart)).thenReturn(customerCart);

@@ -1,5 +1,5 @@
 POST
 date:Sat, 01 Jan 2000 12:34:57 GMT
 nonce:Thohn2Mohd2zugo
-/example/resource.html?sort=header footer&order=ASC
+http://example.org:8080/example/resource?b=2&a=1
 {"_links":{"self":{"href":"http://example.org/user"}}}

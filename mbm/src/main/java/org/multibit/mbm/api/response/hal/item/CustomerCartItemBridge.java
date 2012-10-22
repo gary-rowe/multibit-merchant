@@ -42,7 +42,8 @@ public class CustomerCartItemBridge extends BaseBridge<CartItem> {
     // Create the wrapping CartItem resource
     ResourceFactory resourceFactory = getResourceFactory();
 
-    return resourceFactory.newResource("/cart/"+cartItem.getCart().getId()+"/cartitem/" + cartItem.getItem().getId())
+    return resourceFactory.newResource("/cart/item/" + cartItem.getIndex())
+      .withProperty("index", cartItem.getIndex())
       .withProperty("quantity", cartItem.getQuantity())
       .withSubresource("item", customerItemResource);
 

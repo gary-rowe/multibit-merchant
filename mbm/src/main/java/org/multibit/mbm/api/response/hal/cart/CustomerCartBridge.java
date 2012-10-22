@@ -36,16 +36,19 @@ public class CustomerCartBridge extends BaseBridge<Cart> {
     ResourceAsserts.assertNotNull(cart, "cart");
     ResourceAsserts.assertNotNull(cart.getId(),"id");
 
-    String basePath = "/cart/" + cart.getId();
+    // Do not reveal the ID to non-admins
+    String basePath = "/cart";
 
     // Create top-level resource
     Resource cartResource = getResourceFactory()
       .newResource(basePath)
-      .withLink("/customer/" + cart.getCustomer().getId(), "customer")
-      // TODO Implement with real account
+      // Do not reveal the customer to non-admins
+      .withLink("/customer", "customer")
+      // TODO Implement with real preferences
       .withProperty("local_symbol", "&euro;")
       .withProperty("local_total", "13.94")
       .withProperty("btc_total", "4.78")
+      .withProperty("item_count", String.valueOf(cart.getCartItems().size()))
       // End of build
       ;
 

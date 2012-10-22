@@ -87,16 +87,16 @@ public class AdminUserResourceTest extends BaseJerseyHmacResourceTest {
   public void adminRetrieveUserAsHalJson() throws Exception {
 
     String actualResponse = configureAsClient("/admin/user")
-      .queryParam("pageSize", "1")
-      .queryParam("pageNumber", "0")
+      .queryParam("ps", "1")
+      .queryParam("pn", "0")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 
     FixtureAsserts.assertStringMatchesJsonFixture("User list 1 can be retrieved as HAL+JSON", actualResponse, "/fixtures/hal/user/expected-admin-retrieve-users-page-1.json");
 
     actualResponse = configureAsClient("/admin/user")
-      .queryParam("pageSize", "1")
-      .queryParam("pageNumber", "1")
+      .queryParam("ps", "1")
+      .queryParam("pn", "1")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 

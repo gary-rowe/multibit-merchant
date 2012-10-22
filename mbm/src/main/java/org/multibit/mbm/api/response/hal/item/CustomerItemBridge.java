@@ -45,7 +45,7 @@ public class CustomerItemBridge extends BaseBridge<Item> {
         .toLowerCase();
     }
 
-    Resource userResource = resourceFactory.newResource("/item/" + item.getId())
+    Resource userResource = resourceFactory.newResource("/item/" + item.getSKU())
       .withProperty("sku", item.getSKU())
       .withProperty("slug", slug)
       // End of build

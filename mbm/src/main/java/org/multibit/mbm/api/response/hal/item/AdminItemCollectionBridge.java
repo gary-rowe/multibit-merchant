@@ -38,17 +38,16 @@ public class AdminItemCollectionBridge extends BaseBridge<List<Item>> {
 
     ResourceFactory resourceFactory = getResourceFactory();
 
-    Resource itemList = resourceFactory.newResource("/item");
+    Resource itemList = resourceFactory.newResource(uriInfo.getRequestUri().toString());
 
     for (Item item : items) {
-      Resource userResource = customerItemBridge.toResource(item);
+      Resource itemResource = customerItemBridge.toResource(item);
 
-      // TODO Fill this in for all admin fields
-      //userResource.withProperty("id", user.getId())
+      itemResource.withProperty("id", item.getId())
         // End of build
         ;
 
-      itemList.withSubresource("/item/"+item.getId(), userResource);
+      itemList.withSubresource("/item/"+item.getId(), itemResource);
     }
 
     return itemList;

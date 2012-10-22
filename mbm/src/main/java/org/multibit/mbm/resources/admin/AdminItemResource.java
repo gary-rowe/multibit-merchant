@@ -91,8 +91,8 @@ public class AdminItemResource extends BaseResource {
   public Response retrieveAllByPage(
     @RestrictedTo({Authority.ROLE_ADMIN})
     User adminUser,
-    @QueryParam("pageSize") Optional<String> rawPageSize,
-    @QueryParam("pageNumber") Optional<String> rawPageNumber) {
+    @QueryParam("ps") Optional<String> rawPageSize,
+    @QueryParam("pn") Optional<String> rawPageNumber) {
 
     // Validation
     int pageSize = Integer.valueOf(rawPageSize.get());

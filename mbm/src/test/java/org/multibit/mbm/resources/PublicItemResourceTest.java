@@ -55,16 +55,16 @@ public class PublicItemResourceTest extends BaseJerseyHmacResourceTest {
   public void publicRetrievePromotionalItemsAsHalJson() throws Exception {
 
     String actualResponse = configureAsClient("/items/promotion")
-      .queryParam("pageSize","1")
-      .queryParam("pageNumber", "0")
+      .queryParam("ps","1")
+      .queryParam("pn", "0")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 
     FixtureAsserts.assertStringMatchesJsonFixture("Item list 1 can be retrieved as HAL+JSON", actualResponse, "/fixtures/hal/item/expected-public-retrieve-items-page-1.json");
 
     actualResponse = configureAsClient("/items/promotion")
-      .queryParam("pageSize","1")
-      .queryParam("pageNumber", "1")
+      .queryParam("ps","1")
+      .queryParam("pn", "1")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 

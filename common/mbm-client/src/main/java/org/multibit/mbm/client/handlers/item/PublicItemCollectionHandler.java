@@ -48,7 +48,7 @@ public class PublicItemCollectionHandler extends BaseHandler {
     }
 
     // TODO Replace "magic string" with auto-discover based on link rel
-    String path = String.format("/items?pn=%d&ps=%d",pageNumber, pageSize);
+    String path = String.format("/items/promotion?pn=%d&ps=%d",pageNumber, pageSize);
 
     List list = HalHmacResourceFactory.INSTANCE
       .newClientResource(locale, path)

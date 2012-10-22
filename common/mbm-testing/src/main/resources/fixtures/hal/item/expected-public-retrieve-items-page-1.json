@@ -1,12 +1,12 @@
 {"_links":{
   "self":{
-    "href":"http://localhost:9998/item"
+    "href":"http://localhost:9998/items/promotion?ps=1&pn=0"
   }
 }, "_embedded":{
-  "http://localhost:9998/item/1":{
+  "http://localhost:9998/item/0099410672":{
     "_links":{
-      "http://localhost:9998/item/1 self":{
-        "href":"http://localhost:9998/item/1"
+      "http://localhost:9998/item/0099410672 self":{
+        "href":"http://localhost:9998/item/0099410672"
       },
       "image_thumbnail_uri":{
         "href":"http://localhost:9998/mbm/images/catalog/items/2/thumbnail2.png"

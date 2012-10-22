@@ -28,26 +28,25 @@ public class AdminCartCollectionBridge extends BaseBridge<List<Cart>> {
    */
   public AdminCartCollectionBridge(UriInfo uriInfo, Optional<User> principal) {
     super(uriInfo, principal);
-    customerCartBridge = new CustomerCartBridge(uriInfo,principal);
+    customerCartBridge = new CustomerCartBridge(uriInfo, principal);
   }
 
   public Resource toResource(List<Cart> carts) {
     ResourceFactory resourceFactory = getResourceFactory();
 
-    Resource userList = resourceFactory.newResource("/cart");
+    Resource cartList = resourceFactory.newResource(this.uriInfo.getRequestUri().toString());
 
     for (Cart cart : carts) {
       Resource cartResource = customerCartBridge.toResource(cart);
 
-      // TODO Fill this in for all admin fields
-      //userResource.withProperty("id", user.getId())
-        // End of build
-        ;
+      cartResource.withProperty("id", cart.getId())
+      // End of build
+      ;
 
-      userList.withSubresource("/cart/"+cart.getId(), cartResource);
+      cartList.withSubresource("/cart/" + cart.getId(), cartResource);
     }
 
-    return userList;
+    return cartList;
 
   }
 

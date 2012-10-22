@@ -82,14 +82,14 @@ public class CustomerUserHandler extends BaseHandler {
     return Optional.of(clientUser);
   }
 
-  /**
+    /**
    * Retrieve the user's own profile
    *
    * @param clientUser The ClientUser containing the API access information
    *
    * @return A matching {@link org.multibit.mbm.model.PublicItem}
    */
-  public Optional<CustomerUser> getOwnProfile(ClientUser clientUser) {
+  public Optional<CustomerUser> retrieveProfile(ClientUser clientUser) {
 
     // Sanity check
 

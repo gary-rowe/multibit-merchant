@@ -43,7 +43,7 @@ public class CustomerCartResource extends BaseResource {
   ItemDao itemDao;
 
   /**
-   * Provide a paged response of all Carts in the system
+   * Provides this Customer's Cart
    *
    * @param customerUser A Customer User
    *
@@ -52,7 +52,7 @@ public class CustomerCartResource extends BaseResource {
   @GET
   @Timed
   @CacheControl(maxAge = 6, maxAgeUnit = TimeUnit.HOURS)
-  public Response retrieveAllByPage(
+  public Response retrieveOwnCart(
     @RestrictedTo({Authority.ROLE_CUSTOMER})
     User customerUser) {
 

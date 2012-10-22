@@ -29,6 +29,9 @@ public class CartItem implements Serializable {
   @Column(name="quantity", nullable = false)
   private int quantity = 0;
 
+  @Column(name="index", nullable = false)
+  private int index = 0;
+
   /**
    * Default constructor required by Hibernate
    */
@@ -84,6 +87,18 @@ public class CartItem implements Serializable {
 
   public void setQuantity(int quantity) {
     this.quantity = quantity;
+  }
+
+  /**
+   *
+   * @return The index position of the Item (zero-based)
+   */
+  public int getIndex() {
+    return index;
+  }
+
+  public void setIndex(int index) {
+    this.index = index;
   }
 
   /**

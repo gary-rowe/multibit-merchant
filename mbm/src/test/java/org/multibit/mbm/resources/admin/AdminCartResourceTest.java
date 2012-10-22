@@ -55,13 +55,8 @@ public class AdminCartResourceTest extends BaseJerseyHmacResourceTest {
     Item book2 = DatabaseLoader.buildBookItemQuantumThief();
     book2.setId(2L);
 
-    CartItem aliceCartItem1 = new CartItem(aliceCart, book1);
-    aliceCartItem1.setQuantity(1);
-    CartItem aliceCartItem2 = new CartItem(aliceCart, book2);
-    aliceCartItem2.setQuantity(2);
-
-    aliceCart.getCartItems().add(aliceCartItem1);
-    aliceCart.getCartItems().add(aliceCartItem2);
+    aliceCart.setItemQuantity(book1, 1);
+    aliceCart.setItemQuantity(book2, 2);
 
     // Configure Bob's Cart with Items
     Cart bobCart = bobUser.getCustomer().getCart();
@@ -71,13 +66,8 @@ public class AdminCartResourceTest extends BaseJerseyHmacResourceTest {
     Item book4 = DatabaseLoader.buildBookItemPlumbing();
     book4.setId(4L);
 
-    CartItem bobCartItem1 = new CartItem(bobCart, book3);
-    bobCartItem1.setQuantity(3);
-    CartItem bobCartItem2 = new CartItem(bobCart, book4);
-    bobCartItem2.setQuantity(4);
-
-    bobCart.getCartItems().add(bobCartItem1);
-    bobCart.getCartItems().add(bobCartItem2);
+    bobCart.setItemQuantity(book3, 3);
+    bobCart.setItemQuantity(book4, 4);
 
     // Create some mock results
     List<Cart> cartList1 = Lists.newArrayList(aliceCart);
@@ -105,19 +95,19 @@ public class AdminCartResourceTest extends BaseJerseyHmacResourceTest {
 
   }
   @Test
-  public void adminRetrieveCartAsHalJson() throws Exception {
+  public void adminRetrieveCartsAsHalJson() throws Exception {
 
-    String actualResponse = configureAsClient("/admin/cart")
-      .queryParam("pageSize","1")
-      .queryParam("pageNumber", "0")
+    String actualResponse = configureAsClient("/admin/carts")
+      .queryParam("ps","1")
+      .queryParam("pn", "0")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 
     FixtureAsserts.assertStringMatchesJsonFixture("Cart list 1 can be retrieved as HAL+JSON", actualResponse, "/fixtures/hal/cart/expected-admin-retrieve-carts-page-1.json");
 
-    actualResponse = configureAsClient("/admin/cart")
-      .queryParam("pageSize","1")
-      .queryParam("pageNumber", "1")
+    actualResponse = configureAsClient("/admin/carts")
+      .queryParam("ps","1")
+      .queryParam("pn", "1")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 
@@ -138,7 +128,7 @@ public class AdminCartResourceTest extends BaseJerseyHmacResourceTest {
     // Remove by setting to zero
     updateCartRequest.getCartItems().add(new CustomerCartItem(1L,0));
 
-    String actualResponse = configureAsClient("/admin/cart/1")
+    String actualResponse = configureAsClient("/admin/carts/1")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .entity(updateCartRequest, MediaType.APPLICATION_JSON_TYPE)
       .put(String.class);

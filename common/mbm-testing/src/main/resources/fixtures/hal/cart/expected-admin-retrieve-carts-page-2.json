@@ -1,18 +1,20 @@
 {"_links":{
   "self":{
-    "href":"http://localhost:9998/cart"
+    "href":"http://localhost:9998/admin/carts?ps=1&pn=1"
   }
 }, "_embedded":{
   "http://localhost:9998/cart/2":{
     "_links":{
       "http://localhost:9998/cart/2 self":{
-        "href":"http://localhost:9998/cart/2"
+        "href":"http://localhost:9998/cart"
       },
       "customer":{
-        "href":"http://localhost:9998/customer/2"
+        "href":"http://localhost:9998/customer"
       }
     },
     "btc_total":"4.78",
+    "id":2,
+    "item_count":"2",
     "local_symbol":"&euro;",
     "local_total":"13.94",
     "_embedded":{
@@ -20,15 +22,16 @@
         {
           "_links":{
             "cartitems self":{
-              "href":"http://localhost:9998/cart/2/cartitem/3"
+              "href":"http://localhost:9998/cart/item/0"
             }
           },
+          "index":0,
           "quantity":3,
           "_embedded":{
             "item":{
               "_links":{
                 "item self":{
-                  "href":"http://localhost:9998/item/3"
+                  "href":"http://localhost:9998/item/0316184136"
                 },
                 "image_thumbnail_uri":{
                   "href":"http://localhost:9998/mbm/images/catalog/items/5/thumbnail5.png"
@@ -45,15 +48,16 @@
         {
           "_links":{
             "cartitems self":{
-              "href":"http://localhost:9998/cart/2/cartitem/4"
+              "href":"http://localhost:9998/cart/item/1"
             }
           },
+          "index":1,
           "quantity":4,
           "_embedded":{
             "item":{
               "_links":{
                 "item self":{
-                  "href":"http://localhost:9998/item/4"
+                  "href":"http://localhost:9998/item/186126173X"
                 },
                 "image_thumbnail_uri":{
                   "href":"http://localhost:9998/mbm/images/catalog/items/3/thumbnail3.png"

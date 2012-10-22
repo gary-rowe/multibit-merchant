@@ -1,6 +1,5 @@
 package org.multibit.mbm.auth.hmac;
 
-import com.google.common.collect.Lists;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.client.impl.ClientRequestImpl;
 import com.sun.jersey.core.header.InBoundHeaders;
@@ -22,6 +21,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class HmacUtilsTest {
+
+  private final String resourcePath = "/example/resource";
+  private final String queryParameters = "?b=2&a=1";
+  private final String baseUri = "http://example.org:8080";
+
   @Test
   public void testCanonicalRepresentation_Client_AllFields_Get() throws Exception {
 
@@ -35,13 +39,13 @@ public class HmacUtilsTest {
     headers.add(HmacUtils.X_HMAC_DATE, "Sat, 01 Jan 2000 12:34:57 GMT");
     headers.add(HmacUtils.X_HMAC_NONCE, "Thohn2Mohd2zugo");
 
-    URI uri = new URI("http://example.org/example/resource.html?sort=header%20footer&order=ASC");
+    URI uri = new URI(baseUri + resourcePath + queryParameters);
 
     ClientRequest clientRequest = new ClientRequestImpl(uri, "get", null, headers);
 
     String representation = HmacUtils.createCanonicalRepresentation(clientRequest, providers);
 
-    FixtureAsserts.assertStringMatchesStringFixture("GET canonical representation",representation, "/fixtures/hmac/expected-canonical-get.txt");
+    FixtureAsserts.assertStringMatchesStringFixture("GET canonical representation", representation, "/fixtures/hmac/expected-canonical-get.txt");
 
   }
 
@@ -62,7 +66,7 @@ public class HmacUtilsTest {
     headers.add(HmacUtils.X_HMAC_DATE, "Sat, 01 Jan 2000 12:34:57 GMT");
     headers.add(HmacUtils.X_HMAC_NONCE, "Thohn2Mohd2zugo");
 
-    URI uri = new URI("http://example.org/example/resource.html?sort=header%20footer&order=ASC");
+    URI uri = new URI(baseUri + resourcePath + queryParameters);
 
     String entity = "{\"_links\":{\"self\":{\"href\":\"http://example.org/user\"}}}";
 
@@ -85,18 +89,11 @@ public class HmacUtilsTest {
     headers.add(HmacUtils.X_HMAC_DATE, "Sat, 01 Jan 2000 12:34:57 GMT");
     headers.add(HmacUtils.X_HMAC_NONCE, "Thohn2Mohd2zugo");
 
-    // Mock query parameters
-    InBoundHeaders queryParameters = new InBoundHeaders();
-    queryParameters.put("sort", Lists.newArrayList("header footer"));
-    queryParameters.put("order", Lists.newArrayList("ASC"));
-
     // Mock request
     ContainerRequest containerRequest = mock(ContainerRequest.class);
     when(containerRequest.getRequestHeaders()).thenReturn(headers);
     when(containerRequest.getMethod()).thenReturn("GET");
-    when(containerRequest.getQueryParameters()).thenReturn(queryParameters);
-    when(containerRequest.getAbsolutePath()).thenReturn(URI.create("/example/resource.html"));
-    when(containerRequest.getPath()).thenReturn("/example/resource.html");
+    when(containerRequest.getRequestUri()).thenReturn(URI.create(baseUri + resourcePath + queryParameters));
 
     String representation = HmacUtils.createCanonicalRepresentation(containerRequest);
 
@@ -115,18 +112,11 @@ public class HmacUtilsTest {
     headers.add(HmacUtils.X_HMAC_DATE, "Sat, 01 Jan 2000 12:34:57 GMT");
     headers.add(HmacUtils.X_HMAC_NONCE, "Thohn2Mohd2zugo");
 
-    // Mock query parameters
-    InBoundHeaders queryParameters = new InBoundHeaders();
-    queryParameters.put("sort", Lists.newArrayList("header footer"));
-    queryParameters.put("order", Lists.newArrayList("ASC"));
-
     // Mock request
     ContainerRequest containerRequest = mock(ContainerRequest.class);
     when(containerRequest.getRequestHeaders()).thenReturn(headers);
     when(containerRequest.getMethod()).thenReturn("POST");
-    when(containerRequest.getQueryParameters()).thenReturn(queryParameters);
-    when(containerRequest.getAbsolutePath()).thenReturn(URI.create("/example/resource.html"));
-    when(containerRequest.getPath()).thenReturn("/example/resource.html");
+    when(containerRequest.getRequestUri()).thenReturn(URI.create(baseUri + resourcePath + queryParameters));
 
     // Simulate a user wrapped in HAL
     ByteArrayInputStream bais = new ByteArrayInputStream("{\"_links\":{\"self\":{\"href\":\"http://example.org/user\"}}}".getBytes());
@@ -134,7 +124,7 @@ public class HmacUtilsTest {
 
     String actualCanonicalRepresentation = HmacUtils.createCanonicalRepresentation(containerRequest);
 
-    FixtureAsserts.assertStringMatchesStringFixture("POST all fields canonical representation",actualCanonicalRepresentation, "/fixtures/hmac/expected-canonical-post.txt");
+    FixtureAsserts.assertStringMatchesStringFixture("POST all fields canonical representation", actualCanonicalRepresentation, "/fixtures/hmac/expected-canonical-post.txt");
 
   }
 

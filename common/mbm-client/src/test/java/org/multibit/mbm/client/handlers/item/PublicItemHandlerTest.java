@@ -15,18 +15,6 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
-/**
- * <p>[Pattern] to provide the following to {@link Object}:</p>
- * <ul>
- * <li></li>
- * </ul>
- * <p>Example:</p>
- * <pre>
- * </pre>
- *
- * @since 0.0.1
- *         
- */
 public class PublicItemHandlerTest extends BaseHandlerTest {
 
   @Test

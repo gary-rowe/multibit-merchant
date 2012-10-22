@@ -1,13 +1,13 @@
 package org.multibit.mbm.db.dto;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.Sets;
+import com.google.common.collect.Lists;
 import org.multibit.mbm.utils.ObjectUtils;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Set;
+import java.util.List;
 
 /**
  * <p>DTO to provide the following to the application</p>
@@ -36,6 +36,7 @@ public class Cart implements Serializable {
 
   /**
    * A Cart has many CartItems that need to be eager to have meaning
+   * They also have an order
    */
   @OneToMany(targetEntity = CartItem.class,
     cascade = {CascadeType.ALL},
@@ -43,7 +44,8 @@ public class Cart implements Serializable {
     fetch = FetchType.EAGER,
     orphanRemoval = true
   )
-  private Set<CartItem> cartItems = Sets.newLinkedHashSet();
+  @OrderBy(value = "index")
+  private List<CartItem> cartItems = Lists.newArrayList();
 
   /*
   * Default constructor required for Hibernate
@@ -70,22 +72,29 @@ public class Cart implements Serializable {
   public void setItemQuantity(Item item, int quantity) {
     Assert.notNull(item, "item cannot be null");
 
-    Optional<CartItem> cartItem = getCartItemByItem(item);
+    Optional<CartItem> cartItemOptional = getCartItemByItem(item);
 
     if (quantity > 0) {
-      if (cartItem.isPresent()) {
+      if (cartItemOptional.isPresent()) {
         // Update
-        cartItem.get().setQuantity(quantity);
+        cartItemOptional.get().setQuantity(quantity);
       } else {
         // Insert
         CartItem newCartItem = new CartItem(this, item);
+        newCartItem.setIndex(cartItems.size());
         newCartItem.setQuantity(quantity);
         cartItems.add(newCartItem);
       }
     } else {
-      if (cartItem.isPresent()) {
+      if (cartItemOptional.isPresent()) {
         // Remove
-        cartItems.remove(cartItem.get());
+        cartItems.remove(cartItemOptional.get());
+        // Re-align the other cart item index values
+        int i=0;
+        for (CartItem cartItem : cartItems) {
+          cartItem.setIndex(i++);
+        }
+
       }
     }
 
@@ -131,13 +140,13 @@ public class Cart implements Serializable {
   }
 
   /**
-   * @return The CartItems (contains the quantity, date etc)
+   * @return The CartItems (contains the ordering index, quantity, date etc)
    */
-  public Set<CartItem> getCartItems() {
+  public List<CartItem> getCartItems() {
     return cartItems;
   }
 
-  public void setCartItems(Set<CartItem> cartItems) {
+  public void setCartItems(List<CartItem> cartItems) {
     this.cartItems = cartItems;
   }
 

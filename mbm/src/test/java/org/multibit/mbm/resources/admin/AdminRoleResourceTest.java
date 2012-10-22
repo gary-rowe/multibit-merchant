@@ -92,16 +92,16 @@ public class AdminRoleResourceTest extends BaseJerseyHmacResourceTest {
   public void adminRetrieveRoleAsHalJson() throws Exception {
 
     String actualResponse = configureAsClient("/admin/role")
-      .queryParam("pageSize","1")
-      .queryParam("pageNumber", "1")
+      .queryParam("ps","1")
+      .queryParam("pn", "1")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 
     FixtureAsserts.assertStringMatchesJsonFixture("Role list 1 can be retrieved as HAL+JSON", actualResponse, "/fixtures/hal/role/expected-admin-retrieve-roles-page-1.json");
 
     actualResponse = configureAsClient("/admin/role")
-      .queryParam("pageSize","1")
-      .queryParam("pageNumber", "2")
+      .queryParam("ps","1")
+      .queryParam("pn", "2")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 

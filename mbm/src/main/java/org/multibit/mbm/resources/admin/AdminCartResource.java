@@ -36,7 +36,7 @@ import java.util.concurrent.TimeUnit;
  * @since 0.0.1
  */
 @Component
-@Path("/admin/cart")
+@Path("/admin/carts")
 @Produces({HalMediaType.APPLICATION_HAL_JSON, HalMediaType.APPLICATION_HAL_XML})
 public class AdminCartResource extends BaseResource {
 
@@ -61,8 +61,8 @@ public class AdminCartResource extends BaseResource {
   public Response retrieveAllByPage(
     @RestrictedTo({Authority.ROLE_ADMIN})
     User adminUser,
-    @QueryParam("pageSize") Optional<String> rawPageSize,
-    @QueryParam("pageNumber") Optional<String> rawPageNumber) {
+    @QueryParam("ps") Optional<String> rawPageSize,
+    @QueryParam("pn") Optional<String> rawPageNumber) {
 
     // Validation
     int pageSize = Integer.valueOf(rawPageSize.get());

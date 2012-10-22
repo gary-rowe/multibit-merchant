@@ -21,8 +21,8 @@ import javax.ws.rs.core.UriInfo;
  */
 public abstract class BaseBridge<T> {
 
-  private final UriInfo uriInfo;
-  private final Optional<User> principal;
+  protected final UriInfo uriInfo;
+  protected final Optional<User> principal;
 
   /**
    * @param uriInfo The {@link UriInfo} containing the originating request information
@@ -43,13 +43,6 @@ public abstract class BaseBridge<T> {
     resourceFactory.withRenderer(HalMediaType.APPLICATION_HAL_XML,
       MinifiedXmlRenderer.class);
     return resourceFactory;
-  }
-
-  /**
-   * @return The optional {@link User} acting as the security principal for this request
-   */
-  protected Optional<User> getPrincipal() {
-    return this.principal;
   }
 
   /**
