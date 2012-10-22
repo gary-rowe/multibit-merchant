@@ -8,7 +8,6 @@ import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.client.HalHmacResourceFactory;
 
 import javax.ws.rs.core.HttpHeaders;
-
 import java.net.URI;
 import java.util.Locale;
 
@@ -37,6 +36,7 @@ public abstract class BaseHandlerTest {
   public void setUpMocks() {
 
     // Configure standard mock behaviour from the Jersey client
+
     when(webResource.accept(HalMediaType.APPLICATION_HAL_JSON)).thenReturn(builder);
     when(webResource.header(HttpHeaders.ACCEPT_LANGUAGE, locale.toString())).thenReturn(builder);
     when(builder.header(HttpHeaders.ACCEPT_LANGUAGE,locale.toString())).thenReturn(builder);

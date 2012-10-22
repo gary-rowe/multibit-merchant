@@ -1,14 +1,11 @@
 package org.multibit.mbm.client.handlers.item;
 
 import com.google.common.base.Optional;
-import com.theoryinpractise.halbuilder.ResourceFactory;
 import com.theoryinpractise.halbuilder.spi.ReadableResource;
 import org.multibit.mbm.client.HalHmacResourceFactory;
 import org.multibit.mbm.client.handlers.BaseHandler;
 import org.multibit.mbm.model.PublicItem;
 
-import java.io.Reader;
-import java.io.StringReader;
 import java.util.Locale;
 import java.util.Map;
 
@@ -71,9 +68,4 @@ public class PublicItemHandler extends BaseHandler {
     return Optional.of(item);
   }
 
-  private ReadableResource readHalRepresentation(String hal) {
-    ResourceFactory rf = getResourceFactory();
-    Reader reader = new StringReader(hal);
-    return rf.readResource(reader);
-  }
 }

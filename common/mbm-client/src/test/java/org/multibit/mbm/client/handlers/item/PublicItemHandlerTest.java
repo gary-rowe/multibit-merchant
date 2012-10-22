@@ -1,7 +1,6 @@
 package org.multibit.mbm.client.handlers.item;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.Lists;
 import org.junit.Test;
 import org.multibit.mbm.client.PublicMerchantClient;
 import org.multibit.mbm.client.handlers.BaseHandlerTest;
@@ -18,19 +17,16 @@ import static org.mockito.Mockito.when;
 public class PublicItemHandlerTest extends BaseHandlerTest {
 
   @Test
-  public void items_retrievePromotionalItemsByPage() {
+  public void items_retrievePromotionalItemsByPage() throws Exception {
 
     // Arrange
-
-    List<PublicItem> publicItems = Lists.newArrayList(
-      new PublicItem(),
-      new PublicItem()
-    );
-    URI expectedUri = URI.create("http://localhost:8080/mbm/items?pn=0&ps=1");
+    URI expectedUri = URI.create("http://localhost:8080/mbm/items/promotion?pn=0&ps=1");
 
     // Test-specific JerseyClient behaviour
     when(client.resource(expectedUri)).thenReturn(webResource);
-    when(webResource.get(List.class)).thenReturn(publicItems);
+    when(webResource.get(String.class)).thenReturn(
+      FixtureAsserts.jsonFixture("/fixtures/hal/item/expected-public-retrieve-items-page-1.json")
+    );
 
     // Act
     List<PublicItem> items = PublicMerchantClient
@@ -39,7 +35,7 @@ public class PublicItemHandlerTest extends BaseHandlerTest {
       .retrievePromotionalItemsByPage(0,1);
 
     // Assert
-    assertEquals("Unexpected number of items", 2, items.size());
+    assertEquals("Unexpected number of items", 1, items.size());
 
   }
 
@@ -52,7 +48,9 @@ public class PublicItemHandlerTest extends BaseHandlerTest {
 
     // Test-specific JerseyClient behaviour
     when(client.resource(expectedUri)).thenReturn(webResource);
-    when(webResource.get(String.class)).thenReturn(FixtureAsserts.fixture("/fixtures/hal/item/expected-customer-retrieve-item.json"));
+    when(webResource.get(String.class))
+      .thenReturn(
+        FixtureAsserts.fixture("/fixtures/hal/item/expected-customer-retrieve-item.json"));
 
     // Act
     Optional<PublicItem> optionalItem = PublicMerchantClient

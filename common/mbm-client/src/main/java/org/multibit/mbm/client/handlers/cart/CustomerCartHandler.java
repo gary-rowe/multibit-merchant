@@ -2,15 +2,12 @@ package org.multibit.mbm.client.handlers.cart;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import com.theoryinpractise.halbuilder.ResourceFactory;
 import com.theoryinpractise.halbuilder.spi.ReadableResource;
 import org.multibit.mbm.client.HalHmacResourceFactory;
 import org.multibit.mbm.client.handlers.BaseHandler;
 import org.multibit.mbm.model.ClientCart;
 import org.multibit.mbm.model.ClientUser;
 
-import java.io.Reader;
-import java.io.StringReader;
 import java.util.Locale;
 import java.util.Map;
 
@@ -39,7 +36,7 @@ public class CustomerCartHandler extends BaseHandler {
    *
    * @return A matching {@link org.multibit.mbm.model.PublicItem}
    */
-  public ClientCart retrieveCart(ClientUser clientUser) {
+  public ClientCart retrieveCartNoItems(ClientUser clientUser) {
 
     // Sanity check
     Preconditions.checkNotNull(clientUser);
@@ -50,7 +47,7 @@ public class CustomerCartHandler extends BaseHandler {
     String path = String.format("/cart");
 
     String hal = HalHmacResourceFactory.INSTANCE
-      .newClientResource(locale, path)
+      .newUserResource(locale, path, clientUser)
       .get(String.class);
 
     // Read the HAL
@@ -62,17 +59,14 @@ public class CustomerCartHandler extends BaseHandler {
     String localSymbol = (String) properties.get("local_symbol").get();
     String localTotal = (String) properties.get("local_total").get();
     String btcTotal = (String) properties.get("btc_total").get();
+    String itemCount = (String) properties.get("item_count").get();
 
     clientCart.setLocalSymbol(localSymbol);
     clientCart.setLocalTotal(localTotal);
     clientCart.setBtcTotal(btcTotal);
+    clientCart.setItemCount(itemCount);
 
     return clientCart;
   }
 
-  private ReadableResource readHalRepresentation(String hal) {
-    ResourceFactory rf = getResourceFactory();
-    Reader reader = new StringReader(hal);
-    return rf.readResource(reader);
-  }
 }

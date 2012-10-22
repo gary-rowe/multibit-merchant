@@ -9,7 +9,6 @@ import org.multibit.mbm.auth.Authority;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Cookie;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Map;
 import java.util.UUID;
@@ -74,8 +73,8 @@ class CookieClientRestrictedToInjectable<T> extends AbstractHttpContextInjectabl
       Optional<UUID> rememberMeToken = Optional.absent();
 
       // Configure the UUIDs based on cookie values (must be valid UUIDs)
-      Cookie sessionTokenCookie = cookies.get(sessionToken);
-      Cookie rememberMeTokenCookie = cookies.get(rememberMeToken);
+      Cookie sessionTokenCookie = cookies.get(sessionTokenName);
+      Cookie rememberMeTokenCookie = cookies.get(rememberMeName);
       if (sessionTokenCookie != null) {
         sessionToken = Optional.of(UUID.fromString(sessionTokenCookie.getValue()));
       }
@@ -102,11 +101,8 @@ class CookieClientRestrictedToInjectable<T> extends AbstractHttpContextInjectabl
     }
 
     // Must have failed to be here
-    // TODO Add login page content (some kind of view injection?)
-    throw new WebApplicationException(Response.status(Response.Status.UNAUTHORIZED)
-      .entity("Credentials are required to access this resource")
-      .type(MediaType.TEXT_PLAIN_TYPE)
-      .build());
+    // Simply throw a 401 and leave it to the app to handle
+    throw new WebApplicationException(Response.Status.UNAUTHORIZED);
   }
 
 }

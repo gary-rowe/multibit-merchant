@@ -37,7 +37,7 @@ public class CustomerCartHandlerTest extends BaseHandlerTest {
     ClientCart actualCart = CustomerMerchantClient
       .newInstance(locale)
       .cart()
-      .retrieveCart(clientUser);
+      .retrieveCartNoItems(clientUser);
 
     // Assert
     assertEquals("Unexpected item count", "2", actualCart.getItemCount());

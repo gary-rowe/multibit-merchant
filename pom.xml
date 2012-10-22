@@ -102,6 +102,17 @@
   </profiles>
 
   <repositories>
+    <!-- BitCoinJ Nexus for BitCoinJ -->
+    <repository>
+      <id>bitcoinj-snapshot</id>
+      <snapshots/>
+      <url>http://nexus.bitcoinj.org/content/repositories/snapshots</url>
+    </repository>
+    <repository>
+      <id>bitcoinj-releases</id>
+      <snapshots/>
+      <url>http://nexus.bitcoinj.org/content/repositories/releases</url>
+    </repository>
     <!-- Provide the latest Spring releases -->
     <repository>
       <id>springframework-milestone</id>
@@ -117,28 +128,11 @@
       <id>java.net</id>
       <url>http://download.java.net/maven/2/</url>
     </repository>
-    <!-- BitCoinJ Nexus for BitCoinJ -->
-    <repository>
-      <id>bitcoinj-snapshot</id>
-      <snapshots/>
-      <url>http://nexus.bitcoinj.org/content/repositories/snapshots</url>
-    </repository>
-    <repository>
-      <id>bitcoinj-releases</id>
-      <snapshots/>
-      <url>http://nexus.bitcoinj.org/content/repositories/releases</url>
-    </repository>
     <!-- zxing repo -->
     <repository>
       <id>zxing</id>
       <url>http://mvn-adamgent.googlecode.com/svn/maven/release</url>
     </repository>
-    <!-- GitHub WebJars -->
-    <repository>
-      <id>webjars</id>
-      <url>http://webjars.github.com/m2</url>
-    </repository>
-
   </repositories>
 
   <dependencyManagement>

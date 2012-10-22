@@ -2,7 +2,6 @@ package org.multibit.mbm.client.handlers.user;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import com.theoryinpractise.halbuilder.ResourceFactory;
 import com.theoryinpractise.halbuilder.spi.ReadableResource;
 import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.api.request.user.WebFormAuthenticationRequest;
@@ -13,8 +12,6 @@ import org.multibit.mbm.client.handlers.BaseHandler;
 import org.multibit.mbm.model.ClientUser;
 import org.multibit.mbm.model.CustomerUser;
 
-import java.io.Reader;
-import java.io.StringReader;
 import java.util.Locale;
 import java.util.Map;
 
@@ -122,9 +119,4 @@ public class CustomerUserHandler extends BaseHandler {
     return Optional.of(customerUser);
   }
 
-  private ReadableResource readHalRepresentation(String hal) {
-    ResourceFactory rf = getResourceFactory();
-    Reader reader = new StringReader(hal);
-    return rf.readResource(reader);
-  }
 }
