@@ -33,6 +33,10 @@ public enum Authority {
    */
   ROLE_SALES(true),
   /**
+   * The administrator for catalog functions (works on items)
+   */
+  ROLE_CATALOG_ADMIN(true),
+  /**
    * The manager of the sales team
    */
   ROLE_SALES_MANAGER(true),

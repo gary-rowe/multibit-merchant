@@ -133,7 +133,7 @@ public class HibernateUserDaoIntegrationTest extends BaseIntegrationTests {
     // Alice the customer is built second
     assertNotNull("Expected pre-populated data (page 2)",users);
     assertThat("Unexpected number of Users",users.size(), equalTo(1));
-    assertThat("Unexpected ordering of Users",users.get(0).getUsername(), equalTo("store"));
+    assertThat("Unexpected ordering of Users",users.get(0).getUsername(), equalTo("sam"));
 
   }
 

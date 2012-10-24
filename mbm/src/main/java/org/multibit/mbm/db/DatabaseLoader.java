@@ -36,6 +36,7 @@ public class DatabaseLoader {
 
   // Various Roles that get shared between Users
   private Role adminRole = null;
+  private Role catalogAdminRole = null;
   private Role customerRole = null;
   private Role clientRole = null;
 
@@ -56,8 +57,13 @@ public class DatabaseLoader {
 
   private void buildRolesAndAuthorities() {
 
+    // Admin role
     adminRole = buildAdminRole();
     adminRole = roleDao.saveOrUpdate(adminRole);
+
+    // Catalog admin
+    catalogAdminRole = buildCatalogAdminRole();
+    catalogAdminRole = roleDao.saveOrUpdate(catalogAdminRole);
 
     // Build the Customer Role and Authorities
     customerRole = buildCustomerRole();
@@ -72,6 +78,17 @@ public class DatabaseLoader {
   }
 
   /**
+   * @return A transient instance of the catalog administrator role
+   */
+  public static Role buildCatalogAdminRole() {
+    return RoleBuilder.newInstance()
+      .withName(Authority.ROLE_CATALOG_ADMIN.name())
+      .withDescription("Catalog administrator role")
+      .withAuthority(Authority.ROLE_CATALOG_ADMIN)
+      .build();
+  }
+
+  /**
    * @return A transient instance of the Customer role
    */
   public static Role buildCustomerRole() {
@@ -83,7 +100,7 @@ public class DatabaseLoader {
   }
 
   /**
-   * @return A transient instance of the Customer role
+   * @return A transient instance of the client role
    */
   public static Role buildClientRole() {
     return RoleBuilder.newInstance()
@@ -220,8 +237,12 @@ public class DatabaseLoader {
 
   private void buildUsers() {
 
+    // Administrators
     User userTrent = buildTrentAdministrator(adminRole);
     userDao.saveOrUpdate(userTrent);
+
+    User userSam = buildSamCatalogAdministrator(catalogAdminRole);
+    userDao.saveOrUpdate(userSam);
 
     // TODO Introduce various staff roles (dispatch, sales etc)
 
@@ -287,6 +308,20 @@ public class DatabaseLoader {
       .withContactMethod(ContactMethod.LAST_NAME, "Admin")
       .withContactMethod(ContactMethod.EMAIL, "admin@example.org")
       .withRole(adminRole)
+      .build();
+  }
+
+  public static User buildSamCatalogAdministrator(Role catalogAdminRole) {
+    // Catalog Admin
+    return UserBuilder.newInstance()
+      .withApiKey("sam123")
+      .withSecretKey("sam456")
+      .withUsername("sam")
+      .withPassword("sam1")
+      .withContactMethod(ContactMethod.NAMES, "Sam")
+      .withContactMethod(ContactMethod.LAST_NAME, "Catalog Admin")
+      .withContactMethod(ContactMethod.EMAIL, "catalog.admin@example.org")
+      .withRole(catalogAdminRole)
       .build();
   }
 
