@@ -4,7 +4,7 @@ import com.google.common.base.Optional;
 import com.yammer.metrics.annotation.Timed;
 import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.api.request.user.WebFormAuthenticationRequest;
-import org.multibit.mbm.api.response.hal.user.CustomerMinimalUserBridge;
+import org.multibit.mbm.api.response.hal.user.PublicUserBridge;
 import org.multibit.mbm.auth.Authority;
 import org.multibit.mbm.auth.annotation.RestrictedTo;
 import org.multibit.mbm.db.dao.UserDao;
@@ -50,7 +50,7 @@ public class ClientUserResource extends BaseResource {
 
     Optional<User> requestedUser = userDao.getByCredentials(authenticationRequest.getUsername(), authenticationRequest.getPasswordDigest());
 
-    CustomerMinimalUserBridge bridge = new CustomerMinimalUserBridge(uriInfo, Optional.of(clientUser));
+    PublicUserBridge bridge = new PublicUserBridge(uriInfo, Optional.of(clientUser));
 
     // The bridge can handle a null
     return ok(bridge, requestedUser.orNull());

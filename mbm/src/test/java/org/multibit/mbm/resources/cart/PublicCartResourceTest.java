@@ -31,7 +31,7 @@ public class PublicCartResourceTest extends BaseJerseyHmacResourceTest {
   protected void setUpResources() {
 
     // Use Alice for Customer access
-    User publicUser = setUpAliceHmacAuthenticator();
+    User publicUser = setUpPublicHmacAuthenticator();
     publicUser.setId(1L);
 
     Customer customer = publicUser.getCustomer();
@@ -78,7 +78,7 @@ public class PublicCartResourceTest extends BaseJerseyHmacResourceTest {
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 
-    FixtureAsserts.assertStringMatchesJsonFixture("Customer retrieve Cart as HAL+JSON", actualResponse, "/fixtures/hal/cart/expected-customer-retrieve-cart.json");
+    FixtureAsserts.assertStringMatchesJsonFixture("Customer retrieve Cart as HAL+JSON", actualResponse, "/fixtures/hal/cart/expected-public-retrieve-cart.json");
 
   }
 
@@ -99,7 +99,7 @@ public class PublicCartResourceTest extends BaseJerseyHmacResourceTest {
       .entity(updateCartRequest, MediaType.APPLICATION_JSON_TYPE)
       .put(String.class);
 
-    FixtureAsserts.assertStringMatchesJsonFixture("UpdateCart by admin response render to HAL+JSON",actualResponse, "/fixtures/hal/cart/expected-customer-update-cart.json");
+    FixtureAsserts.assertStringMatchesJsonFixture("UpdateCart by admin response render to HAL+JSON",actualResponse, "/fixtures/hal/cart/expected-public-update-cart.json");
 
   }
 

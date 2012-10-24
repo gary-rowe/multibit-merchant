@@ -1,1 +1,0 @@
-<resource href="http://localhost:9998/cart/1"><btcTotal>10.8000</btcTotal><localSymbol>&amp;euro;</localSymbol><localTotal>4.20</localTotal><resource href="http://localhost:9998/cart/1/item/1" rel="item self"><id>1</id><quantity>1</quantity></resource><resource href="http://localhost:9998/cart/1/item/2" rel="item self"><id>2</id><quantity>2</quantity></resource></resource>

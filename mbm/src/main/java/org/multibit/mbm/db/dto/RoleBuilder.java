@@ -278,6 +278,7 @@ public class RoleBuilder {
    */
   public RoleBuilder withClientAuthorities() {
 
+    withAuthority(Authority.ROLE_PUBLIC);
     withAuthority(Authority.ROLE_CLIENT);
 
     return this;

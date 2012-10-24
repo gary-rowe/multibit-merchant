@@ -5,6 +5,7 @@ import com.yammer.dropwizard.jersey.caching.CacheControl;
 import com.yammer.metrics.annotation.Timed;
 import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.api.response.hal.user.CustomerUserBridge;
+import org.multibit.mbm.api.response.hal.user.PublicUserBridge;
 import org.multibit.mbm.auth.Authority;
 import org.multibit.mbm.auth.annotation.RestrictedTo;
 import org.multibit.mbm.db.dto.User;
@@ -28,19 +29,24 @@ import java.util.concurrent.TimeUnit;
 @Component
 @Path("/user")
 @Produces({HalMediaType.APPLICATION_HAL_JSON, HalMediaType.APPLICATION_HAL_XML})
-public class CustomerUserResource extends BaseResource {
+public class PublicUserResource extends BaseResource {
 
   @GET
   @Timed
   @CacheControl(maxAge = 6, maxAgeUnit = TimeUnit.HOURS)
   public Response retrieveOwnProfile(
-    @RestrictedTo({Authority.ROLE_CUSTOMER})
+    @RestrictedTo({Authority.ROLE_PUBLIC})
     User user)
   {
+    if (user.hasAuthority(Authority.ROLE_CUSTOMER)) {
+      // Treat as authenticated user
+      CustomerUserBridge bridge = new CustomerUserBridge(uriInfo, Optional.of(user));
+      return ok(bridge, user);
+    }
 
-    CustomerUserBridge bridge = new CustomerUserBridge(uriInfo, Optional.of(user));
-
+    PublicUserBridge bridge = new PublicUserBridge(uriInfo, Optional.of(user));
     return ok(bridge, user);
+
   }
 
 }

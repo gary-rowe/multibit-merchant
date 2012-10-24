@@ -7,9 +7,9 @@ import org.multibit.mbm.test.BaseJerseyHmacResourceTest;
 import org.multibit.mbm.test.FixtureAsserts;
 
 /**
- * Verifies the user resource can be accessed by an authenticated Customer
+ * Verifies the user resource can be accessed by the anonymous public
  */
-public class CustomerUserResourceTest extends BaseJerseyHmacResourceTest {
+public class PublicUserResourceTest extends BaseJerseyHmacResourceTest {
 
   private final PublicUserResource testObject=new PublicUserResource();
 
@@ -17,8 +17,8 @@ public class CustomerUserResourceTest extends BaseJerseyHmacResourceTest {
   protected void setUpResources() {
 
     // Create the User for authenticated access
-    User clientUser = setUpAliceHmacAuthenticator();
-    clientUser.setId(1L);
+    User publicUser = setUpPublicHmacAuthenticator();
+    publicUser.setId(1L);
 
     // Configure resources
     addSingleton(testObject);
@@ -26,13 +26,13 @@ public class CustomerUserResourceTest extends BaseJerseyHmacResourceTest {
   }
 
   @Test
-  public void customerRetrieveUserAsHalJson() throws Exception {
+  public void publicRetrieveUserAsHalJson() throws Exception {
 
     String actualResponse = configureAsClient("/user")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 
-    FixtureAsserts.assertStringMatchesJsonFixture("Customer retrieve their User as HAL+JSON", actualResponse, "/fixtures/hal/user/expected-customer-retrieve-user.json");
+    FixtureAsserts.assertStringMatchesJsonFixture("Public retrieve their User as HAL+JSON", actualResponse, "/fixtures/hal/user/expected-public-retrieve-user.json");
 
   }
 

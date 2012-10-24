@@ -22,7 +22,7 @@ import java.util.Set;
  */
 public class CustomerUserBridge extends BaseBridge<User> {
 
-  private final CustomerMinimalUserBridge customerMinimalUserBridge;
+  private final PublicUserBridge publicUserBridge;
 
   /**
    * @param uriInfo   The {@link javax.ws.rs.core.UriInfo} containing the originating request information
@@ -30,14 +30,13 @@ public class CustomerUserBridge extends BaseBridge<User> {
    */
   public CustomerUserBridge(UriInfo uriInfo, Optional<User> principal) {
     super(uriInfo, principal);
-    customerMinimalUserBridge = new CustomerMinimalUserBridge(uriInfo,principal);
+    publicUserBridge = new PublicUserBridge(uriInfo,principal);
   }
 
   public Resource toResource(User user) {
 
-
     // Build on the minimal Customer representation
-    Resource userResource = customerMinimalUserBridge.toResource(user);
+    Resource userResource = publicUserBridge.toResource(user);
 
     // Apply restrictions against the more detailed representation
     ResourceAsserts.assertNotNull(user, "user");

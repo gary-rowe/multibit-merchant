@@ -1,0 +1,69 @@
+{"_links":{
+  "self":{
+    "href":"http://localhost:9998/cart"
+  },
+  "customer":{
+    "href":"http://localhost:9998/customer"
+  }
+}, "btc_total":"4.78", "item_count":"2", "local_symbol":"&euro;", "local_total":"13.94", "_embedded":{
+  "cartitems":[
+    {
+      "_links":{
+        "cartitems self":{
+          "href":"http://localhost:9998/cart/item/0"
+        }
+      },
+      "index":0,
+      "quantity":1,
+      "_embedded":{
+        "item":{
+          "_links":{
+            "item self":{
+              "href":"http://localhost:9998/item/0099410672"
+            },
+            "image_thumbnail_uri":{
+              "href":"http://localhost:9998/mbm/images/catalog/items/2/thumbnail2.png"
+            }
+          },
+          "author":"Neal Stephenson",
+          "sku":"0099410672",
+          "slug":"cryptonomicon",
+          "summary":"'A brilliant patchwork of code-breaking mathematicians and their descendants who are striving to create a data haven in the Philippines...trust me on this one' Guardian",
+          "title":"Cryptonomicon"
+        }
+      }
+    },
+    {
+      "_links":{
+        "cartitems self":{
+          "href":"http://localhost:9998/cart/item/1"
+        }
+      },
+      "index":1,
+      "quantity":2,
+      "_embedded":{
+        "item":{
+          "_links":{
+            "item self":{
+              "href":"http://localhost:9998/item/0575088893"
+            },
+            "image_thumbnail_uri":{
+              "href":"http://localhost:9998/mbm/images/catalog/items/4/thumbnail4.png"
+            }
+          },
+          "author":"Hannu Rajaniemi",
+          "description":"<p>The Quantum Thief is a dazzling hard SF novel set in the solar system of the far future - a heist novel peopled by bizarre post-humans but powered by very human motives of betrayal, revenge and jealousy. It is a stunning debut.</p><br/><p>Jean le Flambeur is a post-human criminal, mind burglar, confidence artist and trickster. His origins are shrouded in mystery, but his exploits are known throughout the Heterarchy - from breaking into the vast Zeusbrains of the Inner System to steal their thoughts, to stealing rare Earth antiques from the aristocrats of the Moving Cities of Mars.</p><p>Except that Jean made one mistake. Now he is condemned to play endless variations of a game-theoretic riddle in the vast virtual jail of the Axelrod Archons - the Dilemma Prison - against countless copies of himself.</p><p>Jean's routine of death, defection and cooperation is upset by the arrival of Mieli and her spidership, Perhonen. She offers him a chance to win back his freedom and the powers of his old self - in exchange for finishing the one heist he never quite managed...</p>",
+          "format":"Paperback",
+          "genre":"Sci-Fi",
+          "page_count":"336",
+          "publisher":"Gollancz (1 Nov 2011)",
+          "size":"12.9 x 2.1 x 19.6 cm",
+          "sku":"0575088893",
+          "slug":"the-quantum-thief",
+          "summary":"The most exciting SF debut of the last five years - a star to stand alongside Alistair Reynolds and Richard Morgan.",
+          "title":"The Quantum Thief"
+        }
+      }
+    }
+  ]
+}}

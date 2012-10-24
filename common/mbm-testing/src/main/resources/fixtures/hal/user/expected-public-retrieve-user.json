@@ -1,0 +1,5 @@
+{"_links":{
+  "self":{
+    "href":"http://localhost:9998/user/anonymous123"
+  }
+}, "api_key":"anonymous123", "secret_key":"anonymous456"}

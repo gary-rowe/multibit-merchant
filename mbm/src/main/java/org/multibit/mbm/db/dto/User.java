@@ -337,4 +337,8 @@ public class User implements Serializable {
 
     return grantedAuthorities.containsAll(requiredAuthorities);
   }
+
+  public boolean hasAuthority(Authority authority) {
+    return hasAllAuthorities(new Authority[] {authority});
+  }
 }

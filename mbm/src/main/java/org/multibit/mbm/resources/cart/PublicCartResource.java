@@ -80,7 +80,7 @@ public class PublicCartResource extends BaseResource {
   @PUT
   @Timed
   public Response update(
-    @RestrictedTo({Authority.ROLE_CUSTOMER})
+    @RestrictedTo({Authority.ROLE_PUBLIC})
     User customerUser,
     PublicUpdateCartRequest updateCartRequest) {
 

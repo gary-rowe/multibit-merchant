@@ -11,18 +11,18 @@ import javax.ws.rs.core.UriInfo;
 /**
  * <p>Bridge to provide the following to {@link org.multibit.mbm.db.dto.User}:</p>
  * <ul>
- * <li>Creates representations of a User for a Customer</li>
+ * <li>Creates representations of a User for the anonymous public</li>
  * </ul>
  *
  * @since 0.0.1
  */
-public class CustomerMinimalUserBridge extends BaseBridge<User> {
+public class PublicUserBridge extends BaseBridge<User> {
 
   /**
    * @param uriInfo   The {@link javax.ws.rs.core.UriInfo} containing the originating request information
    * @param principal An optional {@link org.multibit.mbm.db.dto.User} to provide a security principal
    */
-  public CustomerMinimalUserBridge(UriInfo uriInfo, Optional<User> principal) {
+  public PublicUserBridge(UriInfo uriInfo, Optional<User> principal) {
     super(uriInfo, principal);
   }
 
