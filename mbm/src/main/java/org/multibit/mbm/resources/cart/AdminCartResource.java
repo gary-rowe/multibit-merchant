@@ -5,7 +5,7 @@ import com.yammer.dropwizard.jersey.caching.CacheControl;
 import com.yammer.metrics.annotation.Timed;
 import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.api.request.cart.AdminUpdateCartRequest;
-import org.multibit.mbm.api.request.cart.CustomerCartItem;
+import org.multibit.mbm.api.request.cart.PublicCartItem;
 import org.multibit.mbm.api.response.hal.cart.AdminCartBridge;
 import org.multibit.mbm.api.response.hal.cart.AdminCartCollectionBridge;
 import org.multibit.mbm.auth.annotation.RestrictedTo;
@@ -118,7 +118,7 @@ public class AdminCartResource extends BaseResource {
    */
   private void apply(AdminUpdateCartRequest updateRequest, Cart entity) {
 
-    for (CustomerCartItem customerCartItem : updateRequest.getCartItems()) {
+    for (PublicCartItem customerCartItem : updateRequest.getCartItems()) {
       ResourceAsserts.assertNotNull(customerCartItem.getId(), "id");
       ResourceAsserts.assertPositive(customerCartItem.getQuantity(), "quantity");
 

@@ -11,7 +11,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
  * @since 0.0.1
  *         
  */
-public class AdminUpdateCartRequest extends CustomerUpdateCartRequest {
+public class AdminUpdateCartRequest extends PublicUpdateCartRequest {
 
   /**
    * The ID of a particular cart

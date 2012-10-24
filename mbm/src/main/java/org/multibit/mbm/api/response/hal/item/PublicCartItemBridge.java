@@ -13,22 +13,22 @@ import javax.ws.rs.core.UriInfo;
 /**
  * <p>Bridge to provide the following to {@link org.multibit.mbm.db.dto.Item}:</p>
  * <ul>
- * <li>Creates representations of a CartItem for a Customer</li>
+ * <li>Creates representations of a CartItem for the anonymous public</li>
  * </ul>
  *
  * @since 0.0.1
  */
-public class CustomerCartItemBridge extends BaseBridge<CartItem> {
+public class PublicCartItemBridge extends BaseBridge<CartItem> {
 
-  private final CustomerItemBridge customerItemBridge;
+  private final PublicItemBridge customerItemBridge;
 
   /**
    * @param uriInfo   The {@link javax.ws.rs.core.UriInfo} containing the originating request information
    * @param principal An optional {@link org.multibit.mbm.db.dto.User} to provide a security principal
    */
-  public CustomerCartItemBridge(UriInfo uriInfo, Optional<User> principal) {
+  public PublicCartItemBridge(UriInfo uriInfo, Optional<User> principal) {
     super(uriInfo, principal);
-    customerItemBridge = new CustomerItemBridge(uriInfo, principal);
+    customerItemBridge = new PublicItemBridge(uriInfo, principal);
   }
 
   public Resource toResource(CartItem cartItem) {

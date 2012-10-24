@@ -20,12 +20,12 @@ import java.util.Map;
  * @since 0.0.1
  *         
  */
-public class CustomerCartHandler extends BaseHandler {
+public class PublicCartHandler extends BaseHandler {
 
   /**
    * @param locale       The locale providing i18n information
    */
-  public CustomerCartHandler(Locale locale) {
+  public PublicCartHandler(Locale locale) {
     super(locale);
   }
 

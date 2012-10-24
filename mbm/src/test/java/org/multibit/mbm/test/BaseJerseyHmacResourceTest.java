@@ -164,6 +164,17 @@ public abstract class BaseJerseyHmacResourceTest extends BaseResourceTest {
   }
 
   /**
+   * Provides HMAC authentication settings for anonymous Public user
+   */
+  protected User setUpPublicHmacAuthenticator() {
+
+    Role publicRole = DatabaseLoader.buildPublicRole();
+    User anonymousPublic = DatabaseLoader.buildAnonymousPublic(publicRole);
+
+    return setUpHmacAuthenticator(anonymousPublic);
+  }
+
+  /**
    * Provides HMAC authentication settings for Trent Admin
    */
   protected User setUpTrentHmacAuthenticator() {

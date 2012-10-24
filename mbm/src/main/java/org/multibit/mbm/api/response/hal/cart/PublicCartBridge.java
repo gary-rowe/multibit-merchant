@@ -3,7 +3,7 @@ package org.multibit.mbm.api.response.hal.cart;
 import com.google.common.base.Optional;
 import com.theoryinpractise.halbuilder.spi.Resource;
 import org.multibit.mbm.api.response.hal.BaseBridge;
-import org.multibit.mbm.api.response.hal.item.CustomerCartItemBridge;
+import org.multibit.mbm.api.response.hal.item.PublicCartItemBridge;
 import org.multibit.mbm.db.dto.Cart;
 import org.multibit.mbm.db.dto.CartItem;
 import org.multibit.mbm.db.dto.User;
@@ -12,24 +12,24 @@ import org.multibit.mbm.resources.ResourceAsserts;
 import javax.ws.rs.core.UriInfo;
 
 /**
- * <p>Bridge to provide the following to {@link org.multibit.mbm.db.dto.Customer}:</p>
+ * <p>Bridge to provide the following to the anonymous public and Customers:</p>
  * <ul>
- * <li>Creates {@link com.theoryinpractise.halbuilder.spi.Resource} representations</li>
+ * <li>Creates {@link com.theoryinpractise.halbuilder.spi.Resource} representations of a shopping cart</li>
  * </ul>
  *
  * @since 0.0.1
  */
-public class CustomerCartBridge extends BaseBridge<Cart> {
+public class PublicCartBridge extends BaseBridge<Cart> {
 
-  private final CustomerCartItemBridge customerCartItemBridge;
+  private final PublicCartItemBridge publicCartItemBridge;
 
   /**
    * @param uriInfo   The {@link javax.ws.rs.core.UriInfo} containing the originating request information
    * @param principal An optional {@link org.multibit.mbm.db.dto.User} to provide a security principal
    */
-  public CustomerCartBridge(UriInfo uriInfo, Optional<User> principal) {
+  public PublicCartBridge(UriInfo uriInfo, Optional<User> principal) {
     super(uriInfo, principal);
-    customerCartItemBridge = new CustomerCartItemBridge(uriInfo, principal);
+    publicCartItemBridge = new PublicCartItemBridge(uriInfo, principal);
   }
 
   public Resource toResource(Cart cart) {
@@ -54,8 +54,8 @@ public class CustomerCartBridge extends BaseBridge<Cart> {
 
     // Create sub-resources based on items
     for (CartItem cartItem : cart.getCartItems()) {
-      Resource customerCartItemResource = customerCartItemBridge.toResource(cartItem);
-      cartResource.withSubresource("cartitems", customerCartItemResource);
+      Resource publicCartItemResource = publicCartItemBridge.toResource(cartItem);
+      cartResource.withSubresource("cartitems", publicCartItemResource);
     }
 
     return cartResource;

@@ -4,9 +4,9 @@ import com.google.common.base.Optional;
 import com.yammer.dropwizard.jersey.caching.CacheControl;
 import com.yammer.metrics.annotation.Timed;
 import org.multibit.mbm.api.hal.HalMediaType;
-import org.multibit.mbm.api.request.cart.CustomerCartItem;
-import org.multibit.mbm.api.request.cart.CustomerUpdateCartRequest;
-import org.multibit.mbm.api.response.hal.cart.CustomerCartBridge;
+import org.multibit.mbm.api.request.cart.PublicCartItem;
+import org.multibit.mbm.api.request.cart.PublicUpdateCartRequest;
+import org.multibit.mbm.api.response.hal.cart.PublicCartBridge;
 import org.multibit.mbm.auth.annotation.RestrictedTo;
 import org.multibit.mbm.db.dao.CartDao;
 import org.multibit.mbm.db.dao.ItemDao;
@@ -39,7 +39,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 @Path("/cart")
 @Produces({HalMediaType.APPLICATION_HAL_JSON, HalMediaType.APPLICATION_HAL_XML})
-public class CustomerCartResource extends BaseResource {
+public class PublicCartResource extends BaseResource {
 
   CartDao cartDao;
   ItemDao itemDao;
@@ -47,7 +47,7 @@ public class CustomerCartResource extends BaseResource {
   /**
    * Provides this Customer's Cart
    *
-   * @param customerUser A Customer User
+   * @param publicUser A public User
    *
    * @return A response containing the Customer Cart
    */
@@ -55,16 +55,16 @@ public class CustomerCartResource extends BaseResource {
   @Timed
   @CacheControl(maxAge = 6, maxAgeUnit = TimeUnit.HOURS)
   public Response retrieveOwnCart(
-    @RestrictedTo({Authority.ROLE_CUSTOMER})
-    User customerUser) {
+    @RestrictedTo({Authority.ROLE_PUBLIC})
+    User publicUser) {
 
     // Validation
-    ResourceAsserts.assertNotNull(customerUser.getCustomer(), "customer");
+    ResourceAsserts.assertNotNull(publicUser.getCustomer(), "customer");
 
-    Cart cart = customerUser.getCustomer().getCart();
+    Cart cart = publicUser.getCustomer().getCart();
 
     // Provide a representation to the client
-    CustomerCartBridge bridge = new CustomerCartBridge(uriInfo, Optional.of(customerUser));
+    PublicCartBridge bridge = new PublicCartBridge(uriInfo, Optional.of(publicUser));
 
     return ok(bridge, cart);
 
@@ -82,7 +82,7 @@ public class CustomerCartResource extends BaseResource {
   public Response update(
     @RestrictedTo({Authority.ROLE_CUSTOMER})
     User customerUser,
-    CustomerUpdateCartRequest updateCartRequest) {
+    PublicUpdateCartRequest updateCartRequest) {
 
     // Retrieve the cart
     Cart cart = customerUser.getCustomer().getCart();
@@ -94,7 +94,7 @@ public class CustomerCartResource extends BaseResource {
     cart = cartDao.saveOrUpdate(cart);
 
     // Provide a representation to the client
-    CustomerCartBridge bridge = new CustomerCartBridge(uriInfo, Optional.of(customerUser));
+    PublicCartBridge bridge = new PublicCartBridge(uriInfo, Optional.of(customerUser));
 
     return ok(bridge, cart);
 
@@ -105,9 +105,9 @@ public class CustomerCartResource extends BaseResource {
    * @param updateRequest The update request containing the changes
    * @param entity        The entity to which these changes will be applied
    */
-  private void apply(CustomerUpdateCartRequest updateRequest, Cart entity) {
+  private void apply(PublicUpdateCartRequest updateRequest, Cart entity) {
 
-    for (CustomerCartItem customerCartItem : updateRequest.getCartItems()) {
+    for (PublicCartItem customerCartItem : updateRequest.getCartItems()) {
       ResourceAsserts.assertNotNull(customerCartItem.getId(), "id");
       ResourceAsserts.assertPositive(customerCartItem.getQuantity(), "quantity");
 

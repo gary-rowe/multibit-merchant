@@ -14,19 +14,19 @@ import java.util.List;
  * @since 0.0.1
  *         
  */
-public class CustomerUpdateCartRequest {
+public class PublicUpdateCartRequest {
 
   /**
    * The cart items (item id, quantity etc)
    */
   @JsonProperty("cart_items")
-  List<CustomerCartItem> cartItems = Lists.newArrayList();
+  List<PublicCartItem> cartItems = Lists.newArrayList();
 
-  public List<CustomerCartItem> getCartItems() {
+  public List<PublicCartItem> getCartItems() {
     return cartItems;
   }
 
-  public void setCartItems(List<CustomerCartItem> cartItems) {
+  public void setCartItems(List<PublicCartItem> cartItems) {
     this.cartItems = cartItems;
   }
 }

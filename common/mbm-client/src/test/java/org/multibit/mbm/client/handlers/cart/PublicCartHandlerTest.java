@@ -12,7 +12,7 @@ import java.net.URI;
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
-public class CustomerCartHandlerTest extends BaseHandlerTest {
+public class PublicCartHandlerTest extends BaseHandlerTest {
 
   @Test
   public void cart_retrieveCart() throws Exception {

@@ -19,13 +19,13 @@ import java.util.Set;
  *
  * @since 0.0.1
  */
-public class CustomerItemBridge extends BaseBridge<Item> {
+public class PublicItemBridge extends BaseBridge<Item> {
 
   /**
    * @param uriInfo   The {@link javax.ws.rs.core.UriInfo} containing the originating request information
    * @param principal An optional {@link org.multibit.mbm.db.dto.User} to provide a security principal
    */
-  public CustomerItemBridge(UriInfo uriInfo, Optional<User> principal) {
+  public PublicItemBridge(UriInfo uriInfo, Optional<User> principal) {
     super(uriInfo, principal);
   }
 

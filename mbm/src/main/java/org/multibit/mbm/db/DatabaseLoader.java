@@ -39,6 +39,7 @@ public class DatabaseLoader {
   private Role catalogAdminRole = null;
   private Role customerRole = null;
   private Role clientRole = null;
+  private Role publicRole = null;
 
   /**
    * Handles the process of initialising the database using the DAOs
@@ -73,6 +74,10 @@ public class DatabaseLoader {
     clientRole = buildClientRole();
     clientRole = roleDao.saveOrUpdate(clientRole);
 
+    // Build the Public Role and Authorities
+    publicRole = buildPublicRole();
+    publicRole = roleDao.saveOrUpdate(publicRole);
+
     roleDao.flush();
 
   }
@@ -85,6 +90,17 @@ public class DatabaseLoader {
       .withName(Authority.ROLE_CATALOG_ADMIN.name())
       .withDescription("Catalog administrator role")
       .withAuthority(Authority.ROLE_CATALOG_ADMIN)
+      .build();
+  }
+
+  /**
+   * @return A transient instance of the anonymous public role
+   */
+  public static Role buildPublicRole() {
+    return RoleBuilder.newInstance()
+      .withName(Authority.ROLE_PUBLIC.name())
+      .withDescription("Public role")
+      .withPublicAuthorities()
       .build();
   }
 
@@ -259,8 +275,26 @@ public class DatabaseLoader {
     User bob = buildBobCustomer(customerRole);
     userDao.saveOrUpdate(bob);
 
+    // Public
+    User anonymous = buildAnonymousPublic(publicRole);
+    userDao.saveOrUpdate(anonymous);
+
     userDao.flush();
 
+  }
+
+  public static User buildAnonymousPublic(Role publicRole) {
+    Customer anonymousCustomer = CustomerBuilder.newInstance()
+      .build();
+
+    return UserBuilder.newInstance()
+      .withApiKey("anonymous123")
+      .withSecretKey("anonymous456")
+      .withUsername("")
+      .withPassword("")
+      .withRole(publicRole)
+      .withCustomer(anonymousCustomer)
+      .build();
   }
 
   public static User buildBobCustomer(Role customerRole) {

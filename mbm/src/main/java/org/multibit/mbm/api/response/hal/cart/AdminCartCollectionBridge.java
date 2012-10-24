@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class AdminCartCollectionBridge extends BaseBridge<List<Cart>> {
 
-  private final CustomerCartBridge customerCartBridge;
+  private final PublicCartBridge customerCartBridge;
 
   /**
    * @param uriInfo   The {@link javax.ws.rs.core.UriInfo} containing the originating request information
@@ -28,7 +28,7 @@ public class AdminCartCollectionBridge extends BaseBridge<List<Cart>> {
    */
   public AdminCartCollectionBridge(UriInfo uriInfo, Optional<User> principal) {
     super(uriInfo, principal);
-    customerCartBridge = new CustomerCartBridge(uriInfo, principal);
+    customerCartBridge = new PublicCartBridge(uriInfo, principal);
   }
 
   public Resource toResource(List<Cart> carts) {

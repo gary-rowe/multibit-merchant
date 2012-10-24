@@ -8,7 +8,10 @@ import org.multibit.mbm.api.request.cart.PublicUpdateCartRequest;
 import org.multibit.mbm.db.DatabaseLoader;
 import org.multibit.mbm.db.dao.CartDao;
 import org.multibit.mbm.db.dao.ItemDao;
-import org.multibit.mbm.db.dto.*;
+import org.multibit.mbm.db.dto.Cart;
+import org.multibit.mbm.db.dto.Customer;
+import org.multibit.mbm.db.dto.Item;
+import org.multibit.mbm.db.dto.User;
 import org.multibit.mbm.test.BaseJerseyHmacResourceTest;
 import org.multibit.mbm.test.FixtureAsserts;
 
@@ -17,10 +20,7 @@ import javax.ws.rs.core.MediaType;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-/**
- * Verifies that a customer can access the public cart resources
- */
-public class CustomerCartResourceTest extends BaseJerseyHmacResourceTest {
+public class PublicCartResourceTest extends BaseJerseyHmacResourceTest {
 
   private final CartDao cartDao=mock(CartDao.class);
   private final ItemDao itemDao=mock(ItemDao.class);
@@ -31,10 +31,10 @@ public class CustomerCartResourceTest extends BaseJerseyHmacResourceTest {
   protected void setUpResources() {
 
     // Use Alice for Customer access
-    User aliceUser = setUpAliceHmacAuthenticator();
-    aliceUser.setId(1L);
+    User publicUser = setUpAliceHmacAuthenticator();
+    publicUser.setId(1L);
 
-    Customer customer = aliceUser.getCustomer();
+    Customer customer = publicUser.getCustomer();
     customer.setId(1L);
 
     // Configure the Cart with Items

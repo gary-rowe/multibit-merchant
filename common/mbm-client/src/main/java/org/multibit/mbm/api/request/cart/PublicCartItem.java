@@ -3,7 +3,7 @@ package org.multibit.mbm.api.request.cart;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
- *  <p>Value object to provide the following to {@link CustomerUpdateCartRequest}:</p>
+ *  <p>Value object to provide the following to {@link PublicUpdateCartRequest}:</p>
  *  <ul>
  *  <li>Defines the updates to the CartItem</li>
  *  </ul>
@@ -11,7 +11,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
  * @since 0.0.1
  *         
  */
-public class CustomerCartItem {
+public class PublicCartItem {
 
   @JsonProperty
   private Long id;
@@ -22,7 +22,7 @@ public class CustomerCartItem {
   /**
    * Default constructor to allow request building
    */
-  public CustomerCartItem() {
+  public PublicCartItem() {
   }
 
   /**
@@ -31,7 +31,7 @@ public class CustomerCartItem {
    * @param itemId   The Item id
    * @param quantity The quantity required
    */
-  public CustomerCartItem(Long itemId, int quantity) {
+  public PublicCartItem(Long itemId, int quantity) {
     this.id = itemId;
     this.quantity = quantity;
   }

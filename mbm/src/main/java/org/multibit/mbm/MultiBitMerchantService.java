@@ -16,7 +16,7 @@ import org.multibit.mbm.resources.item.AdminItemResource;
 import org.multibit.mbm.resources.item.PublicItemResource;
 import org.multibit.mbm.resources.role.AdminRoleResource;
 import org.multibit.mbm.resources.user.AdminUserResource;
-import org.multibit.mbm.resources.cart.CustomerCartResource;
+import org.multibit.mbm.resources.cart.PublicCartResource;
 import org.multibit.mbm.resources.user.ClientUserResource;
 import org.multibit.mbm.resources.user.CustomerUserResource;
 import org.springframework.context.ApplicationContext;
@@ -81,7 +81,7 @@ public class MultiBitMerchantService extends Service<MultiBitMerchantConfigurati
     // Resources - customer (needs ROLE_CUSTOMER)
     environment.addResource(context.getBean(CustomerUserResource.class));
     environment.addResource(context.getBean(CustomerResource.class));
-    environment.addResource(context.getBean(CustomerCartResource.class));
+    environment.addResource(context.getBean(PublicCartResource.class));
     environment.addResource(context.getBean(BitcoinPaymentResource.class));
     // Resources - public (no authentication)
     environment.addResource(context.getBean(PublicItemResource.class));

@@ -21,7 +21,7 @@ public class RoleBuilder {
   private String description;
   private List<AddAuthority> addAuthorities = Lists.newArrayList();
 
-  private boolean isBuilt= false;
+  private boolean isBuilt = false;
 
   /**
    * @return A new instance of the builder
@@ -46,7 +46,7 @@ public class RoleBuilder {
     role.setName(name);
     role.setDescription(description);
 
-    for (AddAuthority addAuthority: addAuthorities) {
+    for (AddAuthority addAuthority : addAuthorities) {
       addAuthority.applyTo(role);
     }
 
@@ -66,6 +66,7 @@ public class RoleBuilder {
 
   /**
    * @param authority The authority to add
+   *
    * @return The builder
    */
   public RoleBuilder withAuthority(Authority authority) {
@@ -75,6 +76,7 @@ public class RoleBuilder {
 
   /**
    * @param name The name of the role
+   *
    * @return The builder
    */
   public RoleBuilder withName(String name) {
@@ -84,6 +86,7 @@ public class RoleBuilder {
 
   /**
    * @param description The role description
+   *
    * @return The builder
    */
   public RoleBuilder withDescription(String description) {
@@ -93,12 +96,13 @@ public class RoleBuilder {
 
   /**
    * <p>Admin are staff members associated with maintaining the application</p>
+   *
    * @return The builder
    */
   public RoleBuilder withAdminAuthorities() {
 
     // TODO Currently assume that an admin has all authorities for convenience - this will change
-    for (Authority authority: Authority.values()) {
+    for (Authority authority : Authority.values()) {
       withAuthority(authority);
     }
 
@@ -106,7 +110,8 @@ public class RoleBuilder {
   }
 
   /**
-   * <p>Sales are staff members associated with dealing directly with customers</p> 
+   * <p>Sales are staff members associated with dealing directly with customers</p>
+   *
    * @return The builder
    */
   public RoleBuilder withSalesAuthorities() {
@@ -120,8 +125,9 @@ public class RoleBuilder {
   }
 
   /**
-   * <p>Sales are staff members associated with dealing directly with customers</p> 
+   * <p>Sales are staff members associated with dealing directly with customers</p>
    * <p>Manager has more authorities within this group</p>
+   *
    * @return The builder
    */
   public RoleBuilder withSalesManagerAuthorities() {
@@ -138,7 +144,8 @@ public class RoleBuilder {
   }
 
   /**
-   * <p>Marketing are staff members associated with raising awareness of items through campaigns and writing copy</p> 
+   * <p>Marketing are staff members associated with raising awareness of items through campaigns and writing copy</p>
+   *
    * @return The builder
    */
   public RoleBuilder withMarketingAuthorities() {
@@ -149,8 +156,9 @@ public class RoleBuilder {
   }
 
   /**
-   * <p>Marketing are staff members associated with raising awareness of items through campaigns and writing copy</p> 
+   * <p>Marketing are staff members associated with raising awareness of items through campaigns and writing copy</p>
    * <p>Manager has more authorities within this group</p>
+   *
    * @return The builder
    */
   public RoleBuilder withMarketingManagerAuthorities() {
@@ -161,7 +169,8 @@ public class RoleBuilder {
   }
 
   /**
-   * <p>Stores are staff members associated with inventory</p> 
+   * <p>Stores are staff members associated with inventory</p>
+   *
    * @return The builder
    */
   public RoleBuilder withStoresAuthorities() {
@@ -172,8 +181,9 @@ public class RoleBuilder {
   }
 
   /**
-   * <p>Stores are staff members associated with inventory</p> 
+   * <p>Stores are staff members associated with inventory</p>
    * <p>Manager has more authorities within this group</p>
+   *
    * @return The builder
    */
   public RoleBuilder withStoresManagerAuthorities() {
@@ -184,7 +194,8 @@ public class RoleBuilder {
   }
 
   /**
-   * <p>Finance are staff members associated with accounting and financial reporting</p> 
+   * <p>Finance are staff members associated with accounting and financial reporting</p>
+   *
    * @return The builder
    */
   public RoleBuilder withFinanceAuthorities() {
@@ -195,8 +206,9 @@ public class RoleBuilder {
   }
 
   /**
-   * <p>Finance are staff members associated with accounting and financial reporting</p> 
+   * <p>Finance are staff members associated with accounting and financial reporting</p>
    * <p>Manager has more authorities within this group</p>
+   *
    * @return The builder
    */
   public RoleBuilder withFinanceManagerAuthorities() {
@@ -208,6 +220,7 @@ public class RoleBuilder {
 
   /**
    * <p>Delivery are staff members associated with getting inventory to the customer</p>
+   *
    * @return The builder
    */
   public RoleBuilder withDeliveryAuthorities() {
@@ -220,6 +233,7 @@ public class RoleBuilder {
   /**
    * <p>Delivery are staff members associated with getting inventory to the customer</p>
    * <p>Manager has more authorities within this group</p>
+   *
    * @return The builder
    */
   public RoleBuilder withDeliveryManagerAuthorities() {
@@ -230,23 +244,36 @@ public class RoleBuilder {
   }
 
   /**
-   * Configure the various supporting structure to make this Role into a Customer
+   * Configure the various supporting structure to make this Role into an authenticated Customer
+   *
    * @return The builder
    */
   public RoleBuilder withCustomerAuthorities() {
 
-    // TODO Assume that a Customer has all external authorities - this may change with Affiliate concept
-    for (Authority authority: Authority.values()) {
-      if (!authority.isInternal()) {
-        withAuthority(authority);
-      }
-    }
+    withAuthority(Authority.ROLE_PUBLIC);
+    withAuthority(Authority.ROLE_PARTIAL);
+    withAuthority(Authority.ROLE_CUSTOMER);
+
+    return this;
+  }
+
+  /**
+   * Configure the various supporting structure to make this Role into an anonymous
+   * or un-authenticated Customer
+   *
+   * @return The builder
+   */
+  public RoleBuilder withPublicAuthorities() {
+
+    withAuthority(Authority.ROLE_PUBLIC);
+    withAuthority(Authority.ROLE_PARTIAL);
 
     return this;
   }
 
   /**
    * Configure the various supporting structure to make this Role into a Client application
+   *
    * @return The builder
    */
   public RoleBuilder withClientAuthorities() {

@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class CustomerItemCollectionBridge extends BaseBridge<List<Item>> {
 
-  private final CustomerItemBridge customerItemBridge;
+  private final PublicItemBridge customerItemBridge;
 
   /**
    * @param uriInfo   The {@link javax.ws.rs.core.UriInfo} containing the originating request information
@@ -29,7 +29,7 @@ public class CustomerItemCollectionBridge extends BaseBridge<List<Item>> {
    */
   public CustomerItemCollectionBridge(UriInfo uriInfo, Optional<User> principal) {
     super(uriInfo, principal);
-    customerItemBridge = new CustomerItemBridge(uriInfo,principal);
+    customerItemBridge = new PublicItemBridge(uriInfo,principal);
   }
 
   public Resource toResource(List<Item> items) {

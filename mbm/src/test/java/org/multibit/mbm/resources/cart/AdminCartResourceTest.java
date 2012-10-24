@@ -5,12 +5,11 @@ import com.google.common.collect.Lists;
 import org.junit.Test;
 import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.api.request.cart.AdminUpdateCartRequest;
-import org.multibit.mbm.api.request.cart.CustomerCartItem;
+import org.multibit.mbm.api.request.cart.PublicCartItem;
 import org.multibit.mbm.db.DatabaseLoader;
 import org.multibit.mbm.db.dao.CartDao;
 import org.multibit.mbm.db.dao.ItemDao;
 import org.multibit.mbm.db.dto.*;
-import org.multibit.mbm.resources.cart.AdminCartResource;
 import org.multibit.mbm.test.BaseJerseyHmacResourceTest;
 import org.multibit.mbm.test.FixtureAsserts;
 
@@ -125,9 +124,9 @@ public class AdminCartResourceTest extends BaseJerseyHmacResourceTest {
     AdminUpdateCartRequest updateCartRequest = new AdminUpdateCartRequest();
     updateCartRequest.setId(1L);
     // Add a few new items
-    updateCartRequest.getCartItems().add(new CustomerCartItem(3L,3));
+    updateCartRequest.getCartItems().add(new PublicCartItem(3L,3));
     // Remove by setting to zero
-    updateCartRequest.getCartItems().add(new CustomerCartItem(1L,0));
+    updateCartRequest.getCartItems().add(new PublicCartItem(1L,0));
 
     String actualResponse = configureAsClient("/admin/carts/1")
       .accept(HalMediaType.APPLICATION_HAL_JSON)

@@ -4,7 +4,7 @@ import com.google.common.base.Optional;
 import com.yammer.dropwizard.jersey.caching.CacheControl;
 import com.yammer.metrics.annotation.Timed;
 import org.multibit.mbm.api.hal.HalMediaType;
-import org.multibit.mbm.api.response.hal.item.CustomerItemBridge;
+import org.multibit.mbm.api.response.hal.item.PublicItemBridge;
 import org.multibit.mbm.api.response.hal.item.CustomerItemCollectionBridge;
 import org.multibit.mbm.db.dao.ItemDao;
 import org.multibit.mbm.db.dto.Item;
@@ -88,7 +88,7 @@ public class PublicItemResource extends BaseResource {
     ResourceAsserts.assertPresent(item, "item");
 
     // Provide a representation to the client
-    CustomerItemBridge bridge = new CustomerItemBridge(uriInfo, Optional.<User>absent());
+    PublicItemBridge bridge = new PublicItemBridge(uriInfo, Optional.<User>absent());
 
     return ok(bridge, item.get());
 

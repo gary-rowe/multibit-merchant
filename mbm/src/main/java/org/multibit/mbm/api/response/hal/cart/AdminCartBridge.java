@@ -19,7 +19,7 @@ import javax.ws.rs.core.UriInfo;
  */
 public class AdminCartBridge extends BaseBridge<Cart> {
 
-  private final CustomerCartBridge customerCartBridge;
+  private final PublicCartBridge customerCartBridge;
 
   /**
    * @param uriInfo   The {@link javax.ws.rs.core.UriInfo} containing the originating request information
@@ -27,7 +27,7 @@ public class AdminCartBridge extends BaseBridge<Cart> {
    */
   public AdminCartBridge(UriInfo uriInfo, Optional<User> principal) {
     super(uriInfo, principal);
-    customerCartBridge = new CustomerCartBridge(uriInfo,principal);
+    customerCartBridge = new PublicCartBridge(uriInfo,principal);
   }
 
   public Resource toResource(Cart cart) {
