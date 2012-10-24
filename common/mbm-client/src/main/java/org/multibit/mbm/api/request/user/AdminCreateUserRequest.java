@@ -14,7 +14,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
  * @since 0.0.1
  *         
  */
-public class AdminCreateUserRequest extends ClientCreateCustomerRequest {
+public class AdminCreateUserRequest extends WebFormRegistrationRequest {
 
   /**
    * An API key providing an anonymous method of identifying a user

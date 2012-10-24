@@ -11,7 +11,7 @@ import org.multibit.mbm.test.FixtureAsserts;
  */
 public class CustomerUserResourceTest extends BaseJerseyHmacResourceTest {
 
-  private final PublicUserResource testObject=new PublicUserResource();
+  private final CustomerUserResource testObject=new CustomerUserResource();
 
   @Override
   protected void setUpResources() {
@@ -28,7 +28,7 @@ public class CustomerUserResourceTest extends BaseJerseyHmacResourceTest {
   @Test
   public void customerRetrieveUserAsHalJson() throws Exception {
 
-    String actualResponse = configureAsClient("/user")
+    String actualResponse = configureAsClient("/customer/user")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 

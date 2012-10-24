@@ -1,15 +1,21 @@
 package org.multibit.mbm.resources.user;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 import com.yammer.metrics.annotation.Timed;
 import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.api.request.user.WebFormAuthenticationRequest;
-import org.multibit.mbm.api.response.hal.user.PublicUserBridge;
+import org.multibit.mbm.api.request.user.WebFormRegistrationRequest;
+import org.multibit.mbm.api.response.hal.user.ClientUserBridge;
 import org.multibit.mbm.auth.Authority;
 import org.multibit.mbm.auth.annotation.RestrictedTo;
 import org.multibit.mbm.db.dao.UserDao;
+import org.multibit.mbm.db.dto.Customer;
+import org.multibit.mbm.db.dto.CustomerBuilder;
 import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.db.dto.UserBuilder;
 import org.multibit.mbm.resources.BaseResource;
+import org.multibit.mbm.resources.ResourceAsserts;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -17,6 +23,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
+import java.net.URI;
 
 /**
  * <p>Resource to provide the following to application:</p>
@@ -36,7 +44,90 @@ public class ClientUserResource extends BaseResource {
 
   /**
    * @param clientUser The client application acting as the proxy for this user
-   * @param authenticationRequest    The authentication request
+   *
+   * @return A HAL representation of the result
+   */
+  @POST
+  @Timed
+  @Path("/anonymous")
+  public Response anonymousUser(
+    @RestrictedTo({Authority.ROLE_CLIENT})
+    User clientUser) {
+
+    // Build a new Customer for the anonymous user
+    Customer customer = CustomerBuilder
+      .newInstance()
+      .build();
+
+    // Build an anonymous new User
+    User user = UserBuilder
+      .newInstance()
+      .withCustomer(customer)
+      .build();
+
+    // Persist the User with cascade for the Customer
+    User persistentUser = userDao.saveOrUpdate(user);
+
+    // Provide a minimal representation to the client
+    ClientUserBridge bridge = new ClientUserBridge(uriInfo, Optional.of(clientUser));
+    URI location = UriBuilder.fromResource(CustomerUserResource.class).build();
+
+    return created(bridge, persistentUser, location);
+
+  }
+
+  /**
+   * @param clientUser          The client application acting as the proxy for this user
+   * @param registrationRequest The registration request
+   *
+   * @return A HAL representation of the result
+   */
+  @POST
+  @Timed
+  @Path("/register")
+  public Response registerUser(
+    @RestrictedTo({Authority.ROLE_CLIENT})
+    User clientUser,
+    WebFormRegistrationRequest registrationRequest) {
+
+    Preconditions.checkNotNull(registrationRequest);
+    Preconditions.checkNotNull(registrationRequest.getPasswordDigest());
+    Preconditions.checkNotNull(registrationRequest.getUsername());
+
+    // Perform conflict check
+    Optional<User> verificationUser = userDao.getByCredentials(
+      registrationRequest.getUsername(),
+      registrationRequest.getPasswordDigest());
+    ResourceAsserts.assertNotConflicted(verificationUser, "user");
+
+    // Build a new Customer
+    Customer customer = CustomerBuilder
+      .newInstance()
+      .build();
+
+    // Build a new User
+    User user = UserBuilder
+      .newInstance()
+      .withUsername(registrationRequest.getUsername())
+      .withPassword(registrationRequest.getPasswordDigest())
+        // TODO Fill in the rest of the registration details
+      .withCustomer(customer)
+      .build();
+
+    // Persist the User with cascade for the Customer
+    User persistentUser = userDao.saveOrUpdate(user);
+
+    // Provide a minimal representation to the client
+    ClientUserBridge bridge = new ClientUserBridge(uriInfo, Optional.of(clientUser));
+    URI location = uriInfo.getAbsolutePathBuilder().path(persistentUser.getApiKey()).build();
+
+    return created(bridge, persistentUser, location);
+
+  }
+
+  /**
+   * @param clientUser            The client application acting as the proxy for this user
+   * @param authenticationRequest The authentication request
    *
    * @return A HAL representation of the result
    */
@@ -50,7 +141,7 @@ public class ClientUserResource extends BaseResource {
 
     Optional<User> requestedUser = userDao.getByCredentials(authenticationRequest.getUsername(), authenticationRequest.getPasswordDigest());
 
-    PublicUserBridge bridge = new PublicUserBridge(uriInfo, Optional.of(clientUser));
+    ClientUserBridge bridge = new ClientUserBridge(uriInfo, Optional.of(clientUser));
 
     // The bridge can handle a null
     return ok(bridge, requestedUser.orNull());
@@ -60,4 +151,5 @@ public class ClientUserResource extends BaseResource {
   public void setUserDao(UserDao userDao) {
     this.userDao = userDao;
   }
+
 }

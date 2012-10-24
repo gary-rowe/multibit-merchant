@@ -1,12 +1,8 @@
 package org.multibit.mbm.client.handlers.user;
 
 import com.google.common.base.Optional;
-import com.google.common.base.Preconditions;
 import com.theoryinpractise.halbuilder.spi.ReadableResource;
-import org.multibit.mbm.api.hal.HalMediaType;
-import org.multibit.mbm.api.request.user.WebFormAuthenticationRequest;
 import org.multibit.mbm.auth.Authority;
-import org.multibit.mbm.auth.webform.WebFormClientCredentials;
 import org.multibit.mbm.client.HalHmacResourceFactory;
 import org.multibit.mbm.client.handlers.BaseHandler;
 import org.multibit.mbm.model.ClientUser;
@@ -24,40 +20,27 @@ import java.util.Map;
  * @since 0.0.1
  *         
  */
-public class CustomerUserHandler extends BaseHandler {
+public class ClientUserHandler extends BaseHandler {
 
   /**
-   * @param locale       The locale providing i18n information
+   * @param locale The locale providing i18n information
    */
-  public CustomerUserHandler(Locale locale) {
+  public ClientUserHandler(Locale locale) {
     super(locale);
   }
 
   /**
-   * Retrieve the user's own profile
+   * Register an anonymous user for the current session
    *
-   * @param credentials The web form credentials provided by the user
-   *
-   * @return A matching {@link org.multibit.mbm.model.PublicItem}
+   * @return A matching user
    */
-  public Optional<ClientUser> authenticateWithWebForm(WebFormClientCredentials credentials) {
-
-    // Sanity check
-    Preconditions.checkNotNull(credentials);
-    Preconditions.checkNotNull(credentials.getUsername());
-    Preconditions.checkNotNull(credentials.getPasswordDigest());
-
-    WebFormAuthenticationRequest entity = new WebFormAuthenticationRequest(
-      credentials.getUsername(),
-      credentials.getPasswordDigest()
-    );
+  public Optional<ClientUser> registerAnonymously() {
 
     // TODO Replace "magic string" with auto-discover based on link rel
-    String path = String.format("/client/user/authenticate");
+    String path = String.format("/client/user/anonymous");
 
     String hal = HalHmacResourceFactory.INSTANCE
       .newClientResource(locale, path)
-      .entity(entity, HalMediaType.APPLICATION_JSON_TYPE)
       .post(String.class);
 
     // Read the HAL
@@ -73,16 +56,16 @@ public class CustomerUserHandler extends BaseHandler {
       return Optional.absent();
     }
 
-    // Must assume that the authentication was successful
+    // Must assume that the registration was successful
     // Using the credentials later would mean failed authentication anyway
     clientUser.setApiKey(apiKey);
     clientUser.setSecretKey(secretKey);
-    clientUser.setCachedAuthorities(new Authority[] {Authority.ROLE_CUSTOMER});
+    clientUser.setCachedAuthorities(new Authority[]{Authority.ROLE_PUBLIC});
 
     return Optional.of(clientUser);
   }
 
-    /**
+  /**
    * Retrieve the user's own profile
    *
    * @param clientUser The ClientUser containing the API access information
@@ -115,7 +98,7 @@ public class CustomerUserHandler extends BaseHandler {
       }
     }
     // Optional properties
-    for (Map.Entry<String,Optional<Object>> entry: properties.entrySet()) {
+    for (Map.Entry<String, Optional<Object>> entry : properties.entrySet()) {
       customerUser.getOptionalProperties().put(entry.getKey(), (String) entry.getValue().get());
     }
 

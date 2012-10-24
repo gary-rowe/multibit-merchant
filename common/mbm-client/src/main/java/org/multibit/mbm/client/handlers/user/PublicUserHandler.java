@@ -4,9 +4,9 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.theoryinpractise.halbuilder.spi.ReadableResource;
 import org.multibit.mbm.api.hal.HalMediaType;
-import org.multibit.mbm.api.request.user.WebFormAuthenticationRequest;
+import org.multibit.mbm.api.request.user.WebFormRegistrationRequest;
 import org.multibit.mbm.auth.Authority;
-import org.multibit.mbm.auth.webform.WebFormClientCredentials;
+import org.multibit.mbm.auth.webform.WebFormClientRegistration;
 import org.multibit.mbm.client.HalHmacResourceFactory;
 import org.multibit.mbm.client.handlers.BaseHandler;
 import org.multibit.mbm.model.ClientUser;
@@ -24,36 +24,33 @@ import java.util.Map;
  * @since 0.0.1
  *         
  */
-public class CustomerUserHandler extends BaseHandler {
+public class PublicUserHandler extends BaseHandler {
 
   /**
    * @param locale       The locale providing i18n information
    */
-  public CustomerUserHandler(Locale locale) {
+  public PublicUserHandler(Locale locale) {
     super(locale);
   }
 
   /**
    * Retrieve the user's own profile
    *
-   * @param credentials The web form credentials provided by the user
+   * @param registration The web form registration details provided by the user
    *
-   * @return A matching {@link org.multibit.mbm.model.PublicItem}
+   * @return A matching user
    */
-  public Optional<ClientUser> authenticateWithWebForm(WebFormClientCredentials credentials) {
+  public Optional<ClientUser> registerWithWebForm(WebFormClientRegistration registration) {
 
     // Sanity check
-    Preconditions.checkNotNull(credentials);
-    Preconditions.checkNotNull(credentials.getUsername());
-    Preconditions.checkNotNull(credentials.getPasswordDigest());
+    Preconditions.checkNotNull(registration);
 
-    WebFormAuthenticationRequest entity = new WebFormAuthenticationRequest(
-      credentials.getUsername(),
-      credentials.getPasswordDigest()
-    );
+    WebFormRegistrationRequest entity = new WebFormRegistrationRequest();
+    entity.setUsername(registration.getUsername());
+    entity.setPasswordDigest(registration.getPasswordDigest());
 
     // TODO Replace "magic string" with auto-discover based on link rel
-    String path = String.format("/client/user/authenticate");
+    String path = String.format("/client/user/register");
 
     String hal = HalHmacResourceFactory.INSTANCE
       .newClientResource(locale, path)
@@ -73,7 +70,7 @@ public class CustomerUserHandler extends BaseHandler {
       return Optional.absent();
     }
 
-    // Must assume that the authentication was successful
+    // Must assume that the registration was successful
     // Using the credentials later would mean failed authentication anyway
     clientUser.setApiKey(apiKey);
     clientUser.setSecretKey(secretKey);

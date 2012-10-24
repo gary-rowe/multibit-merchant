@@ -13,9 +13,25 @@ package org.multibit.mbm.api.request.user;
  * @since 0.0.1
  *         
  */
-public class ClientCreateCustomerRequest extends WebFormAuthenticationRequest {
+public class WebFormRegistrationRequest {
 
-  // TODO Add in registration fields
+  // TODO Add in the rest of the registration fields
+  private String username = null;
+  private String passwordDigest = null;
 
+  public String getPasswordDigest() {
+    return passwordDigest;
+  }
 
+  public void setPasswordDigest(String passwordDigest) {
+    this.passwordDigest = passwordDigest;
+  }
+
+  public String getUsername() {
+    return username;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
 }

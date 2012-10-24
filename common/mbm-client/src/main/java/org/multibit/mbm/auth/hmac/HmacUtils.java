@@ -191,8 +191,7 @@ public class HmacUtils {
 
 
     // Check for payload
-    if ("POST".equalsIgnoreCase(httpMethod) ||
-      "PUT".equalsIgnoreCase(httpMethod)) {
+    if (isEntityRequired(clientRequest.getEntity(), httpMethod)) {
       // Configure the request method
       curlCommand.append("--request ");
       curlCommand.append(httpMethod);
@@ -286,8 +285,7 @@ public class HmacUtils {
     canonicalRepresentation.append(uri.toString());
 
     // Check for payload
-    if ("POST".equalsIgnoreCase(httpMethod) ||
-      "PUT".equalsIgnoreCase(httpMethod)) {
+    if (isEntityRequired(clientRequest.getEntity(), httpMethod)) {
       // Include the entity as a simple string
       canonicalRepresentation.append("\n");
       // Get the message body writer that will be used later
@@ -370,14 +368,14 @@ public class HmacUtils {
     canonicalRepresentation.append(containerRequest.getRequestUri().toString());
 
     // Check for payload
-    if ("POST".equalsIgnoreCase(httpMethod) ||
-      "PUT".equalsIgnoreCase(httpMethod)) {
+    if (isEntityRequired(containerRequest.getEntityInputStream(), httpMethod)) {
       // Include the entity as a simple string
-      canonicalRepresentation.append("\n");
       ByteArrayOutputStream out = new ByteArrayOutputStream();
       InputStream in = containerRequest.getEntityInputStream();
       try {
         if (in.available() > 0) {
+          // Simplifies server side logic for isEntityRequired
+          canonicalRepresentation.append("\n");
           ReaderWriter.writeTo(in, out);
 
           canonicalRepresentation.append(out);
@@ -393,6 +391,13 @@ public class HmacUtils {
     }
 
     return canonicalRepresentation.toString();
+  }
+
+  private static boolean isEntityRequired(Object entity, String httpMethod) {
+    return (
+      "POST".equalsIgnoreCase(httpMethod) ||
+        "PUT".equalsIgnoreCase(httpMethod)) &&
+      entity != null;
   }
 
 }

@@ -19,11 +19,11 @@ import java.util.UUID;
  */
 public class UserBuilder {
 
-  private final PasswordEncryptor weakPasswordEncryptor=new RFC2307SHAPasswordEncryptor();
-  private final PasswordEncryptor strongPasswordEncryptor =new StrongPasswordEncryptor();
+  private final PasswordEncryptor weakPasswordEncryptor = new RFC2307SHAPasswordEncryptor();
+  private final PasswordEncryptor strongPasswordEncryptor = new StrongPasswordEncryptor();
 
-  private String apiKey;
-  private String secretKey;
+  private String apiKey = null;
+  private String secretKey = null;
   private List<AddContactMethod> addContactMethods = Lists.newArrayList();
   private List<AddRole> addRoles = Lists.newArrayList();
   private String username;
@@ -32,7 +32,12 @@ public class UserBuilder {
 
   private boolean isBuilt = false;
 
-  public static boolean useWeakDigestOnly = false;
+  /**
+   * Indicates that repeatable test data should be used
+   * This is because it is a nightmare to fully mock the behaviour
+   * of this class and this presents a simple alternative
+   */
+  public static boolean isTestMode = false;
 
   /**
    * @return A new instance of the builder
@@ -66,12 +71,13 @@ public class UserBuilder {
 
     user.setUsername(username);
 
+    // TODO Use Mockito for this
     if (plainPassword != null) {
       // Make a digest of the plain password since that is what will be received
       // during authentication requests
       user.setPasswordDigest(weakPasswordEncryptor.encryptPassword(plainPassword));
       // In test mode we don't use the strong multi-pass digest
-      if (!useWeakDigestOnly) {
+      if (!isTestMode) {
         // In production the digest is used to seed the strong multi-pass digest
         user.setPasswordDigest(strongPasswordEncryptor.encryptPassword(user.getPasswordDigest()));
       }
@@ -103,20 +109,16 @@ public class UserBuilder {
   }
 
   /**
-   * Increased visibility to allow mocking
-   *
    * @return A suitable API key
    */
-  /* package */ String createApiKey() {
+  private String createApiKey() {
     return UUID.randomUUID().toString();
   }
 
   /**
-   * Increased visibility to allow mocking
-   *
    * @return A suitable secret key
    */
-  /* package */ String createSecretKey() {
+  private String createSecretKey() {
     return createApiKey() + createApiKey();
   }
 

@@ -36,7 +36,7 @@ public class AdminUserCollectionBridge extends BaseBridge<List<User>> {
 
     ResourceFactory resourceFactory = getResourceFactory();
 
-    Resource userList = resourceFactory.newResource("/user");
+    Resource userList = resourceFactory.newResource(uriInfo.getRequestUri());
 
     for (User user : users) {
       Resource userResource = customerUserBridge.toResource(user);

@@ -2,6 +2,9 @@ package org.multibit.mbm.api.request.user;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 /**
  * <p>Base request to provide the following to Resources:</p>
  * <ul>
@@ -16,16 +19,36 @@ public class WebFormAuthenticationRequest {
   /**
    * A username
    */
+  @Valid
+  @NotNull
   @JsonProperty
-  private String username = null;
+  private String username;
 
   /**
    * The password after being run through a one pass digest algorithm, such as SHA-256
    * This provides a small level of protection against casual browsing of accidental server log leakage
    * during development. It is not intended for storage.
    */
+  @Valid
+  @NotNull
   @JsonProperty
-  private String passwordDigest = null;
+  private String passwordDigest;
+
+  /**
+   * Default constructor for Jackson
+   */
+  public WebFormAuthenticationRequest() {
+  }
+
+  /**
+   *
+   * @param username The username from the web form
+   * @param passwordDigest The password digest
+   */
+  public WebFormAuthenticationRequest(String username, String passwordDigest) {
+    this.username = username;
+    this.passwordDigest = passwordDigest;
+  }
 
   /**
    * @return The password digest (see notes)
@@ -34,19 +57,11 @@ public class WebFormAuthenticationRequest {
     return passwordDigest;
   }
 
-  public void setPasswordDigest(String passwordDigest) {
-    this.passwordDigest = passwordDigest;
-  }
-
   /**
    * @return The user name
    */
   public String getUsername() {
     return username;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
   }
 
 }

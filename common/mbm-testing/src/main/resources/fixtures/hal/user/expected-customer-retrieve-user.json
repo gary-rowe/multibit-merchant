@@ -1,5 +1,5 @@
 {"_links":{
   "self":{
-    "href":"http://localhost:9998/user/alice123"
+    "href":"http://localhost:9998/customer/user"
   }
 }, "api_key":"alice123", "email":"alice@example.org", "last_name":"Customer", "names":"Alice", "secret_key":"alice456", "username":"alice"}

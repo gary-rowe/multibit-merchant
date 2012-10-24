@@ -2,6 +2,7 @@ package org.multibit.mbm.client;
 
 import org.multibit.mbm.client.handlers.item.PublicItemCollectionHandler;
 import org.multibit.mbm.client.handlers.item.PublicItemHandler;
+import org.multibit.mbm.client.handlers.user.PublicUserHandler;
 
 import java.util.Locale;
 
@@ -43,4 +44,10 @@ public class PublicMerchantClient extends BaseMerchantClient {
     return new PublicItemCollectionHandler(locale);
   }
 
+  /**
+   * @return A suitable handler for item collection searches
+   */
+  public PublicUserHandler user() {
+    return new PublicUserHandler(locale);
+  }
 }
