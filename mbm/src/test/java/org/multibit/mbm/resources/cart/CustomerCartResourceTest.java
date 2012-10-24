@@ -1,4 +1,4 @@
-package org.multibit.mbm.resources;
+package org.multibit.mbm.resources.cart;
 
 import com.google.common.base.Optional;
 import org.junit.Test;
@@ -9,6 +9,7 @@ import org.multibit.mbm.db.DatabaseLoader;
 import org.multibit.mbm.db.dao.CartDao;
 import org.multibit.mbm.db.dao.ItemDao;
 import org.multibit.mbm.db.dto.*;
+import org.multibit.mbm.resources.cart.CustomerCartResource;
 import org.multibit.mbm.test.BaseJerseyHmacResourceTest;
 import org.multibit.mbm.test.FixtureAsserts;
 

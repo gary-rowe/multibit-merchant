@@ -34,19 +34,24 @@ public class CookieClientCredentials {
 
   private final Authority[] requiredAuthorities;
 
+  private final boolean isPublic;
+
   /**
    * @param sessionToken        The session token (expires when browser tab is closed)
    * @param rememberMeToken     The remember-me token (expires after a length of time)
    * @param requiredAuthorities The authorities required to authenticate (provided by the {@link org.multibit.mbm.auth.annotation.RestrictedTo} annotation)
+   * @param isPublic            True if the authentication can be made purely at the client side
    */
   public CookieClientCredentials(
     UUID sessionToken,
     Optional<UUID> rememberMeToken,
-    Authority[] requiredAuthorities
+    Authority[] requiredAuthorities,
+    boolean isPublic
   ) {
     this.sessionToken = checkNotNull(sessionToken);
     this.rememberMeToken = checkNotNull(rememberMeToken);
     this.requiredAuthorities = checkNotNull(requiredAuthorities);
+    this.isPublic = isPublic;
   }
 
   /**
@@ -70,6 +75,13 @@ public class CookieClientCredentials {
     return requiredAuthorities;
   }
 
+  /**
+   * @return True if the authentication can be made purely at the client side (anonymous for session duration)
+   */
+  public boolean isPublic() {
+    return isPublic;
+  }
+
   @Override
   public String toString() {
     return Objects.toStringHelper(this)
@@ -77,6 +89,5 @@ public class CookieClientCredentials {
       .add("rememberMeToken", rememberMeToken)
       .toString();
   }
-
 
 }

@@ -6,6 +6,8 @@ import com.yammer.dropwizard.auth.Authenticator;
 import org.multibit.mbm.auth.InMemorySessionTokenCache;
 import org.multibit.mbm.model.ClientUser;
 
+import java.util.UUID;
+
 /**
  * <p>Authenticator to provide the following to application:</p>
  * <ul>
@@ -25,6 +27,15 @@ public class CookieClientAuthenticator implements Authenticator<CookieClientCred
         .getBySessionToken(credentials.getSessionToken());
 
     if (!user.isPresent()) {
+      // Check if the user can be created on the fly
+      if (credentials.isPublic()) {
+        ClientUser publicUser = new ClientUser();
+        publicUser.setSessionToken(UUID.randomUUID());
+        InMemorySessionTokenCache.INSTANCE
+         .put(publicUser.getSessionToken(), publicUser);
+        return Optional.of(publicUser);
+      }
+
       return Optional.absent();
     }
 

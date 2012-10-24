@@ -11,10 +11,14 @@ import org.multibit.mbm.auth.hmac.HmacServerRestrictedToProvider;
 import org.multibit.mbm.db.dto.User;
 import org.multibit.mbm.health.TemplatePropertyHealthCheck;
 import org.multibit.mbm.resources.*;
-import org.multibit.mbm.resources.admin.AdminCartResource;
-import org.multibit.mbm.resources.admin.AdminItemResource;
-import org.multibit.mbm.resources.admin.AdminRoleResource;
-import org.multibit.mbm.resources.admin.AdminUserResource;
+import org.multibit.mbm.resources.cart.AdminCartResource;
+import org.multibit.mbm.resources.item.AdminItemResource;
+import org.multibit.mbm.resources.item.PublicItemResource;
+import org.multibit.mbm.resources.role.AdminRoleResource;
+import org.multibit.mbm.resources.user.AdminUserResource;
+import org.multibit.mbm.resources.cart.CustomerCartResource;
+import org.multibit.mbm.resources.user.ClientUserResource;
+import org.multibit.mbm.resources.user.CustomerUserResource;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

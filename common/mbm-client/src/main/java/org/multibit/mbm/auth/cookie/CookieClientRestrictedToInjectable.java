@@ -28,6 +28,7 @@ class CookieClientRestrictedToInjectable<T> extends AbstractHttpContextInjectabl
   private final String sessionTokenName;
   private final String rememberMeName;
   private final Authority[] requiredAuthorities;
+  private boolean isPublic=false;
 
   /**
    * @param authenticator The Authenticator that will compare credentials
@@ -44,6 +45,15 @@ class CookieClientRestrictedToInjectable<T> extends AbstractHttpContextInjectabl
     this.sessionTokenName = sessionTokenName;
     this.rememberMeName = rememberMeName;
     this.requiredAuthorities = requiredAuthorities;
+
+    // Check for public access (session token creation)
+    for (Authority authority: requiredAuthorities) {
+      if (Authority.ROLE_PUBLIC.equals(authority)) {
+        isPublic=true;
+        break;
+      }
+    }
+
   }
 
   public Authenticator<CookieClientCredentials, T> getAuthenticator() {
@@ -67,6 +77,7 @@ class CookieClientRestrictedToInjectable<T> extends AbstractHttpContextInjectabl
 
     Map<String, Cookie> cookies = httpContext.getRequest().getCookies();
 
+
     try {
 
       Optional<UUID> sessionToken = Optional.absent();
@@ -83,7 +94,11 @@ class CookieClientRestrictedToInjectable<T> extends AbstractHttpContextInjectabl
       }
 
       // Build the credentials
-      final CookieClientCredentials credentials = new CookieClientCredentials(sessionToken.get(), rememberMeToken, requiredAuthorities);
+      final CookieClientCredentials credentials = new CookieClientCredentials(
+        sessionToken.get(),
+        rememberMeToken,
+        requiredAuthorities,
+        isPublic);
 
       // Authenticate
       final Optional<T> result = authenticator.authenticate(credentials);

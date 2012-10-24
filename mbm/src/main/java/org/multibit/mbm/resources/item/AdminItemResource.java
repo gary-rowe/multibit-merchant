@@ -1,4 +1,4 @@
-package org.multibit.mbm.resources.admin;
+package org.multibit.mbm.resources.item;
 
 import com.google.common.base.Optional;
 import com.yammer.dropwizard.jersey.caching.CacheControl;

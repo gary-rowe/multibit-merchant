@@ -51,6 +51,8 @@
         "ROLE_FINANCE_MANAGER":true,
         "ROLE_MARKETING":true,
         "ROLE_MARKETING_MANAGER":true,
+        "ROLE_PARTIAL":true,
+        "ROLE_PUBLIC":true,
         "ROLE_SALES":true,
         "ROLE_SALES_MANAGER":true,
         "ROLE_STORES":true,

@@ -1,4 +1,4 @@
-package org.multibit.mbm.resources;
+package org.multibit.mbm.resources.cart;
 
 import com.google.common.base.Optional;
 import com.yammer.dropwizard.jersey.caching.CacheControl;
@@ -14,6 +14,8 @@ import org.multibit.mbm.auth.Authority;
 import org.multibit.mbm.db.dto.Cart;
 import org.multibit.mbm.db.dto.Item;
 import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.resources.BaseResource;
+import org.multibit.mbm.resources.ResourceAsserts;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.GET;
@@ -57,7 +59,7 @@ public class CustomerCartResource extends BaseResource {
     User customerUser) {
 
     // Validation
-    ResourceAsserts.assertNotNull(customerUser.getCustomer(),"customer");
+    ResourceAsserts.assertNotNull(customerUser.getCustomer(), "customer");
 
     Cart cart = customerUser.getCustomer().getCart();
 

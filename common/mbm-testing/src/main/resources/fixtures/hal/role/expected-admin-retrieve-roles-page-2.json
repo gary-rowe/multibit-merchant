@@ -22,7 +22,9 @@
         "CHANGE_OWN_PASSWORD":true,
         "RETRIEVE_ITEMS":true,
         "RETRIEVE_ORDERS":true,
-        "ROLE_CUSTOMER":true
+        "ROLE_CUSTOMER":true,
+        "ROLE_PARTIAL":true,
+        "ROLE_PUBLIC":true
       }
     }
   }

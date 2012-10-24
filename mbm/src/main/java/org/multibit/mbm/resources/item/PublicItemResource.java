@@ -1,4 +1,4 @@
-package org.multibit.mbm.resources;
+package org.multibit.mbm.resources.item;
 
 import com.google.common.base.Optional;
 import com.yammer.dropwizard.jersey.caching.CacheControl;
@@ -9,6 +9,8 @@ import org.multibit.mbm.api.response.hal.item.CustomerItemCollectionBridge;
 import org.multibit.mbm.db.dao.ItemDao;
 import org.multibit.mbm.db.dto.Item;
 import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.resources.BaseResource;
+import org.multibit.mbm.resources.ResourceAsserts;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -83,7 +85,7 @@ public class PublicItemResource extends BaseResource {
     String sku = rawSku;
 
     Optional<Item> item = itemDao.getBySKU(sku);
-    ResourceAsserts.assertPresent(item,"item");
+    ResourceAsserts.assertPresent(item, "item");
 
     // Provide a representation to the client
     CustomerItemBridge bridge = new CustomerItemBridge(uriInfo, Optional.<User>absent());

@@ -1,4 +1,4 @@
-package org.multibit.mbm.resources;
+package org.multibit.mbm.resources.user;
 
 import com.google.common.base.Optional;
 import com.yammer.dropwizard.jersey.caching.CacheControl;
@@ -8,6 +8,7 @@ import org.multibit.mbm.api.response.hal.user.CustomerUserBridge;
 import org.multibit.mbm.auth.Authority;
 import org.multibit.mbm.auth.annotation.RestrictedTo;
 import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.resources.BaseResource;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.GET;

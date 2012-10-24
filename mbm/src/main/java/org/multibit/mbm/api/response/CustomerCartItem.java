@@ -5,7 +5,7 @@ import org.multibit.mbm.db.dto.CartItem;
 import org.multibit.mbm.db.dto.Item;
 
 /**
- *  <p>Value object to provide the following to {@link org.multibit.mbm.resources.CustomerCartResource}:</p>
+ *  <p>Value object to provide the following to {@link org.multibit.mbm.resources.cart.CustomerCartResource}:</p>
  *  <ul>
  *  <li>Defines part of a Customer request entity</li>
  *  </ul>

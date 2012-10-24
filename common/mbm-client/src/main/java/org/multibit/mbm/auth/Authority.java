@@ -19,6 +19,7 @@ public enum Authority {
   // Entities are based on primary entities (USER, CUSTOMER, CART, ITEM, INVOICE)
 
   // Roles (act as EnumSets from the fine grained authorities defined later)
+
   // Internal roles
   /**
    * The administrator role that can reach administration API functions
@@ -75,8 +76,16 @@ public enum Authority {
 
   // External roles
   /**
-   * An authenticated customer
+   * An anonymous (public) customer
    */
+  ROLE_PUBLIC(false),
+  /**
+   * An un-authenticated customer in possession of a "remember me" token
+   */
+  ROLE_PARTIAL(false),
+  /**
+  * An authenticated customer
+  */
   ROLE_CUSTOMER(false),
 
   // Granted authorities

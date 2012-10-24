@@ -1,8 +1,9 @@
-package org.multibit.mbm.resources;
+package org.multibit.mbm.resources.user;
 
 import org.junit.Test;
 import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.resources.user.CustomerUserResource;
 import org.multibit.mbm.test.BaseJerseyHmacResourceTest;
 import org.multibit.mbm.test.FixtureAsserts;
 

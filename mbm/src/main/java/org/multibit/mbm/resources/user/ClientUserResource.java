@@ -1,4 +1,4 @@
-package org.multibit.mbm.resources;
+package org.multibit.mbm.resources.user;
 
 import com.google.common.base.Optional;
 import com.yammer.metrics.annotation.Timed;
@@ -9,6 +9,7 @@ import org.multibit.mbm.auth.Authority;
 import org.multibit.mbm.auth.annotation.RestrictedTo;
 import org.multibit.mbm.db.dao.UserDao;
 import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.resources.BaseResource;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;

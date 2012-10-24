@@ -1,4 +1,4 @@
-package org.multibit.mbm.resources.admin;
+package org.multibit.mbm.resources.user;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
@@ -11,6 +11,7 @@ import org.multibit.mbm.db.DatabaseLoader;
 import org.multibit.mbm.db.dao.UserDao;
 import org.multibit.mbm.db.dto.Role;
 import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.resources.user.AdminUserResource;
 import org.multibit.mbm.test.BaseJerseyHmacResourceTest;
 import org.multibit.mbm.test.FixtureAsserts;
 
