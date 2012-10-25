@@ -176,7 +176,8 @@ public class DatabaseLoader {
       .withPrimaryFieldDetail(ItemField.TITLE, "A Year In Provence", "en")
       .withPrimaryFieldDetail(ItemField.AUTHOR, "Peter Mayle", "en")
       .withPrimaryFieldDetail(ItemField.SUMMARY, "Enjoy an irresistible feast of humour and discover the joys of French rural living with Peter Mayle's bestselling, much-loved account of 'A Year In Provence'.", "en")
-      .withPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/1/thumbnail1.png", "en")
+      .withPrimaryFieldDetail(ItemField.GENRE, "Comedy", "en")
+      .withPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "http://localhost:9090/images/book.jpg", "en")
       .build();
   }
 
@@ -191,7 +192,8 @@ public class DatabaseLoader {
       .withPrimaryFieldDetail(ItemField.TITLE, "Plumbing and Central Heating", "en")
       .withPrimaryFieldDetail(ItemField.AUTHOR, "Mike Lawrence", "en")
       .withPrimaryFieldDetail(ItemField.SUMMARY, "This guide begins with the basic skills of plumbing, which once mastered, can be applied to any situation, from mending a leaking tap to installing a new shower unit.", "en")
-      .withPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/3/thumbnail3.png", "en")
+      .withPrimaryFieldDetail(ItemField.GENRE, "DIY", "en")
+      .withPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "http://localhost:9090/images/book.jpg", "en")
       .build();
   }
 
@@ -207,6 +209,7 @@ public class DatabaseLoader {
       .withPrimaryFieldDetail(ItemField.TITLE, "The Quantum Thief", "en")
       .withPrimaryFieldDetail(ItemField.AUTHOR, "Hannu Rajaniemi", "en")
       .withPrimaryFieldDetail(ItemField.SUMMARY, "The most exciting SF debut of the last five years - a star to stand alongside Alistair Reynolds and Richard Morgan.", "en")
+      .withPrimaryFieldDetail(ItemField.GENRE, "Sci-Fi", "en")
       .withPrimaryFieldDetail(ItemField.PUBLISHER, "Gollancz (1 Nov 2011)", "en")
       .withPrimaryFieldDetail(ItemField.FORMAT, "Paperback", "en")
       .withPrimaryFieldDetail(ItemField.PAGE_COUNT, "336", "en")
@@ -214,9 +217,8 @@ public class DatabaseLoader {
         "<p>Jean le Flambeur is a post-human criminal, mind burglar, confidence artist and trickster. His origins are shrouded in mystery, but his exploits are known throughout the Heterarchy - from breaking into the vast Zeusbrains of the Inner System to steal their thoughts, to stealing rare Earth antiques from the aristocrats of the Moving Cities of Mars.</p>" +
         "<p>Except that Jean made one mistake. Now he is condemned to play endless variations of a game-theoretic riddle in the vast virtual jail of the Axelrod Archons - the Dilemma Prison - against countless copies of himself.</p>" +
         "<p>Jean's routine of death, defection and cooperation is upset by the arrival of Mieli and her spidership, Perhonen. She offers him a chance to win back his freedom and the powers of his old self - in exchange for finishing the one heist he never quite managed...</p>", "en")
-      .withPrimaryFieldDetail(ItemField.GENRE, "Sci-Fi", "en")
       .withPrimaryFieldDetail(ItemField.SIZE, "12.9 x 2.1 x 19.6 cm", "en")
-      .withPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/4/thumbnail4.png", "en")
+      .withPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "http://localhost:9090/images/book.jpg", "en")
       .build();
   }
 
@@ -232,7 +234,8 @@ public class DatabaseLoader {
       .withPrimaryFieldDetail(ItemField.TITLE, "The Complete Works of Emily Dickinson", "en")
       .withPrimaryFieldDetail(ItemField.AUTHOR, "Emily Dickinson, edited by Thomas H Johnson", "en")
       .withPrimaryFieldDetail(ItemField.SUMMARY, "The Complete Poems of Emily Dickinson is the only one-volume edition containing all Emily Dickinson's poems.", "en")
-      .withPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/5/thumbnail5.png", "en")
+      .withPrimaryFieldDetail(ItemField.GENRE, "Poetry", "en")
+      .withPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "http://localhost:9090/images/book.jpg", "en")
       .build();
   }
 
@@ -247,7 +250,8 @@ public class DatabaseLoader {
       .withPrimaryFieldDetail(ItemField.TITLE, "Cryptonomicon", "en")
       .withPrimaryFieldDetail(ItemField.AUTHOR, "Neal Stephenson", "en")
       .withPrimaryFieldDetail(ItemField.SUMMARY, "'A brilliant patchwork of code-breaking mathematicians and their descendants who are striving to create a data haven in the Philippines...trust me on this one' Guardian", "en")
-      .withPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "/mbm/images/catalog/items/2/thumbnail2.png", "en")
+      .withPrimaryFieldDetail(ItemField.GENRE, "Sci-Fi", "en")
+      .withPrimaryFieldDetail(ItemField.IMAGE_THUMBNAIL_URI, "http://localhost:9090/images/book.jpg", "en")
       .build();
   }
 

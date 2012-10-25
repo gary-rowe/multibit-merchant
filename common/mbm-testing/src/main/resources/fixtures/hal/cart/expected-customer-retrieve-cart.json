@@ -22,10 +22,11 @@
               "href":"http://localhost:9998/item/0099410672"
             },
             "image_thumbnail_uri":{
-              "href":"http://localhost:9998/mbm/images/catalog/items/2/thumbnail2.png"
+              "href":"http://localhost:9090/images/book.jpg"
             }
           },
           "author":"Neal Stephenson",
+          "genre":"Sci-Fi",
           "sku":"0099410672",
           "slug":"cryptonomicon",
           "summary":"'A brilliant patchwork of code-breaking mathematicians and their descendants who are striving to create a data haven in the Philippines...trust me on this one' Guardian",
@@ -48,7 +49,7 @@
               "href":"http://localhost:9998/item/0575088893"
             },
             "image_thumbnail_uri":{
-              "href":"http://localhost:9998/mbm/images/catalog/items/4/thumbnail4.png"
+              "href":"http://localhost:9090/images/book.jpg"
             }
           },
           "author":"Hannu Rajaniemi",

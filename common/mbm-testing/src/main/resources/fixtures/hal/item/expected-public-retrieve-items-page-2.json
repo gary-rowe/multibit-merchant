@@ -9,7 +9,7 @@
         "href":"http://localhost:9998/item/0575088893"
       },
       "image_thumbnail_uri":{
-        "href":"http://localhost:9998/mbm/images/catalog/items/4/thumbnail4.png"
+        "href":"http://localhost:9090/images/book.jpg"
       }
     },
     "author":"Hannu Rajaniemi",
