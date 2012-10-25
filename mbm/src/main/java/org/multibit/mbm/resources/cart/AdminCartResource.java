@@ -119,10 +119,10 @@ public class AdminCartResource extends BaseResource {
   private void apply(AdminUpdateCartRequest updateRequest, Cart entity) {
 
     for (PublicCartItem customerCartItem : updateRequest.getCartItems()) {
-      ResourceAsserts.assertNotNull(customerCartItem.getId(), "id");
+      ResourceAsserts.assertNotNull(customerCartItem.getSKU(), "id");
       ResourceAsserts.assertPositive(customerCartItem.getQuantity(), "quantity");
 
-      Optional<Item> item = itemDao.getById(customerCartItem.getId());
+      Optional<Item> item = itemDao.getBySKU(customerCartItem.getSKU());
       ResourceAsserts.assertPresent(item,"item");
 
       entity.setItemQuantity(item.get(),customerCartItem.getQuantity());

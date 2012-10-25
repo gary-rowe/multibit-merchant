@@ -4,7 +4,9 @@ import com.google.common.base.Optional;
 import org.junit.Test;
 import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.api.request.user.WebFormAuthenticationRequest;
+import org.multibit.mbm.auth.Authority;
 import org.multibit.mbm.db.DatabaseLoader;
+import org.multibit.mbm.db.dao.RoleDao;
 import org.multibit.mbm.db.dao.UserDao;
 import org.multibit.mbm.db.dto.Role;
 import org.multibit.mbm.db.dto.User;
@@ -24,6 +26,7 @@ import static org.mockito.Mockito.when;
 public class ClientUserResourceTest extends BaseJerseyHmacResourceTest {
 
   private final UserDao userDao=mock(UserDao.class);
+  private final RoleDao roleDao=mock(RoleDao.class);
 
   private final ClientUserResource testObject=new ClientUserResource();
 
@@ -36,15 +39,18 @@ public class ClientUserResourceTest extends BaseJerseyHmacResourceTest {
 
     // Create the supporting Role
     Role customerRole = DatabaseLoader.buildCustomerRole();
+    Role publicRole = DatabaseLoader.buildPublicRole();
     User aliceUser = DatabaseLoader.buildAliceCustomer(customerRole);
     User bobUser = DatabaseLoader.buildBobCustomer(customerRole);
 
     // Configure mocks
     when(userDao.getByCredentials(anyString(), anyString())).thenReturn(Optional.of(aliceUser));
     when(userDao.saveOrUpdate(any(User.class))).thenReturn(bobUser);
+    when(roleDao.getByName(Authority.ROLE_PUBLIC.name())).thenReturn(Optional.of(publicRole));
 
     // Bind mocks
     testObject.setUserDao(userDao);
+    testObject.setRoleDao(roleDao);
 
     // Configure resources
     addSingleton(testObject);

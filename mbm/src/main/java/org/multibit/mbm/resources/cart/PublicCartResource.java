@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * <p>Resource to provide the following to {@link org.multibit.mbm.db.dto.Cart}:</p>
  * <ul>
- * <li>Provision of REST endpoints for Customer interaction with their Cart</li>
+ * <li>Provision of REST endpoints for public interaction with their Cart</li>
  * </ul>
  * <p>Note that a Cart has a 1:1 relationship with Customer and is meaningless
  * without it. Therefore there is no "Create" or "Delete" requirement.</p>
@@ -108,10 +108,10 @@ public class PublicCartResource extends BaseResource {
   private void apply(PublicUpdateCartRequest updateRequest, Cart entity) {
 
     for (PublicCartItem customerCartItem : updateRequest.getCartItems()) {
-      ResourceAsserts.assertNotNull(customerCartItem.getId(), "id");
+      ResourceAsserts.assertNotNull(customerCartItem.getSKU(), "sku");
       ResourceAsserts.assertPositive(customerCartItem.getQuantity(), "quantity");
 
-      Optional<Item> item = itemDao.getById(customerCartItem.getId());
+      Optional<Item> item = itemDao.getBySKU(customerCartItem.getSKU());
       ResourceAsserts.assertPresent(item,"item");
 
       entity.setItemQuantity(item.get(),customerCartItem.getQuantity());

@@ -58,10 +58,10 @@ public class PublicCartResourceTest extends BaseJerseyHmacResourceTest {
     when(cartDao.saveOrUpdate(customerCart)).thenReturn(customerCart);
 
     // Configure Item DAO
-    when(itemDao.getById(1L)).thenReturn(Optional.of(book1));
-    when(itemDao.getById(2L)).thenReturn(Optional.of(book2));
-    when(itemDao.getById(3L)).thenReturn(Optional.of(book3));
-    when(itemDao.getById(4L)).thenReturn(Optional.of(book4));
+    when(itemDao.getBySKU(book1.getSKU())).thenReturn(Optional.of(book1));
+    when(itemDao.getBySKU(book2.getSKU())).thenReturn(Optional.of(book2));
+    when(itemDao.getBySKU(book3.getSKU())).thenReturn(Optional.of(book3));
+    when(itemDao.getBySKU(book4.getSKU())).thenReturn(Optional.of(book4));
 
     testObject.setCartDao(cartDao);
     testObject.setItemDao(itemDao);
@@ -72,7 +72,7 @@ public class PublicCartResourceTest extends BaseJerseyHmacResourceTest {
   }
 
   @Test
-  public void customerRetrieveCartAsHalJson() throws Exception {
+  public void retrieveCartAsHalJson() throws Exception {
 
     String actualResponse = configureAsClient("/cart")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
@@ -83,16 +83,16 @@ public class PublicCartResourceTest extends BaseJerseyHmacResourceTest {
   }
 
   @Test
-  public void customerUpdateCartAsHalJson() throws Exception {
+  public void updateCartAsHalJson() throws Exception {
 
     // Starting condition is Customer has {book1: 1, book2: 2}
     // Ending condition is Customer has {book1: 0, book2: 2, book3: 3}
 
     PublicUpdateCartRequest updateCartRequest = new PublicUpdateCartRequest();
     // Add a few new items
-    updateCartRequest.getCartItems().add(new PublicCartItem(3L,3));
+    updateCartRequest.getCartItems().add(new PublicCartItem("0316184136",3));
     // Remove by setting to zero
-    updateCartRequest.getCartItems().add(new PublicCartItem(1L,0));
+    updateCartRequest.getCartItems().add(new PublicCartItem("0099410672",0));
 
     String actualResponse = configureAsClient("/cart")
       .accept(HalMediaType.APPLICATION_HAL_JSON)

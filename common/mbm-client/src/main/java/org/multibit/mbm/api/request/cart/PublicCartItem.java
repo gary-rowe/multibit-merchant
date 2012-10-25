@@ -14,7 +14,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 public class PublicCartItem {
 
   @JsonProperty
-  private Long id;
+  private String sku;
 
   @JsonProperty
   private int quantity;
@@ -28,19 +28,19 @@ public class PublicCartItem {
   /**
    * Utility constructor for mandatory fields
    *
-   * @param itemId   The Item id
+   * @param sku      The Stock Keeping Unit that is the public key
    * @param quantity The quantity required
    */
-  public PublicCartItem(Long itemId, int quantity) {
-    this.id = itemId;
+  public PublicCartItem(String sku, int quantity) {
+    this.sku = sku;
     this.quantity = quantity;
   }
 
   /**
-   * @return The Item ID
+   * @return The SKU
    */
-  public Long getId() {
-    return id;
+  public String getSKU() {
+    return sku;
   }
 
   /**

@@ -60,4 +60,11 @@ public class ClientCart {
   public void setCartItems(List<ClientCartItem> cartItems) {
     this.cartItems = cartItems;
   }
+
+  /**
+   * @return True if the cart items are empty (Freemarker requirement)
+   */
+  public boolean isEmpty() {
+    return cartItems.isEmpty();
+  }
 }

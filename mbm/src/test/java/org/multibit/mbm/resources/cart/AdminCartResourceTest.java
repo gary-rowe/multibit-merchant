@@ -74,18 +74,18 @@ public class AdminCartResourceTest extends BaseJerseyHmacResourceTest {
     List<Cart> cartList2 = Lists.newArrayList(bobCart);
 
     // Configure Cart DAO
-    when(cartDao.getById(1L)).thenReturn(Optional.of(aliceCart));
-    when(cartDao.getById(2L)).thenReturn(Optional.of(bobCart));
+    when(cartDao.getById(aliceCart.getId())).thenReturn(Optional.of(aliceCart));
+    when(cartDao.getById(bobCart.getId())).thenReturn(Optional.of(bobCart));
     when(cartDao.getAllByPage(1, 0)).thenReturn(Lists.newLinkedList(cartList1));
     when(cartDao.getAllByPage(1, 1)).thenReturn(Lists.newLinkedList(cartList2));
     when(cartDao.saveOrUpdate(aliceCart)).thenReturn(aliceCart);
     when(cartDao.saveOrUpdate(bobCart)).thenReturn(bobCart);
 
     // Configure Item DAO
-    when(itemDao.getById(1L)).thenReturn(Optional.of(book1));
-    when(itemDao.getById(2L)).thenReturn(Optional.of(book2));
-    when(itemDao.getById(3L)).thenReturn(Optional.of(book3));
-    when(itemDao.getById(4L)).thenReturn(Optional.of(book4));
+    when(itemDao.getBySKU(book1.getSKU())).thenReturn(Optional.of(book1));
+    when(itemDao.getBySKU(book2.getSKU())).thenReturn(Optional.of(book2));
+    when(itemDao.getBySKU(book3.getSKU())).thenReturn(Optional.of(book3));
+    when(itemDao.getBySKU(book4.getSKU())).thenReturn(Optional.of(book4));
 
     testObject.setCartDao(cartDao);
     testObject.setItemDao(itemDao);
@@ -124,9 +124,9 @@ public class AdminCartResourceTest extends BaseJerseyHmacResourceTest {
     AdminUpdateCartRequest updateCartRequest = new AdminUpdateCartRequest();
     updateCartRequest.setId(1L);
     // Add a few new items
-    updateCartRequest.getCartItems().add(new PublicCartItem(3L,3));
+    updateCartRequest.getCartItems().add(new PublicCartItem("0316184136",3));
     // Remove by setting to zero
-    updateCartRequest.getCartItems().add(new PublicCartItem(1L,0));
+    updateCartRequest.getCartItems().add(new PublicCartItem("0099410672",0));
 
     String actualResponse = configureAsClient("/admin/carts/1")
       .accept(HalMediaType.APPLICATION_HAL_JSON)

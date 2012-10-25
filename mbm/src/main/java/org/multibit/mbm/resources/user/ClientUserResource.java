@@ -9,11 +9,9 @@ import org.multibit.mbm.api.request.user.WebFormRegistrationRequest;
 import org.multibit.mbm.api.response.hal.user.ClientUserBridge;
 import org.multibit.mbm.auth.Authority;
 import org.multibit.mbm.auth.annotation.RestrictedTo;
+import org.multibit.mbm.db.dao.RoleDao;
 import org.multibit.mbm.db.dao.UserDao;
-import org.multibit.mbm.db.dto.Customer;
-import org.multibit.mbm.db.dto.CustomerBuilder;
-import org.multibit.mbm.db.dto.User;
-import org.multibit.mbm.db.dto.UserBuilder;
+import org.multibit.mbm.db.dto.*;
 import org.multibit.mbm.resources.BaseResource;
 import org.multibit.mbm.resources.ResourceAsserts;
 import org.springframework.stereotype.Component;
@@ -42,6 +40,9 @@ public class ClientUserResource extends BaseResource {
   @Resource(name = "hibernateUserDao")
   private UserDao userDao;
 
+  @Resource(name = "hibernateRoleDao")
+  private RoleDao roleDao;
+
   /**
    * @param clientUser The client application acting as the proxy for this user
    *
@@ -54,6 +55,10 @@ public class ClientUserResource extends BaseResource {
     @RestrictedTo({Authority.ROLE_CLIENT})
     User clientUser) {
 
+    // Retrieve the role by its authority name
+    Optional<Role> optionalRole = roleDao.getByName(Authority.ROLE_PUBLIC.name());
+    ResourceAsserts.assertPresent(optionalRole,"role");
+
     // Build a new Customer for the anonymous user
     Customer customer = CustomerBuilder
       .newInstance()
@@ -63,6 +68,7 @@ public class ClientUserResource extends BaseResource {
     User user = UserBuilder
       .newInstance()
       .withCustomer(customer)
+      .withRole(optionalRole.get())
       .build();
 
     // Persist the User with cascade for the Customer
@@ -152,4 +158,7 @@ public class ClientUserResource extends BaseResource {
     this.userDao = userDao;
   }
 
+  public void setRoleDao(RoleDao roleDao) {
+    this.roleDao = roleDao;
+  }
 }

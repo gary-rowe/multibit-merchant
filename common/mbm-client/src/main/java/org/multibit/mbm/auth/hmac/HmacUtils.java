@@ -3,9 +3,9 @@ package org.multibit.mbm.auth.hmac;
 import com.google.common.net.HttpHeaders;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.container.ContainerException;
+import com.sun.jersey.core.util.Base64;
 import com.sun.jersey.core.util.ReaderWriter;
 import com.sun.jersey.spi.container.ContainerRequest;
-import org.multibit.mbm.utils.Base64;
 
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
@@ -112,12 +112,10 @@ public class HmacUtils {
       Mac mac = Mac.getInstance(algorithm);
       mac.init(secretKey);
       mac.update(data);
-      return Base64.encodeBytesToBytes(mac.doFinal());
+      return Base64.encode(mac.doFinal());
     } catch (NoSuchAlgorithmException e) {
       throw new WebApplicationException(e, Response.Status.INTERNAL_SERVER_ERROR);
     } catch (InvalidKeyException e) {
-      throw new WebApplicationException(e, Response.Status.INTERNAL_SERVER_ERROR);
-    } catch (IOException e) {
       throw new WebApplicationException(e, Response.Status.INTERNAL_SERVER_ERROR);
     }
   }

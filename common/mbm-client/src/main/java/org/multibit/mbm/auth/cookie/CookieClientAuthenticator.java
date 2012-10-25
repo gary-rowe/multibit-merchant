@@ -4,8 +4,10 @@ import com.google.common.base.Optional;
 import com.yammer.dropwizard.auth.AuthenticationException;
 import com.yammer.dropwizard.auth.Authenticator;
 import org.multibit.mbm.auth.InMemorySessionTokenCache;
+import org.multibit.mbm.client.PublicMerchantClient;
 import org.multibit.mbm.model.ClientUser;
 
+import java.util.Locale;
 import java.util.UUID;
 
 /**
@@ -29,11 +31,21 @@ public class CookieClientAuthenticator implements Authenticator<CookieClientCred
     if (!user.isPresent()) {
       // Check if the user can be created on the fly
       if (credentials.isPublic()) {
-        ClientUser publicUser = new ClientUser();
-        publicUser.setSessionToken(UUID.randomUUID());
-        InMemorySessionTokenCache.INSTANCE
-         .put(publicUser.getSessionToken(), publicUser);
-        return Optional.of(publicUser);
+        // We can create an anonymous user for this session
+        Optional<ClientUser> anonymousUserOptional = PublicMerchantClient
+          .newInstance(Locale.getDefault())
+          .user()
+          .registerAnonymously();
+        if (anonymousUserOptional.isPresent()) {
+          ClientUser anonymousUser = anonymousUserOptional.get();
+          anonymousUser.setSessionToken(UUID.randomUUID());
+          // Keep a copy in the session cache
+          InMemorySessionTokenCache
+            .INSTANCE
+            .put(anonymousUser.getSessionToken(), anonymousUser);
+        }
+        return anonymousUserOptional;
+
       }
 
       return Optional.absent();
