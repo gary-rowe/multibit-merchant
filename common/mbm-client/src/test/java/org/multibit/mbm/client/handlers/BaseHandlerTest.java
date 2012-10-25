@@ -8,9 +8,12 @@ import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.client.HalHmacResourceFactory;
 
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 import java.net.URI;
 import java.util.Locale;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -39,6 +42,7 @@ public abstract class BaseHandlerTest {
 
     when(webResource.accept(HalMediaType.APPLICATION_HAL_JSON)).thenReturn(builder);
     when(webResource.header(HttpHeaders.ACCEPT_LANGUAGE, locale.toString())).thenReturn(builder);
+    when(webResource.entity(anyObject(), any(MediaType.class))).thenReturn(builder);
     when(builder.header(HttpHeaders.ACCEPT_LANGUAGE,locale.toString())).thenReturn(builder);
 
     // Configure the Merchant client factory

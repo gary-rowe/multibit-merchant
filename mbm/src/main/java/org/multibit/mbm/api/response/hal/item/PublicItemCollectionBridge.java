@@ -14,22 +14,22 @@ import java.util.List;
 /**
  * <p>Bridge to provide the following to {@link org.multibit.mbm.db.dto.Item}:</p>
  * <ul>
- * <li>Creates representation of multiple Items for a Customer</li>
+ * <li>Creates representation of multiple Items for the public</li>
  * </ul>
  *
  * @since 0.0.1
  */
-public class CustomerItemCollectionBridge extends BaseBridge<List<Item>> {
+public class PublicItemCollectionBridge extends BaseBridge<List<Item>> {
 
-  private final PublicItemBridge customerItemBridge;
+  private final PublicItemBridge publicItemBridge;
 
   /**
    * @param uriInfo   The {@link javax.ws.rs.core.UriInfo} containing the originating request information
    * @param principal An optional {@link org.multibit.mbm.db.dto.User} to provide a security principal
    */
-  public CustomerItemCollectionBridge(UriInfo uriInfo, Optional<User> principal) {
+  public PublicItemCollectionBridge(UriInfo uriInfo, Optional<User> principal) {
     super(uriInfo, principal);
-    customerItemBridge = new PublicItemBridge(uriInfo,principal);
+    publicItemBridge = new PublicItemBridge(uriInfo,principal);
   }
 
   public Resource toResource(List<Item> items) {
@@ -40,10 +40,10 @@ public class CustomerItemCollectionBridge extends BaseBridge<List<Item>> {
 
     Resource itemList = resourceFactory.newResource(uriInfo.getRequestUri().toString());
 
-    // Use the reduced customer fields
+    // Use the reduced public fields as embedded resources
     for (Item item : items) {
-      Resource itemResource = customerItemBridge.toResource(item);
-      itemList.withSubresource("/item/"+item.getSKU(), itemResource);
+      Resource itemResource = publicItemBridge.toResource(item);
+      itemList.withSubresource("item", itemResource);
     }
 
     return itemList;

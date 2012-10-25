@@ -1,5 +1,9 @@
 package org.multibit.mbm.model;
 
+import com.google.common.collect.Lists;
+
+import java.util.List;
+
 /**
  * <p>Value object to provide the following to resources:</p>
  * <ul>
@@ -15,6 +19,7 @@ public class ClientCart {
   private String localTotal;
   private String btcTotal;
   private String itemCount;
+  private List<ClientCartItem> cartItems = Lists.newArrayList();
 
   public String getLocalSymbol() {
     return localSymbol;
@@ -46,5 +51,13 @@ public class ClientCart {
 
   public void setItemCount(String itemCount) {
     this.itemCount = itemCount;
+  }
+
+  public List<ClientCartItem> getCartItems() {
+    return cartItems;
+  }
+
+  public void setCartItems(List<ClientCartItem> cartItems) {
+    this.cartItems = cartItems;
   }
 }

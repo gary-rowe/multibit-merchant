@@ -1,16 +1,15 @@
 package org.multibit.mbm.client.handlers.item;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
+import com.theoryinpractise.halbuilder.spi.Link;
 import com.theoryinpractise.halbuilder.spi.ReadableResource;
 import com.theoryinpractise.halbuilder.spi.Resource;
 import org.multibit.mbm.client.HalHmacResourceFactory;
 import org.multibit.mbm.client.handlers.BaseHandler;
-import org.multibit.mbm.model.PublicItem;
+import org.multibit.mbm.model.ClientItem;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 /**
  * <p>Handler to provide the following to {@link org.multibit.mbm.client.PublicMerchantClient}:</p>
@@ -21,12 +20,12 @@ import java.util.Map;
  * @since 0.0.1
  *         
  */
-public class PublicItemCollectionHandler extends BaseHandler {
+public class ClientItemCollectionHandler extends BaseHandler {
 
   /**
    * @param locale The locale providing i18n information
    */
-  public PublicItemCollectionHandler(Locale locale) {
+  public ClientItemCollectionHandler(Locale locale) {
     super(locale);
   }
 
@@ -36,9 +35,9 @@ public class PublicItemCollectionHandler extends BaseHandler {
    * @param pageNumber The page number (e.g. 0 (first), 1, 2 etc)
    * @param pageSize   The number of results per page
    *
-   * @return A list of {@link PublicItem}
+   * @return A list of {@link org.multibit.mbm.model.ClientItem}
    */
-  public List<PublicItem> retrievePromotionalItemsByPage(int pageNumber, int pageSize) {
+  public List<ClientItem> retrievePromotionalItemsByPage(int pageNumber, int pageSize) {
 
     // Sanity check
     // TODO Consider Guava ranges?
@@ -60,28 +59,19 @@ public class PublicItemCollectionHandler extends BaseHandler {
       .get(String.class);
 
     // Read the HAL
-    ReadableResource rr = readHalRepresentation(hal);
+    ReadableResource rr = unmarshalHal(hal);
 
     // Extract the list of items
-    List<PublicItem> publicItems = Lists.newArrayList();
+    List<ClientItem> clientItems = Lists.newArrayList();
     for (Resource itemResource : rr.getResources()) {
-      PublicItem publicItem = new PublicItem();
 
-      // TODO Extract this into a reverse bridge design pattern
-      Map<String, Optional<Object>> properties = itemResource.getProperties();
+      List<Link> links = itemResource.getLinks();
 
-      // Mandatory properties
-      Optional<Object> sku = properties.get("sku");
-      publicItem.setSKU((String) sku.get());
-      // Optional properties
-      if (properties.containsKey("gtin")) {
-        Optional<Object> gtin = properties.get("gtin");
-        publicItem.setGTIN((String) gtin.orNull());
-      }
+      ClientItem clientItem = ClientItemHandler.buildClientItem(itemResource.getProperties(), links);
 
-      publicItems.add(publicItem);
+      clientItems.add(clientItem);
     }
 
-    return publicItems;
+    return clientItems;
   }
 }

@@ -1,7 +1,7 @@
 package org.multibit.mbm.client.handlers.cart;
 
 import org.junit.Test;
-import org.multibit.mbm.client.CustomerMerchantClient;
+import org.multibit.mbm.client.PublicMerchantClient;
 import org.multibit.mbm.client.handlers.BaseHandlerTest;
 import org.multibit.mbm.model.ClientCart;
 import org.multibit.mbm.model.ClientUser;
@@ -12,10 +12,10 @@ import java.net.URI;
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
-public class PublicCartHandlerTest extends BaseHandlerTest {
+public class ClientCartHandlerTest extends BaseHandlerTest {
 
   @Test
-  public void cart_retrieveCart() throws Exception {
+  public void retrieveCartNoItems() throws Exception {
 
     // Arrange
     final ClientCart expectedCart = new ClientCart();
@@ -34,10 +34,40 @@ public class PublicCartHandlerTest extends BaseHandlerTest {
       .thenReturn(FixtureAsserts.jsonFixture("/fixtures/hal/cart/expected-customer-retrieve-cart.json"));
 
     // Act
-    ClientCart actualCart = CustomerMerchantClient
+    ClientCart actualCart = PublicMerchantClient
       .newInstance(locale)
       .cart()
       .retrieveCartNoItems(clientUser);
+
+    // Assert
+    assertEquals("Unexpected item count", "2", actualCart.getItemCount());
+
+  }
+
+  @Test
+  public void retrieveCart() throws Exception {
+
+    // Arrange
+    final ClientCart expectedCart = new ClientCart();
+    expectedCart.setItemCount("2");
+
+    final ClientUser clientUser = new ClientUser();
+    clientUser.setApiKey("apiKey");
+    clientUser.setSecretKey("secretKey");
+
+    URI expectedUri = URI.create("http://localhost:8080/mbm/cart");
+
+    // Test-specific JerseyClient behaviour
+    when(client.resource(expectedUri))
+      .thenReturn(webResource);
+    when(webResource.get(String.class))
+      .thenReturn(FixtureAsserts.jsonFixture("/fixtures/hal/cart/expected-customer-retrieve-cart.json"));
+
+    // Act
+    ClientCart actualCart = PublicMerchantClient
+      .newInstance(locale)
+      .cart()
+      .retrieveCart(clientUser);
 
     // Assert
     assertEquals("Unexpected item count", "2", actualCart.getItemCount());

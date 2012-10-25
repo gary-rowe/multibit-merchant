@@ -1,7 +1,8 @@
 package org.multibit.mbm.client;
 
-import org.multibit.mbm.client.handlers.item.PublicItemCollectionHandler;
-import org.multibit.mbm.client.handlers.item.PublicItemHandler;
+import org.multibit.mbm.client.handlers.cart.PublicCartHandler;
+import org.multibit.mbm.client.handlers.item.ClientItemCollectionHandler;
+import org.multibit.mbm.client.handlers.item.ClientItemHandler;
 import org.multibit.mbm.client.handlers.user.PublicUserHandler;
 
 import java.util.Locale;
@@ -33,15 +34,15 @@ public class PublicMerchantClient extends BaseMerchantClient {
   /**
    * @return A suitable handler for single item requests
    */
-  public PublicItemHandler item() {
-    return new PublicItemHandler(locale);
+  public ClientItemHandler item() {
+    return new ClientItemHandler(locale);
   }
 
   /**
    * @return A suitable handler for item collection searches
    */
-  public PublicItemCollectionHandler items() {
-    return new PublicItemCollectionHandler(locale);
+  public ClientItemCollectionHandler items() {
+    return new ClientItemCollectionHandler(locale);
   }
 
   /**
@@ -50,4 +51,12 @@ public class PublicMerchantClient extends BaseMerchantClient {
   public PublicUserHandler user() {
     return new PublicUserHandler(locale);
   }
+
+  /**
+   * @return A suitable handler for single cart requests by customers
+   */
+  public PublicCartHandler cart() {
+    return new PublicCartHandler(locale);
+  }
+
 }

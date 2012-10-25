@@ -5,7 +5,7 @@ import com.yammer.dropwizard.jersey.caching.CacheControl;
 import com.yammer.metrics.annotation.Timed;
 import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.api.response.hal.item.PublicItemBridge;
-import org.multibit.mbm.api.response.hal.item.CustomerItemCollectionBridge;
+import org.multibit.mbm.api.response.hal.item.PublicItemCollectionBridge;
 import org.multibit.mbm.db.dao.ItemDao;
 import org.multibit.mbm.db.dto.Item;
 import org.multibit.mbm.db.dto.User;
@@ -61,7 +61,7 @@ public class PublicItemResource extends BaseResource {
     List<Item> items = itemDao.getAllByPage(pageSize, pageNumber);
 
     // Provide a representation to the client
-    CustomerItemCollectionBridge bridge = new CustomerItemCollectionBridge(uriInfo, Optional.<User>absent());
+    PublicItemCollectionBridge bridge = new PublicItemCollectionBridge(uriInfo, Optional.<User>absent());
 
     return ok(bridge, items);
 

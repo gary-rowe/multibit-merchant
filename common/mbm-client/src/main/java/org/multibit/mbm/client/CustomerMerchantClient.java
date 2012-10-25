@@ -1,6 +1,5 @@
 package org.multibit.mbm.client;
 
-import org.multibit.mbm.client.handlers.cart.PublicCartHandler;
 import org.multibit.mbm.client.handlers.user.CustomerUserHandler;
 
 import java.util.Locale;
@@ -37,13 +36,6 @@ public class CustomerMerchantClient extends BaseMerchantClient {
    */
   public CustomerUserHandler user() {
     return new CustomerUserHandler(locale);
-  }
-
-  /**
-   * @return A suitable handler for single cart requests by customers
-   */
-  public PublicCartHandler cart() {
-    return new PublicCartHandler(locale);
   }
 
 }

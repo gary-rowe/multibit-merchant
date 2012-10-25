@@ -13,7 +13,7 @@ import java.util.Map;
  * @since 0.0.1
  *         
  */
-public class PublicItem {
+public class ClientItem {
 
   private String sku;
   private String gtin;

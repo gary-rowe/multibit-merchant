@@ -38,7 +38,7 @@ public class CustomerUserHandler extends BaseHandler {
    *
    * @param credentials The web form credentials provided by the user
    *
-   * @return A matching {@link org.multibit.mbm.model.PublicItem}
+   * @return A matching {@link org.multibit.mbm.model.ClientItem}
    */
   public Optional<ClientUser> authenticateWithWebForm(WebFormClientCredentials credentials) {
 
@@ -61,7 +61,7 @@ public class CustomerUserHandler extends BaseHandler {
       .post(String.class);
 
     // Read the HAL
-    ReadableResource rr = readHalRepresentation(hal);
+    ReadableResource rr = unmarshalHal(hal);
 
     Map<String, Optional<Object>> properties = rr.getProperties();
 
@@ -82,16 +82,19 @@ public class CustomerUserHandler extends BaseHandler {
     return Optional.of(clientUser);
   }
 
-    /**
+  /**
    * Retrieve the user's own profile
    *
    * @param clientUser The ClientUser containing the API access information
    *
-   * @return A matching {@link org.multibit.mbm.model.PublicItem}
+   * @return A matching {@link org.multibit.mbm.model.ClientItem}
    */
   public Optional<CustomerUser> retrieveProfile(ClientUser clientUser) {
 
     // Sanity check
+    Preconditions.checkNotNull(clientUser);
+    Preconditions.checkNotNull(clientUser.getApiKey());
+    Preconditions.checkNotNull(clientUser.getSecretKey());
 
     // TODO Replace "magic string" with auto-discover based on link rel
     String path = String.format("/users");
@@ -100,7 +103,7 @@ public class CustomerUserHandler extends BaseHandler {
       .get(String.class);
 
     // Read the HAL
-    ReadableResource rr = readHalRepresentation(hal);
+    ReadableResource rr = unmarshalHal(hal);
 
     Map<String, Optional<Object>> properties = rr.getProperties();
 
@@ -115,7 +118,7 @@ public class CustomerUserHandler extends BaseHandler {
       }
     }
     // Optional properties
-    for (Map.Entry<String,Optional<Object>> entry: properties.entrySet()) {
+    for (Map.Entry<String, Optional<Object>> entry : properties.entrySet()) {
       customerUser.getOptionalProperties().put(entry.getKey(), (String) entry.getValue().get());
     }
 

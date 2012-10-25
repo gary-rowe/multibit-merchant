@@ -3,8 +3,9 @@ package org.multibit.mbm.client;
 
 import com.yammer.dropwizard.client.JerseyClient;
 import org.junit.Test;
-import org.multibit.mbm.client.handlers.item.PublicItemCollectionHandler;
-import org.multibit.mbm.client.handlers.item.PublicItemHandler;
+import org.multibit.mbm.client.handlers.item.ClientItemCollectionHandler;
+import org.multibit.mbm.client.handlers.item.ClientItemHandler;
+import org.multibit.mbm.client.handlers.user.PublicUserHandler;
 
 import java.util.Locale;
 
@@ -22,7 +23,7 @@ public class PublicMerchantClientTest {
     // Arrange
 
     // Act
-    PublicItemCollectionHandler handler = PublicMerchantClient
+    ClientItemCollectionHandler handler = PublicMerchantClient
       .newInstance(locale)
       .items();
 
@@ -37,9 +38,24 @@ public class PublicMerchantClientTest {
     // Arrange
 
     // Act
-    PublicItemHandler handler = PublicMerchantClient
+    ClientItemHandler handler = PublicMerchantClient
       .newInstance(locale)
       .item();
+
+    // Assert
+    assertNotNull(handler);
+
+  }
+
+  @Test
+  public void verifyUserHandler() {
+
+    // Arrange
+
+    // Act
+    PublicUserHandler handler = PublicMerchantClient
+      .newInstance(locale)
+      .user();
 
     // Assert
     assertNotNull(handler);

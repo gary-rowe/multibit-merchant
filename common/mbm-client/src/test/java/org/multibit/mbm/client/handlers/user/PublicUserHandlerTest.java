@@ -6,7 +6,6 @@ import org.multibit.mbm.auth.webform.WebFormClientRegistration;
 import org.multibit.mbm.client.PublicMerchantClient;
 import org.multibit.mbm.client.handlers.BaseHandlerTest;
 import org.multibit.mbm.model.ClientUser;
-import org.multibit.mbm.model.PublicItem;
 import org.multibit.mbm.test.FixtureAsserts;
 
 import java.net.URI;
@@ -18,20 +17,20 @@ import static org.mockito.Mockito.when;
 public class PublicUserHandlerTest extends BaseHandlerTest {
 
   @Test
-  public void user_registerWithWebForm() throws Exception {
+  public void registerWithWebForm() throws Exception {
 
     // Arrange
     URI expectedUri = URI.create("http://localhost:8080/mbm/client/user/register");
 
     // Test-specific JerseyClient behaviour
     when(client.resource(expectedUri)).thenReturn(webResource);
-    when(webResource.get(String.class)).thenReturn(
-      FixtureAsserts.jsonFixture("/fixtures/hal/item/expected-public-create-user.json")
+    when(builder.post(String.class)).thenReturn(
+      FixtureAsserts.jsonFixture("/fixtures/hal/user/expected-client-register-customer-user.json")
     );
 
     WebFormClientRegistration registration = new WebFormClientRegistration(
-      "charlie",
-      "charlie1" // TODO Digest
+      "bob",
+      "bob1"
     );
 
     // Act
@@ -42,35 +41,35 @@ public class PublicUserHandlerTest extends BaseHandlerTest {
 
     // Assert
     assertTrue("Expected user", publicUser.isPresent());
+    assertEquals("bob123",publicUser.get().getApiKey());
+    assertEquals("bob456",publicUser.get().getSecretKey());
 
   }
 
   @Test
-  public void item_retrieveBySku() throws Exception {
+  public void registerAnonymously() throws Exception {
 
     // Arrange
-
-    URI expectedUri = URI.create("http://localhost:8080/mbm/items/0575088893");
+    URI expectedUri = URI.create("http://localhost:8080/mbm/client/user/anonymous");
 
     // Test-specific JerseyClient behaviour
     when(client.resource(expectedUri)).thenReturn(webResource);
-    when(webResource.get(String.class))
-      .thenReturn(
-        FixtureAsserts.fixture("/fixtures/hal/item/expected-customer-retrieve-item.json"));
+    // No entity so use resource not builder
+    when(webResource.post(String.class)).thenReturn(
+      FixtureAsserts.jsonFixture("/fixtures/hal/user/expected-client-register-anonymous-user.json")
+    );
 
     // Act
-    Optional<PublicItem> optionalItem = PublicMerchantClient
+    Optional<ClientUser> publicUser = PublicMerchantClient
       .newInstance(locale)
-      .item()
-      .retrieveBySku("0575088893");
+      .user()
+      .registerAnonymously();
 
     // Assert
-    assertTrue(optionalItem.isPresent());
+    assertTrue("Expected user", publicUser.isPresent());
+    assertEquals("bob123",publicUser.get().getApiKey());
+    assertEquals("bob456",publicUser.get().getSecretKey());
 
-    PublicItem actualItem = optionalItem.get();
-
-    assertEquals("0575088893", actualItem.getSKU());
-    assertEquals("The Quantum Thief", actualItem.getOptionalProperties().get("title"));
   }
 
 }

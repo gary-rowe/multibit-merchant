@@ -3,9 +3,9 @@
     "href":"http://localhost:9998/items/promotion?ps=1&pn=1"
   }
 }, "_embedded":{
-  "http://localhost:9998/item/0575088893":{
+  "item":{
     "_links":{
-      "http://localhost:9998/item/0575088893 self":{
+      "item self":{
         "href":"http://localhost:9998/item/0575088893"
       },
       "image_thumbnail_uri":{
