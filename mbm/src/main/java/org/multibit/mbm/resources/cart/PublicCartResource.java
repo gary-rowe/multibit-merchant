@@ -7,10 +7,10 @@ import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.api.request.cart.PublicCartItem;
 import org.multibit.mbm.api.request.cart.PublicUpdateCartRequest;
 import org.multibit.mbm.api.response.hal.cart.PublicCartBridge;
+import org.multibit.mbm.auth.Authority;
 import org.multibit.mbm.auth.annotation.RestrictedTo;
 import org.multibit.mbm.db.dao.CartDao;
 import org.multibit.mbm.db.dao.ItemDao;
-import org.multibit.mbm.auth.Authority;
 import org.multibit.mbm.db.dto.Cart;
 import org.multibit.mbm.db.dto.Item;
 import org.multibit.mbm.db.dto.User;
@@ -18,6 +18,7 @@ import org.multibit.mbm.resources.BaseResource;
 import org.multibit.mbm.resources.ResourceAsserts;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -41,7 +42,10 @@ import java.util.concurrent.TimeUnit;
 @Produces({HalMediaType.APPLICATION_HAL_JSON, HalMediaType.APPLICATION_HAL_XML})
 public class PublicCartResource extends BaseResource {
 
+  @Resource(name="hibernateCartDao")
   CartDao cartDao;
+
+  @Resource(name="hibernateItemDao")
   ItemDao itemDao;
 
   /**
@@ -73,7 +77,7 @@ public class PublicCartResource extends BaseResource {
   /**
    * Update an existing Cart with the populated fields
    *
-   * @param customerUser A cart with administrator rights
+   * @param publicUser A cart with administrator rights
    *
    * @return A response containing the full details of the updated entity
    */
@@ -81,11 +85,11 @@ public class PublicCartResource extends BaseResource {
   @Timed
   public Response update(
     @RestrictedTo({Authority.ROLE_PUBLIC})
-    User customerUser,
+    User publicUser,
     PublicUpdateCartRequest updateCartRequest) {
 
     // Retrieve the cart
-    Cart cart = customerUser.getCustomer().getCart();
+    Cart cart = publicUser.getCustomer().getCart();
 
     // Verify and apply any changes to the Cart
     apply(updateCartRequest,cart);
@@ -94,7 +98,7 @@ public class PublicCartResource extends BaseResource {
     cart = cartDao.saveOrUpdate(cart);
 
     // Provide a representation to the client
-    PublicCartBridge bridge = new PublicCartBridge(uriInfo, Optional.of(customerUser));
+    PublicCartBridge bridge = new PublicCartBridge(uriInfo, Optional.of(publicUser));
 
     return ok(bridge, cart);
 

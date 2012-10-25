@@ -14,9 +14,10 @@
     },
     "btc_total":"4.78",
     "id":1,
-    "item_count":"2",
+    "item_total":2,
     "local_symbol":"&euro;",
     "local_total":"13.94",
+    "quantity_total":3,
     "_embedded":{
       "cartitems":[
         {

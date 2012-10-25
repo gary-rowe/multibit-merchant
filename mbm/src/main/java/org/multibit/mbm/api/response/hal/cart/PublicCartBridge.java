@@ -48,7 +48,8 @@ public class PublicCartBridge extends BaseBridge<Cart> {
       .withProperty("local_symbol", "&euro;")
       .withProperty("local_total", "13.94")
       .withProperty("btc_total", "4.78")
-      .withProperty("item_count", String.valueOf(cart.getCartItems().size()))
+      .withProperty("item_total", cart.getItemTotal())
+      .withProperty("quantity_total", cart.getQuantityTotal())
       // End of build
       ;
 

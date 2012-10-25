@@ -22,7 +22,7 @@ public class ClientCartHandlerTest extends BaseHandlerTest {
 
     // Arrange
     final ClientCart expectedCart = new ClientCart();
-    expectedCart.setItemCount("2");
+    expectedCart.setItemTotal("2");
 
     final ClientUser clientUser = new ClientUser();
     clientUser.setApiKey("apiKey");
@@ -34,7 +34,7 @@ public class ClientCartHandlerTest extends BaseHandlerTest {
     when(client.resource(expectedUri))
       .thenReturn(webResource);
     when(webResource.get(String.class))
-      .thenReturn(FixtureAsserts.jsonFixture("/fixtures/hal/cart/expected-customer-retrieve-cart.json"));
+      .thenReturn(FixtureAsserts.jsonFixture("/fixtures/hal/cart/expected-public-retrieve-cart.json"));
 
     // Act
     ClientCart actualCart = PublicMerchantClient
@@ -43,7 +43,7 @@ public class ClientCartHandlerTest extends BaseHandlerTest {
       .retrieveCartNoItems(clientUser);
 
     // Assert
-    assertEquals("Unexpected item count", "2", actualCart.getItemCount());
+    assertEquals("Unexpected item count", "2", actualCart.getItemTotal());
 
   }
 
@@ -52,7 +52,7 @@ public class ClientCartHandlerTest extends BaseHandlerTest {
 
     // Arrange
     final ClientCart expectedCart = new ClientCart();
-    expectedCart.setItemCount("2");
+    expectedCart.setItemTotal("2");
 
     final ClientUser clientUser = new ClientUser();
     clientUser.setApiKey("apiKey");
@@ -64,7 +64,7 @@ public class ClientCartHandlerTest extends BaseHandlerTest {
     when(client.resource(expectedUri))
       .thenReturn(webResource);
     when(webResource.get(String.class))
-      .thenReturn(FixtureAsserts.jsonFixture("/fixtures/hal/cart/expected-customer-retrieve-cart.json"));
+      .thenReturn(FixtureAsserts.jsonFixture("/fixtures/hal/cart/expected-public-retrieve-cart.json"));
 
     // Act
     ClientCart actualCart = PublicMerchantClient
@@ -73,7 +73,7 @@ public class ClientCartHandlerTest extends BaseHandlerTest {
       .retrieveCart(clientUser);
 
     // Assert
-    assertEquals("Unexpected item count", "2", actualCart.getItemCount());
+    assertEquals("Unexpected item count", "2", actualCart.getItemTotal());
 
   }
 
@@ -82,7 +82,7 @@ public class ClientCartHandlerTest extends BaseHandlerTest {
 
     // Arrange
     final ClientCart expectedCart = new ClientCart();
-    expectedCart.setItemCount("2");
+    expectedCart.setItemTotal("2");
 
     final ClientUser clientUser = new ClientUser();
     clientUser.setApiKey("apiKey");
@@ -95,7 +95,7 @@ public class ClientCartHandlerTest extends BaseHandlerTest {
       .thenReturn(webResource);
     // Use builder since it is a PUT
     when(builder.put(String.class))
-      .thenReturn(FixtureAsserts.jsonFixture("/fixtures/hal/cart/expected-customer-update-cart.json"));
+      .thenReturn(FixtureAsserts.jsonFixture("/fixtures/hal/cart/expected-public-update-cart.json"));
 
     // Act
     List<PublicCartItem> cartItems = Lists.newArrayList();
@@ -106,7 +106,7 @@ public class ClientCartHandlerTest extends BaseHandlerTest {
       .updateCartItems(clientUser, cartItems);
 
     // Assert
-    assertEquals("Unexpected item count", "2", actualCart.getItemCount());
+    assertEquals("Unexpected item count", "2", actualCart.getItemTotal());
 
   }
 

@@ -3,7 +3,6 @@ package org.multibit.mbm.resources;
 import com.google.common.base.Optional;
 import com.yammer.dropwizard.logging.Log;
 
-
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
@@ -49,7 +48,7 @@ public final class ResourceAsserts {
    * @param fieldName The field name for logging
    */
   public static void assertPresent(Optional obj, String fieldName) {
-    assertNotNull(obj,fieldName);
+    assertNotNull(obj, fieldName);
     if (!obj.isPresent()) {
       LOG.warn("Field '{}' should be present", fieldName);
       throw new WebApplicationException(Response.Status.BAD_REQUEST);
@@ -63,12 +62,24 @@ public final class ResourceAsserts {
    * @param fieldName The field name for logging
    */
   public static void assertNotConflicted(Optional obj, String fieldName) {
-    assertNotNull(obj,fieldName);
+    assertNotNull(obj, fieldName);
     if (obj.isPresent()) {
       LOG.warn("Field '{}' should be absent to avoid conflict", fieldName);
       throw new WebApplicationException(Response.Status.CONFLICT);
     }
   }
 
+  /**
+   * Fails if the object is absent
+   *
+   * @param state     Conditional that must be true
+   * @param condition The condition message
+   */
+  public static void assertTrue(boolean state, String condition) {
+    if (!state) {
+      LOG.warn("Condition '{}' should be true", condition);
+      throw new WebApplicationException(Response.Status.BAD_REQUEST);
+    }
+  }
 
 }

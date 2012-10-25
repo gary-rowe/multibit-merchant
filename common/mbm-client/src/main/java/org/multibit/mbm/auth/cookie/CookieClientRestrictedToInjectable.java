@@ -93,9 +93,9 @@ class CookieClientRestrictedToInjectable<T> extends AbstractHttpContextInjectabl
         rememberMeToken = Optional.of(UUID.fromString(rememberMeTokenCookie.getValue()));
       }
 
-      // Build the credentials
+      // Build the credentials (authenticator will handle absence)
       final CookieClientCredentials credentials = new CookieClientCredentials(
-        sessionToken.get(),
+        sessionToken,
         rememberMeToken,
         requiredAuthorities,
         isPublic);

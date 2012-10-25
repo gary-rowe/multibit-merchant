@@ -61,8 +61,15 @@ public enum InMemorySessionTokenCache {
    *
    * @return The matching ClientUser or absent
    */
-  public Optional<ClientUser> getBySessionToken(UUID sessionToken) {
-    Optional<ClientUser> clientUser = Optional.fromNullable(sessionTokenCache.getIfPresent(sessionToken));
+  public Optional<ClientUser> getBySessionToken(Optional<UUID> sessionToken) {
+
+    // Fail fast
+    if (!sessionToken.isPresent()) {
+      return Optional.absent();
+    }
+
+    // Check the cache
+    Optional<ClientUser> clientUser = Optional.fromNullable(sessionTokenCache.getIfPresent(sessionToken.get()));
 
     // TODO What is a better way of implementing this?
     if (clientUser.isPresent()) {

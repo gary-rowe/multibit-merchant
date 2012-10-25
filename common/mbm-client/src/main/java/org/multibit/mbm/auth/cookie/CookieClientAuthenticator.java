@@ -25,7 +25,8 @@ public class CookieClientAuthenticator implements Authenticator<CookieClientCred
 
     // Determine if the user is known by their session key
     Optional<ClientUser> user =
-      InMemorySessionTokenCache.INSTANCE
+      InMemorySessionTokenCache
+        .INSTANCE
         .getBySessionToken(credentials.getSessionToken());
 
     if (!user.isPresent()) {

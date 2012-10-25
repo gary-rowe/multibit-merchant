@@ -18,7 +18,8 @@ public class ClientCart {
   private String localSymbol;
   private String localTotal;
   private String btcTotal;
-  private String itemCount;
+  private String itemTotal;
+  private String quantityTotal;
   private List<ClientCartItem> cartItems = Lists.newArrayList();
 
   public String getLocalSymbol() {
@@ -45,12 +46,15 @@ public class ClientCart {
     this.btcTotal = btcTotal;
   }
 
-  public String getItemCount() {
-    return itemCount;
+  /**
+   * @return The number of individual items
+   */
+  public String getItemTotal() {
+    return itemTotal;
   }
 
-  public void setItemCount(String itemCount) {
-    this.itemCount = itemCount;
+  public void setItemTotal(String itemTotal) {
+    this.itemTotal = itemTotal;
   }
 
   public List<ClientCartItem> getCartItems() {
@@ -59,6 +63,17 @@ public class ClientCart {
 
   public void setCartItems(List<ClientCartItem> cartItems) {
     this.cartItems = cartItems;
+  }
+
+  /**
+   * @return The total number of items
+   */
+  public String getQuantityTotal() {
+    return quantityTotal;
+  }
+
+  public void setQuantityTotal(String quantityTotal) {
+    this.quantityTotal = quantityTotal;
   }
 
   /**

@@ -24,7 +24,7 @@ public class InMemorySessionTokenCacheTest {
 
     Optional<ClientUser> clientUserOptional = InMemorySessionTokenCache
       .INSTANCE
-      .getBySessionToken(expectedClientUser.getSessionToken());
+      .getBySessionToken(Optional.of(expectedClientUser.getSessionToken()));
 
     assertTrue(clientUserOptional.isPresent());
 
@@ -49,7 +49,7 @@ public class InMemorySessionTokenCacheTest {
 
     Optional<ClientUser> clientUserOptional = InMemorySessionTokenCache
       .INSTANCE
-      .getBySessionToken(expectedClientUser.getSessionToken());
+      .getBySessionToken(Optional.of(expectedClientUser.getSessionToken()));
 
     assertFalse(clientUserOptional.isPresent());
 
@@ -75,7 +75,7 @@ public class InMemorySessionTokenCacheTest {
     // This should reset the cache expiry giving the entry longer life
     Optional<ClientUser> clientUserOptional = InMemorySessionTokenCache
       .INSTANCE
-      .getBySessionToken(expectedClientUser.getSessionToken());
+      .getBySessionToken(Optional.of(expectedClientUser.getSessionToken()));
 
     assertTrue("Unexpected expiry of client user (early expiration)", clientUserOptional.isPresent());
 
@@ -85,7 +85,7 @@ public class InMemorySessionTokenCacheTest {
     // This should again reset the cache expiry giving the entry longer life
     clientUserOptional = InMemorySessionTokenCache
       .INSTANCE
-      .getBySessionToken(expectedClientUser.getSessionToken());
+      .getBySessionToken(Optional.of(expectedClientUser.getSessionToken()));
 
     assertTrue("Unexpected expiry of client user (refresh failed)", clientUserOptional.isPresent());
 
@@ -95,7 +95,7 @@ public class InMemorySessionTokenCacheTest {
     // This should again reset the cache expiry giving the entry longer life
     clientUserOptional = InMemorySessionTokenCache
       .INSTANCE
-      .getBySessionToken(expectedClientUser.getSessionToken());
+      .getBySessionToken(Optional.of(expectedClientUser.getSessionToken()));
 
     assertFalse("Unexpected presence of client user (late expiration)",clientUserOptional.isPresent());
 

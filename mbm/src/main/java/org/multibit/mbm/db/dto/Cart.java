@@ -118,6 +118,27 @@ public class Cart implements Serializable {
   }
 
   /**
+   * @return The number of separate items
+   */
+  @Transient
+  public int getItemTotal() {
+    return cartItems.size();
+  }
+
+  /**
+   *
+   * @return The total quantity of all items
+   */
+  @Transient
+  public int getQuantityTotal() {
+    int itemCount = 0;
+    for (CartItem cartItem : cartItems) {
+      itemCount += cartItem.getQuantity();
+    }
+    return itemCount;
+  }
+
+  /**
    * @return The internal unique ID
    */
   public Long getId() {
@@ -174,5 +195,4 @@ public class Cart implements Serializable {
   public String toString() {
     return String.format("Cart[id=%s]]", id);
   }
-
 }

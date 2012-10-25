@@ -182,9 +182,10 @@ public class ClientCartHandler extends BaseHandler {
     ClientCart clientCart = new ClientCart();
 
     clientCart.setLocalSymbol(getMandatoryPropertyAsString("local_symbol",properties));
-    clientCart.setLocalTotal(getMandatoryPropertyAsString("local_total",properties));
-    clientCart.setBtcTotal(getMandatoryPropertyAsString("btc_total",properties));
-    clientCart.setItemCount(getMandatoryPropertyAsString("item_count",properties));
+    clientCart.setLocalTotal(getMandatoryPropertyAsString("local_total", properties));
+    clientCart.setBtcTotal(getMandatoryPropertyAsString("btc_total", properties));
+    clientCart.setItemTotal(getMandatoryPropertyAsString("item_total", properties));
+    clientCart.setQuantityTotal(getMandatoryPropertyAsString("quantity_total", properties));
 
     return clientCart;
   }

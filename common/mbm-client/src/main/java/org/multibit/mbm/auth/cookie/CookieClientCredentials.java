@@ -23,8 +23,9 @@ public class CookieClientCredentials {
   /**
    * The sessionToken is a UUID that is only valid for the length of the session
    * and is obtained after a successful authentication
+   * It may be absent during an authentication for the public role
    */
-  private final UUID sessionToken;
+  private final Optional<UUID> sessionToken;
 
   /**
    * The rememberMeToken is a UUID that persists until cleared. It provides a partial login with reduced
@@ -43,7 +44,7 @@ public class CookieClientCredentials {
    * @param isPublic            True if the authentication can be made purely at the client side
    */
   public CookieClientCredentials(
-    UUID sessionToken,
+    Optional<UUID> sessionToken,
     Optional<UUID> rememberMeToken,
     Authority[] requiredAuthorities,
     boolean isPublic
@@ -57,7 +58,7 @@ public class CookieClientCredentials {
   /**
    * @return The temporary session token that authenticates this user
    */
-  public UUID getSessionToken() {
+  public Optional<UUID> getSessionToken() {
     return sessionToken;
   }
 
