@@ -77,7 +77,6 @@ class CookieClientRestrictedToInjectable<T> extends AbstractHttpContextInjectabl
 
     Map<String, Cookie> cookies = httpContext.getRequest().getCookies();
 
-
     try {
 
       Optional<UUID> sessionToken = Optional.absent();
