@@ -80,6 +80,10 @@ public class ClientItemHandler extends BaseHandler {
 
     // Optional properties
     for (Map.Entry<String, Optional<Object>> entry : properties.entrySet()) {
+      if ("sku".equals(entry.getKey()) ||
+          "gtin".equals(entry.getKey())) {
+        continue;
+      }
       item.getOptionalProperties().put(entry.getKey(), (String) entry.getValue().get());
     }
 

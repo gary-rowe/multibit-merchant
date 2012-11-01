@@ -15,35 +15,35 @@ import java.util.List;
  */
 public class ClientCart {
 
-  private String localSymbol;
-  private String localTotal;
-  private String btcTotal;
+  private String currencySymbol;
+  private String currencyCode;
+  private String priceTotal;
   private String itemTotal;
   private String quantityTotal;
   private List<ClientCartItem> cartItems = Lists.newArrayList();
 
-  public String getLocalSymbol() {
-    return localSymbol;
+  public String getCurrencySymbol() {
+    return currencySymbol;
   }
 
-  public void setLocalSymbol(String localSymbol) {
-    this.localSymbol = localSymbol;
+  public void setCurrencySymbol(String currencySymbol) {
+    this.currencySymbol = currencySymbol;
   }
 
-  public String getLocalTotal() {
-    return localTotal;
+  public String getPriceTotal() {
+    return priceTotal;
   }
 
-  public void setLocalTotal(String localTotal) {
-    this.localTotal = localTotal;
+  public void setPriceTotal(String priceTotal) {
+    this.priceTotal = priceTotal;
   }
 
-  public String getBtcTotal() {
-    return btcTotal;
+  public String getCurrencyCode() {
+    return currencyCode;
   }
 
-  public void setBtcTotal(String btcTotal) {
-    this.btcTotal = btcTotal;
+  public void setCurrencyCode(String currencyCode) {
+    this.currencyCode = currencyCode;
   }
 
   /**
