@@ -12,11 +12,11 @@
         "href":"http://localhost:9998/customer"
       }
     },
-    "btc_total":"4.78",
+    "currency_code":"BTC",
+    "currency_symbol":"Ƀ",
     "id":1,
     "item_total":2,
-    "local_symbol":"&euro;",
-    "local_total":"13.94",
+    "price_total":"9.900000000000",
     "quantity_total":3,
     "_embedded":{
       "cartitems":[
@@ -40,6 +40,8 @@
               },
               "author":"Neal Stephenson",
               "genre":"Sci-Fi",
+              "gtin":null,
+              "price":"1.100000000000",
               "sku":"0099410672",
               "slug":"cryptonomicon",
               "summary":"'A brilliant patchwork of code-breaking mathematicians and their descendants who are striving to create a data haven in the Philippines...trust me on this one' Guardian",
@@ -69,7 +71,9 @@
               "description":"<p>The Quantum Thief is a dazzling hard SF novel set in the solar system of the far future - a heist novel peopled by bizarre post-humans but powered by very human motives of betrayal, revenge and jealousy. It is a stunning debut.</p><br/><p>Jean le Flambeur is a post-human criminal, mind burglar, confidence artist and trickster. His origins are shrouded in mystery, but his exploits are known throughout the Heterarchy - from breaking into the vast Zeusbrains of the Inner System to steal their thoughts, to stealing rare Earth antiques from the aristocrats of the Moving Cities of Mars.</p><p>Except that Jean made one mistake. Now he is condemned to play endless variations of a game-theoretic riddle in the vast virtual jail of the Axelrod Archons - the Dilemma Prison - against countless copies of himself.</p><p>Jean's routine of death, defection and cooperation is upset by the arrival of Mieli and her spidership, Perhonen. She offers him a chance to win back his freedom and the powers of his old self - in exchange for finishing the one heist he never quite managed...</p>",
               "format":"Paperback",
               "genre":"Sci-Fi",
+              "gtin":"978-0575088894",
               "page_count":"336",
+              "price":"4.400000000000",
               "publisher":"Gollancz (1 Nov 2011)",
               "size":"12.9 x 2.1 x 19.6 cm",
               "sku":"0575088893",

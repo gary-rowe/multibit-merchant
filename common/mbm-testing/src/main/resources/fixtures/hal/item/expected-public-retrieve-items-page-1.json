@@ -14,6 +14,8 @@
     },
     "author":"Neal Stephenson",
     "genre":"Sci-Fi",
+    "gtin":null,
+    "price":"1.100000000000",
     "sku":"0099410672",
     "slug":"cryptonomicon",
     "summary":"'A brilliant patchwork of code-breaking mathematicians and their descendants who are striving to create a data haven in the Philippines...trust me on this one' Guardian",

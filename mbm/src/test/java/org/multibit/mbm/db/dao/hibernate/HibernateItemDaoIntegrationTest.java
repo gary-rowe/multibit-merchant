@@ -1,6 +1,7 @@
 package org.multibit.mbm.db.dao.hibernate;
 
 import com.google.common.base.Optional;
+import com.xeiam.xchange.utils.MoneyUtils;
 import org.junit.Test;
 import org.multibit.mbm.api.response.ItemPagedQueryResponse;
 import org.multibit.mbm.db.dao.CustomerDao;
@@ -28,7 +29,7 @@ public class HibernateItemDaoIntegrationTest extends BaseIntegrationTests {
   ItemDao testObject;
 
   /**
-   * Simple inserts and updates
+   * Simple inserts and updates (includes price persistence check)
    */
   @Test
   public void testPersistAndFindBySKU() {
@@ -40,6 +41,7 @@ public class HibernateItemDaoIntegrationTest extends BaseIntegrationTests {
       .newInstance()
       .withSKU(sku)
       .withGTIN(gtin)
+      .withLocalPrice(MoneyUtils.parseBitcoin("BTC 1.2345678"))
       .build();
 
     // Persist with insert
@@ -110,7 +112,8 @@ public class HibernateItemDaoIntegrationTest extends BaseIntegrationTests {
 
     assertThat(actual.get(),equalTo(expected));
     assertThat(actual.get().getGTIN(),equalTo("def456"));
-
+    assertThat(actual.get().getLocalPrice().getCurrencyUnit().getCurrencyCode(),equalTo("BTC"));
+    assertThat(actual.get().getLocalPrice().getAmount().toPlainString(),equalTo("1.234567800000"));
 
   }
 

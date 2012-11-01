@@ -1,5 +1,6 @@
 package org.multibit.mbm.db;
 
+import com.xeiam.xchange.utils.MoneyUtils;
 import com.yammer.dropwizard.logging.Log;
 import org.multibit.mbm.auth.Authority;
 import org.multibit.mbm.db.dao.CustomerDao;
@@ -173,6 +174,7 @@ public class DatabaseLoader {
   public static Item buildBookItemProvence() {
     return ItemBuilder.newInstance()
       .withSKU("0140296034")
+      .withLocalPrice(MoneyUtils.parseBitcoin("BTC 2.2"))
       .withPrimaryFieldDetail(ItemField.TITLE, "A Year In Provence", "en")
       .withPrimaryFieldDetail(ItemField.AUTHOR, "Peter Mayle", "en")
       .withPrimaryFieldDetail(ItemField.SUMMARY, "Enjoy an irresistible feast of humour and discover the joys of French rural living with Peter Mayle's bestselling, much-loved account of 'A Year In Provence'.", "en")
@@ -189,6 +191,7 @@ public class DatabaseLoader {
   public static Item buildBookItemPlumbing() {
     return ItemBuilder.newInstance()
       .withSKU("186126173X")
+      .withLocalPrice(MoneyUtils.parseBitcoin("BTC 3.3"))
       .withPrimaryFieldDetail(ItemField.TITLE, "Plumbing and Central Heating", "en")
       .withPrimaryFieldDetail(ItemField.AUTHOR, "Mike Lawrence", "en")
       .withPrimaryFieldDetail(ItemField.SUMMARY, "This guide begins with the basic skills of plumbing, which once mastered, can be applied to any situation, from mending a leaking tap to installing a new shower unit.", "en")
@@ -206,6 +209,7 @@ public class DatabaseLoader {
     return ItemBuilder.newInstance()
       .withSKU("0575088893")
       .withGTIN("978-0575088894")
+      .withLocalPrice(MoneyUtils.parseBitcoin("BTC 4.4"))
       .withPrimaryFieldDetail(ItemField.TITLE, "The Quantum Thief", "en")
       .withPrimaryFieldDetail(ItemField.AUTHOR, "Hannu Rajaniemi", "en")
       .withPrimaryFieldDetail(ItemField.SUMMARY, "The most exciting SF debut of the last five years - a star to stand alongside Alistair Reynolds and Richard Morgan.", "en")
@@ -231,6 +235,7 @@ public class DatabaseLoader {
   public static Item buildBookItemCompleteWorks() {
     return ItemBuilder.newInstance()
       .withSKU("0316184136")
+      .withLocalPrice(MoneyUtils.parseBitcoin("BTC 5.5"))
       .withPrimaryFieldDetail(ItemField.TITLE, "The Complete Works of Emily Dickinson", "en")
       .withPrimaryFieldDetail(ItemField.AUTHOR, "Emily Dickinson, edited by Thomas H Johnson", "en")
       .withPrimaryFieldDetail(ItemField.SUMMARY, "The Complete Poems of Emily Dickinson is the only one-volume edition containing all Emily Dickinson's poems.", "en")
@@ -247,6 +252,7 @@ public class DatabaseLoader {
   public static Item buildBookItemCryptonomicon() {
     return ItemBuilder.newInstance()
       .withSKU("0099410672")
+      .withLocalPrice(MoneyUtils.parseBitcoin("BTC 1.1"))
       .withPrimaryFieldDetail(ItemField.TITLE, "Cryptonomicon", "en")
       .withPrimaryFieldDetail(ItemField.AUTHOR, "Neal Stephenson", "en")
       .withPrimaryFieldDetail(ItemField.SUMMARY, "'A brilliant patchwork of code-breaking mathematicians and their descendants who are striving to create a data haven in the Philippines...trust me on this one' Guardian", "en")

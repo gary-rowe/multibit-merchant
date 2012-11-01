@@ -2,6 +2,8 @@ package org.multibit.mbm.api.response.hal.cart;
 
 import com.google.common.base.Optional;
 import com.theoryinpractise.halbuilder.spi.Resource;
+import com.xeiam.xchange.utils.MoneyUtils;
+import org.joda.money.BigMoney;
 import org.multibit.mbm.api.response.hal.BaseBridge;
 import org.multibit.mbm.api.response.hal.item.PublicCartItemBridge;
 import org.multibit.mbm.db.dto.Cart;
@@ -39,15 +41,26 @@ public class PublicCartBridge extends BaseBridge<Cart> {
     // Do not reveal the ID to non-admins
     String basePath = "/cart";
 
+    // TODO Integrate with Preferences and CartItem
+    String currencySymbol = "Ƀ"; // or &pound; or &euro;
+    String currencyCode = "BTC";
+
+    // Calculate the value of the cart items
+    // TODO Allow for currency conversion
+    BigMoney cartTotal = MoneyUtils.parseBitcoin("BTC 0.0000");
+    for (CartItem cartItem: cart.getCartItems()) {
+      BigMoney itemPrice = cartItem.getItem().getLocalPrice();
+      cartTotal = cartTotal.plus(itemPrice.multipliedBy(cartItem.getQuantity()));
+    }
+
     // Create top-level resource
     Resource cartResource = getResourceFactory()
       .newResource(basePath)
       // Do not reveal the customer to non-admins
       .withLink("/customer", "customer")
-      // TODO Implement with real preferences
-      .withProperty("local_symbol", "&euro;")
-      .withProperty("local_total", "13.94")
-      .withProperty("btc_total", "4.78")
+      .withProperty("currency_symbol", currencySymbol)
+      .withProperty("currency_code", currencyCode)
+      .withProperty("price_total", cartTotal.getAmount().toPlainString())
       .withProperty("item_total", cart.getItemTotal())
       .withProperty("quantity_total", cart.getQuantityTotal())
       // End of build

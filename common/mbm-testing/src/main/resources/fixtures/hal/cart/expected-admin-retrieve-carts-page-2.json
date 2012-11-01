@@ -12,11 +12,11 @@
         "href":"http://localhost:9998/customer"
       }
     },
-    "btc_total":"4.78",
+    "currency_code":"BTC",
+    "currency_symbol":"Ƀ",
     "id":2,
     "item_total":2,
-    "local_symbol":"&euro;",
-    "local_total":"13.94",
+    "price_total":"29.700000000000",
     "quantity_total":7,
     "_embedded":{
       "cartitems":[
@@ -40,6 +40,8 @@
               },
               "author":"Emily Dickinson, edited by Thomas H Johnson",
               "genre":"Poetry",
+              "gtin":null,
+              "price":"5.500000000000",
               "sku":"0316184136",
               "slug":"the-complete-works-of-emily-dickinson",
               "summary":"The Complete Poems of Emily Dickinson is the only one-volume edition containing all Emily Dickinson's poems.",
@@ -67,6 +69,8 @@
               },
               "author":"Mike Lawrence",
               "genre":"DIY",
+              "gtin":null,
+              "price":"3.300000000000",
               "sku":"186126173X",
               "slug":"plumbing-and-central-heating",
               "summary":"This guide begins with the basic skills of plumbing, which once mastered, can be applied to any situation, from mending a leaking tap to installing a new shower unit.",

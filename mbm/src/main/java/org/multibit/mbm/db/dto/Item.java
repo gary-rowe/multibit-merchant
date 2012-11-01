@@ -2,6 +2,10 @@ package org.multibit.mbm.db.dto;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.xeiam.xchange.utils.MoneyUtils;
+import org.hibernate.annotations.Columns;
+import org.hibernate.annotations.Type;
+import org.joda.money.BigMoney;
 import org.multibit.mbm.utils.ObjectUtils;
 
 import javax.persistence.*;
@@ -64,6 +68,11 @@ public class Item implements Serializable {
   )
   private Set<CartItem> cartItems = Sets.newLinkedHashSet();
 
+  // TODO An Item has many prices depending on date, volume, discount, premium etc
+  @Columns(columns={@Column(name="amount"),@Column(name="currency")})
+  @Type(type="org.multibit.mbm.db.dao.hibernate.type.BigMoneyType")
+  private BigMoney localPrice = MoneyUtils.parseBitcoin("BTC 0.0000");
+
   /**
    * This collection is effectively the fields for the Item so must be eager
    */
@@ -74,6 +83,7 @@ public class Item implements Serializable {
   )
   @MapKeyEnumerated
   private Map<ItemField, ItemFieldDetail> itemFieldMap = Maps.newLinkedHashMap();
+
 
 
   /*
@@ -149,6 +159,17 @@ public class Item implements Serializable {
 
   public void setCartItems(Set<CartItem> cartItems) {
     this.cartItems = cartItems;
+  }
+
+  /**
+   * @return The price per item in the local currency
+   */
+  public BigMoney getLocalPrice() {
+    return localPrice;
+  }
+
+  public void setLocalPrice(BigMoney localPrice) {
+    this.localPrice = localPrice;
   }
 
   /**

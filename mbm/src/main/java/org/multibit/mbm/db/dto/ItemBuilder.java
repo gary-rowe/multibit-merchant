@@ -1,6 +1,8 @@
 package org.multibit.mbm.db.dto;
 
 import com.google.common.collect.Lists;
+import com.xeiam.xchange.utils.MoneyUtils;
+import org.joda.money.BigMoney;
 
 import java.util.List;
 
@@ -21,6 +23,7 @@ public class ItemBuilder {
   private boolean isBuilt = false;
   private String sku = null;
   private String gtin = null;
+  private BigMoney localPrice = MoneyUtils.parseBitcoin("BTC 0.0000");
 
   /**
    * @return A new instance of the builder
@@ -41,10 +44,11 @@ public class ItemBuilder {
     // Item is a DTO so requires a public default constructor
     Item item = new Item();
 
-    // TODO Change SKU to an optional one-to-many collection
     item.setSKU(sku);
 
     item.setGTIN(gtin);
+
+    item.setLocalPrice(localPrice);
 
     for (PrimaryFieldDetail primaryFieldDetail : primaryFieldDetails) {
       primaryFieldDetail.applyTo(item);
@@ -99,13 +103,30 @@ public class ItemBuilder {
     return this;
   }
 
+  /**
+   * @param sku The Stock Keeping Unit
+   * @return The Builder
+   */
   public ItemBuilder withSKU(String sku) {
     this.sku = sku;
     return this;
   }
 
+  /**
+   * @param gtin The Global Trade Item Number
+   * @return The Builder
+   */
   public ItemBuilder withGTIN(String gtin) {
     this.gtin = gtin;
+    return this;
+  }
+
+  /**
+   * @param localPrice The price in the local currency
+   * @return The Builder
+   */
+  public ItemBuilder withLocalPrice(BigMoney localPrice) {
+    this.localPrice = localPrice;
     return this;
   }
 
