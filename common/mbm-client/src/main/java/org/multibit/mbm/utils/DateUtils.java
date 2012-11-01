@@ -37,7 +37,7 @@ public class DateUtils {
   /**
    * Parses ISO8601 without milliseconds (e.g. "yyyy-MM-dd'T'HH:mm:ss.SSSZZ")
    */
-  private static final DateTimeFormatter iso8601 = ISODateTimeFormat.dateTimeNoMillis();
+  private static final DateTimeFormatter utcIso8601 = ISODateTimeFormat.dateTimeNoMillis().withZone(DateTimeZone.UTC);
 
   /**
    * @return The current instant in UTC
@@ -119,7 +119,7 @@ public class DateUtils {
    * @return The instant formatted as ISO8601 e.g. "2000-01-02T03:04:05Z"
    */
   public static String formatISO8601(ReadableInstant when) {
-    return iso8601.print(when);
+    return utcIso8601.print(when);
   }
 
   /**
@@ -129,7 +129,7 @@ public class DateUtils {
    * @return The instant formatted as ISO8601 e.g. "2000-01-02T03:04:05Z"
    */
   public static String formatISO8601(ReadableInstant when, Locale locale) {
-    return iso8601.withLocale(locale).print(when);
+    return utcIso8601.withLocale(locale).print(when);
   }
 
   /**
@@ -140,7 +140,7 @@ public class DateUtils {
    * @throws IllegalArgumentException If the text cannot be parsed
    */
   public static DateTime parseISO8601(String text) {
-    return iso8601.parseDateTime(text);
+    return utcIso8601.parseDateTime(text);
   }
 
 }
