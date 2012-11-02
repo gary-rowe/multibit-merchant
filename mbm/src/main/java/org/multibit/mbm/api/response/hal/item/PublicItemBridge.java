@@ -48,11 +48,13 @@ public class PublicItemBridge extends BaseBridge<Item> {
     // Calculate the price
     // TODO Consider currency choice from preferences
     String price = item.getLocalPrice().getAmount().toPlainString();
+    String taxRate = String.valueOf(item.getTaxRate());
 
     Resource userResource = resourceFactory.newResource("/item/" + item.getSKU())
       .withProperty("sku", item.getSKU())
       .withProperty("gtin", item.getGTIN())
       .withProperty("price", price)
+      .withProperty("tax_rate", taxRate)
       .withProperty("slug", slug)
       // End of build
       ;

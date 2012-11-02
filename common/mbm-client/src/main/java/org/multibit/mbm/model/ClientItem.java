@@ -17,6 +17,8 @@ public class ClientItem {
 
   private String sku;
   private String gtin;
+  private String price;
+  private String taxRate;
 
   private Map<String,String> optionalProperties= Maps.newHashMap();
 
@@ -46,6 +48,28 @@ public class ClientItem {
 
   public void setGTIN(String gtin) {
     this.gtin = gtin;
+  }
+
+  /**
+   * @return The applicable price per Item
+   */
+  public String getPrice() {
+    return price;
+  }
+
+  public void setPrice(String price) {
+    this.price = price;
+  }
+
+  /**
+   * @return The applicable tax rate per Item
+   */
+  public String getTaxRate() {
+    return taxRate;
+  }
+
+  public void setTaxRate(String taxRate) {
+    this.taxRate = taxRate;
   }
 
   /**

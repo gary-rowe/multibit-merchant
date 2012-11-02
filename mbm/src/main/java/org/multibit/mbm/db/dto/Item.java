@@ -69,9 +69,13 @@ public class Item implements Serializable {
   private Set<CartItem> cartItems = Sets.newLinkedHashSet();
 
   // TODO An Item has many prices depending on date, volume, discount, premium etc
-  @Columns(columns={@Column(name="amount"),@Column(name="currency")})
-  @Type(type="org.multibit.mbm.db.dao.hibernate.type.BigMoneyType")
+  @Columns(columns = {@Column(name = "amount"), @Column(name = "currency")})
+  @Type(type = "org.multibit.mbm.db.dao.hibernate.type.BigMoneyType")
   private BigMoney localPrice = MoneyUtils.parseBitcoin("BTC 0.0000");
+
+  // TODO An Item has many tax rates depending on date, seller etc
+  @Column(name = "taxRate", nullable = false)
+  private double taxRate = 0.0;
 
   /**
    * This collection is effectively the fields for the Item so must be eager
@@ -83,7 +87,6 @@ public class Item implements Serializable {
   )
   @MapKeyEnumerated
   private Map<ItemField, ItemFieldDetail> itemFieldMap = Maps.newLinkedHashMap();
-
 
 
   /*
@@ -129,6 +132,17 @@ public class Item implements Serializable {
 
   public void setGTIN(String gtin) {
     this.gtin = gtin;
+  }
+
+  /**
+   * @return The tax rate applicable to this Item
+   */
+  public double getTaxRate() {
+    return taxRate;
+  }
+
+  public void setTaxRate(double taxRate) {
+    this.taxRate = taxRate;
   }
 
   public boolean isDeleted() {

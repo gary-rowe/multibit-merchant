@@ -5,7 +5,7 @@
   "customer":{
     "href":"http://localhost:9998/customer"
   }
-}, "currency_code":"BTC", "currency_symbol":"Ƀ", "id":1, "item_total":2, "price_total":"25.300000000000", "quantity_total":5, "_embedded":{
+}, "currency_code":"BTC", "currency_symbol":"Ƀ", "id":1, "item_total":2, "price_total":"25.300000000000", "quantity_total":5, "tax_total":"0.000000000000", "_embedded":{
   "cartitems":[
     {
       "_links":{
@@ -13,8 +13,11 @@
           "href":"http://localhost:9998/cart/item/0"
         }
       },
+      "cart_item_subtotal":"8.800000000000",
       "index":0,
+      "price_subtotal":"8.800000000000",
       "quantity":2,
+      "tax_subtotal":"0.0000000000000",
       "_embedded":{
         "item":{
           "_links":{
@@ -37,6 +40,7 @@
           "sku":"0575088893",
           "slug":"the-quantum-thief",
           "summary":"The most exciting SF debut of the last five years - a star to stand alongside Alistair Reynolds and Richard Morgan.",
+          "tax_rate":"0.0",
           "title":"The Quantum Thief"
         }
       }
@@ -47,8 +51,11 @@
           "href":"http://localhost:9998/cart/item/1"
         }
       },
+      "cart_item_subtotal":"16.500000000000",
       "index":1,
+      "price_subtotal":"16.500000000000",
       "quantity":3,
+      "tax_subtotal":"0.0000000000000",
       "_embedded":{
         "item":{
           "_links":{
@@ -66,6 +73,7 @@
           "sku":"0316184136",
           "slug":"the-complete-works-of-emily-dickinson",
           "summary":"The Complete Poems of Emily Dickinson is the only one-volume edition containing all Emily Dickinson's poems.",
+          "tax_rate":"0.0",
           "title":"The Complete Works of Emily Dickinson"
         }
       }

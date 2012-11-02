@@ -45,6 +45,9 @@ public class PublicCartItemBridge extends BaseBridge<CartItem> {
     return resourceFactory.newResource("/cart/item/" + cartItem.getIndex())
       .withProperty("index", cartItem.getIndex())
       .withProperty("quantity", cartItem.getQuantity())
+      .withProperty("price_subtotal", cartItem.getPriceSubtotal().getAmount().toPlainString())
+      .withProperty("tax_subtotal", cartItem.getTaxSubtotal().getAmount().toPlainString())
+      .withProperty("cart_item_subtotal", cartItem.getCartItemSubtotal().getAmount().toPlainString())
       .withSubresource("item", customerItemResource);
 
   }

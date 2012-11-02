@@ -165,9 +165,15 @@ public class ClientCartHandler extends BaseHandler {
     ClientCartItem cartItem = new ClientCartItem();
     Integer index = getMandatoryPropertyAsInteger("index",properties);
     Integer quantity = getMandatoryPropertyAsInteger("quantity", properties);
+    String priceSubtotal = getMandatoryPropertyAsString("price_subtotal", properties);
+    String taxSubtotal = getMandatoryPropertyAsString("tax_subtotal", properties);
+    String cartItemSubtotal = getMandatoryPropertyAsString("cart_item_subtotal", properties);
 
     cartItem.setIndex(index);
     cartItem.setQuantity(quantity);
+    cartItem.setPriceSubtotal(priceSubtotal);
+    cartItem.setTaxSubtotal(taxSubtotal);
+    cartItem.setCartItemSubtotal(cartItemSubtotal);
 
     return cartItem;
   }

@@ -48,9 +48,10 @@ public class PublicCartBridge extends BaseBridge<Cart> {
     // Calculate the value of the cart items
     // TODO Allow for currency conversion
     BigMoney cartTotal = MoneyUtils.parseBitcoin("BTC 0.0000");
+    BigMoney taxTotal = MoneyUtils.parseBitcoin("BTC 0.0000");
     for (CartItem cartItem: cart.getCartItems()) {
-      BigMoney itemPrice = cartItem.getItem().getLocalPrice();
-      cartTotal = cartTotal.plus(itemPrice.multipliedBy(cartItem.getQuantity()));
+      cartTotal = cartTotal.plus(cartItem.getPriceSubtotal());
+      taxTotal = taxTotal.plus(cartItem.getTaxSubtotal());
     }
 
     // Create top-level resource
@@ -61,6 +62,7 @@ public class PublicCartBridge extends BaseBridge<Cart> {
       .withProperty("currency_symbol", currencySymbol)
       .withProperty("currency_code", currencyCode)
       .withProperty("price_total", cartTotal.getAmount().toPlainString())
+      .withProperty("tax_total", taxTotal.getAmount().toPlainString())
       .withProperty("item_total", cart.getItemTotal())
       .withProperty("quantity_total", cart.getQuantityTotal())
       // End of build

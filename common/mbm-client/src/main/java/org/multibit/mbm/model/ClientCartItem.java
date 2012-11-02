@@ -13,6 +13,11 @@ public class ClientCartItem {
 
   private int quantity;
   private int index;
+
+  private String priceSubtotal;
+  private String taxSubtotal;
+  private String cartItemSubtotal;
+
   private ClientItem item;
 
   public int getQuantity() {
@@ -29,6 +34,30 @@ public class ClientCartItem {
 
   public void setIndex(int index) {
     this.index = index;
+  }
+
+  public String getPriceSubtotal() {
+    return priceSubtotal;
+  }
+
+  public void setPriceSubtotal(String priceSubtotal) {
+    this.priceSubtotal = priceSubtotal;
+  }
+
+  public String getTaxSubtotal() {
+    return taxSubtotal;
+  }
+
+  public void setTaxSubtotal(String taxSubtotal) {
+    this.taxSubtotal = taxSubtotal;
+  }
+
+  public String getCartItemSubtotal() {
+    return cartItemSubtotal;
+  }
+
+  public void setCartItemSubtotal(String cartItemSubtotal) {
+    this.cartItemSubtotal = cartItemSubtotal;
   }
 
   public ClientItem getItem() {

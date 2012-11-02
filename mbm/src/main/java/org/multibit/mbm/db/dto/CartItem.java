@@ -1,5 +1,6 @@
 package org.multibit.mbm.db.dto;
 
+import org.joda.money.BigMoney;
 import org.multibit.mbm.utils.ObjectUtils;
 import org.springframework.util.Assert;
 
@@ -18,31 +19,33 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "cart_items")
-@AssociationOverrides( { @AssociationOverride(name = "primaryKey.item", joinColumns = @JoinColumn(name = "item_id")),
-  @AssociationOverride(name = "primaryKey.cart", joinColumns = @JoinColumn(name = "cart_id")) })
+@AssociationOverrides({@AssociationOverride(name = "primaryKey.item", joinColumns = @JoinColumn(name = "item_id")),
+  @AssociationOverride(name = "primaryKey.cart", joinColumns = @JoinColumn(name = "cart_id"))})
 public class CartItem implements Serializable {
 
   private static final long serialVersionUID = 389475903837482L;
 
-  private CartItemPk           primaryKey       = new CartItemPk();
+  private CartItemPk primaryKey = new CartItemPk();
 
-  @Column(name="quantity", nullable = false)
+  @Column(name = "quantity", nullable = false)
   private int quantity = 0;
 
-  @Column(name="index", nullable = false)
+  @Column(name = "index", nullable = false)
   private int index = 0;
 
   /**
    * Default constructor required by Hibernate
    */
-  public CartItem() {}
+  public CartItem() {
+  }
 
   /**
    * Standard constructor with mandatory fields
+   *
    * @param cart required cart
    * @param item required item
    */
-  public CartItem(Cart cart, Item item){
+  public CartItem(Cart cart, Item item) {
     Assert.notNull(cart, "cart is required");
     Assert.notNull(item, "item is required");
     primaryKey.setCart(cart);
@@ -78,7 +81,6 @@ public class CartItem implements Serializable {
   }
 
   /**
-   *
    * @return The quantity of the Item (measured in the smallest divisible unit)
    */
   public int getQuantity() {
@@ -90,7 +92,6 @@ public class CartItem implements Serializable {
   }
 
   /**
-   *
    * @return The index position of the Item (zero-based)
    */
   public int getIndex() {
@@ -105,8 +106,38 @@ public class CartItem implements Serializable {
    * @return The stock-keeping unit (from primary key)
    */
   @Transient
-  public String getItemSKU(){
+  public String getItemSKU() {
     return getItem().getSKU();
+  }
+
+  /**
+   * The price subtotal is the (quantity * price)
+   *
+   * @return The price subtotal
+   */
+  @Transient
+  public BigMoney getPriceSubtotal() {
+    return getItem().getLocalPrice().multipliedBy(quantity);
+  }
+
+  /**
+   * The tax subtotal is the (price subtotal * tax rate)
+   *
+   * @return The tax subtotal
+   */
+  @Transient
+  public BigMoney getTaxSubtotal() {
+    return getPriceSubtotal().multipliedBy(getItem().getTaxRate());
+  }
+
+  /**
+   * The cart item subtotal is the (price subtotal + tax subtotal)
+   *
+   * @return The cart item subtotal
+   */
+  @Transient
+  public BigMoney getCartItemSubtotal() {
+    return getPriceSubtotal().plus(getTaxSubtotal());
   }
 
   /**
@@ -117,8 +148,8 @@ public class CartItem implements Serializable {
   public static class CartItemPk implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private Item              item;
-    private Cart              cart;
+    private Item item;
+    private Cart cart;
 
     /**
      * The associated Item
@@ -167,12 +198,12 @@ public class CartItem implements Serializable {
 
     @Override
     public int hashCode() {
-      return ObjectUtils.getHashCode(cart,item);
+      return ObjectUtils.getHashCode(cart, item);
     }
 
     @Override
     public String toString() {
-      return String.format("CartItemPk[cart=%s, item=%s]]", cart,item);
+      return String.format("CartItemPk[cart=%s, item=%s]]", cart, item);
     }
 
 

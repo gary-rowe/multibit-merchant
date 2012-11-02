@@ -18,6 +18,7 @@
     "item_total":2,
     "price_total":"29.700000000000",
     "quantity_total":7,
+    "tax_total":"0.000000000000",
     "_embedded":{
       "cartitems":[
         {
@@ -26,8 +27,11 @@
               "href":"http://localhost:9998/cart/item/0"
             }
           },
+          "cart_item_subtotal":"16.500000000000",
           "index":0,
+          "price_subtotal":"16.500000000000",
           "quantity":3,
+          "tax_subtotal":"0.0000000000000",
           "_embedded":{
             "item":{
               "_links":{
@@ -45,6 +49,7 @@
               "sku":"0316184136",
               "slug":"the-complete-works-of-emily-dickinson",
               "summary":"The Complete Poems of Emily Dickinson is the only one-volume edition containing all Emily Dickinson's poems.",
+              "tax_rate":"0.0",
               "title":"The Complete Works of Emily Dickinson"
             }
           }
@@ -55,8 +60,11 @@
               "href":"http://localhost:9998/cart/item/1"
             }
           },
+          "cart_item_subtotal":"13.200000000000",
           "index":1,
+          "price_subtotal":"13.200000000000",
           "quantity":4,
+          "tax_subtotal":"0.0000000000000",
           "_embedded":{
             "item":{
               "_links":{
@@ -74,6 +82,7 @@
               "sku":"186126173X",
               "slug":"plumbing-and-central-heating",
               "summary":"This guide begins with the basic skills of plumbing, which once mastered, can be applied to any situation, from mending a leaking tap to installing a new shower unit.",
+              "tax_rate":"0.0",
               "title":"Plumbing and Central Heating"
             }
           }

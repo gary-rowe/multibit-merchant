@@ -68,7 +68,9 @@ public class ClientItemHandler extends BaseHandler {
     ClientItem item = new ClientItem();
 
     // Mandatory properties (will cause IllegalStateException if not present)
-    item.setSKU((String) properties.get("sku").get());
+    item.setSKU(getMandatoryPropertyAsString("sku", properties));
+    item.setPrice(getMandatoryPropertyAsString("price", properties));
+    item.setTaxRate(getMandatoryPropertyAsString("tax_rate", properties));
 
     // Optional direct properties
     if (properties.containsKey("gtin")) {
@@ -81,7 +83,9 @@ public class ClientItemHandler extends BaseHandler {
     // Optional properties
     for (Map.Entry<String, Optional<Object>> entry : properties.entrySet()) {
       if ("sku".equals(entry.getKey()) ||
-          "gtin".equals(entry.getKey())) {
+        "gtin".equals(entry.getKey()) ||
+        "price".equals(entry.getKey()) ||
+        "tax_rate".equals(entry.getKey())) {
         continue;
       }
       item.getOptionalProperties().put(entry.getKey(), (String) entry.getValue().get());
