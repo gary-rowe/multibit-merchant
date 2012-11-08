@@ -73,6 +73,10 @@ public enum Authority {
    * The manager of the delivery team
    */
   ROLE_DELIVERY_MANAGER(true),
+  /**
+   * An external supplier
+   */
+  ROLE_SUPPLIER(true),
 
   // External roles
   /**

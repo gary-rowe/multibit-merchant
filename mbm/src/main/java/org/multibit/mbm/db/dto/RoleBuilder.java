@@ -285,6 +285,19 @@ public class RoleBuilder {
   }
 
   /**
+   * Configure the various supporting structure to make this Role into a Client application
+   *
+   * @return The builder
+   */
+  public RoleBuilder withSupplierAuthorities() {
+
+    withAuthority(Authority.ROLE_PUBLIC);
+    withAuthority(Authority.ROLE_SUPPLIER);
+
+    return this;
+  }
+
+  /**
    * Handles adding a new Authority to the Role
    */
   private class AddAuthority {

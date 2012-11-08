@@ -119,6 +119,12 @@ public class User implements Serializable {
   private Customer customer = null;
 
   /**
+   * A User may be linked to a Supplier (bi-directional)
+   */
+  @OneToOne(optional = true, cascade = CascadeType.ALL)
+  private Supplier supplier = null;
+
+  /**
    * @return The internal unique ID
    */
   public Long getId() {
@@ -258,6 +264,14 @@ public class User implements Serializable {
 
   public void setCustomer(Customer customer) {
     this.customer = customer;
+  }
+
+  public Supplier getSupplier() {
+    return supplier;
+  }
+
+  public void setSupplier(Supplier supplier) {
+    this.supplier = supplier;
   }
 
   public boolean isLocked() {

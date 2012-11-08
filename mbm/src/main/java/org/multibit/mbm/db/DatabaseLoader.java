@@ -41,6 +41,7 @@ public class DatabaseLoader {
   private Role customerRole = null;
   private Role clientRole = null;
   private Role publicRole = null;
+  private Role supplierRole = null;
 
   /**
    * Handles the process of initialising the database using the DAOs
@@ -78,6 +79,10 @@ public class DatabaseLoader {
     // Build the Public Role and Authorities
     publicRole = buildPublicRole();
     publicRole = roleDao.saveOrUpdate(publicRole);
+
+    // Build the Supplier Role and Authorities
+    supplierRole = buildSupplierRole();
+    supplierRole = roleDao.saveOrUpdate(supplierRole);
 
     roleDao.flush();
 
@@ -128,6 +133,18 @@ public class DatabaseLoader {
   }
 
   /**
+   * @return A transient instance of the Supplier role
+   */
+  public static Role buildSupplierRole() {
+    return RoleBuilder.newInstance()
+      .withName(Authority.ROLE_SUPPLIER.name())
+      .withDescription("Supplier role")
+      .withSupplierAuthorities()
+      .build();
+  }
+
+
+  /**
    * @return A transient instance of the Administrator role
    */
   public static Role buildAdminRole() {
@@ -137,6 +154,8 @@ public class DatabaseLoader {
       .withAdminAuthorities()
       .build();
   }
+
+
 
   /**
    * Build a demonstration database based on books
@@ -289,6 +308,11 @@ public class DatabaseLoader {
     User anonymous = buildAnonymousPublic(publicRole);
     userDao.saveOrUpdate(anonymous);
 
+    // Suppliers
+    // Steve
+    User steve = buildSteveSupplier(supplierRole);
+    userDao.saveOrUpdate(steve);
+
     userDao.flush();
 
   }
@@ -369,6 +393,24 @@ public class DatabaseLoader {
       .build();
   }
 
+  public static User buildSteveSupplier(Role supplierRole) {
+    Supplier steveSupplier = SupplierBuilder.newInstance()
+      .build();
+
+    // Catalog Admin
+    return UserBuilder.newInstance()
+      .withApiKey("steve123")
+      .withSecretKey("steve456")
+      .withUsername("steve")
+      .withPassword("steve1")
+      .withContactMethod(ContactMethod.NAMES, "Steve")
+      .withContactMethod(ContactMethod.LAST_NAME, "Supplier")
+      .withContactMethod(ContactMethod.EMAIL, "supplier@example.org")
+      .withRole(supplierRole)
+      .withSupplier(steveSupplier)
+      .build();
+  }
+
   public static User buildStoreClient(Role clientRole) {
     // Admin
     return UserBuilder.newInstance()
@@ -390,4 +432,5 @@ public class DatabaseLoader {
   public void setItemDao(ItemDao itemDao) {
     this.itemDao = itemDao;
   }
+
 }

@@ -29,6 +29,7 @@ public class UserBuilder {
   private String username;
   private String plainPassword;
   private Customer customer;
+  private Supplier supplier;
 
   private boolean isBuilt = false;
 
@@ -87,6 +88,10 @@ public class UserBuilder {
     if (customer != null) {
       user.setCustomer(customer);
       customer.setUser(user);
+    }
+    if (supplier != null) {
+      user.setSupplier(supplier);
+      supplier.setUser(user);
     }
 
     for (AddRole addRole : addRoles) {
@@ -181,6 +186,16 @@ public class UserBuilder {
    */
   public UserBuilder withCustomer(Customer customer) {
     this.customer = customer;
+    return this;
+  }
+
+  /**
+   * Add the Supplied to the User (one permitted)
+   *
+   * @return The builder
+   */
+  public UserBuilder withSupplier(Supplier supplier) {
+    this.supplier = supplier;
     return this;
   }
 
