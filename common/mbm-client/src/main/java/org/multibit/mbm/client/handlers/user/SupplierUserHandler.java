@@ -16,20 +16,20 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
- * <p>Handler to provide the following to {@link org.multibit.mbm.client.CustomerMerchantClient}:</p>
+ * <p>Handler to provide the following to {@link org.multibit.mbm.client.SupplierMerchantClient}:</p>
  * <ul>
- * <li>Construction of customer user requests</li>
+ * <li>Construction of supplier user requests</li>
  * </ul>
  *
  * @since 0.0.1
  *         
  */
-public class CustomerUserHandler extends BaseHandler {
+public class SupplierUserHandler extends BaseHandler {
 
   /**
    * @param locale       The locale providing i18n information
    */
-  public CustomerUserHandler(Locale locale) {
+  public SupplierUserHandler(Locale locale) {
     super(locale);
   }
 

@@ -289,11 +289,16 @@ public class DatabaseLoader {
     User userSam = buildSamCatalogAdministrator(catalogAdminRole);
     userDao.saveOrUpdate(userSam);
 
+    // Suppliers
+    // Steve
+    User steve = buildSteveSupplier(supplierRole);
+    userDao.saveOrUpdate(steve);
+
     // TODO Introduce various staff roles (dispatch, sales etc)
 
     // Clients
-    User userStore = buildStoreClient(clientRole);
-    userDao.saveOrUpdate(userStore);
+    User storeClient = buildStoreClient(clientRole);
+    userDao.saveOrUpdate(storeClient);
 
     // Customers
     // Alice
@@ -308,10 +313,6 @@ public class DatabaseLoader {
     User anonymous = buildAnonymousPublic(publicRole);
     userDao.saveOrUpdate(anonymous);
 
-    // Suppliers
-    // Steve
-    User steve = buildSteveSupplier(supplierRole);
-    userDao.saveOrUpdate(steve);
 
     userDao.flush();
 

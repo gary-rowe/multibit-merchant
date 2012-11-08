@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * <p>DTO to provide the following to Resources:</p>
  * <ul>
- * <li>Provision of state for a single User as viewed by the Customer</li>
+ * <li>Provision of state for a single User as viewed by the Supplier</li>
  * </ul>
  *
  * TODO Fix all this
@@ -15,7 +15,7 @@ import java.util.Map;
  * @since 0.0.1
  *         
  */
-public class CustomerUser {
+public class SupplierUser {
 
   private Map<String,String> optionalProperties= Maps.newHashMap();
 

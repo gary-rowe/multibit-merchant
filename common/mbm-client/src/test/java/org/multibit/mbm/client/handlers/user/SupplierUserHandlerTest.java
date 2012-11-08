@@ -7,6 +7,7 @@ import org.multibit.mbm.client.handlers.BaseHandlerTest;
  * TODO Need to flesh this out
  */
 @Ignore
-public class CustomerUserHandlerTest extends BaseHandlerTest {
+public class SupplierUserHandlerTest extends BaseHandlerTest {
+
 
 }

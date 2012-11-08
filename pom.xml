@@ -63,7 +63,7 @@
   <distributionManagement>
     <repository>
       <id>releases</id>
-      <url>http://nexus.bitcoinoda.org/content/repositories/releases</url>
+      <url>http://nexus.bitcoinj.org/content/repositories/releases</url>
     </repository>
     <snapshotRepository>
       <id>snapshots</id>
@@ -117,11 +117,6 @@
     <repository>
       <id>springframework-milestone</id>
       <url>http://maven.springframework.org/milestone</url>
-    </repository>
-    <!-- JBoss for RESTEasy -->
-    <repository>
-      <id>org.jboss.resteasy</id>
-      <url>http://maven.antelink.com/content/groups/public-jboss/</url>
     </repository>
     <!-- Java.net for Atmosphere and Servlet API -->
     <repository>
@@ -253,7 +248,7 @@
       <dependency>
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-entitymanager</artifactId>
-        <version>3.6.0.Final</version>
+        <version>3.6.10.Final</version>
         <exclusions>
           <exclusion>
             <artifactId>hsqldb</artifactId>

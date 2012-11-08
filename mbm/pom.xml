@@ -138,12 +138,10 @@
       <groupId>org.hibernate.java-persistence</groupId>
       <artifactId>jpa-api</artifactId>
     </dependency>
-    <!-- Must match Dropwizard's entry but must be present
-         to allow unit tests -->
+    <!-- Must be present to allow unit tests -->
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-entitymanager</artifactId>
-      <version>3.6.0.Final</version>
     </dependency>
 
     <!-- HSQLDB database -->
