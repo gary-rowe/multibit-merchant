@@ -39,9 +39,14 @@ public class ClientUserBridge extends BaseBridge<User> {
       String path;
       if (principal.isPresent() && principal.get().hasAuthority(Authority.ROLE_ADMIN)) {
         path = "/admin/user/" + user.getId();
-      } else {
+      } else if (user.getCustomer() != null) {
         path = "/customer/user";
+      } else if (user.getSupplier() != null) {
+        path = "/supplier/user";
+      } else {
+        throw new IllegalStateException("User does not have correct rights to be here ["+user.getId()+"]");
       }
+
       // The user will refer to their own profile implicitly
       userResource = resourceFactory.newResource(path)
         // The username and password digest are not required for any further authentication

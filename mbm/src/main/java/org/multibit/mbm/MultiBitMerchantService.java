@@ -10,14 +10,16 @@ import org.multibit.mbm.auth.hmac.HmacServerCredentials;
 import org.multibit.mbm.auth.hmac.HmacServerRestrictedToProvider;
 import org.multibit.mbm.db.dto.User;
 import org.multibit.mbm.health.TemplatePropertyHealthCheck;
-import org.multibit.mbm.resources.*;
+import org.multibit.mbm.resources.BitcoinPaymentResource;
 import org.multibit.mbm.resources.cart.AdminCartResource;
+import org.multibit.mbm.resources.cart.PublicCartResource;
 import org.multibit.mbm.resources.item.AdminItemResource;
 import org.multibit.mbm.resources.item.PublicItemResource;
 import org.multibit.mbm.resources.role.AdminRoleResource;
 import org.multibit.mbm.resources.user.AdminUserResource;
-import org.multibit.mbm.resources.cart.PublicCartResource;
 import org.multibit.mbm.resources.user.ClientUserResource;
+import org.multibit.mbm.resources.user.CustomerUserResource;
+import org.multibit.mbm.resources.user.SupplierUserResource;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -78,10 +80,12 @@ public class MultiBitMerchantService extends Service<MultiBitMerchantConfigurati
     // Resources - client (needs ROLE_CLIENT)
     environment.addResource(context.getBean(ClientUserResource.class));
     // Resources - customer (needs ROLE_CUSTOMER)
-    environment.addResource(context.getBean(CustomerResource.class));
-    environment.addResource(context.getBean(PublicCartResource.class));
-    environment.addResource(context.getBean(BitcoinPaymentResource.class));
+    environment.addResource(context.getBean(CustomerUserResource.class));
+    // Resources - supplier (needs ROLE_SUPPLIER)
+    environment.addResource(context.getBean(SupplierUserResource.class));
     // Resources - public (no authentication)
+    environment.addResource(context.getBean(BitcoinPaymentResource.class));
+    environment.addResource(context.getBean(PublicCartResource.class));
     environment.addResource(context.getBean(PublicItemResource.class));
 
     // Health checks

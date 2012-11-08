@@ -57,6 +57,7 @@
         "ROLE_SALES_MANAGER":true,
         "ROLE_STORES":true,
         "ROLE_STORES_MANAGER":true,
+        "ROLE_SUPPLIER":true,
         "UPDATE_CUSTOMERS":true,
         "UPDATE_INVOICES":true,
         "UPDATE_ITEMS":true,

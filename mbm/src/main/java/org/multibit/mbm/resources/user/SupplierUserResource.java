@@ -6,7 +6,7 @@ import com.google.common.collect.Maps;
 import com.yammer.metrics.annotation.Timed;
 import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.api.response.hal.user.ClientUserBridge;
-import org.multibit.mbm.api.response.hal.user.CustomerUserBridge;
+import org.multibit.mbm.api.response.hal.user.SupplierUserBridge;
 import org.multibit.mbm.auth.Authority;
 import org.multibit.mbm.auth.annotation.RestrictedTo;
 import org.multibit.mbm.db.dao.UserDao;
@@ -26,71 +26,71 @@ import java.net.URI;
 /**
  * <p>Resource to provide the following to application:</p>
  * <ul>
- * <li>Provision of REST endpoints to manage operations by a Customer</li>
+ * <li>Provision of REST endpoints to manage operations by a Supplier</li>
  * </ul>
  *
  * @since 0.0.1
  */
 @Component
-@Path("/customer/user")
+@Path("/supplier/user")
 @Produces({HalMediaType.APPLICATION_HAL_JSON, HalMediaType.APPLICATION_HAL_XML})
-public class CustomerUserResource extends BaseResource {
+public class SupplierUserResource extends BaseResource {
 
   @Resource(name = "hibernateUserDao")
   private UserDao userDao;
 
   /**
-   * @param customerUser The authenticated Customer
+   * @param supplierUser The authenticated Supplier
    *
    * @return A HAL representation of the result
    */
   @GET
   @Timed
   public Response retrieveOwnUser(
-    @RestrictedTo({Authority.ROLE_CUSTOMER})
-    User customerUser) {
+    @RestrictedTo({Authority.ROLE_SUPPLIER})
+    User supplierUser) {
 
-    CustomerUserBridge bridge = new CustomerUserBridge(uriInfo, Optional.of(customerUser));
+    SupplierUserBridge bridge = new SupplierUserBridge(uriInfo, Optional.of(supplierUser));
 
-    return ok(bridge, customerUser);
+    return ok(bridge, supplierUser);
 
   }
 
   /**
-   * @param customerUser The Customer User
+   * @param supplierUser The Supplier User
    *
    * @return A HAL representation of the result
    */
   @DELETE
   @Timed
   public Response deregisterUser(
-    @RestrictedTo({Authority.ROLE_CUSTOMER})
-    User customerUser) {
+    @RestrictedTo({Authority.ROLE_SUPPLIER})
+    User supplierUser) {
 
-    Preconditions.checkNotNull(customerUser);
+    Preconditions.checkNotNull(supplierUser);
 
     // Remove all identifying information from the User
     // but leave the entity available for audit purposes
     // We leave the secret key in case the user has been
     // accidentally deleted and the user wants to be
     // reinstated
-    customerUser.setApiKey("");
-    customerUser.setContactMethodMap(Maps.<ContactMethod, ContactMethodDetail>newHashMap());
-    customerUser.setUsername("");
-    customerUser.setPasswordDigest("");
-    customerUser.setPasswordResetAt(DateUtils.nowUtc());
-    customerUser.setLocked(true);
-    customerUser.setDeleted(true);
-    customerUser.setReasonForDelete("Customer deregistered");
-    customerUser.setUserFieldMap(Maps.<UserField, UserFieldDetail>newHashMap());
+    supplierUser.setApiKey("");
+    supplierUser.setContactMethodMap(Maps.<ContactMethod, ContactMethodDetail>newHashMap());
+    supplierUser.setUsername("");
+    supplierUser.setPasswordDigest("");
+    supplierUser.setPasswordResetAt(DateUtils.nowUtc());
+    supplierUser.setLocked(true);
+    supplierUser.setDeleted(true);
+    supplierUser.setReasonForDelete("Supplier deregistered");
+    supplierUser.setUserFieldMap(Maps.<UserField, UserFieldDetail>newHashMap());
 
-    // Persist the User with cascade for the Customer
-    User persistentUser = userDao.saveOrUpdate(customerUser);
+    // Persist the User with cascade for the Supplier
+    User persistentUser = userDao.saveOrUpdate(supplierUser);
 
     // Provide a minimal representation to the client
     // so that they can see their secret key as a last resort
     // manual recovery option
-    ClientUserBridge bridge = new ClientUserBridge(uriInfo, Optional.of(customerUser));
+    ClientUserBridge bridge = new ClientUserBridge(uriInfo, Optional.of(supplierUser));
     URI location = uriInfo.getAbsolutePathBuilder().path(persistentUser.getApiKey()).build();
 
     return created(bridge, persistentUser, location);

@@ -374,7 +374,7 @@ public class DatabaseLoader {
       .withPassword("trent1")
       .withContactMethod(ContactMethod.NAMES, "Trent")
       .withContactMethod(ContactMethod.LAST_NAME, "Admin")
-      .withContactMethod(ContactMethod.EMAIL, "admin@example.org")
+      .withContactMethod(ContactMethod.EMAIL, "trent@example.org")
       .withRole(adminRole)
       .build();
   }
@@ -388,7 +388,7 @@ public class DatabaseLoader {
       .withPassword("sam1")
       .withContactMethod(ContactMethod.NAMES, "Sam")
       .withContactMethod(ContactMethod.LAST_NAME, "Catalog Admin")
-      .withContactMethod(ContactMethod.EMAIL, "catalog.admin@example.org")
+      .withContactMethod(ContactMethod.EMAIL, "sam@example.org")
       .withRole(catalogAdminRole)
       .build();
   }
@@ -405,7 +405,7 @@ public class DatabaseLoader {
       .withPassword("steve1")
       .withContactMethod(ContactMethod.NAMES, "Steve")
       .withContactMethod(ContactMethod.LAST_NAME, "Supplier")
-      .withContactMethod(ContactMethod.EMAIL, "supplier@example.org")
+      .withContactMethod(ContactMethod.EMAIL, "steve@example.org")
       .withRole(supplierRole)
       .withSupplier(steveSupplier)
       .build();

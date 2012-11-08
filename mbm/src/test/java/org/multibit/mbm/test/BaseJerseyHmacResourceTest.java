@@ -164,6 +164,17 @@ public abstract class BaseJerseyHmacResourceTest extends BaseResourceTest {
   }
 
   /**
+   * Provides HMAC authentication settings for Steve Supplier
+   */
+  protected User setUpSteveHmacAuthenticator() {
+
+    Role supplierRole = DatabaseLoader.buildSupplierRole();
+    User steveSupplier = DatabaseLoader.buildSteveSupplier(supplierRole);
+
+    return setUpHmacAuthenticator(steveSupplier);
+  }
+
+  /**
    * Provides HMAC authentication settings for anonymous Public user
    */
   protected User setUpPublicHmacAuthenticator() {
