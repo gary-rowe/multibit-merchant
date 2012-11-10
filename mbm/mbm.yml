@@ -2,7 +2,6 @@
 http:
   port: 8080
   adminPort: 8081
-  rootPath: /mbm/*
 
 # TODO Put only the database connectivity in here
 # Load up all default values directly into the database
@@ -20,6 +19,11 @@ logging:
     # Set specific levels
     "com.yammer": INFO
     "org.multibit": DEBUG
+
+    # Hibernate
+    "org.hibernate.SQL": DEBUG # SQL DML statements
+    "org.hibernate.type": TRACE # JDBC parameters
+    "org.hibernate.transaction": DEBUG # Transaction state
 
   # ...
   # Settings for logging to stdout.

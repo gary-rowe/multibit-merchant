@@ -136,7 +136,7 @@ public class HmacUtils {
 
     String httpMethod = clientRequest.getMethod().toUpperCase();
     StringBuilder curlCommand = new StringBuilder("curl --verbose ");
-    curlCommand.append("--output \"response.txt\" ");
+    curlCommand.append("--output \"response.json\" ");
 
     // Add in the Authorization header
     curlCommand

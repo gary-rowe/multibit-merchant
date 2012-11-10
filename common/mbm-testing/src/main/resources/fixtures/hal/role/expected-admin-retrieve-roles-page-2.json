@@ -1,12 +1,12 @@
 {"_links":{
   "self":{
-    "href":"http://localhost:9998/role"
+    "href":"http://localhost:8080/role"
   }
 }, "_embedded":{
-  "http://localhost:9998/role/2":{
+  "http://localhost:8080/role/2":{
     "_links":{
-      "http://localhost:9998/role/2 self":{
-        "href":"http://localhost:9998/role/2"
+      "http://localhost:8080/role/2 self":{
+        "href":"http://localhost:8080/role/2"
       }
     },
     "description":"Customer role",
@@ -16,7 +16,7 @@
       "authorities":{
         "_links":{
           "authorities self":{
-            "href":"http://localhost:9998/authorities"
+            "href":"http://localhost:8080/authorities"
           }
         },
         "ROLE_CUSTOMER":true,

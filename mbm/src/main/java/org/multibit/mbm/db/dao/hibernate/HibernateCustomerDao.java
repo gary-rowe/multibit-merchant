@@ -15,7 +15,7 @@ public class HibernateCustomerDao extends BaseHibernateDao implements CustomerDa
   public Optional<Customer> getCustomerByOpenId(String openId) {
     List customers = hibernateTemplate.find("from Customer c where c.openId = ?", openId);
 
-    return first(customers, Customer.class);
+    return first(Customer.class, customers);
   }
 
   @Override

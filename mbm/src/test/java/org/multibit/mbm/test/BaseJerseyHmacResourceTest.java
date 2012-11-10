@@ -26,7 +26,8 @@ import org.multibit.mbm.db.dto.Role;
 import org.multibit.mbm.db.dto.User;
 import org.multibit.mbm.db.dto.UserBuilder;
 
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.UriBuilder;
+import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -45,7 +46,6 @@ public abstract class BaseJerseyHmacResourceTest extends BaseResourceTest {
   private final Map<String, Boolean> features = Maps.newHashMap();
 
   private JerseyTest test;
-  protected UriInfo uriInfo;
 
   /**
    * The User providing authentication via HMAC
@@ -95,6 +95,12 @@ public abstract class BaseJerseyHmacResourceTest extends BaseResourceTest {
     setUpResources();
 
     this.test = new JerseyTest() {
+
+      @Override
+      protected URI getBaseURI() {
+        return URI.create("http://localhost:8080/");
+      }
+
       @Override
       protected AppDescriptor configure() {
         final DropwizardResourceConfig config = new DropwizardResourceConfig(true);
@@ -118,7 +124,9 @@ public abstract class BaseJerseyHmacResourceTest extends BaseResourceTest {
           config.getFeatures().put(feature.getKey(), feature.getValue());
         }
 
-        return new LowLevelAppDescriptor.Builder(config).build();
+        return new LowLevelAppDescriptor
+          .Builder(config)
+          .build();
       }
     };
 
@@ -222,7 +230,6 @@ public abstract class BaseJerseyHmacResourceTest extends BaseResourceTest {
    *
    * @return A web resource suitable for method chaining
    *
-   * TODO Replace the path with the URIBuilder .class approach
    */
   protected WebResource configureAsClient(String path) {
     WebResource resource = client().resource(path);
@@ -230,4 +237,26 @@ public abstract class BaseJerseyHmacResourceTest extends BaseResourceTest {
     resource.setProperty(HmacClientFilter.MBM_SECRET_KEY, hmacUser.getSecretKey());
     return resource;
   }
+
+  /**
+   * Configure request as a client to access the resource on behalf of a user
+   *
+   * @param clazz The class of the Resource
+   *
+   * @return A web resource suitable for method chaining
+   *
+   */
+  protected WebResource configureAsClient(Class clazz) {
+    URI uri = UriBuilder
+      .fromResource(clazz)
+      .scheme("http")
+      .host("localhost")
+      .port(8080)
+      .build();
+    WebResource resource = client().resource(uri);
+    resource.setProperty(HmacClientFilter.MBM_API_KEY, hmacUser.getApiKey());
+    resource.setProperty(HmacClientFilter.MBM_SECRET_KEY, hmacUser.getSecretKey());
+    return resource;
+  }
+
 }

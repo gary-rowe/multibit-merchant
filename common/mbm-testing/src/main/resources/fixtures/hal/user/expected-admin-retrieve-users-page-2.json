@@ -1,12 +1,12 @@
 {"_links":{
   "self":{
-    "href":"http://localhost:9998/admin/user?ps=1&pn=1"
+    "href":"http://localhost:8080/admin/user?ps=1&pn=1"
   }
 }, "_embedded":{
-  "http://localhost:9998/user/2":{
+  "http://localhost:8080/user/2":{
     "_links":{
-      "http://localhost:9998/user/2 self":{
-        "href":"http://localhost:9998/admin/user/2"
+      "http://localhost:8080/user/2 self":{
+        "href":"http://localhost:8080/admin/user/2"
       }
     },
     "api_key":"bob123",

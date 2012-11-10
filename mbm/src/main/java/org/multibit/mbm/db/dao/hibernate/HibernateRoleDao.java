@@ -31,7 +31,7 @@ public class HibernateRoleDao extends BaseHibernateDao implements RoleDao {
   @Override
   public Optional<Role> getByName(String name) {
     List roles = hibernateTemplate.find("from Role r where r.name = ?", name);
-    return first(roles, Role.class);
+    return first(Role.class, roles);
   }
 
   @SuppressWarnings("unchecked")

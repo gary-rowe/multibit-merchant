@@ -28,7 +28,7 @@ public class SupplierUserResourceTest extends BaseJerseyHmacResourceTest {
   @Test
   public void supplierRetrieveUserAsHalJson() throws Exception {
 
-    String actualResponse = configureAsClient("/supplier/user")
+    String actualResponse = configureAsClient(SupplierUserResource.class)
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 

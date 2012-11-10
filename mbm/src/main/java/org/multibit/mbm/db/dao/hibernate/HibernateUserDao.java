@@ -20,14 +20,14 @@ public class HibernateUserDao extends BaseHibernateDao implements UserDao {
   @SuppressWarnings("unchecked")
   @Override
   public Optional<User> getById(Long id) {
-    return getById(User.class,id);
+    return getById(User.class, id);
   }
 
   @SuppressWarnings("unchecked")
   @Override
   public Optional<User> getByApiKey(String uuid) {
     List users = hibernateTemplate.find("from User u where u.apiKey = ?", uuid);
-    return first(users,User.class);
+    return first(User.class, users);
   }
 
   @Override
@@ -42,12 +42,27 @@ public class HibernateUserDao extends BaseHibernateDao implements UserDao {
     // Check the password against all matching Users
     for (User user : users) {
       if (passwordEncryptor.checkPassword(passwordDigest, user.getPasswordDigest())) {
-        return Optional.of(user);
+        return Optional.of(initialized(user));
       }
     }
 
     // Must have failed to be here
     return Optional.absent();
+  }
+
+  /**
+   * TODO Consider pulling this up into the base class should other entities use a common approach
+   *
+   * Initialize various collections since we are targeting the individual entity (perhaps for display)
+   *
+   * @param user The entity
+   *
+   * @return The entity with all collections initialized
+   */
+  protected User initialized(User user) {
+    hibernateTemplate.initialize(user.getContactMethodMap());
+    hibernateTemplate.initialize(user.getSupplier());
+    return user;
   }
 
   @SuppressWarnings("unchecked")
@@ -78,4 +93,5 @@ public class HibernateUserDao extends BaseHibernateDao implements UserDao {
   public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
     this.hibernateTemplate = hibernateTemplate;
   }
+
 }

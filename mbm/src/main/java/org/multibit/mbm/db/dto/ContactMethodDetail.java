@@ -26,7 +26,7 @@ public class ContactMethodDetail {
   @Column(name = "primary_detail")
   private String primaryDetail;
 
-  @ElementCollection
+  @ElementCollection(fetch = FetchType.EAGER)
   @CollectionTable(
     name = "contact_method_secondary_details",
     joinColumns = @JoinColumn(name = "contact_method_id"

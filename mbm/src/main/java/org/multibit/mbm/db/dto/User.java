@@ -115,13 +115,17 @@ public class User implements Serializable {
   /**
    * A User may be linked to a Customer (bi-directional)
    */
-  @OneToOne(optional = true, cascade = CascadeType.ALL)
+  @OneToOne(
+    fetch = FetchType.LAZY,
+    cascade = CascadeType.ALL)
   private Customer customer = null;
 
   /**
    * A User may be linked to a Supplier (bi-directional)
    */
-  @OneToOne(optional = true, cascade = CascadeType.ALL)
+  @OneToOne(
+    fetch = FetchType.LAZY,
+    cascade = CascadeType.ALL)
   private Supplier supplier = null;
 
   /**

@@ -6,12 +6,9 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
 import org.multibit.mbm.api.hal.HalMediaType;
-import org.multibit.mbm.db.dto.User;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.UriInfo;
-import java.net.URI;
 import java.util.List;
 
 import static org.mockito.Mockito.mock;
@@ -22,27 +19,11 @@ import static org.mockito.Mockito.when;
  */
 public abstract class BaseResourceTest {
 
-  protected UriInfo uriInfo;
   protected HttpHeaders httpHeaders;
-  protected Optional<User> principal=Optional.absent();
 
   static {
     // Fix all DateTime values to midnight on January 01 2000 UTC
     DateTimeUtils.setCurrentMillisFixed(new DateTime(2000, 1, 1, 0, 0, 0, 0).withZone(DateTimeZone.UTC).getMillis());
-  }
-
-  /**
-   * @param baseHref Optional with default of "http://example.org"
-   * @throws Exception If the URI cannot be constructed
-   */
-  protected void setUpUriInfo(Optional<String> baseHref) throws Exception {
-    if (!baseHref.isPresent()) {
-      // This allows test fixtures to be DRY
-      baseHref=Optional.of("http://localhost:9998");
-    }
-    final URI uri = new URI(baseHref.get());
-    uriInfo = mock(UriInfo.class);
-    when(uriInfo.getBaseUri()).thenReturn(uri);
   }
 
   /**
@@ -56,13 +37,6 @@ public abstract class BaseResourceTest {
     }
     httpHeaders = mock(HttpHeaders.class);
     when(httpHeaders.getAcceptableMediaTypes()).thenReturn(acceptableMediaTypes.get());
-  }
-
-  /**
-   * @param principal An optional {@link User} to be the security principal with a default of absent
-   */
-  protected void setUpPrincipal(Optional<User> principal) {
-    this.principal=principal;
   }
 
 }

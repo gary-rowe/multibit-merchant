@@ -1,5 +1,5 @@
 {"_links":{
   "self":{
-    "href":"http://localhost:9998/admin/user/1"
+    "href":"http://localhost:8080/admin/user/1"
   }
 }, "api_key":"alice123", "created_at":null, "email":"alice@example.org", "last_name":"Customer", "locked":false, "names":"Alice", "password_reset_at":null, "secret_key":"alice456", "staff_member":false, "username":"charlie"}

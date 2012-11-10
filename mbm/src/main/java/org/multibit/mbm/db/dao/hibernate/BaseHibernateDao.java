@@ -31,19 +31,20 @@ public abstract class BaseHibernateDao {
   }
 
   /**
-   * @param list The List to check and extract from
+   * @param clazz The entity class
+   * @param list  The List to check and extract from
    *
-   * @return
+   * @return The first entity in the list if present
    */
   @SuppressWarnings("unchecked")
-  protected <T> Optional<T> first(List list, Class<T> clazz) {
+  protected <T> Optional<T> first(Class<T> clazz, List list) {
     if (isNotFound(list)) {
       return Optional.absent();
     }
     return Optional.of((T) list.get(0));
   }
 
-  public <T> Optional<T> getById(Class<T> clazz,Long id) {
+  public <T> Optional<T> getById(Class<T> clazz, Long id) {
     T entity = hibernateTemplate.get(clazz, id);
     return Optional.fromNullable(entity);
   }

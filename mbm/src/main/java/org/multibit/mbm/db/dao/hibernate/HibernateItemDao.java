@@ -32,7 +32,7 @@ public class HibernateItemDao extends BaseHibernateDao implements ItemDao {
   public Optional<Item> getBySKU(String sku) {
     List items = hibernateTemplate.find("from Item i where i.sku = ?", sku);
 
-    return first(items, Item.class);
+    return first(Item.class, items);
   }
 
 
@@ -40,7 +40,7 @@ public class HibernateItemDao extends BaseHibernateDao implements ItemDao {
   public Optional<Item> getByGTIN(String gtin) {
     List items = hibernateTemplate.find("from Item i where i.gtin = ?", gtin);
 
-    return first(items, Item.class);
+    return first(Item.class, items);
   }
 
   @SuppressWarnings("unchecked")

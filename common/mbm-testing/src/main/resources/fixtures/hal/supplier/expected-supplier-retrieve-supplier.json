@@ -1,8 +1,8 @@
 {"_links":{
   "self":{
-    "href":"http://localhost:9998/supplier/1"
+    "href":"http://localhost:8080/supplier/1"
   },
   "user":{
-    "href":"http://localhost:9998/user/1"
+    "href":"http://localhost:8080/user/1"
   }
 }}

@@ -4,7 +4,6 @@
 http:
   port: 8080
   adminPort: 8080
-  rootPath: /mbm/*
 
   adminUsername: admin
   adminPassword: password
