@@ -20,7 +20,7 @@ import javax.ws.rs.core.UriInfo;
  */
 public class PublicCartItemBridge extends BaseBridge<CartItem> {
 
-  private final PublicItemBridge customerItemBridge;
+  private final PublicItemBridge publicItemBridge;
 
   /**
    * @param uriInfo   The {@link javax.ws.rs.core.UriInfo} containing the originating request information
@@ -28,7 +28,7 @@ public class PublicCartItemBridge extends BaseBridge<CartItem> {
    */
   public PublicCartItemBridge(UriInfo uriInfo, Optional<User> principal) {
     super(uriInfo, principal);
-    customerItemBridge = new PublicItemBridge(uriInfo, principal);
+    publicItemBridge = new PublicItemBridge(uriInfo, principal);
   }
 
   public Resource toResource(CartItem cartItem) {
@@ -37,7 +37,7 @@ public class PublicCartItemBridge extends BaseBridge<CartItem> {
     ResourceAsserts.assertNotNull(cartItem.getItem().getId(),"id");
 
     // Create the Customer Item resource
-    Resource customerItemResource = customerItemBridge.toResource(cartItem.getItem());
+    Resource customerItemResource = publicItemBridge.toResource(cartItem.getItem());
 
     // Create the wrapping CartItem resource
     ResourceFactory resourceFactory = getResourceFactory();

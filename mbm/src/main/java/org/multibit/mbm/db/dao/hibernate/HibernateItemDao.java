@@ -1,6 +1,7 @@
 package org.multibit.mbm.db.dao.hibernate;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -14,7 +15,6 @@ import org.multibit.mbm.db.dto.ItemFieldDetail;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.Assert;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -61,7 +61,7 @@ public class HibernateItemDao extends BaseHibernateDao implements ItemDao {
   @Override
   @Deprecated
   public List<Item> getPagedItems(final ItemPagedQueryResponse itemPagedQueryResponse) {
-    Assert.notNull(itemPagedQueryResponse, "itemPagedQueryResponse cannot be null");
+    Preconditions.checkNotNull(itemPagedQueryResponse, "itemPagedQueryResponse cannot be null");
 
     return hibernateTemplate.executeFind(new HibernateCallback() {
       public Object doInHibernate(Session session) throws HibernateException, SQLException {
@@ -83,7 +83,7 @@ public class HibernateItemDao extends BaseHibernateDao implements ItemDao {
        * @return The HQL required to locate matching entities
        */
       private String buildHql(ItemPagedQueryResponse itemPagedQueryResponse) {
-        Assert.notNull(itemPagedQueryResponse, "itemPagedQueryResponse cannot be null");
+        Preconditions.checkNotNull(itemPagedQueryResponse, "itemPagedQueryResponse cannot be null");
 
         // The basic starting point
         String hql = "select i from Item i ";

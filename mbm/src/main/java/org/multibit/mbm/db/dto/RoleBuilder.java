@@ -1,8 +1,8 @@
 package org.multibit.mbm.db.dto;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import org.multibit.mbm.auth.Authority;
-import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -40,8 +40,8 @@ public class RoleBuilder {
     Role role = new Role();
 
     // Validate mandatory fields
-    Assert.notNull(name, "name cannot be null");
-    Assert.notNull(description, "description cannot be null");
+    Preconditions.checkNotNull(name, "name cannot be null");
+    Preconditions.checkNotNull(description, "description cannot be null");
 
     role.setName(name);
     role.setDescription(description);

@@ -1,6 +1,6 @@
 package org.multibit.mbm.db.dto;
 
-import org.springframework.util.Assert;
+import com.google.common.base.Preconditions;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -35,8 +35,8 @@ public class UserRole implements Serializable {
    * @param role The Role
    */
   public UserRole(User user, Role role) {
-    Assert.notNull(user, "user is required");
-    Assert.notNull(role, "role is required");
+    Preconditions.checkNotNull(user, "user is required");
+    Preconditions.checkNotNull(role, "role is required");
     primaryKey.setUser(user);
     primaryKey.setRole(role);
   }

@@ -1,9 +1,11 @@
 package org.multibit.mbm.db.dto;
 
+import com.google.common.collect.Sets;
 import org.multibit.mbm.utils.ObjectUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 /**
  * <p>DTO to provide the following to the application</p>
@@ -24,10 +26,19 @@ public class Supplier implements Serializable {
   private Long id = null;
 
   /**
-   * A Supplier has a single User
+   * A Supplier has many Deliveries
    */
   @OneToOne(mappedBy = "supplier")
   private User user = null;
+
+  @OneToMany(
+    targetEntity = Delivery.class,
+    cascade = {CascadeType.ALL},
+    mappedBy = "supplier",
+    fetch = FetchType.EAGER,
+    orphanRemoval = true
+  )
+  private Set<Delivery> deliveries = Sets.newLinkedHashSet();
 
   /*
   * Default constructor required for Hibernate
@@ -41,6 +52,14 @@ public class Supplier implements Serializable {
 
   public void setId(Long id) {
     this.id = id;
+  }
+
+  public Set<Delivery> getDeliveries() {
+    return deliveries;
+  }
+
+  public void setDeliveries(Set<Delivery> deliveries) {
+    this.deliveries = deliveries;
   }
 
   /**

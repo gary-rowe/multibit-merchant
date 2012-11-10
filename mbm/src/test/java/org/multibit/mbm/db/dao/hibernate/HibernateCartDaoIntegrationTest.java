@@ -7,7 +7,6 @@ import org.multibit.mbm.db.dao.CustomerDao;
 import org.multibit.mbm.db.dao.ItemDao;
 import org.multibit.mbm.db.dao.UserDao;
 import org.multibit.mbm.db.dto.Cart;
-import org.multibit.mbm.db.dto.Customer;
 import org.multibit.mbm.db.dto.Item;
 import org.multibit.mbm.db.dto.User;
 import org.multibit.mbm.test.BaseIntegrationTests;
@@ -121,23 +120,6 @@ public class HibernateCartDaoIntegrationTest extends BaseIntegrationTests {
     assertThat("Unexpected index for book1", expectedCart.getCartItemByItem(book1.get()).get().getIndex(), equalTo(0));
     assertThat("Unexpected quantity for book1", expectedCart.getCartItemByItem(book1.get()).get().getQuantity(), equalTo(4));
     assertFalse("Unexpected existence for book2", expectedCart.getCartItemByItem(book2.get()).isPresent());
-
-  }
-
-  @Test
-  public void testGetInitialisedCartByCustomer() {
-
-    Optional<User> user = userDao.getByApiKey("alice123");
-
-    Customer customer = user.get().getCustomer();
-
-    customer = customerDao.saveOrUpdate(customer);
-
-    Optional<Cart> actualCart = testObject.getInitialisedCartByCustomer(customer);
-
-    assertNotNull("Unexpected missing Cart", actualCart);
-    assertThat("Unexpected quantity for cart", actualCart.get().getCartItems().size(), equalTo(0));
-
 
   }
 

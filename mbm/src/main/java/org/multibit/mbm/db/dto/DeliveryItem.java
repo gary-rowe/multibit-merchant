@@ -11,44 +11,50 @@ import java.io.Serializable;
  * <p>
  * DTO to provide the following to application:<br>
  * <ul>
- * <li>Stores state for a Cart Item (link between Cart and Item)</li>
+ * <li>Stores state for a Delivery Item (link between Delivery and Item)</li>
  * </ul>
- * The CartItem describes the Items assigned to a particular Cart and any additional properties that are
- * specific to the relationship (for example the quantity of a given Item in the Cart).
+ * The DeliveryItem describes the Items assigned to a particular Delivery and any additional properties that are
+ * specific to the relationship (for example the quantity of a given Item in the Delivery).
  * </p>
  */
 @Entity
-@Table(name = "cart_items")
+@Table(name = "delivery_items")
 @AssociationOverrides({@AssociationOverride(name = "primaryKey.item", joinColumns = @JoinColumn(name = "item_id")),
-  @AssociationOverride(name = "primaryKey.cart", joinColumns = @JoinColumn(name = "cart_id"))})
-public class CartItem implements Serializable {
+  @AssociationOverride(name = "primaryKey.delivery", joinColumns = @JoinColumn(name = "delivery_id"))})
+public class DeliveryItem implements Serializable {
 
   private static final long serialVersionUID = 389475903837482L;
 
-  private CartItemPk primaryKey = new CartItemPk();
+  private DeliveryItemPk primaryKey = new DeliveryItemPk();
 
   @Column(name = "quantity", nullable = false)
   private int quantity = 0;
 
-  @Column(name = "index", nullable = false)
-  private int index = 0;
+  @Column(name = "supplier_sku", nullable = true)
+  private String supplierSKU = "";
+
+  @Column(name = "supplier_gtin", nullable = true)
+  private String supplierGTIN = "";
+
+  @Column(name = "batch_reference", nullable = true)
+  private String batchReference = "";
 
   /**
    * Default constructor required by Hibernate
    */
-  public CartItem() {
+  public DeliveryItem() {
   }
 
   /**
    * Standard constructor with mandatory fields
    *
-   * @param cart required cart
-   * @param item required item
+   * @param delivery required delivery
+   * @param item     required item
    */
-  public CartItem(Cart cart, Item item) {
-    Preconditions.checkNotNull(cart, "cart is required");
+  public DeliveryItem(Delivery delivery, Item item) {
+    Preconditions.checkNotNull(delivery, "delivery is required");
     Preconditions.checkNotNull(item, "item is required");
-    primaryKey.setCart(cart);
+    primaryKey.setDelivery(delivery);
     primaryKey.setItem(item);
   }
 
@@ -56,11 +62,11 @@ public class CartItem implements Serializable {
    * @return Returns the primary key
    */
   @EmbeddedId
-  public CartItemPk getPrimaryKey() {
+  public DeliveryItemPk getPrimaryKey() {
     return primaryKey;
   }
 
-  public void setPrimaryKey(CartItemPk primaryKey) {
+  public void setPrimaryKey(DeliveryItemPk primaryKey) {
     this.primaryKey = primaryKey;
   }
 
@@ -73,11 +79,11 @@ public class CartItem implements Serializable {
   }
 
   /**
-   * @return Returns primaryKey.getCart()
+   * @return Returns primaryKey.getDelivery()
    */
   @Transient
-  public Cart getCart() {
-    return primaryKey.getCart();
+  public Delivery getDelivery() {
+    return primaryKey.getDelivery();
   }
 
   /**
@@ -92,14 +98,36 @@ public class CartItem implements Serializable {
   }
 
   /**
-   * @return The index position of the Item (zero-based)
+   * @return The Supplier SKU reference
    */
-  public int getIndex() {
-    return index;
+  public String getSupplierSKU() {
+    return supplierSKU;
   }
 
-  public void setIndex(int index) {
-    this.index = index;
+  public void setSupplierSKU(String supplierSKU) {
+    this.supplierSKU = supplierSKU;
+  }
+
+  /**
+   * @return The Supplier GTIN reference
+   */
+  public String getSupplierGTIN() {
+    return supplierGTIN;
+  }
+
+  public void setSupplierGTIN(String supplierGTIN) {
+    this.supplierGTIN = supplierGTIN;
+  }
+
+  /**
+   * @return The Supplier's batch reference for these Items in the Delivery
+   */
+  public String getBatchReference() {
+    return batchReference;
+  }
+
+  public void setBatchReference(String batchReference) {
+    this.batchReference = batchReference;
   }
 
   /**
@@ -131,25 +159,25 @@ public class CartItem implements Serializable {
   }
 
   /**
-   * The cart item subtotal is the (price subtotal + tax subtotal)
+   * The delivery item subtotal is the (price subtotal + tax subtotal)
    *
-   * @return The cart item subtotal
+   * @return The delivery item subtotal
    */
   @Transient
-  public BigMoney getCartItemSubtotal() {
+  public BigMoney getDeliveryItemSubtotal() {
     return getPriceSubtotal().plus(getTaxSubtotal());
   }
 
   /**
-   * Primary key class to set the Cart and the Item as primary key in this many to many
+   * Primary key class to set the Delivery and the Item as primary key in this many to many
    * relationship.
    */
   @Embeddable
-  public static class CartItemPk implements Serializable {
+  public static class DeliveryItemPk implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private Item item;
-    private Cart cart;
+    private Delivery delivery;
 
     /**
      * The associated Item
@@ -167,17 +195,17 @@ public class CartItem implements Serializable {
     }
 
     /**
-     * The associated Cart
+     * The associated Delivery
      *
-     * @return Returns the Cart
+     * @return Returns the Delivery
      */
-    @ManyToOne(targetEntity = Cart.class)
-    public Cart getCart() {
-      return cart;
+    @ManyToOne(targetEntity = Delivery.class)
+    public Delivery getDelivery() {
+      return delivery;
     }
 
-    public void setCart(Cart cart) {
-      this.cart = cart;
+    public void setDelivery(Delivery delivery) {
+      this.delivery = delivery;
     }
 
     @Override
@@ -188,22 +216,22 @@ public class CartItem implements Serializable {
       if (getClass() != obj.getClass()) {
         return false;
       }
-      final CartItemPk other = (CartItemPk) obj;
+      final DeliveryItemPk other = (DeliveryItemPk) obj;
 
       return ObjectUtils.isEqual(
-        cart, other.cart,
+        delivery, other.delivery,
         item, other.item
       );
     }
 
     @Override
     public int hashCode() {
-      return ObjectUtils.getHashCode(cart, item);
+      return ObjectUtils.getHashCode(delivery, item);
     }
 
     @Override
     public String toString() {
-      return String.format("CartItemPk[cart=%s, item=%s]]", cart, item);
+      return String.format("DeliveryItemPk[delivery=%s, item=%s]]", delivery, item);
     }
 
 

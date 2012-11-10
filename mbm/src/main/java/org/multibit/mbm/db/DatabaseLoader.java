@@ -35,13 +35,36 @@ public class DatabaseLoader {
   @Resource(name = "hibernateRoleDao")
   private RoleDao roleDao;
 
+  // Various Users
+  // (saves on DAO access during loading)
+  private User trentAdmin = null;
+  private User cameronCatalogAdmin = null;
+  // Supplier
+  private User steveSupplier = null;
+  private User samSupplier = null;
+  // Customer
+  private User aliceCustomer = null;
+  private User bobCustomer = null;
+  // Other
+  private User storeClient = null;
+  private User anonymous = null;
+
   // Various Roles that get shared between Users
+  // (saves on DAO access during loading)
   private Role adminRole = null;
   private Role catalogAdminRole = null;
   private Role customerRole = null;
   private Role clientRole = null;
   private Role publicRole = null;
   private Role supplierRole = null;
+
+  // Various Items that get shared between Users
+  // (saves on DAO access during loading)
+  private Item book1 = null;
+  private Item book2 = null;
+  private Item book3 = null;
+  private Item book4 = null;
+  private Item book5 = null;
 
   /**
    * Handles the process of initialising the database using the DAOs
@@ -50,9 +73,14 @@ public class DatabaseLoader {
 
     LOG.info("Populating database");
 
+    // Build the foundations
     buildRolesAndAuthorities();
     buildUsers();
     buildCatalogBooks();
+
+    // Bind entities together
+    buildCustomerCarts();
+    buildSupplierDeliveries();
 
     LOG.info("Complete");
 
@@ -155,34 +183,78 @@ public class DatabaseLoader {
       .build();
   }
 
-
-
   /**
    * Build a demonstration database based on books
-   * TODO Refactor into BookStore, MusicStore etc
    */
   private void buildCatalogBooks() {
-    Item book1 = buildBookItemCryptonomicon();
+    book1 = buildBookItemCryptonomicon();
 
     itemDao.saveOrUpdate(book1);
 
-    Item book2 = buildBookItemProvence();
+    book2 = buildBookItemProvence();
 
     itemDao.saveOrUpdate(book2);
 
-    Item book3 = buildBookItemPlumbing();
+    book3 = buildBookItemPlumbing();
 
     itemDao.saveOrUpdate(book3);
 
-    Item book4 = buildBookItemQuantumThief();
+    book4 = buildBookItemQuantumThief();
 
     itemDao.saveOrUpdate(book4);
 
-    Item book5 = buildBookItemCompleteWorks();
+    book5 = buildBookItemCompleteWorks();
 
     itemDao.saveOrUpdate(book5);
 
     itemDao.flush();
+  }
+
+  /**
+   * Build some demonstration carts
+   */
+  private void buildCustomerCarts() {
+
+    aliceCustomer
+      .getCustomer()
+      .getCart()
+      .setItemQuantity(book1, 1);
+
+    bobCustomer
+      .getCustomer()
+      .getCart()
+      .setItemQuantity(book2, 1);
+
+    userDao.saveOrUpdate(aliceCustomer);
+    userDao.saveOrUpdate(bobCustomer);
+
+    userDao.flush();
+
+  }
+
+  /**
+   * Build some demonstration deliveries
+   */
+  private void buildSupplierDeliveries() {
+
+    // Create a bare-bones Delivery
+    DeliveryBuilder
+      .newInstance()
+      .withSupplier(steveSupplier.getSupplier())
+      .withDeliveryItem(book1, 1)
+      .build();
+
+    DeliveryBuilder
+      .newInstance()
+      .withSupplier(samSupplier.getSupplier())
+      .withDeliveryItem(book2, 2)
+      .build();
+
+    userDao.saveOrUpdate(steveSupplier);
+    userDao.saveOrUpdate(samSupplier);
+
+    userDao.flush();
+
   }
 
   /**
@@ -283,36 +355,41 @@ public class DatabaseLoader {
   private void buildUsers() {
 
     // Administrators
-    User userTrent = buildTrentAdministrator(adminRole);
-    userDao.saveOrUpdate(userTrent);
+    // Trent
+    trentAdmin = buildTrentAdministrator(adminRole);
+    userDao.saveOrUpdate(trentAdmin);
 
-    User userSam = buildSamCatalogAdministrator(catalogAdminRole);
-    userDao.saveOrUpdate(userSam);
+    // Cameron
+    cameronCatalogAdmin = buildCameronCatalogAdministrator(catalogAdminRole);
+    userDao.saveOrUpdate(cameronCatalogAdmin);
 
     // Suppliers
     // Steve
-    User steve = buildSteveSupplier(supplierRole);
-    userDao.saveOrUpdate(steve);
+    steveSupplier = buildSteveSupplier(supplierRole);
+    userDao.saveOrUpdate(steveSupplier);
+
+    // Sam
+    samSupplier = buildSamSupplier(supplierRole);
+    userDao.saveOrUpdate(samSupplier);
 
     // TODO Introduce various staff roles (dispatch, sales etc)
 
     // Clients
-    User storeClient = buildStoreClient(clientRole);
+    storeClient = buildStoreClient(clientRole);
     userDao.saveOrUpdate(storeClient);
 
     // Customers
     // Alice
-    User userAlice = buildAliceCustomer(customerRole);
-    userDao.saveOrUpdate(userAlice);
+    aliceCustomer = buildAliceCustomer(customerRole);
+    userDao.saveOrUpdate(aliceCustomer);
 
     // Bob
-    User bob = buildBobCustomer(customerRole);
-    userDao.saveOrUpdate(bob);
+    bobCustomer = buildBobCustomer(customerRole);
+    userDao.saveOrUpdate(bobCustomer);
 
     // Public
-    User anonymous = buildAnonymousPublic(publicRole);
+    anonymous = buildAnonymousPublic(publicRole);
     userDao.saveOrUpdate(anonymous);
-
 
     userDao.flush();
 
@@ -380,16 +457,16 @@ public class DatabaseLoader {
       .build();
   }
 
-  public static User buildSamCatalogAdministrator(Role catalogAdminRole) {
+  public static User buildCameronCatalogAdministrator(Role catalogAdminRole) {
     // Catalog Admin
     return UserBuilder.newInstance()
-      .withApiKey("sam123")
-      .withSecretKey("sam456")
-      .withUsername("sam")
-      .withPassword("sam1")
-      .withContactMethod(ContactMethod.NAMES, "Sam")
+      .withApiKey("cameron123")
+      .withSecretKey("cameron456")
+      .withUsername("cameron")
+      .withPassword("cameron1")
+      .withContactMethod(ContactMethod.NAMES, "Cameron")
       .withContactMethod(ContactMethod.LAST_NAME, "Catalog Admin")
-      .withContactMethod(ContactMethod.EMAIL, "sam@example.org")
+      .withContactMethod(ContactMethod.EMAIL, "cameron@example.org")
       .withRole(catalogAdminRole)
       .build();
   }
@@ -409,6 +486,24 @@ public class DatabaseLoader {
       .withContactMethod(ContactMethod.EMAIL, "steve@example.org")
       .withRole(supplierRole)
       .withSupplier(steveSupplier)
+      .build();
+  }
+
+  public static User buildSamSupplier(Role supplierRole) {
+    Supplier samSupplier = SupplierBuilder.newInstance()
+      .build();
+
+    // Catalog Admin
+    return UserBuilder.newInstance()
+      .withApiKey("sam123")
+      .withSecretKey("sam456")
+      .withUsername("sam")
+      .withPassword("sam1")
+      .withContactMethod(ContactMethod.NAMES, "Sam")
+      .withContactMethod(ContactMethod.LAST_NAME, "Supplier")
+      .withContactMethod(ContactMethod.EMAIL, "sam@example.org")
+      .withRole(supplierRole)
+      .withSupplier(samSupplier)
       .build();
   }
 

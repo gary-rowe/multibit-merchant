@@ -1,6 +1,6 @@
 package org.multibit.mbm.accounting;
 
-import org.springframework.util.Assert;
+import com.google.common.base.Preconditions;
 
 /**
  * <p>Multi-legged transaction to provide the following to {@link Account}:</p>
@@ -38,8 +38,8 @@ public class Transaction<T extends Entry<T>> {
     // ("Entries are not balanced. Withdrawal={}, deposit={}",withdrawalEntry.getAmount(), depositEntry.getAmount()
 
     // Validation
-    Assert.notNull(withdrawalEntry, "withdrawalEntry");
-    Assert.notNull(depositEntry, "depositEntry");
+    Preconditions.checkNotNull(withdrawalEntry, "withdrawalEntry");
+    Preconditions.checkNotNull(depositEntry, "depositEntry");
 
     if (withdrawalEntry.getAmount() + depositEntry.getAmount() != 0) {
       throw new IllegalArgumentException("Entries are not balanced");

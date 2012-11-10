@@ -2,24 +2,24 @@ package org.multibit.mbm.db.dto;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import org.multibit.mbm.utils.ObjectUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
 /**
  * <p>DTO to provide the following to the application</p>
  * <ul>
  * <li>Provision of persistent state</li>
  * </ul>
- * <p>A Cart provides the mechanism for temporary storage of {@link Item}s. A {@link Customer} maintains a single Cart
+ * <p>A Delivery provides the mechanism for temporary storage of {@link org.multibit.mbm.db.dto.Item}s. A {@link org.multibit.mbm.db.dto.Supplier} maintains a single Delivery
  * (created on demand) </p>
  */
 @Entity
-@Table(name = "carts")
-public class Cart implements Serializable {
+@Table(name = "deliveries")
+public class Delivery implements Serializable {
 
   private static final long serialVersionUID = 38947590321234L;
 
@@ -29,37 +29,36 @@ public class Cart implements Serializable {
   private Long id = null;
 
   /**
-   * A Cart has a single Customer
+   * Many Deliveries come from a single Supplier
    */
-  @OneToOne(mappedBy = "cart")
-  private Customer customer = null;
+  @ManyToOne()
+  private Supplier supplier = null;
 
   /**
-   * A Cart has many CartItems that need to be eager to have meaning
-   * They also have an order
+   * A Delivery has many DeliveryItems that need to be eager to have meaning
+   * There is no inherent order for this collection
    */
-  @OneToMany(targetEntity = CartItem.class,
+  @OneToMany(targetEntity = DeliveryItem.class,
     cascade = {CascadeType.ALL},
-    mappedBy = "primaryKey.cart",
+    mappedBy = "primaryKey.delivery",
     fetch = FetchType.EAGER,
     orphanRemoval = true
   )
-  @OrderBy(value = "index")
-  private List<CartItem> cartItems = Lists.newArrayList();
+  private Set<DeliveryItem> deliveryItems = Sets.newLinkedHashSet();
 
   /*
   * Default constructor required for Hibernate
   */
-  public Cart() {
+  public Delivery() {
   }
 
   /*
    * Mandatory field constructor required for builders
    */
-  public Cart(Customer customer) {
-    Preconditions.checkNotNull(customer, "customer cannot be null");
-    this.customer = customer;
-    customer.setCart(this);
+  public Delivery(Supplier supplier) {
+    Preconditions.checkNotNull(supplier, "supplier cannot be null");
+    this.supplier = supplier;
+    supplier.getDeliveries().add(this);
   }
 
   /**
@@ -72,29 +71,22 @@ public class Cart implements Serializable {
   public void setItemQuantity(Item item, int quantity) {
     Preconditions.checkNotNull(item, "item cannot be null");
 
-    Optional<CartItem> cartItemOptional = getCartItemByItem(item);
+    Optional<DeliveryItem> deliveryItemOptional = getDeliveryItemByItem(item);
 
     if (quantity > 0) {
-      if (cartItemOptional.isPresent()) {
+      if (deliveryItemOptional.isPresent()) {
         // Update
-        cartItemOptional.get().setQuantity(quantity);
+        deliveryItemOptional.get().setQuantity(quantity);
       } else {
         // Insert
-        CartItem newCartItem = new CartItem(this, item);
-        newCartItem.setIndex(cartItems.size());
-        newCartItem.setQuantity(quantity);
-        cartItems.add(newCartItem);
+        DeliveryItem newDeliveryItem = new DeliveryItem(this, item);
+        newDeliveryItem.setQuantity(quantity);
+        deliveryItems.add(newDeliveryItem);
       }
     } else {
-      if (cartItemOptional.isPresent()) {
+      if (deliveryItemOptional.isPresent()) {
         // Remove
-        cartItems.remove(cartItemOptional.get());
-        // Re-align the other cart item index values
-        int i=0;
-        for (CartItem cartItem : cartItems) {
-          cartItem.setIndex(i++);
-        }
-
+        deliveryItems.remove(deliveryItemOptional.get());
       }
     }
 
@@ -103,15 +95,15 @@ public class Cart implements Serializable {
   /**
    * @param item The Item to search for
    *
-   * @return The CartItem that contains the Item, or absent
+   * @return The DeliveryItem that contains the Item, or absent
    */
   @Transient
-  public Optional<CartItem> getCartItemByItem(Item item) {
+  public Optional<DeliveryItem> getDeliveryItemByItem(Item item) {
     Preconditions.checkNotNull(item, "item cannot be null");
 
-    for (CartItem cartItem : cartItems) {
-      if (cartItem.getItem().equals(item)) {
-        return Optional.of(cartItem);
+    for (DeliveryItem deliveryItem : deliveryItems) {
+      if (deliveryItem.getItem().equals(item)) {
+        return Optional.of(deliveryItem);
       }
     }
     return Optional.absent();
@@ -122,7 +114,7 @@ public class Cart implements Serializable {
    */
   @Transient
   public int getItemTotal() {
-    return cartItems.size();
+    return deliveryItems.size();
   }
 
   /**
@@ -132,8 +124,8 @@ public class Cart implements Serializable {
   @Transient
   public int getQuantityTotal() {
     int itemCount = 0;
-    for (CartItem cartItem : cartItems) {
-      itemCount += cartItem.getQuantity();
+    for (DeliveryItem deliveryItem : deliveryItems) {
+      itemCount += deliveryItem.getQuantity();
     }
     return itemCount;
   }
@@ -150,25 +142,25 @@ public class Cart implements Serializable {
   }
 
   /**
-   * @return The Customer that owns this Cart
+   * @return The Supplier that owns this Delivery
    */
-  public Customer getCustomer() {
-    return customer;
+  public Supplier getSupplier() {
+    return supplier;
   }
 
-  public void setCustomer(Customer customer) {
-    this.customer = customer;
+  public void setSupplier(Supplier supplier) {
+    this.supplier = supplier;
   }
 
   /**
-   * @return The CartItems (contains the ordering index, quantity, date etc)
+   * @return The DeliveryItems (contains the quantity, batch reference etc)
    */
-  public List<CartItem> getCartItems() {
-    return cartItems;
+  public Set<DeliveryItem> getDeliveryItems() {
+    return deliveryItems;
   }
 
-  public void setCartItems(List<CartItem> cartItems) {
-    this.cartItems = cartItems;
+  public void setDeliveryItems(Set<DeliveryItem> deliveryItems) {
+    this.deliveryItems = deliveryItems;
   }
 
   @Override
@@ -179,7 +171,7 @@ public class Cart implements Serializable {
     if (getClass() != obj.getClass()) {
       return false;
     }
-    final Cart other = (Cart) obj;
+    final Delivery other = (Delivery) obj;
 
     return ObjectUtils.isEqual(
       id, other.id
@@ -193,6 +185,6 @@ public class Cart implements Serializable {
 
   @Override
   public String toString() {
-    return String.format("Cart[id=%s]]", id);
+    return String.format("Delivery[id=%s]]", id);
   }
 }

@@ -1,6 +1,6 @@
 package org.multibit.mbm.accounting;
 
-import org.springframework.util.Assert;
+import com.google.common.base.Preconditions;
 
 /**
  * <p>Single entry transaction to provide the following to {@link Transaction}:</p>
@@ -24,8 +24,8 @@ public class SingleEntryTransaction<T extends Entry<T>> extends Transaction<T> {
   protected void validate(T withdrawalEntry, T depositEntry) {
 
     // Validation
-    Assert.isNull(withdrawalEntry, "withdrawalEntry");
-    Assert.notNull(depositEntry, "depositEntry");
+    Preconditions.checkState(withdrawalEntry == null, "withdrawalEntry");
+    Preconditions.checkNotNull(depositEntry, "depositEntry");
 
   }
 

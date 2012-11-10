@@ -9,7 +9,7 @@ import static org.junit.Assert.assertThat;
 
 public class TransferTest {
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test(expected = NullPointerException.class)
   public void testValidationFailureLHSNull() {
 
     // Configure supporting objects
@@ -23,7 +23,7 @@ public class TransferTest {
 
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test(expected = NullPointerException.class)
   public void testValidationFailureRHSNull() {
 
     // Configure supporting objects

@@ -1,6 +1,7 @@
 package org.multibit.mbm.db.dao.hibernate;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -10,7 +11,6 @@ import org.multibit.mbm.db.dto.CartBuilder;
 import org.multibit.mbm.db.dto.Customer;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.Assert;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -26,7 +26,7 @@ public class HibernateCartDao extends BaseHibernateDao implements CartDao {
 
   @Override
   public Optional<Cart> getInitialisedCartByCustomer(Customer customer) {
-    Assert.notNull(customer, "customer cannot be null");
+    Preconditions.checkNotNull(customer, "customer cannot be null");
 
     Cart cart = customer.getCart();
     if (cart == null) {
@@ -58,7 +58,7 @@ public class HibernateCartDao extends BaseHibernateDao implements CartDao {
 
   @Override
   public Cart saveOrUpdate(Cart cart) {
-    Assert.notNull(cart, "cart cannot be null");
+    Preconditions.checkNotNull(cart, "cart cannot be null");
     hibernateTemplate.saveOrUpdate(cart);
     return cart;
   }
