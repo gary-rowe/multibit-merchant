@@ -16,7 +16,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Repository("hibernateDeliveryDao")
-public class HibernateDeliveryDao extends BaseHibernateDao implements DeliveryDao {
+public class HibernateDeliveryDao extends BaseHibernateDao<Delivery> implements DeliveryDao {
 
   @SuppressWarnings("unchecked")
   @Override
@@ -47,6 +47,19 @@ public class HibernateDeliveryDao extends BaseHibernateDao implements DeliveryDa
     return Optional.of(delivery);
 
   }
+
+  /**
+   * Initialize various collections since we are targeting the individual entity (perhaps for display)
+   *
+   * @param entity The entity
+   *
+   * @return The entity with all collections initialized
+   */
+  @Override
+  protected Delivery initialized(Delivery entity) {
+    return entity;
+  }
+
 
   @SuppressWarnings("unchecked")
   public List<Delivery> getAllByPage(final int pageSize, final int pageNumber) {

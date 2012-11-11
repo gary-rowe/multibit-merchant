@@ -8,10 +8,7 @@ import org.multibit.mbm.api.request.delivery.SupplierUpdateDeliveryRequest;
 import org.multibit.mbm.db.DatabaseLoader;
 import org.multibit.mbm.db.dao.DeliveryDao;
 import org.multibit.mbm.db.dao.ItemDao;
-import org.multibit.mbm.db.dto.Delivery;
-import org.multibit.mbm.db.dto.Item;
-import org.multibit.mbm.db.dto.Supplier;
-import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.db.dto.*;
 import org.multibit.mbm.test.BaseJerseyHmacResourceTest;
 import org.multibit.mbm.test.FixtureAsserts;
 
@@ -38,9 +35,6 @@ public class SupplierDeliveryResourceTest extends BaseJerseyHmacResourceTest {
     supplier.setId(1L);
 
     // Configure the Delivery with Items
-    Delivery supplierDelivery = supplier.getDeliveries().iterator().next();
-    supplierDelivery.setId(1L);
-
     Item book1 = DatabaseLoader.buildBookItemCryptonomicon();
     book1.setId(1L);
     Item book2 = DatabaseLoader.buildBookItemQuantumThief();
@@ -51,8 +45,13 @@ public class SupplierDeliveryResourceTest extends BaseJerseyHmacResourceTest {
     book4.setId(4L);
 
     // Include some books into the Supplier Delivery
-    supplierDelivery.setItemQuantity(book1,1);
-    supplierDelivery.setItemQuantity(book2,2);
+    Delivery supplierDelivery = DeliveryBuilder
+      .newInstance()
+      .withSupplier(supplier)
+      .withDeliveryItem(book1,1)
+      .withDeliveryItem(book2,2)
+      .build();
+    supplierDelivery.setId(1L);
 
     // Configure Delivery DAO
     when(deliveryDao.saveOrUpdate(supplierDelivery)).thenReturn(supplierDelivery);
@@ -74,7 +73,7 @@ public class SupplierDeliveryResourceTest extends BaseJerseyHmacResourceTest {
   @Test
   public void retrieveDeliveryAsHalJson() throws Exception {
 
-    String actualResponse = configureAsClient("/delivery")
+    String actualResponse = configureAsClient(SupplierDeliveryResource.class)
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 
@@ -94,7 +93,7 @@ public class SupplierDeliveryResourceTest extends BaseJerseyHmacResourceTest {
     // Remove by setting to zero
     updateDeliveryRequest.getDeliveryItems().add(new SupplierDeliveryItem("0099410672",0));
 
-    String actualResponse = configureAsClient("/delivery")
+    String actualResponse = configureAsClient(SupplierDeliveryResource.class)
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .entity(updateDeliveryRequest, MediaType.APPLICATION_JSON_TYPE)
       .put(String.class);

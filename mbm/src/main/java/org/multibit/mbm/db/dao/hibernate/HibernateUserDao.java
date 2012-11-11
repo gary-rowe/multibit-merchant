@@ -15,7 +15,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Repository("hibernateUserDao")
-public class HibernateUserDao extends BaseHibernateDao implements UserDao {
+public class HibernateUserDao extends BaseHibernateDao<User> implements UserDao {
 
   @SuppressWarnings("unchecked")
   @Override
@@ -27,7 +27,7 @@ public class HibernateUserDao extends BaseHibernateDao implements UserDao {
   @Override
   public Optional<User> getByApiKey(String uuid) {
     List users = hibernateTemplate.find("from User u where u.apiKey = ?", uuid);
-    return first(User.class, users);
+    return first(users);
   }
 
   @Override
@@ -51,18 +51,22 @@ public class HibernateUserDao extends BaseHibernateDao implements UserDao {
   }
 
   /**
-   * TODO Consider pulling this up into the base class should other entities use a common approach
-   *
    * Initialize various collections since we are targeting the individual entity (perhaps for display)
    *
-   * @param user The entity
+   * @param entity The entity
    *
    * @return The entity with all collections initialized
    */
-  protected User initialized(User user) {
-    hibernateTemplate.initialize(user.getContactMethodMap());
-    hibernateTemplate.initialize(user.getSupplier());
-    return user;
+  @Override
+  protected User initialized(User entity) {
+    hibernateTemplate.initialize(entity.getContactMethodMap());
+    if (entity.getCustomer() != null) {
+      hibernateTemplate.initialize(entity.getCustomer());
+    }
+    if (entity.getSupplier() != null) {
+      hibernateTemplate.initialize(entity.getSupplier());
+    }
+    return entity;
   }
 
   @SuppressWarnings("unchecked")

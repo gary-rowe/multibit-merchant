@@ -79,7 +79,7 @@ public class AdminRoleResourceTest extends BaseJerseyHmacResourceTest {
     createRoleRequest.setName("Stock Manager");
     createRoleRequest.setDescription("Stock Manager roles");
 
-    String actualResponse = configureAsClient("/admin/role")
+    String actualResponse = configureAsClient(AdminRoleResource.class)
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .entity(createRoleRequest, MediaType.APPLICATION_JSON_TYPE)
       .post(String.class);
@@ -91,7 +91,7 @@ public class AdminRoleResourceTest extends BaseJerseyHmacResourceTest {
   @Test
   public void adminRetrieveRoleAsHalJson() throws Exception {
 
-    String actualResponse = configureAsClient("/admin/role")
+    String actualResponse = configureAsClient(AdminRoleResource.class)
       .queryParam("ps","1")
       .queryParam("pn", "1")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
@@ -99,7 +99,7 @@ public class AdminRoleResourceTest extends BaseJerseyHmacResourceTest {
 
     FixtureAsserts.assertStringMatchesJsonFixture("Role list 1 can be retrieved as HAL+JSON", actualResponse, "/fixtures/hal/role/expected-admin-retrieve-roles-page-1.json");
 
-    actualResponse = configureAsClient("/admin/role")
+    actualResponse = configureAsClient(AdminRoleResource.class)
       .queryParam("ps","1")
       .queryParam("pn", "2")
       .accept(HalMediaType.APPLICATION_HAL_JSON)

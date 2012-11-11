@@ -16,7 +16,7 @@ import java.util.List;
  * @since 0.0.1
  *         
  */
-public abstract class BaseHibernateDao {
+public abstract class BaseHibernateDao<T> {
 
   @Resource(name = "hibernateTemplate")
   protected HibernateTemplate hibernateTemplate = null;
@@ -31,22 +31,44 @@ public abstract class BaseHibernateDao {
   }
 
   /**
-   * @param clazz The entity class
-   * @param list  The List to check and extract from
+   * @param list The List to check and extract from
    *
    * @return The first entity in the list if present
    */
   @SuppressWarnings("unchecked")
-  protected <T> Optional<T> first(Class<T> clazz, List list) {
+  protected Optional<T> first(List list) {
     if (isNotFound(list)) {
       return Optional.absent();
     }
-    return Optional.of((T) list.get(0));
+    // Initialize the first entry
+    T entity = (T) list.get(0);
+    return Optional.of(initialized(entity));
   }
 
-  public <T> Optional<T> getById(Class<T> clazz, Long id) {
+  /**
+   * Initialize various collections since we are targeting the individual entity (perhaps for display)
+   *
+   * @param entity The entity
+   *
+   * @return The entity with all collections initialized
+   */
+  protected abstract T initialized(T entity);
+
+  /**
+   * Performs an ID lookup, initializes and wraps in an Optional
+   *
+   * @param clazz The target class
+   * @param id    The primary ID
+   *
+   * @return An optional and an initialized entity if present
+   */
+  public Optional<T> getById(Class<T> clazz, Long id) {
     T entity = hibernateTemplate.get(clazz, id);
-    return Optional.fromNullable(entity);
+    // Initialize the entry
+    if (entity != null) {
+      return Optional.of(initialized(entity));
+    }
+    return Optional.absent();
   }
 
   public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {

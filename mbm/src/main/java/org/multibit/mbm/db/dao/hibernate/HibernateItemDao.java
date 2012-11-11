@@ -21,26 +21,24 @@ import java.util.List;
 import java.util.Map;
 
 @Repository("hibernateItemDao")
-public class HibernateItemDao extends BaseHibernateDao implements ItemDao {
+public class HibernateItemDao extends BaseHibernateDao<Item> implements ItemDao {
 
   @Override
   public Optional<Item> getById(Long id) throws ItemNotFoundException {
-    return getById(Item.class,id);
+    return getById(id);
   }
 
   @Override
   public Optional<Item> getBySKU(String sku) {
     List items = hibernateTemplate.find("from Item i where i.sku = ?", sku);
-
-    return first(Item.class, items);
+    return first(items);
   }
 
 
   @Override
   public Optional<Item> getByGTIN(String gtin) {
     List items = hibernateTemplate.find("from Item i where i.gtin = ?", gtin);
-
-    return first(Item.class, items);
+    return first(items);
   }
 
   @SuppressWarnings("unchecked")
@@ -53,6 +51,18 @@ public class HibernateItemDao extends BaseHibernateDao implements ItemDao {
         return query.list();
       }
     });
+  }
+
+  /**
+   * Initialize various collections since we are targeting the individual entity (perhaps for display)
+   *
+   * @param entity The entity
+   *
+   * @return The entity with all collections initialized
+   */
+  @Override
+  protected Item initialized(Item entity) {
+    return entity;
   }
 
   // TODO Review the ItemPagedQueryResponse requirement

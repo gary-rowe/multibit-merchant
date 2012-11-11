@@ -11,7 +11,6 @@ import org.multibit.mbm.db.DatabaseLoader;
 import org.multibit.mbm.db.dao.ItemDao;
 import org.multibit.mbm.db.dto.Item;
 import org.multibit.mbm.db.dto.User;
-import org.multibit.mbm.resources.item.AdminItemResource;
 import org.multibit.mbm.test.BaseJerseyHmacResourceTest;
 import org.multibit.mbm.test.FixtureAsserts;
 
@@ -72,7 +71,7 @@ public class AdminItemResourceTest extends BaseJerseyHmacResourceTest {
     AdminCreateItemRequest createItemRequest = new AdminCreateItemRequest();
     createItemRequest.setSKU("sku123");
 
-    String actualResponse = configureAsClient("/admin/item")
+    String actualResponse = configureAsClient(AdminItemResource.class)
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .entity(createItemRequest, MediaType.APPLICATION_JSON_TYPE)
       .post(String.class);
@@ -84,7 +83,7 @@ public class AdminItemResourceTest extends BaseJerseyHmacResourceTest {
   @Test
   public void adminRetrieveItemAsHalJson() throws Exception {
 
-    String actualResponse = configureAsClient("/admin/item")
+    String actualResponse = configureAsClient(AdminItemResource.class)
       .queryParam("ps","1")
       .queryParam("pn", "0")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
@@ -92,7 +91,7 @@ public class AdminItemResourceTest extends BaseJerseyHmacResourceTest {
 
     FixtureAsserts.assertStringMatchesJsonFixture("Item list 1 can be retrieved as HAL+JSON", actualResponse, "/fixtures/hal/item/expected-admin-retrieve-items-page-1.json");
 
-    actualResponse = configureAsClient("/admin/item")
+    actualResponse = configureAsClient(AdminItemResource.class)
       .queryParam("ps","1")
       .queryParam("pn", "1")
       .accept(HalMediaType.APPLICATION_HAL_JSON)

@@ -16,7 +16,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Repository("hibernateCartDao")
-public class HibernateCartDao extends BaseHibernateDao implements CartDao {
+public class HibernateCartDao extends BaseHibernateDao<Cart> implements CartDao {
 
   @SuppressWarnings("unchecked")
   @Override
@@ -38,10 +38,14 @@ public class HibernateCartDao extends BaseHibernateDao implements CartDao {
 
     // Ensure we associate the Customer and Cart with the current session and initialise the collection
     hibernateTemplate.saveOrUpdate(customer);
-    hibernateTemplate.initialize(customer.getCart().getCartItems());
+    return Optional.of(initialized(cart));
+  }
 
-    return Optional.of(cart);
 
+  @Override
+  protected Cart initialized(Cart entity) {
+    hibernateTemplate.initialize(entity.getCartItems());
+    return entity;
   }
 
   @SuppressWarnings("unchecked")

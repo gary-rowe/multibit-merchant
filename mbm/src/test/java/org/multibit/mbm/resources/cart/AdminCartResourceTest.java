@@ -97,7 +97,7 @@ public class AdminCartResourceTest extends BaseJerseyHmacResourceTest {
   @Test
   public void adminRetrieveCartsAsHalJson() throws Exception {
 
-    String actualResponse = configureAsClient("/admin/carts")
+    String actualResponse = configureAsClient(AdminCartResource.class)
       .queryParam("ps","1")
       .queryParam("pn", "0")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
@@ -105,7 +105,7 @@ public class AdminCartResourceTest extends BaseJerseyHmacResourceTest {
 
     FixtureAsserts.assertStringMatchesJsonFixture("Cart list 1 can be retrieved as HAL+JSON", actualResponse, "/fixtures/hal/cart/expected-admin-retrieve-carts-page-1.json");
 
-    actualResponse = configureAsClient("/admin/carts")
+    actualResponse = configureAsClient(AdminCartResource.class)
       .queryParam("ps","1")
       .queryParam("pn", "1")
       .accept(HalMediaType.APPLICATION_HAL_JSON)

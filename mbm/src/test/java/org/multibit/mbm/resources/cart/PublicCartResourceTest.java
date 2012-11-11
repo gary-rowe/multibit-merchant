@@ -74,7 +74,7 @@ public class PublicCartResourceTest extends BaseJerseyHmacResourceTest {
   @Test
   public void retrieveCartAsHalJson() throws Exception {
 
-    String actualResponse = configureAsClient("/cart")
+    String actualResponse = configureAsClient(PublicCartResource.class)
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 
@@ -94,7 +94,7 @@ public class PublicCartResourceTest extends BaseJerseyHmacResourceTest {
     // Remove by setting to zero
     updateCartRequest.getCartItems().add(new PublicCartItem("0099410672",0));
 
-    String actualResponse = configureAsClient("/cart")
+    String actualResponse = configureAsClient(PublicCartResource.class)
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .entity(updateCartRequest, MediaType.APPLICATION_JSON_TYPE)
       .put(String.class);

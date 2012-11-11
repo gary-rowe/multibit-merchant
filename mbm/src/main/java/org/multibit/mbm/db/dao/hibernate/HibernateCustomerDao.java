@@ -9,13 +9,13 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository("hibernateCustomerDao")
-public class HibernateCustomerDao extends BaseHibernateDao implements CustomerDao {
+public class HibernateCustomerDao extends BaseHibernateDao<Customer> implements CustomerDao {
 
   @Override
   public Optional<Customer> getCustomerByOpenId(String openId) {
     List customers = hibernateTemplate.find("from Customer c where c.openId = ?", openId);
 
-    return first(Customer.class, customers);
+    return first(customers);
   }
 
   @Override
@@ -31,6 +31,11 @@ public class HibernateCustomerDao extends BaseHibernateDao implements CustomerDa
     hibernateTemplate.flush();
   }
 
+
+  @Override
+  protected Customer initialized(Customer entity) {
+    return entity;
+  }
 
   public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
     this.hibernateTemplate = hibernateTemplate;

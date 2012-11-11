@@ -2,6 +2,7 @@ package org.multibit.mbm.resources.delivery;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import org.junit.Test;
 import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.api.request.delivery.AdminUpdateDeliveryRequest;
@@ -9,16 +10,12 @@ import org.multibit.mbm.api.request.delivery.SupplierDeliveryItem;
 import org.multibit.mbm.db.DatabaseLoader;
 import org.multibit.mbm.db.dao.DeliveryDao;
 import org.multibit.mbm.db.dao.ItemDao;
-import org.multibit.mbm.db.dto.Delivery;
-import org.multibit.mbm.db.dto.Item;
-import org.multibit.mbm.db.dto.Role;
-import org.multibit.mbm.db.dto.User;
-import org.multibit.mbm.resources.delivery.AdminDeliveryResource;
+import org.multibit.mbm.db.dto.*;
 import org.multibit.mbm.test.BaseJerseyHmacResourceTest;
 import org.multibit.mbm.test.FixtureAsserts;
 
 import javax.ws.rs.core.MediaType;
-import java.util.List;
+import java.util.Set;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -40,50 +37,55 @@ public class AdminDeliveryResourceTest extends BaseJerseyHmacResourceTest {
     // Create the supporting Role
     Role supplierRole = DatabaseLoader.buildSupplierRole();
 
-    // Create some Suppliers
+    // Configure Steve Supplier
     User steveUser = DatabaseLoader.buildSteveSupplier(supplierRole);
     steveUser.setId(1L);
     steveUser.getSupplier().setId(1L);
-    steveUser.getSupplier().getDeliveries().iterator().next().setId(1L);
-
-    User samUser = DatabaseLoader.buildSamSupplier(supplierRole);
-    samUser.setId(1L);
-    samUser.getSupplier().setId(1L);
-    samUser.getSupplier().getDeliveries().iterator().next().setId(1L);
 
     // Configure Steve's Delivery with Items
-    Delivery steveDelivery = steveUser.getSupplier().getDeliveries().iterator().next();
-
     Item book1 = DatabaseLoader.buildBookItemCryptonomicon();
     book1.setId(1L);
     Item book2 = DatabaseLoader.buildBookItemQuantumThief();
     book2.setId(2L);
 
-    steveDelivery.setItemQuantity(book1, 1);
-    steveDelivery.setItemQuantity(book2, 2);
+    Delivery steveDelivery1 = DeliveryBuilder
+      .newInstance()
+      .withSupplier(steveUser.getSupplier())
+      .withDeliveryItem(book1, 1)
+      .withDeliveryItem(book2,2)
+      .build();
+    steveDelivery1.setId(1L);
 
-    // Configure Bob's Delivery with Items
-    Delivery samDelivery = samUser.getSupplier().getDeliveries().iterator().next();
+    // Configure Sam Supplier
+    User samUser = DatabaseLoader.buildSamSupplier(supplierRole);
+    samUser.setId(1L);
+    samUser.getSupplier().setId(1L);
 
+    // Configure Sam's Delivery with Items
     Item book3 = DatabaseLoader.buildBookItemCompleteWorks();
     book3.setId(3L);
     Item book4 = DatabaseLoader.buildBookItemPlumbing();
     book4.setId(4L);
 
-    samDelivery.setItemQuantity(book3, 3);
-    samDelivery.setItemQuantity(book4, 4);
+    Delivery samDelivery1 = DeliveryBuilder
+      .newInstance()
+      .withSupplier(samUser.getSupplier())
+      .withDeliveryItem(book3, 3)
+      .withDeliveryItem(book4,4)
+      .build();
+    samDelivery1.setId(1L);
 
     // Create some mock results
-    List<Delivery> deliveryList1 = Lists.newArrayList(steveDelivery);
-    List<Delivery> deliveryList2 = Lists.newArrayList(samDelivery);
+    Set<Delivery> steveDeliveries = Sets.newHashSet(steveUser.getSupplier().getDeliveries());
+    Set<Delivery> samDeliveries = Sets.newHashSet(samUser.getSupplier().getDeliveries());
 
     // Configure Delivery DAO
-    when(deliveryDao.getById(steveDelivery.getId())).thenReturn(Optional.of(steveDelivery));
-    when(deliveryDao.getById(samDelivery.getId())).thenReturn(Optional.of(samDelivery));
-    when(deliveryDao.getAllByPage(1, 0)).thenReturn(Lists.newLinkedList(deliveryList1));
-    when(deliveryDao.getAllByPage(1, 1)).thenReturn(Lists.newLinkedList(deliveryList2));
-    when(deliveryDao.saveOrUpdate(steveDelivery)).thenReturn(steveDelivery);
-    when(deliveryDao.saveOrUpdate(samDelivery)).thenReturn(samDelivery);
+    when(deliveryDao.getById(steveDelivery1.getId())).thenReturn(Optional.of(steveDelivery1));
+    when(deliveryDao.getById(samDelivery1.getId())).thenReturn(Optional.of(samDelivery1));
+    when(deliveryDao.getAllByPage(1, 0)).thenReturn(Lists.newLinkedList(steveDeliveries));
+    when(deliveryDao.getAllByPage(1, 1)).thenReturn(Lists.newLinkedList(samDeliveries));
+    when(deliveryDao.saveOrUpdate(steveDelivery1)).thenReturn(steveDelivery1);
+    when(deliveryDao.saveOrUpdate(samDelivery1)).thenReturn(samDelivery1);
 
     // Configure Item DAO
     when(itemDao.getBySKU(book1.getSKU())).thenReturn(Optional.of(book1));
@@ -101,7 +103,7 @@ public class AdminDeliveryResourceTest extends BaseJerseyHmacResourceTest {
   @Test
   public void adminRetrieveDeliverysAsHalJson() throws Exception {
 
-    String actualResponse = configureAsClient("/admin/deliveries")
+    String actualResponse = configureAsClient(AdminDeliveryResource.class)
       .queryParam("ps","1")
       .queryParam("pn", "0")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
@@ -109,7 +111,7 @@ public class AdminDeliveryResourceTest extends BaseJerseyHmacResourceTest {
 
     FixtureAsserts.assertStringMatchesJsonFixture("Delivery list 1 can be retrieved as HAL+JSON", actualResponse, "/fixtures/hal/delivery/expected-admin-retrieve-deliveries-page-1.json");
 
-    actualResponse = configureAsClient("/admin/deliveries")
+    actualResponse = configureAsClient(AdminDeliveryResource.class)
       .queryParam("ps","1")
       .queryParam("pn", "1")
       .accept(HalMediaType.APPLICATION_HAL_JSON)

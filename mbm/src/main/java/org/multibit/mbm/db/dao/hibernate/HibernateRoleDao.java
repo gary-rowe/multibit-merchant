@@ -15,7 +15,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Repository("hibernateRoleDao")
-public class HibernateRoleDao extends BaseHibernateDao implements RoleDao {
+public class HibernateRoleDao extends BaseHibernateDao<Role> implements RoleDao {
 
   @SuppressWarnings("unchecked")
   @Override
@@ -31,7 +31,7 @@ public class HibernateRoleDao extends BaseHibernateDao implements RoleDao {
   @Override
   public Optional<Role> getByName(String name) {
     List roles = hibernateTemplate.find("from Role r where r.name = ?", name);
-    return first(Role.class, roles);
+    return first(roles);
   }
 
   @SuppressWarnings("unchecked")
@@ -57,6 +57,11 @@ public class HibernateRoleDao extends BaseHibernateDao implements RoleDao {
    */
   public void flush() {
     hibernateTemplate.flush();
+  }
+
+  @Override
+  protected Role initialized(Role entity) {
+    return entity;
   }
 
   public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {

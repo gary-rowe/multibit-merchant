@@ -7,11 +7,17 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository("hibernateSupplierDao")
-public class HibernateSupplierDao extends BaseHibernateDao implements SupplierDao {
+public class HibernateSupplierDao extends BaseHibernateDao<Supplier> implements SupplierDao {
 
   @Override
   public Optional<Supplier> getSupplierById(Long id) {
     return getById(Supplier.class, id);
+  }
+
+  @Override
+  protected Supplier initialized(Supplier entity) {
+    hibernateTemplate.initialize(entity.getDeliveries());
+    return entity;
   }
 
   @Override
