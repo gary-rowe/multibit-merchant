@@ -19,10 +19,7 @@ import org.multibit.mbm.resources.ResourceAsserts;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import javax.ws.rs.GET;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.concurrent.TimeUnit;
 
@@ -42,10 +39,10 @@ import java.util.concurrent.TimeUnit;
 @Produces({HalMediaType.APPLICATION_HAL_JSON, HalMediaType.APPLICATION_HAL_XML})
 public class SupplierDeliveryResource extends BaseResource {
 
-  @Resource(name="hibernateDeliveryDao")
+  @Resource(name = "hibernateDeliveryDao")
   DeliveryDao deliveryDao;
 
-  @Resource(name="hibernateItemDao")
+  @Resource(name = "hibernateItemDao")
   ItemDao itemDao;
 
   /**
@@ -56,15 +53,22 @@ public class SupplierDeliveryResource extends BaseResource {
    * @return A response containing the Supplier Delivery
    */
   @GET
+  @Path("/{supplier_reference}")
   @Timed
   @CacheControl(maxAge = 6, maxAgeUnit = TimeUnit.HOURS)
   public Response retrieveOwnDelivery(
     @RestrictedTo({Authority.ROLE_SUPPLIER})
-    User supplierUser) {
+    User supplierUser,
+    @PathParam("supplier_reference")
+    String supplierReference
+  ) {
 
     // Validation
     ResourceAsserts.assertNotNull(supplierUser.getSupplier(), "supplier");
 
+    if (supplierUser.getSupplier().getDeliveries().isEmpty()) {
+      // TODO Fill in the location of a Delivery by a Supplier
+    }
     Delivery delivery = supplierUser.getSupplier().getDeliveries().iterator().next();
 
     // Provide a representation to the client
@@ -92,7 +96,7 @@ public class SupplierDeliveryResource extends BaseResource {
     Delivery delivery = supplierUser.getSupplier().getDeliveries().iterator().next();
 
     // Verify and apply any changes to the Delivery
-    apply(updateDeliveryRequest,delivery);
+    apply(updateDeliveryRequest, delivery);
 
     // Persist the updated delivery
     delivery = deliveryDao.saveOrUpdate(delivery);
@@ -106,6 +110,7 @@ public class SupplierDeliveryResource extends BaseResource {
 
   /**
    * TODO Refactor into a common handler
+   *
    * @param updateRequest The update request containing the changes
    * @param entity        The entity to which these changes will be applied
    */
@@ -116,9 +121,9 @@ public class SupplierDeliveryResource extends BaseResource {
       ResourceAsserts.assertPositive(supplierDeliveryItem.getQuantity(), "quantity");
 
       Optional<Item> item = itemDao.getBySKU(supplierDeliveryItem.getSKU());
-      ResourceAsserts.assertPresent(item,"item");
+      ResourceAsserts.assertPresent(item, "item");
 
-      entity.setItemQuantity(item.get(),supplierDeliveryItem.getQuantity());
+      entity.setItemQuantity(item.get(), supplierDeliveryItem.getQuantity());
     }
   }
 

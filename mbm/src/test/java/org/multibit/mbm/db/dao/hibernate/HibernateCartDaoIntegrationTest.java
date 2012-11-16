@@ -6,9 +6,7 @@ import org.multibit.mbm.db.dao.CartDao;
 import org.multibit.mbm.db.dao.CustomerDao;
 import org.multibit.mbm.db.dao.ItemDao;
 import org.multibit.mbm.db.dao.UserDao;
-import org.multibit.mbm.db.dto.Cart;
-import org.multibit.mbm.db.dto.Item;
-import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.db.dto.*;
 import org.multibit.mbm.test.BaseIntegrationTests;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -41,7 +39,11 @@ public class HibernateCartDaoIntegrationTest extends BaseIntegrationTests {
     Optional<User> user = userDao.getByApiKey("alice123");
     assertTrue("Unexpected missing user",user.isPresent());
 
-    Cart expectedCart = new Cart(user.get().getCustomer());
+    Customer customer = user.get().getCustomer();
+    Cart expectedCart = CartBuilder
+      .newInstance()
+      .withCustomer(customer)
+      .build();
 
     // Persist with insert (new cart)
     int originalCartRows = countRowsInTable("carts");

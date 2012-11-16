@@ -10,13 +10,15 @@
     {
       "_links":{
         "deliveryitems self":{
-          "href":"http://localhost:8080/delivery/item/0"
+          "href":"http://localhost:8080/delivery/item/0575088893"
         }
       },
+      "batch_reference":"",
       "delivery_item_subtotal":"8.800000000000",
-      "index":0,
       "price_subtotal":"8.800000000000",
       "quantity":2,
+      "supplier_gtin":"",
+      "supplier_sku":"",
       "tax_subtotal":"0.0000000000000",
       "_embedded":{
         "item":{
@@ -48,13 +50,15 @@
     {
       "_links":{
         "deliveryitems self":{
-          "href":"http://localhost:8080/delivery/item/1"
+          "href":"http://localhost:8080/delivery/item/0316184136"
         }
       },
+      "batch_reference":"",
       "delivery_item_subtotal":"16.500000000000",
-      "index":1,
       "price_subtotal":"16.500000000000",
       "quantity":3,
+      "supplier_gtin":"",
+      "supplier_sku":"",
       "tax_subtotal":"0.0000000000000",
       "_embedded":{
         "item":{

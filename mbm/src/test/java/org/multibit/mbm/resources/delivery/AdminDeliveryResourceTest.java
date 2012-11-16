@@ -55,6 +55,7 @@ public class AdminDeliveryResourceTest extends BaseJerseyHmacResourceTest {
       .withDeliveryItem(book2,2)
       .build();
     steveDelivery1.setId(1L);
+    steveUser.getSupplier().getDeliveries().add(steveDelivery1);
 
     // Configure Sam Supplier
     User samUser = DatabaseLoader.buildSamSupplier(supplierRole);
@@ -74,6 +75,7 @@ public class AdminDeliveryResourceTest extends BaseJerseyHmacResourceTest {
       .withDeliveryItem(book4,4)
       .build();
     samDelivery1.setId(1L);
+    samUser.getSupplier().getDeliveries().add(samDelivery1);
 
     // Create some mock results
     Set<Delivery> steveDeliveries = Sets.newHashSet(steveUser.getSupplier().getDeliveries());

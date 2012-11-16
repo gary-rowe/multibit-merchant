@@ -3,12 +3,10 @@ package org.multibit.mbm.db.dao.hibernate;
 import com.google.common.base.Optional;
 import org.junit.Test;
 import org.multibit.mbm.db.dao.DeliveryDao;
-import org.multibit.mbm.db.dao.SupplierDao;
 import org.multibit.mbm.db.dao.ItemDao;
+import org.multibit.mbm.db.dao.SupplierDao;
 import org.multibit.mbm.db.dao.UserDao;
-import org.multibit.mbm.db.dto.Delivery;
-import org.multibit.mbm.db.dto.Item;
-import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.db.dto.*;
 import org.multibit.mbm.test.BaseIntegrationTests;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -41,7 +39,12 @@ public class HibernateDeliveryDaoIntegrationTest extends BaseIntegrationTests {
     Optional<User> user = userDao.getByApiKey("steve123");
     assertTrue("Unexpected missing user",user.isPresent());
 
-    Delivery expectedDelivery = new Delivery(user.get().getSupplier());
+    Supplier supplier = user.get().getSupplier();
+
+    Delivery expectedDelivery = DeliveryBuilder
+      .newInstance()
+      .withSupplier(supplier)
+      .build();
 
     // Persist with insert (new delivery)
     int originalDeliveryRows = countRowsInTable("deliveries");

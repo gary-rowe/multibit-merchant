@@ -3,9 +3,9 @@
     "href":"http://localhost:8080/admin/deliveries?ps=1&pn=1"
   }
 }, "_embedded":{
-  "http://localhost:8080/delivery/2":{
+  "http://localhost:8080/delivery/1":{
     "_links":{
-      "http://localhost:8080/delivery/2 self":{
+      "http://localhost:8080/delivery/1 self":{
         "href":"http://localhost:8080/delivery"
       },
       "supplier":{
@@ -14,7 +14,7 @@
     },
     "currency_code":"BTC",
     "currency_symbol":"Ƀ",
-    "id":2,
+    "id":1,
     "item_total":2,
     "price_total":"29.700000000000",
     "quantity_total":7,
@@ -24,13 +24,15 @@
         {
           "_links":{
             "deliveryitems self":{
-              "href":"http://localhost:8080/delivery/item/0"
+              "href":"http://localhost:8080/delivery/item/0316184136"
             }
           },
+          "batch_reference":"",
           "delivery_item_subtotal":"16.500000000000",
-          "index":0,
           "price_subtotal":"16.500000000000",
           "quantity":3,
+          "supplier_gtin":"",
+          "supplier_sku":"",
           "tax_subtotal":"0.0000000000000",
           "_embedded":{
             "item":{
@@ -57,13 +59,15 @@
         {
           "_links":{
             "deliveryitems self":{
-              "href":"http://localhost:8080/delivery/item/1"
+              "href":"http://localhost:8080/delivery/item/186126173X"
             }
           },
+          "batch_reference":"",
           "delivery_item_subtotal":"13.200000000000",
-          "index":1,
           "price_subtotal":"13.200000000000",
           "quantity":4,
+          "supplier_gtin":"",
+          "supplier_sku":"",
           "tax_subtotal":"0.0000000000000",
           "_embedded":{
             "item":{

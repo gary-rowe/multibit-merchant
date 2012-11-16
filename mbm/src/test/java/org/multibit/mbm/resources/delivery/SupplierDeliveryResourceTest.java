@@ -52,6 +52,7 @@ public class SupplierDeliveryResourceTest extends BaseJerseyHmacResourceTest {
       .withDeliveryItem(book2,2)
       .build();
     supplierDelivery.setId(1L);
+    supplier.getDeliveries().add(supplierDelivery);
 
     // Configure Delivery DAO
     when(deliveryDao.saveOrUpdate(supplierDelivery)).thenReturn(supplierDelivery);
@@ -73,7 +74,7 @@ public class SupplierDeliveryResourceTest extends BaseJerseyHmacResourceTest {
   @Test
   public void retrieveDeliveryAsHalJson() throws Exception {
 
-    String actualResponse = configureAsClient(SupplierDeliveryResource.class)
+    String actualResponse = configureAsClient("/delivery/1234")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 

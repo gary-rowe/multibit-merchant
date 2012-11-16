@@ -35,7 +35,6 @@ public class Supplier implements Serializable {
     targetEntity = Delivery.class,
     cascade = {CascadeType.ALL},
     mappedBy = "supplier",
-    fetch = FetchType.EAGER,
     orphanRemoval = true
   )
   private Set<Delivery> deliveries = Sets.newLinkedHashSet();
