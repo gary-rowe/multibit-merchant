@@ -13,6 +13,7 @@ import java.util.Set;
  * <li>Provision of persistent state</li>
  * </ul>
  * <p>A Supplier describes the minimum information required to describe an entity capable of providing stock</p>
+ * <p>A Supplier works with a Buyer to receive PurchaseOrders</p>
  */
 @Entity
 @Table(name = "suppliers")
@@ -39,6 +40,14 @@ public class Supplier implements Serializable {
   )
   private Set<Delivery> deliveries = Sets.newLinkedHashSet();
 
+  @OneToMany(
+    targetEntity = PurchaseOrder.class,
+    cascade = {CascadeType.ALL},
+    mappedBy = "supplier",
+    orphanRemoval = true
+  )
+  private Set<PurchaseOrder> purchaseOrders = Sets.newLinkedHashSet();
+
   /*
   * Default constructor required for Hibernate
   */
@@ -59,6 +68,14 @@ public class Supplier implements Serializable {
 
   public void setDeliveries(Set<Delivery> deliveries) {
     this.deliveries = deliveries;
+  }
+
+  public Set<PurchaseOrder> getPurchaseOrders() {
+    return purchaseOrders;
+  }
+
+  public void setPurchaseOrders(Set<PurchaseOrder> purchaseOrders) {
+    this.purchaseOrders = purchaseOrders;
   }
 
   /**
