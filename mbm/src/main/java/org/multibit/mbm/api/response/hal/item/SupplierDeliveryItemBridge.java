@@ -13,7 +13,7 @@ import javax.ws.rs.core.UriInfo;
 /**
  * <p>Bridge to provide the following to {@link org.multibit.mbm.db.dto.Item}:</p>
  * <ul>
- * <li>Creates representations of a DeliveryItem for the anonymous public</li>
+ * <li>Creates representations of a DeliveryItem for a Supplier</li>
  * </ul>
  *
  * @since 0.0.1
@@ -37,7 +37,7 @@ public class SupplierDeliveryItemBridge extends BaseBridge<DeliveryItem> {
     ResourceAsserts.assertNotNull(deliveryItem.getItem().getId(),"id");
 
     // Create the Customer Item resource
-    Resource customerItemResource = publicItemBridge.toResource(deliveryItem.getItem());
+    Resource publicItemResource = publicItemBridge.toResource(deliveryItem.getItem());
 
     // Create the wrapping DeliveryItem resource
     ResourceFactory resourceFactory = getResourceFactory();
@@ -50,7 +50,7 @@ public class SupplierDeliveryItemBridge extends BaseBridge<DeliveryItem> {
       .withProperty("price_subtotal", deliveryItem.getPriceSubtotal().getAmount().toPlainString())
       .withProperty("tax_subtotal", deliveryItem.getTaxSubtotal().getAmount().toPlainString())
       .withProperty("delivery_item_subtotal", deliveryItem.getDeliveryItemSubtotal().getAmount().toPlainString())
-      .withSubresource("item", customerItemResource);
+      .withSubresource("item", publicItemResource);
 
   }
 

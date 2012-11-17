@@ -1,4 +1,4 @@
-package org.multibit.mbm.resources.delivery;
+package org.multibit.mbm.resources.purchaseorder;
 
 import com.google.common.base.Optional;
 import com.yammer.dropwizard.jersey.caching.CacheControl;
@@ -35,9 +35,9 @@ import java.util.concurrent.TimeUnit;
  *         
  */
 @Component
-@Path("/supplier/delivery")
+@Path("/delivery")
 @Produces({HalMediaType.APPLICATION_HAL_JSON, HalMediaType.APPLICATION_HAL_XML})
-public class SupplierDeliveryResource extends BaseResource {
+public class SupplierPurchaseOrderResource extends BaseResource {
 
   @Resource(name = "hibernateDeliveryDao")
   DeliveryDao deliveryDao;

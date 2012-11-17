@@ -1,4 +1,4 @@
-package org.multibit.mbm.resources.delivery;
+package org.multibit.mbm.resources.purchaseorder;
 
 import com.google.common.base.Optional;
 import org.junit.Test;
@@ -9,6 +9,7 @@ import org.multibit.mbm.db.DatabaseLoader;
 import org.multibit.mbm.db.dao.DeliveryDao;
 import org.multibit.mbm.db.dao.ItemDao;
 import org.multibit.mbm.db.dto.*;
+import org.multibit.mbm.resources.delivery.SupplierDeliveryResource;
 import org.multibit.mbm.test.BaseJerseyHmacResourceTest;
 import org.multibit.mbm.test.FixtureAsserts;
 
@@ -17,7 +18,7 @@ import javax.ws.rs.core.MediaType;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class SupplierDeliveryResourceTest extends BaseJerseyHmacResourceTest {
+public class SupplierPurchaseOrderResourceTest extends BaseJerseyHmacResourceTest {
 
   private final DeliveryDao deliveryDao=mock(DeliveryDao.class);
   private final ItemDao itemDao=mock(ItemDao.class);

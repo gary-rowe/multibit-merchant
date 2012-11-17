@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * <p>Bridge to provide the following to {@link org.multibit.mbm.db.dto.Delivery}:</p>
  * <ul>
- * <li>Creates representation of multiple Deliverys for an administrator</li>
+ * <li>Creates representation of multiple Deliveries for an administrator</li>
  * </ul>
  *
  * @since 0.0.1
