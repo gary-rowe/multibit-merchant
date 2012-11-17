@@ -4,9 +4,9 @@ import com.google.common.base.Optional;
 import org.multibit.mbm.db.dao.CartDao;
 import org.multibit.mbm.db.dao.CustomerDao;
 import org.multibit.mbm.db.dao.ItemDao;
-import org.multibit.mbm.db.dto.Cart;
-import org.multibit.mbm.db.dto.Customer;
-import org.multibit.mbm.db.dto.Item;
+import org.multibit.mbm.core.model.Cart;
+import org.multibit.mbm.core.model.Customer;
+import org.multibit.mbm.core.model.Item;
 import com.yammer.dropwizard.logging.Log;
 
 import org.springframework.stereotype.Service;

@@ -5,10 +5,10 @@ import org.junit.Test;
 import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.api.request.delivery.SupplierDeliveryItem;
 import org.multibit.mbm.api.request.delivery.SupplierUpdateDeliveryRequest;
+import org.multibit.mbm.core.model.*;
 import org.multibit.mbm.db.DatabaseLoader;
 import org.multibit.mbm.db.dao.DeliveryDao;
 import org.multibit.mbm.db.dao.ItemDao;
-import org.multibit.mbm.db.dto.*;
 import org.multibit.mbm.test.BaseJerseyHmacResourceTest;
 import org.multibit.mbm.test.FixtureAsserts;
 

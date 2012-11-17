@@ -4,14 +4,14 @@ import com.google.common.base.Optional;
 import com.theoryinpractise.halbuilder.ResourceFactory;
 import com.theoryinpractise.halbuilder.spi.Resource;
 import org.multibit.mbm.api.response.hal.BaseBridge;
-import org.multibit.mbm.db.dto.Delivery;
-import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.core.model.Delivery;
+import org.multibit.mbm.core.model.User;
 
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
 
 /**
- * <p>Bridge to provide the following to {@link org.multibit.mbm.db.dto.Delivery}:</p>
+ * <p>Bridge to provide the following to {@link org.multibit.mbm.core.model.Delivery}:</p>
  * <ul>
  * <li>Creates representation of multiple Deliveries for an administrator</li>
  * </ul>
@@ -24,7 +24,7 @@ public class AdminDeliveryCollectionBridge extends BaseBridge<List<Delivery>> {
 
   /**
    * @param uriInfo   The {@link javax.ws.rs.core.UriInfo} containing the originating request information
-   * @param principal An optional {@link org.multibit.mbm.db.dto.User} to provide a security principal
+   * @param principal An optional {@link org.multibit.mbm.core.model.User} to provide a security principal
    */
   public AdminDeliveryCollectionBridge(UriInfo uriInfo, Optional<User> principal) {
     super(uriInfo, principal);

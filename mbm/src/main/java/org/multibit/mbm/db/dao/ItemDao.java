@@ -2,8 +2,7 @@ package org.multibit.mbm.db.dao;
 
 import com.google.common.base.Optional;
 import org.multibit.mbm.api.response.ItemPagedQueryResponse;
-import org.multibit.mbm.db.dto.Item;
-import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.core.model.Item;
 
 import java.util.List;
 

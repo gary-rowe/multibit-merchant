@@ -5,12 +5,12 @@ import com.theoryinpractise.halbuilder.ResourceFactory;
 import com.theoryinpractise.halbuilder.spi.Resource;
 import org.multibit.mbm.api.response.hal.BaseBridge;
 import org.multibit.mbm.auth.Authority;
-import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.core.model.User;
 
 import javax.ws.rs.core.UriInfo;
 
 /**
- * <p>Bridge to provide the following to {@link org.multibit.mbm.db.dto.User}:</p>
+ * <p>Bridge to provide the following to {@link org.multibit.mbm.core.model.User}:</p>
  * <ul>
  * <li>Creates a minimal representation of a User for the client to use</li>
  * </ul>
@@ -21,7 +21,7 @@ public class ClientUserBridge extends BaseBridge<User> {
 
   /**
    * @param uriInfo   The {@link javax.ws.rs.core.UriInfo} containing the originating request information
-   * @param principal An optional {@link org.multibit.mbm.db.dto.User} to provide a security principal
+   * @param principal An optional {@link org.multibit.mbm.core.model.User} to provide a security principal
    */
   public ClientUserBridge(UriInfo uriInfo, Optional<User> principal) {
     super(uriInfo, principal);

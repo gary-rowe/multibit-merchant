@@ -3,10 +3,10 @@ package org.multibit.mbm.db.dao.hibernate;
 import com.google.common.base.Optional;
 import org.junit.Test;
 import org.multibit.mbm.db.dao.UserDao;
-import org.multibit.mbm.db.dto.ContactMethod;
-import org.multibit.mbm.db.dto.ContactMethodDetail;
-import org.multibit.mbm.db.dto.User;
-import org.multibit.mbm.db.dto.UserBuilder;
+import org.multibit.mbm.core.model.ContactMethod;
+import org.multibit.mbm.core.model.ContactMethodDetail;
+import org.multibit.mbm.core.model.User;
+import org.multibit.mbm.core.model.UserBuilder;
 import org.multibit.mbm.test.BaseIntegrationTests;
 import org.springframework.test.context.ContextConfiguration;
 

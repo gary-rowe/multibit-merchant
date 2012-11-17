@@ -6,8 +6,7 @@ import org.junit.Test;
 import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.db.DatabaseLoader;
 import org.multibit.mbm.db.dao.ItemDao;
-import org.multibit.mbm.db.dto.Item;
-import org.multibit.mbm.resources.item.PublicItemResource;
+import org.multibit.mbm.core.model.Item;
 import org.multibit.mbm.test.BaseJerseyHmacResourceTest;
 import org.multibit.mbm.test.FixtureAsserts;
 

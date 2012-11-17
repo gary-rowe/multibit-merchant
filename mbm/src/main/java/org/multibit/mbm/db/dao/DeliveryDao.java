@@ -1,8 +1,8 @@
 package org.multibit.mbm.db.dao;
 
 import com.google.common.base.Optional;
-import org.multibit.mbm.db.dto.Delivery;
-import org.multibit.mbm.db.dto.Supplier;
+import org.multibit.mbm.core.model.Delivery;
+import org.multibit.mbm.core.model.Supplier;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public interface DeliveryDao {
   Optional<Delivery> getById(Long id);
 
   /**
-   * Get the Delivery for the Supplier, initialising the {@link org.multibit.mbm.db.dto.DeliveryItem}s
+   * Get the Delivery for the Supplier, initialising the {@link org.multibit.mbm.core.model.DeliveryItem}s
    *
    * @param supplier The owning Supplier
    *

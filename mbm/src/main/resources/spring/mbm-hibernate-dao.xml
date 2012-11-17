@@ -15,7 +15,8 @@
     <property name="packagesToScan">
       <!-- Keep this list in synch with {@link SchemaExporter} -->
       <array>
-        <value>org.multibit.mbm.db.dto</value>
+        <value>org.multibit.mbm.core.model</value>
+        <value>org.multibit.mbm.core.pricing.rules</value>
       </array>
     </property>
     <property name="dataSource" ref="dataSource"/>

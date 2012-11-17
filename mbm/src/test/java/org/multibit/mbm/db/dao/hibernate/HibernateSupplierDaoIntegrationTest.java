@@ -3,9 +3,9 @@ package org.multibit.mbm.db.dao.hibernate;
 import org.junit.Test;
 import org.multibit.mbm.db.DatabaseLoader;
 import org.multibit.mbm.db.dao.SupplierDao;
-import org.multibit.mbm.db.dto.Supplier;
-import org.multibit.mbm.db.dto.Role;
-import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.core.model.Supplier;
+import org.multibit.mbm.core.model.Role;
+import org.multibit.mbm.core.model.User;
 import org.multibit.mbm.test.BaseIntegrationTests;
 import org.springframework.test.context.ContextConfiguration;
 

@@ -1,7 +1,7 @@
 package org.multibit.mbm.db.dao;
 
 import com.google.common.base.Optional;
-import org.multibit.mbm.db.dto.Customer;
+import org.multibit.mbm.core.model.Customer;
 
 public interface CustomerDao {
 

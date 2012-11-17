@@ -2,7 +2,7 @@ package org.multibit.mbm.db.dao.hibernate;
 
 import com.google.common.base.Optional;
 import org.multibit.mbm.db.dao.SupplierDao;
-import org.multibit.mbm.db.dto.Supplier;
+import org.multibit.mbm.core.model.Supplier;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 

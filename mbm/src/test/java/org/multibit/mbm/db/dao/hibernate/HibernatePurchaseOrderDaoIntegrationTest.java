@@ -2,11 +2,11 @@ package org.multibit.mbm.db.dao.hibernate;
 
 import com.google.common.base.Optional;
 import org.junit.Test;
+import org.multibit.mbm.core.model.*;
 import org.multibit.mbm.db.dao.PurchaseOrderDao;
 import org.multibit.mbm.db.dao.ItemDao;
 import org.multibit.mbm.db.dao.SupplierDao;
 import org.multibit.mbm.db.dao.UserDao;
-import org.multibit.mbm.db.dto.*;
 import org.multibit.mbm.test.BaseIntegrationTests;
 import org.springframework.test.context.ContextConfiguration;
 

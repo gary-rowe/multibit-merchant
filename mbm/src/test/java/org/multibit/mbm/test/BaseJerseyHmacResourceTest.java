@@ -22,9 +22,9 @@ import org.multibit.mbm.auth.hmac.HmacServerAuthenticator;
 import org.multibit.mbm.auth.hmac.HmacServerRestrictedToProvider;
 import org.multibit.mbm.db.DatabaseLoader;
 import org.multibit.mbm.db.dao.UserDao;
-import org.multibit.mbm.db.dto.Role;
-import org.multibit.mbm.db.dto.User;
-import org.multibit.mbm.db.dto.UserBuilder;
+import org.multibit.mbm.core.model.Role;
+import org.multibit.mbm.core.model.User;
+import org.multibit.mbm.core.model.UserBuilder;
 
 import javax.ws.rs.core.UriBuilder;
 import java.net.URI;

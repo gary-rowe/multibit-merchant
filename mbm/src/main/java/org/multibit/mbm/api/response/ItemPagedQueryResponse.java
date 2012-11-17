@@ -1,7 +1,7 @@
 package org.multibit.mbm.api.response;
 
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.multibit.mbm.db.dto.Item;
+import org.multibit.mbm.core.model.Item;
 
 /**
  * <p>Parameter object to provide query state for Items</p>

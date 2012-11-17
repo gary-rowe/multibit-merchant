@@ -3,9 +3,9 @@ package org.multibit.mbm.api.response.hal.user;
 import com.google.common.base.Optional;
 import com.theoryinpractise.halbuilder.spi.Resource;
 import org.multibit.mbm.api.response.hal.BaseBridge;
-import org.multibit.mbm.db.dto.ContactMethod;
-import org.multibit.mbm.db.dto.ContactMethodDetail;
-import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.core.model.ContactMethod;
+import org.multibit.mbm.core.model.ContactMethodDetail;
+import org.multibit.mbm.core.model.User;
 import org.multibit.mbm.resources.ResourceAsserts;
 
 import javax.ws.rs.core.UriInfo;
@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * <p>Bridge to provide the following to {@link org.multibit.mbm.db.dto.User}:</p>
+ * <p>Bridge to provide the following to {@link org.multibit.mbm.core.model.User}:</p>
  * <ul>
  * <li>Creates representations of a User for a Supplier</li>
  * </ul>
@@ -26,7 +26,7 @@ public class SupplierUserBridge extends BaseBridge<User> {
 
   /**
    * @param uriInfo   The {@link javax.ws.rs.core.UriInfo} containing the originating request information
-   * @param principal An optional {@link org.multibit.mbm.db.dto.User} to provide a security principal
+   * @param principal An optional {@link org.multibit.mbm.core.model.User} to provide a security principal
    */
   public SupplierUserBridge(UriInfo uriInfo, Optional<User> principal) {
     super(uriInfo, principal);

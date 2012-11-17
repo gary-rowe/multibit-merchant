@@ -4,14 +4,14 @@ import com.google.common.base.Optional;
 import com.theoryinpractise.halbuilder.ResourceFactory;
 import com.theoryinpractise.halbuilder.spi.Resource;
 import org.multibit.mbm.api.response.hal.BaseBridge;
-import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.core.model.User;
 import org.multibit.mbm.resources.ResourceAsserts;
 
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
 
 /**
- * <p>Bridge to provide the following to {@link org.multibit.mbm.db.dto.User}:</p>
+ * <p>Bridge to provide the following to {@link org.multibit.mbm.core.model.User}:</p>
  * <ul>
  * <li>Creates representation of multiple Users for an administrator</li>
  * </ul>
@@ -24,7 +24,7 @@ public class AdminUserCollectionBridge extends BaseBridge<List<User>> {
 
   /**
    * @param uriInfo   The {@link javax.ws.rs.core.UriInfo} containing the originating request information
-   * @param principal An optional {@link org.multibit.mbm.db.dto.User} to provide a security principal
+   * @param principal An optional {@link org.multibit.mbm.core.model.User} to provide a security principal
    */
   public AdminUserCollectionBridge(UriInfo uriInfo, Optional<User> principal) {
     super(uriInfo, principal);

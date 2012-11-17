@@ -9,8 +9,8 @@ import org.multibit.mbm.api.request.item.AdminCreateItemRequest;
 import org.multibit.mbm.api.request.item.AdminUpdateItemRequest;
 import org.multibit.mbm.db.DatabaseLoader;
 import org.multibit.mbm.db.dao.ItemDao;
-import org.multibit.mbm.db.dto.Item;
-import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.core.model.Item;
+import org.multibit.mbm.core.model.User;
 import org.multibit.mbm.test.BaseJerseyHmacResourceTest;
 import org.multibit.mbm.test.FixtureAsserts;
 

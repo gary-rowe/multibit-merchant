@@ -6,10 +6,13 @@ import org.junit.Test;
 import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.api.request.cart.AdminUpdateCartRequest;
 import org.multibit.mbm.api.request.cart.PublicCartItem;
+import org.multibit.mbm.core.model.Cart;
+import org.multibit.mbm.core.model.Item;
+import org.multibit.mbm.core.model.Role;
+import org.multibit.mbm.core.model.User;
 import org.multibit.mbm.db.DatabaseLoader;
 import org.multibit.mbm.db.dao.CartDao;
 import org.multibit.mbm.db.dao.ItemDao;
-import org.multibit.mbm.db.dto.*;
 import org.multibit.mbm.test.BaseJerseyHmacResourceTest;
 import org.multibit.mbm.test.FixtureAsserts;
 

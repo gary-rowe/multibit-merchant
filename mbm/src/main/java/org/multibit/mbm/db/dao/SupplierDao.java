@@ -1,7 +1,7 @@
 package org.multibit.mbm.db.dao;
 
 import com.google.common.base.Optional;
-import org.multibit.mbm.db.dto.Supplier;
+import org.multibit.mbm.core.model.Supplier;
 
 public interface SupplierDao {
 

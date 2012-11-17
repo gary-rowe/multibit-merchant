@@ -12,9 +12,9 @@ import org.multibit.mbm.api.response.hal.item.AdminItemCollectionBridge;
 import org.multibit.mbm.auth.annotation.RestrictedTo;
 import org.multibit.mbm.db.dao.ItemDao;
 import org.multibit.mbm.auth.Authority;
-import org.multibit.mbm.db.dto.Item;
-import org.multibit.mbm.db.dto.ItemBuilder;
-import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.core.model.Item;
+import org.multibit.mbm.core.model.ItemBuilder;
+import org.multibit.mbm.core.model.User;
 import org.multibit.mbm.resources.BaseResource;
 import org.multibit.mbm.resources.ResourceAsserts;
 import org.springframework.stereotype.Component;
@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * <p>Resource to provide the following to application:</p>
  * <ul>
- * <li>Provision of REST endpoints to manage CRUD operations by an administrator against a collection of {@link org.multibit.mbm.db.dto.Item} entities</li>
+ * <li>Provision of REST endpoints to manage CRUD operations by an administrator against a collection of {@link org.multibit.mbm.core.model.Item} entities</li>
  * </ul>
  *
  * @since 0.0.1

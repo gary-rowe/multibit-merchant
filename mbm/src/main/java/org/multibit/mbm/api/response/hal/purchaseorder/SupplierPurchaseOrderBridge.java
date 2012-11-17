@@ -6,9 +6,9 @@ import com.xeiam.xchange.utils.MoneyUtils;
 import org.joda.money.BigMoney;
 import org.multibit.mbm.api.response.hal.BaseBridge;
 import org.multibit.mbm.api.response.hal.item.SupplierPurchaseOrderItemBridge;
-import org.multibit.mbm.db.dto.PurchaseOrder;
-import org.multibit.mbm.db.dto.PurchaseOrderItem;
-import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.core.model.PurchaseOrder;
+import org.multibit.mbm.core.model.PurchaseOrderItem;
+import org.multibit.mbm.core.model.User;
 import org.multibit.mbm.resources.ResourceAsserts;
 
 import javax.ws.rs.core.UriInfo;
@@ -27,7 +27,7 @@ public class SupplierPurchaseOrderBridge extends BaseBridge<PurchaseOrder> {
 
   /**
    * @param uriInfo   The {@link javax.ws.rs.core.UriInfo} containing the originating request information
-   * @param principal An optional {@link org.multibit.mbm.db.dto.User} to provide a security principal
+   * @param principal An optional {@link org.multibit.mbm.core.model.User} to provide a security principal
    */
   public SupplierPurchaseOrderBridge(UriInfo uriInfo, Optional<User> principal) {
     super(uriInfo, principal);

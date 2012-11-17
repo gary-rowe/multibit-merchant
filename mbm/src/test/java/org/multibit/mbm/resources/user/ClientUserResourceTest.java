@@ -8,8 +8,8 @@ import org.multibit.mbm.auth.Authority;
 import org.multibit.mbm.db.DatabaseLoader;
 import org.multibit.mbm.db.dao.RoleDao;
 import org.multibit.mbm.db.dao.UserDao;
-import org.multibit.mbm.db.dto.Role;
-import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.core.model.Role;
+import org.multibit.mbm.core.model.User;
 import org.multibit.mbm.test.BaseJerseyHmacResourceTest;
 import org.multibit.mbm.test.FixtureAsserts;
 

@@ -6,9 +6,9 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.multibit.mbm.db.dao.CartDao;
-import org.multibit.mbm.db.dto.Cart;
-import org.multibit.mbm.db.dto.CartBuilder;
-import org.multibit.mbm.db.dto.Customer;
+import org.multibit.mbm.core.model.Cart;
+import org.multibit.mbm.core.model.CartBuilder;
+import org.multibit.mbm.core.model.Customer;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.stereotype.Repository;
 

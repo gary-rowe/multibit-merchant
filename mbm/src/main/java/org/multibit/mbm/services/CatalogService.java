@@ -3,7 +3,7 @@ package org.multibit.mbm.services;
 import com.google.common.base.Optional;
 import org.multibit.mbm.api.response.ItemPagedQueryResponse;
 import org.multibit.mbm.db.dao.ItemDao;
-import org.multibit.mbm.db.dto.Item;
+import org.multibit.mbm.core.model.Item;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;

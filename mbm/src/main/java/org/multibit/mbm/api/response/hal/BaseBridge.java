@@ -6,7 +6,7 @@ import com.theoryinpractise.halbuilder.spi.Resource;
 import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.api.hal.MinifiedJsonRenderer;
 import org.multibit.mbm.api.hal.MinifiedXmlRenderer;
-import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.core.model.User;
 
 import javax.ws.rs.core.UriInfo;
 

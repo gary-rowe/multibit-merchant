@@ -4,7 +4,7 @@ import com.google.common.base.Optional;
 import com.yammer.dropwizard.auth.AuthenticationException;
 import com.yammer.dropwizard.auth.Authenticator;
 import org.multibit.mbm.db.dao.UserDao;
-import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.core.model.User;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;

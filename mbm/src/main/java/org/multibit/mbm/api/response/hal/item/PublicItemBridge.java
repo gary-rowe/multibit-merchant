@@ -4,7 +4,7 @@ import com.google.common.base.Optional;
 import com.theoryinpractise.halbuilder.ResourceFactory;
 import com.theoryinpractise.halbuilder.spi.Resource;
 import org.multibit.mbm.api.response.hal.BaseBridge;
-import org.multibit.mbm.db.dto.*;
+import org.multibit.mbm.core.model.*;
 import org.multibit.mbm.resources.ResourceAsserts;
 
 import javax.ws.rs.core.UriInfo;
@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * <p>Bridge to provide the following to {@link org.multibit.mbm.db.dto.Item}:</p>
+ * <p>Bridge to provide the following to {@link org.multibit.mbm.core.model.Item}:</p>
  * <ul>
  * <li>Creates representations of an Item for a Customer</li>
  * </ul>
@@ -23,7 +23,7 @@ public class PublicItemBridge extends BaseBridge<Item> {
 
   /**
    * @param uriInfo   The {@link javax.ws.rs.core.UriInfo} containing the originating request information
-   * @param principal An optional {@link org.multibit.mbm.db.dto.User} to provide a security principal
+   * @param principal An optional {@link org.multibit.mbm.core.model.User} to provide a security principal
    */
   public PublicItemBridge(UriInfo uriInfo, Optional<User> principal) {
     super(uriInfo, principal);

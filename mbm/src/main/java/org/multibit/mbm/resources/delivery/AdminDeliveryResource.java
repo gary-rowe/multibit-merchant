@@ -12,9 +12,9 @@ import org.multibit.mbm.auth.Authority;
 import org.multibit.mbm.auth.annotation.RestrictedTo;
 import org.multibit.mbm.db.dao.DeliveryDao;
 import org.multibit.mbm.db.dao.ItemDao;
-import org.multibit.mbm.db.dto.Delivery;
-import org.multibit.mbm.db.dto.Item;
-import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.core.model.Delivery;
+import org.multibit.mbm.core.model.Item;
+import org.multibit.mbm.core.model.User;
 import org.multibit.mbm.resources.BaseResource;
 import org.multibit.mbm.resources.ResourceAsserts;
 import org.springframework.stereotype.Component;
@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * <p>Resource to provide the following to application:</p>
  * <ul>
- * <li>Provision of REST endpoints to manage CRUD operations by an administrator against a collection of {@link org.multibit.mbm.db.dto.Delivery} entities</li>
+ * <li>Provision of REST endpoints to manage CRUD operations by an administrator against a collection of {@link org.multibit.mbm.core.model.Delivery} entities</li>
  * </ul>
  * <p>Note that a Delivery has a 1:1 relationship with Supplier and is meaningless
  * without it. Therefore there is no "Create" or "Delete" requirement.</p>

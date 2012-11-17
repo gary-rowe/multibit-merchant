@@ -6,7 +6,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.multibit.mbm.db.dao.UserDao;
-import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.core.model.User;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;

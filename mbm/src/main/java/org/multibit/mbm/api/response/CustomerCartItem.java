@@ -1,8 +1,8 @@
 package org.multibit.mbm.api.response;
 
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.multibit.mbm.db.dto.CartItem;
-import org.multibit.mbm.db.dto.Item;
+import org.multibit.mbm.core.model.CartItem;
+import org.multibit.mbm.core.model.Item;
 
 /**
  *  <p>Value object to provide the following to {@link org.multibit.mbm.resources.cart.PublicCartResource}:</p>

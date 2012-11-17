@@ -6,9 +6,9 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.multibit.mbm.db.dao.PurchaseOrderDao;
-import org.multibit.mbm.db.dto.PurchaseOrder;
-import org.multibit.mbm.db.dto.PurchaseOrderBuilder;
-import org.multibit.mbm.db.dto.Supplier;
+import org.multibit.mbm.core.model.PurchaseOrder;
+import org.multibit.mbm.core.model.PurchaseOrderBuilder;
+import org.multibit.mbm.core.model.Supplier;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.stereotype.Repository;
 

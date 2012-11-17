@@ -3,8 +3,8 @@ package org.multibit.mbm.api.response.hal.delivery;
 import com.google.common.base.Optional;
 import com.theoryinpractise.halbuilder.spi.Resource;
 import org.multibit.mbm.api.response.hal.BaseBridge;
-import org.multibit.mbm.db.dto.Delivery;
-import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.core.model.Delivery;
+import org.multibit.mbm.core.model.User;
 import org.multibit.mbm.resources.ResourceAsserts;
 
 import javax.ws.rs.core.UriInfo;
@@ -12,7 +12,7 @@ import javax.ws.rs.core.UriInfo;
 /**
  * <p>Bridge to provide the following to administrators:</p>
  * <ul>
- * <li>Creates a representation of a single {@link org.multibit.mbm.db.dto.Delivery} for an administrator</li>
+ * <li>Creates a representation of a single {@link org.multibit.mbm.core.model.Delivery} for an administrator</li>
  * </ul>
  *
  * @since 0.0.1
@@ -23,7 +23,7 @@ public class AdminDeliveryBridge extends BaseBridge<Delivery> {
 
   /**
    * @param uriInfo   The {@link javax.ws.rs.core.UriInfo} containing the originating request information
-   * @param principal An optional {@link org.multibit.mbm.db.dto.User} to provide a security principal
+   * @param principal An optional {@link org.multibit.mbm.core.model.User} to provide a security principal
    */
   public AdminDeliveryBridge(UriInfo uriInfo, Optional<User> principal) {
     super(uriInfo, principal);

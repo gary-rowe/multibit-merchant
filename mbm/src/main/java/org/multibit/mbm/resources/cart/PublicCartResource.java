@@ -11,9 +11,9 @@ import org.multibit.mbm.auth.Authority;
 import org.multibit.mbm.auth.annotation.RestrictedTo;
 import org.multibit.mbm.db.dao.CartDao;
 import org.multibit.mbm.db.dao.ItemDao;
-import org.multibit.mbm.db.dto.Cart;
-import org.multibit.mbm.db.dto.Item;
-import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.core.model.Cart;
+import org.multibit.mbm.core.model.Item;
+import org.multibit.mbm.core.model.User;
 import org.multibit.mbm.resources.BaseResource;
 import org.multibit.mbm.resources.ResourceAsserts;
 import org.springframework.stereotype.Component;
@@ -27,7 +27,7 @@ import javax.ws.rs.core.Response;
 import java.util.concurrent.TimeUnit;
 
 /**
- * <p>Resource to provide the following to {@link org.multibit.mbm.db.dto.Cart}:</p>
+ * <p>Resource to provide the following to {@link org.multibit.mbm.core.model.Cart}:</p>
  * <ul>
  * <li>Provision of REST endpoints for public interaction with their Cart</li>
  * </ul>

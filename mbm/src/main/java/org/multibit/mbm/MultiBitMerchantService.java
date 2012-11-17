@@ -8,7 +8,7 @@ import com.yammer.dropwizard.logging.Log;
 import org.multibit.mbm.auth.hmac.HmacServerAuthenticator;
 import org.multibit.mbm.auth.hmac.HmacServerCredentials;
 import org.multibit.mbm.auth.hmac.HmacServerRestrictedToProvider;
-import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.core.model.User;
 import org.multibit.mbm.health.TemplatePropertyHealthCheck;
 import org.multibit.mbm.resources.BitcoinPaymentResource;
 import org.multibit.mbm.resources.cart.AdminCartResource;

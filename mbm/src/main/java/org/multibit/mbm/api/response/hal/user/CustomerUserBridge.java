@@ -3,9 +3,9 @@ package org.multibit.mbm.api.response.hal.user;
 import com.google.common.base.Optional;
 import com.theoryinpractise.halbuilder.spi.Resource;
 import org.multibit.mbm.api.response.hal.BaseBridge;
-import org.multibit.mbm.db.dto.ContactMethod;
-import org.multibit.mbm.db.dto.ContactMethodDetail;
-import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.core.model.ContactMethod;
+import org.multibit.mbm.core.model.ContactMethodDetail;
+import org.multibit.mbm.core.model.User;
 import org.multibit.mbm.resources.ResourceAsserts;
 
 import javax.ws.rs.core.UriInfo;

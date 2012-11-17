@@ -1,8 +1,8 @@
 package org.multibit.mbm.db.dao;
 
 import com.google.common.base.Optional;
-import org.multibit.mbm.db.dto.PurchaseOrder;
-import org.multibit.mbm.db.dto.Supplier;
+import org.multibit.mbm.core.model.PurchaseOrder;
+import org.multibit.mbm.core.model.Supplier;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public interface PurchaseOrderDao {
   Optional<PurchaseOrder> getById(Long id);
 
   /**
-   * Get the PurchaseOrder for the Supplier, initialising the {@link org.multibit.mbm.db.dto.PurchaseOrderItem}s
+   * Get the PurchaseOrder for the Supplier, initialising the {@link org.multibit.mbm.core.model.PurchaseOrderItem}s
    *
    * @param supplier The owning Supplier
    *

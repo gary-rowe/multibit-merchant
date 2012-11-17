@@ -8,10 +8,10 @@ import org.multibit.mbm.api.request.cart.PublicUpdateCartRequest;
 import org.multibit.mbm.db.DatabaseLoader;
 import org.multibit.mbm.db.dao.CartDao;
 import org.multibit.mbm.db.dao.ItemDao;
-import org.multibit.mbm.db.dto.Cart;
-import org.multibit.mbm.db.dto.Customer;
-import org.multibit.mbm.db.dto.Item;
-import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.core.model.Cart;
+import org.multibit.mbm.core.model.Customer;
+import org.multibit.mbm.core.model.Item;
+import org.multibit.mbm.core.model.User;
 import org.multibit.mbm.test.BaseJerseyHmacResourceTest;
 import org.multibit.mbm.test.FixtureAsserts;
 

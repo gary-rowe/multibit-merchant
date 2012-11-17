@@ -4,9 +4,9 @@ import com.google.common.base.Optional;
 import com.xeiam.xchange.utils.MoneyUtils;
 import org.junit.Test;
 import org.multibit.mbm.api.response.ItemPagedQueryResponse;
+import org.multibit.mbm.core.model.*;
 import org.multibit.mbm.db.dao.CustomerDao;
 import org.multibit.mbm.db.dao.ItemDao;
-import org.multibit.mbm.db.dto.*;
 import org.multibit.mbm.test.BaseIntegrationTests;
 import org.springframework.test.context.ContextConfiguration;
 

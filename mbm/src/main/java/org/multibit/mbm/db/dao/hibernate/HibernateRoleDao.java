@@ -6,7 +6,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.multibit.mbm.db.dao.RoleDao;
 import org.multibit.mbm.auth.Authority;
-import org.multibit.mbm.db.dto.Role;
+import org.multibit.mbm.core.model.Role;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;

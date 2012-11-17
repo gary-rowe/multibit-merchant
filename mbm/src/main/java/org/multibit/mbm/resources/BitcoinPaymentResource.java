@@ -3,10 +3,10 @@ package org.multibit.mbm.resources;
 import com.yammer.metrics.annotation.Timed;
 import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.auth.annotation.RestrictedTo;
-import org.multibit.mbm.bitcoin.service.BitcoinService;
-import org.multibit.mbm.bitcoin.service.SwatchBuilder;
+import org.multibit.mbm.core.bitcoin.service.BitcoinService;
+import org.multibit.mbm.core.bitcoin.service.SwatchBuilder;
 import org.multibit.mbm.auth.Authority;
-import org.multibit.mbm.db.dto.User;
+import org.multibit.mbm.core.model.User;
 import com.yammer.dropwizard.logging.Log;
 
 import org.springframework.stereotype.Component;
@@ -17,7 +17,7 @@ import javax.ws.rs.core.Response;
 import java.io.IOException;
 
 /**
- * <p>Resource to provide the following to {@link org.multibit.mbm.db.dto.Customer}:</p>
+ * <p>Resource to provide the following to {@link org.multibit.mbm.core.model.Customer}:</p>
  * <ul>
  * <li>Provision of REST endpoints</li>
  * </ul>

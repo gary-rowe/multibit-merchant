@@ -1,7 +1,7 @@
 package org.multibit.mbm.db.dao;
 
 /**
- * Thrown when an {@link org.multibit.mbm.db.dto.Item} is not found
+ * Thrown when an {@link org.multibit.mbm.core.model.Item} is not found
  */
 public class ItemNotFoundException extends RuntimeException {
 

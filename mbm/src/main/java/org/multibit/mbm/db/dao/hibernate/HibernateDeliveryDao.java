@@ -6,9 +6,9 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.multibit.mbm.db.dao.DeliveryDao;
-import org.multibit.mbm.db.dto.Delivery;
-import org.multibit.mbm.db.dto.DeliveryBuilder;
-import org.multibit.mbm.db.dto.Supplier;
+import org.multibit.mbm.core.model.Delivery;
+import org.multibit.mbm.core.model.DeliveryBuilder;
+import org.multibit.mbm.core.model.Supplier;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.stereotype.Repository;
 

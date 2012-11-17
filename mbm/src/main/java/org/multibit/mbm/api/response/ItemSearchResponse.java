@@ -2,7 +2,7 @@ package org.multibit.mbm.api.response;
 
 import com.google.common.collect.Lists;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.multibit.mbm.db.dto.Item;
+import org.multibit.mbm.core.model.Item;
 
 import java.util.List;
 

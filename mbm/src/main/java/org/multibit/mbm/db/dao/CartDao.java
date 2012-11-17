@@ -1,8 +1,8 @@
 package org.multibit.mbm.db.dao;
 
 import com.google.common.base.Optional;
-import org.multibit.mbm.db.dto.Cart;
-import org.multibit.mbm.db.dto.Customer;
+import org.multibit.mbm.core.model.Cart;
+import org.multibit.mbm.core.model.Customer;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public interface CartDao {
   Optional<Cart> getById(Long id);
 
   /**
-   * Get the Cart for the Customer, initialising the {@link org.multibit.mbm.db.dto.CartItem}s
+   * Get the Cart for the Customer, initialising the {@link org.multibit.mbm.core.model.CartItem}s
    *
    * @param customer The owning Customer
    *
