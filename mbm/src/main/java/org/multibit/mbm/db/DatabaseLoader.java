@@ -4,6 +4,7 @@ import com.xeiam.xchange.utils.MoneyUtils;
 import com.yammer.dropwizard.logging.Log;
 import org.multibit.mbm.auth.Authority;
 import org.multibit.mbm.core.model.*;
+import org.multibit.mbm.core.pricing.rules.PercentagePricingRule;
 import org.multibit.mbm.db.dao.CustomerDao;
 import org.multibit.mbm.db.dao.ItemDao;
 import org.multibit.mbm.db.dao.RoleDao;
@@ -558,6 +559,14 @@ public class DatabaseLoader {
       .build();
   }
 
+  public static PricingRule buildPresetMarginPricingRule() {
+
+    PercentagePricingRule pricingRule = new PercentagePricingRule();
+    pricingRule.setPercentage(1.2);
+
+    return pricingRule;
+  }
+
   public void setCustomerDao(CustomerDao customerDao) {
     this.customerDao = customerDao;
   }
@@ -565,5 +574,4 @@ public class DatabaseLoader {
   public void setItemDao(ItemDao itemDao) {
     this.itemDao = itemDao;
   }
-
 }

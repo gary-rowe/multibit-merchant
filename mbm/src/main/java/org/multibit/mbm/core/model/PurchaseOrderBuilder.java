@@ -1,6 +1,7 @@
 package org.multibit.mbm.core.model;
 
 import com.google.common.collect.Lists;
+import org.joda.money.BigMoney;
 
 import java.util.Collection;
 import java.util.List;
@@ -81,16 +82,27 @@ public class PurchaseOrderBuilder {
   /**
    * Creates a PurchaseOrderItem entry based on the parameters
    *
-   * @param item     The persistent Item (this should already exist in the database)
-   * @param quantity The quantity
+   * @param item      The persistent Item (this should already exist in the database)
+   * @param quantity  The quantity
+   * @param unitPrice The price per unit
+   * @param unitTax   The tax per unit
    *
    * @return The builder
    */
-  public PurchaseOrderBuilder withPurchaseOrderItem(Item item, int quantity) {
+  public PurchaseOrderBuilder withPurchaseOrderItem(
+    Item item,
+    int quantity,
+    BigMoney unitPrice,
+    BigMoney unitTax) {
 
     validateState();
 
-    addPurchaseOrderItems.add(new AddPurchaseOrderItem(item, quantity));
+    addPurchaseOrderItems.add(
+      new AddPurchaseOrderItem(
+        item,
+        quantity,
+        unitPrice,
+        unitTax));
 
     return this;
   }
@@ -106,7 +118,12 @@ public class PurchaseOrderBuilder {
 
     validateState();
 
-    addPurchaseOrderItems.add(new AddPurchaseOrderItem(purchaseOrderItem.getItem(), purchaseOrderItem.getQuantity()));
+    addPurchaseOrderItems.add(
+      new AddPurchaseOrderItem(
+        purchaseOrderItem.getItem(),
+        purchaseOrderItem.getQuantity(),
+        purchaseOrderItem.getUnitPrice(),
+        purchaseOrderItem.getUnitTax()));
 
     return this;
   }
@@ -122,8 +139,8 @@ public class PurchaseOrderBuilder {
 
     validateState();
 
-    for (PurchaseOrderItem purchaseOrderItem: purchaseOrderItems) {
-      addPurchaseOrderItems.add(new AddPurchaseOrderItem(purchaseOrderItem.getItem(), purchaseOrderItem.getQuantity()));
+    for (PurchaseOrderItem purchaseOrderItem : purchaseOrderItems) {
+      withPurchaseOrderItem(purchaseOrderItem);
     }
 
     return this;
@@ -140,10 +157,18 @@ public class PurchaseOrderBuilder {
   private class AddPurchaseOrderItem {
     private final Item item;
     private final int quantity;
+    private final BigMoney unitPrice;
+    private final BigMoney unitTax;
 
-    AddPurchaseOrderItem(Item item, int quantity) {
+    AddPurchaseOrderItem(
+      Item item,
+      int quantity,
+      BigMoney unitPrice,
+      BigMoney unitTax) {
       this.item = item;
       this.quantity = quantity;
+      this.unitPrice = unitPrice;
+      this.unitTax = unitTax;
     }
 
     /**
@@ -161,6 +186,8 @@ public class PurchaseOrderBuilder {
       PurchaseOrderItem purchaseOrderItem = new PurchaseOrderItem();
       purchaseOrderItem.setPrimaryKey(purchaseOrderItemPk);
       purchaseOrderItem.setQuantity(quantity);
+      purchaseOrderItem.setUnitPrice(unitPrice);
+      purchaseOrderItem.setUnitTax(unitTax);
 
       purchaseOrder.getPurchaseOrderItems().add(purchaseOrderItem);
 

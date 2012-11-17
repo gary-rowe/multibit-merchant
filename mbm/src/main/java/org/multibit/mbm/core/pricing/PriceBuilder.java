@@ -1,14 +1,15 @@
 package org.multibit.mbm.core.pricing;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
+import com.xeiam.xchange.utils.MoneyUtils;
 import org.joda.money.BigMoney;
 import org.joda.time.DateTime;
-import org.multibit.mbm.db.dao.ItemDao;
 import org.multibit.mbm.core.model.Customer;
+import org.multibit.mbm.core.model.PricingRule;
 import org.multibit.mbm.core.model.Supplier;
 import org.multibit.mbm.utils.DateUtils;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -24,15 +25,12 @@ import java.util.List;
  */
 public class PriceBuilder {
 
-  @Resource(name="hibernateItemDao")
-  private ItemDao itemDao;
-
   private int quantity = 0;
   private DateTime start = DateUtils.nowUtc();
   private DateTime end = DateUtils.nowUtc();
-  private String currencyCode = "GBP";
-  private Customer customer;
-  private Supplier supplier;
+  private BigMoney startingPrice = MoneyUtils.parseFiat("GBP 0.0");
+  private Optional<Customer> customer = Optional.absent();
+  private Optional<Supplier> supplier = Optional.absent();
 
   private List<PricingRule> pricingRules = Lists.newArrayList();
 
@@ -55,15 +53,21 @@ public class PriceBuilder {
     validateState();
 
     // Price is not a DTO
-    BigMoney price=null;
+    BigMoney price = startingPrice;
 
     for (PricingRule pricingRule : pricingRules) {
-      if (pricingRule.canProcess(customer)) {
-        price = pricingRule.applyTo(price, customer);
+      pricingRule.setCustomer(customer);
+      pricingRule.setSupplier(supplier);
+      pricingRule.setQuantity(quantity);
+      // TODO Consider date ranges (use discriminator value e.g. R(A,B], R(o,o))
+      // Test filtering rules
+      if (pricingRule.skip()) {
+        continue;
       }
-      if (pricingRule.canProcess(supplier)) {
-        price = pricingRule.applyTo(price, customer);
+      if (pricingRule.halt()) {
+        break;
       }
+      price = pricingRule.applyTo(price);
     }
 
     isBuilt = true;
@@ -83,26 +87,32 @@ public class PriceBuilder {
   }
 
   /**
-   * Add the Customer to the Price (one permitted)
+   * Add the Customer in case it affects the price (one permitted)
    *
    * @return The builder
    */
   public PriceBuilder withCustomer(Customer customer) {
-    this.customer = customer;
+    this.customer = Optional.fromNullable(customer);
     return this;
   }
 
   /**
-   * Add the Supplied to the Price (one permitted)
+   * Add the Supplier in case it affects the price (one permitted)
    *
    * @return The builder
    */
   public PriceBuilder withSupplier(Supplier supplier) {
-    this.supplier = supplier;
+    this.supplier = Optional.fromNullable(supplier);
     return this;
   }
 
-  public void setItemDao(ItemDao itemDao) {
-    this.itemDao = itemDao;
+  /**
+   * @param startingPrice The starting price (default is GBP0.0)
+   *
+   * @return The builder
+   */
+  public PriceBuilder withStartingPrice(BigMoney startingPrice) {
+    this.startingPrice = startingPrice;
+    return this;
   }
 }

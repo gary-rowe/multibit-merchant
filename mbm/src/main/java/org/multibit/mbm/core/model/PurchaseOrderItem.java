@@ -1,6 +1,8 @@
 package org.multibit.mbm.core.model;
 
 import com.google.common.base.Preconditions;
+import org.hibernate.annotations.Columns;
+import org.hibernate.annotations.Type;
 import org.joda.money.BigMoney;
 import org.multibit.mbm.utils.ObjectUtils;
 
@@ -19,8 +21,14 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "purchase_order_items")
-@AssociationOverrides({@AssociationOverride(name = "primaryKey.item", joinColumns = @JoinColumn(name = "item_id")),
-  @AssociationOverride(name = "primaryKey.purchase_order", joinColumns = @JoinColumn(name = "purchase_order_id"))})
+@AssociationOverrides({
+  @AssociationOverride(
+    name = "primaryKey.item",
+    joinColumns = @JoinColumn(name = "item_id")),
+  @AssociationOverride(
+    name = "primaryKey.purchase_order",
+    joinColumns = @JoinColumn(name = "purchase_order_id"))
+})
 public class PurchaseOrderItem implements Serializable {
 
   private static final long serialVersionUID = 389475903837482L;
@@ -29,6 +37,20 @@ public class PurchaseOrderItem implements Serializable {
 
   @Column(name = "quantity", nullable = false)
   private int quantity = 0;
+
+  @Columns(columns = {
+    @Column(name = "unit_price_amount"),
+    @Column(name = "unit_price_currency")
+  })
+  @Type(type = "org.multibit.mbm.db.dao.hibernate.type.BigMoneyType")
+  private BigMoney unitPrice;
+
+  @Columns(columns = {
+    @Column(name = "unit_tax_amount"),
+    @Column(name = "unit_tax_currency")
+  })
+  @Type(type = "org.multibit.mbm.db.dao.hibernate.type.BigMoneyType")
+  private BigMoney unitTax;
 
   @Column(name = "supplier_sku", nullable = true)
   private String supplierSKU = "";
@@ -49,7 +71,7 @@ public class PurchaseOrderItem implements Serializable {
    * Standard constructor with mandatory fields
    *
    * @param purchaseOrder required purchaseOrder
-   * @param item     required item
+   * @param item          required item
    */
   public PurchaseOrderItem(PurchaseOrder purchaseOrder, Item item) {
     Preconditions.checkNotNull(purchaseOrder, "purchaseOrder is required");
@@ -128,6 +150,28 @@ public class PurchaseOrderItem implements Serializable {
 
   public void setBatchReference(String batchReference) {
     this.batchReference = batchReference;
+  }
+
+  /**
+   * @return The unit price
+   */
+  public BigMoney getUnitPrice() {
+    return unitPrice;
+  }
+
+  public void setUnitPrice(BigMoney unitPrice) {
+    this.unitPrice = unitPrice;
+  }
+
+  /**
+   * @return The unit tax
+   */
+  public BigMoney getUnitTax() {
+    return unitTax;
+  }
+
+  public void setUnitTax(BigMoney unitTax) {
+    this.unitTax = unitTax;
   }
 
   /**

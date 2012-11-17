@@ -19,8 +19,14 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "delivery_items")
-@AssociationOverrides({@AssociationOverride(name = "primaryKey.item", joinColumns = @JoinColumn(name = "item_id")),
-  @AssociationOverride(name = "primaryKey.delivery", joinColumns = @JoinColumn(name = "delivery_id"))})
+@AssociationOverrides({
+  @AssociationOverride(
+    name = "primaryKey.item",
+    joinColumns = @JoinColumn(name = "item_id")),
+  @AssociationOverride(
+    name = "primaryKey.delivery",
+    joinColumns = @JoinColumn(name = "delivery_id"))
+})
 public class DeliveryItem implements Serializable {
 
   private static final long serialVersionUID = 389475903837482L;

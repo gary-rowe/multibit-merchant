@@ -3,6 +3,8 @@ package org.multibit.mbm.resources.purchaseorder;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.xeiam.xchange.utils.MoneyUtils;
+import org.joda.money.BigMoney;
 import org.junit.Test;
 import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.api.request.cart.purchaseorder.BuyerPurchaseOrderItem;
@@ -22,10 +24,10 @@ import static org.mockito.Mockito.when;
 
 public class AdminPurchaseOrderResourceTest extends BaseJerseyHmacResourceTest {
 
-  private final PurchaseOrderDao purchaseOrderDao=mock(PurchaseOrderDao.class);
-  private final ItemDao itemDao=mock(ItemDao.class);
+  private final PurchaseOrderDao purchaseOrderDao = mock(PurchaseOrderDao.class);
+  private final ItemDao itemDao = mock(ItemDao.class);
 
-  private final AdminPurchaseOrderResource testObject=new AdminPurchaseOrderResource();
+  private final AdminPurchaseOrderResource testObject = new AdminPurchaseOrderResource();
 
   @Override
   protected void setUpResources() {
@@ -48,11 +50,17 @@ public class AdminPurchaseOrderResourceTest extends BaseJerseyHmacResourceTest {
     Item book2 = DatabaseLoader.buildBookItemQuantumThief();
     book2.setId(2L);
 
+    // TODO Pull this into DatabaseLoader
+    BigMoney book1UnitPrice = MoneyUtils.parseFiat("GBP 1.23");
+    BigMoney book1UnitTax = MoneyUtils.parseFiat("GBP 0.20");
+    BigMoney book2UnitPrice = MoneyUtils.parseFiat("GBP 2.46");
+    BigMoney book2UnitTax = MoneyUtils.parseFiat("GBP 0.40");
+
     PurchaseOrder stevePurchaseOrder1 = PurchaseOrderBuilder
       .newInstance()
       .withSupplier(steveUser.getSupplier())
-      .withPurchaseOrderItem(book1, 1)
-      .withPurchaseOrderItem(book2,2)
+      .withPurchaseOrderItem(book1, 1, book1UnitPrice, book1UnitTax)
+      .withPurchaseOrderItem(book2, 2, book2UnitPrice, book2UnitTax)
       .build();
     stevePurchaseOrder1.setId(1L);
     steveUser.getSupplier().getPurchaseOrders().add(stevePurchaseOrder1);
@@ -68,11 +76,17 @@ public class AdminPurchaseOrderResourceTest extends BaseJerseyHmacResourceTest {
     Item book4 = DatabaseLoader.buildBookItemPlumbing();
     book4.setId(4L);
 
+    // TODO Pull this into DatabaseLoader
+    BigMoney book3UnitPrice = MoneyUtils.parseFiat("GBP 1.23");
+    BigMoney book3UnitTax = MoneyUtils.parseFiat("GBP 0.20");
+    BigMoney book4UnitPrice = MoneyUtils.parseFiat("GBP 2.46");
+    BigMoney book4UnitTax = MoneyUtils.parseFiat("GBP 0.40");
+
     PurchaseOrder samPurchaseOrder1 = PurchaseOrderBuilder
       .newInstance()
       .withSupplier(samUser.getSupplier())
-      .withPurchaseOrderItem(book3, 3)
-      .withPurchaseOrderItem(book4,4)
+      .withPurchaseOrderItem(book3, 3, book3UnitPrice, book3UnitTax)
+      .withPurchaseOrderItem(book4, 4, book4UnitPrice, book4UnitTax)
       .build();
     samPurchaseOrder1.setId(1L);
     samUser.getSupplier().getPurchaseOrders().add(samPurchaseOrder1);
@@ -102,11 +116,12 @@ public class AdminPurchaseOrderResourceTest extends BaseJerseyHmacResourceTest {
     addSingleton(testObject);
 
   }
+
   @Test
   public void adminRetrievePurchaseOrdersAsHalJson() throws Exception {
 
     String actualResponse = configureAsClient(AdminPurchaseOrderResource.class)
-      .queryParam("ps","1")
+      .queryParam("ps", "1")
       .queryParam("pn", "0")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
@@ -114,7 +129,7 @@ public class AdminPurchaseOrderResourceTest extends BaseJerseyHmacResourceTest {
     FixtureAsserts.assertStringMatchesJsonFixture("PurchaseOrder list 1 can be retrieved as HAL+JSON", actualResponse, "/fixtures/hal/purchaseorder/expected-admin-retrieve-purchase-orders-page-1.json");
 
     actualResponse = configureAsClient(AdminPurchaseOrderResource.class)
-      .queryParam("ps","1")
+      .queryParam("ps", "1")
       .queryParam("pn", "1")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
@@ -133,16 +148,16 @@ public class AdminPurchaseOrderResourceTest extends BaseJerseyHmacResourceTest {
     // TODO Consider providing ID (sequences etc)
     //updatePurchaseOrderRequest.setId(1L);
     // Add a few new items
-    updatePurchaseOrderRequest.getPurchaseOrderItems().add(new BuyerPurchaseOrderItem("0316184136",3,"1.1","GBP"));
+    updatePurchaseOrderRequest.getPurchaseOrderItems().add(new BuyerPurchaseOrderItem("0316184136", 3, "1.1", "GBP"));
     // Remove by setting to zero
-    updatePurchaseOrderRequest.getPurchaseOrderItems().add(new BuyerPurchaseOrderItem("0099410672",0,"2.2","GBP"));
+    updatePurchaseOrderRequest.getPurchaseOrderItems().add(new BuyerPurchaseOrderItem("0099410672", 0, "2.2", "GBP"));
 
     String actualResponse = configureAsClient("/admin/purchase-orders/1")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .entity(updatePurchaseOrderRequest, MediaType.APPLICATION_JSON_TYPE)
       .put(String.class);
 
-    FixtureAsserts.assertStringMatchesJsonFixture("UpdatePurchaseOrder by admin response render to HAL+JSON",actualResponse, "/fixtures/hal/purchaseorder/expected-admin-update-purchase-order.json");
+    FixtureAsserts.assertStringMatchesJsonFixture("UpdatePurchaseOrder by admin response render to HAL+JSON", actualResponse, "/fixtures/hal/purchaseorder/expected-admin-update-purchase-order.json");
 
   }
 
