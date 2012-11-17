@@ -39,12 +39,16 @@ public class DatabaseLoader {
   // (saves on DAO access during loading)
   private User trentAdmin = null;
   private User cameronCatalogAdmin = null;
+  private User belindaBuyer = null;
+
   // Supplier
   private User steveSupplier = null;
   private User samSupplier = null;
+
   // Customer
   private User aliceCustomer = null;
   private User bobCustomer = null;
+
   // Other
   private User storeClient = null;
   private User anonymous = null;
@@ -52,6 +56,7 @@ public class DatabaseLoader {
   // Various Roles that get shared between Users
   // (saves on DAO access during loading)
   private Role adminRole = null;
+  private Role buyerRole = null;
   private Role catalogAdminRole = null;
   private Role customerRole = null;
   private Role clientRole = null;
@@ -96,6 +101,10 @@ public class DatabaseLoader {
     catalogAdminRole = buildCatalogAdminRole();
     catalogAdminRole = roleDao.saveOrUpdate(catalogAdminRole);
 
+    // Buyer role
+    buyerRole = buildBuyerRole();
+    buyerRole = roleDao.saveOrUpdate(buyerRole);
+
     // Build the Customer Role and Authorities
     customerRole = buildCustomerRole();
     customerRole = roleDao.saveOrUpdate(customerRole);
@@ -114,6 +123,17 @@ public class DatabaseLoader {
 
     roleDao.flush();
 
+  }
+
+  /**
+   * @return A transient instance of the buyer role
+   */
+  public static Role buildBuyerRole() {
+    return RoleBuilder.newInstance()
+      .withName(Authority.ROLE_BUYER.name())
+      .withDescription("Buyer role")
+      .withAuthority(Authority.ROLE_BUYER)
+      .build();
   }
 
   /**
@@ -363,6 +383,11 @@ public class DatabaseLoader {
     cameronCatalogAdmin = buildCameronCatalogAdministrator(catalogAdminRole);
     userDao.saveOrUpdate(cameronCatalogAdmin);
 
+    // Buyers
+    // Belinda
+    belindaBuyer = buildBelindaBuyer(buyerRole);
+    userDao.saveOrUpdate(belindaBuyer);
+
     // Suppliers
     // Steve
     steveSupplier = buildSteveSupplier(supplierRole);
@@ -371,8 +396,6 @@ public class DatabaseLoader {
     // Sam
     samSupplier = buildSamSupplier(supplierRole);
     userDao.saveOrUpdate(samSupplier);
-
-    // TODO Introduce various staff roles (dispatch, sales etc)
 
     // Clients
     storeClient = buildStoreClient(clientRole);
@@ -454,6 +477,20 @@ public class DatabaseLoader {
       .withContactMethod(ContactMethod.LAST_NAME, "Admin")
       .withContactMethod(ContactMethod.EMAIL, "trent@example.org")
       .withRole(adminRole)
+      .build();
+  }
+
+  public static User buildBelindaBuyer(Role buyerRole) {
+    // Admin
+    return UserBuilder.newInstance()
+      .withApiKey("belinda123")
+      .withSecretKey("belinda456")
+      .withUsername("belinda")
+      .withPassword("belinda1")
+      .withContactMethod(ContactMethod.NAMES, "Belinda")
+      .withContactMethod(ContactMethod.LAST_NAME, "Buyer")
+      .withContactMethod(ContactMethod.EMAIL, "belinda@example.org")
+      .withRole(buyerRole)
       .build();
   }
 

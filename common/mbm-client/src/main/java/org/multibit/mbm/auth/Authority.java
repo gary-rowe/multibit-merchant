@@ -26,6 +26,10 @@ public enum Authority {
    */
   ROLE_ADMIN(true),
   /**
+   * The administrator for catalog functions (works on items)
+   */
+  ROLE_CATALOG_ADMIN(true),
+  /**
    * Reserved for client applications when making upstream server calls
    */
   ROLE_CLIENT(true),
@@ -34,13 +38,17 @@ public enum Authority {
    */
   ROLE_SALES(true),
   /**
-   * The administrator for catalog functions (works on items)
-   */
-  ROLE_CATALOG_ADMIN(true),
-  /**
    * The manager of the sales team
    */
   ROLE_SALES_MANAGER(true),
+  /**
+   * A member of the buying team
+   */
+  ROLE_BUYER(true),
+  /**
+   * The manager of the buying team
+   */
+  ROLE_BUYER_MANAGER(true),
   /**
    * A member of the marketing team
    */

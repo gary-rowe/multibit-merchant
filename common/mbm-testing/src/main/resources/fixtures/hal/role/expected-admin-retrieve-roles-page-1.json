@@ -42,6 +42,8 @@
         "RETRIEVE_ROLES":true,
         "RETRIEVE_USERS":true,
         "ROLE_ADMIN":true,
+        "ROLE_BUYER":true,
+        "ROLE_BUYER_MANAGER":true,
         "ROLE_CATALOG_ADMIN":true,
         "ROLE_CLIENT":true,
         "ROLE_CUSTOMER":true,
