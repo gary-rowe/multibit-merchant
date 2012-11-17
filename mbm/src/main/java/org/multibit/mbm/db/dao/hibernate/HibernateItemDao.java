@@ -6,7 +6,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.transform.DistinctRootEntityResultTransformer;
-import org.multibit.mbm.api.response.ItemPagedQueryResponse;
 import org.multibit.mbm.db.dao.ItemDao;
 import org.multibit.mbm.db.dao.ItemNotFoundException;
 import org.multibit.mbm.core.model.Item;
@@ -25,7 +24,7 @@ public class HibernateItemDao extends BaseHibernateDao<Item> implements ItemDao 
 
   @Override
   public Optional<Item> getById(Long id) throws ItemNotFoundException {
-    return getById(id);
+    return getById(Item.class, id);
   }
 
   @Override
@@ -65,52 +64,49 @@ public class HibernateItemDao extends BaseHibernateDao<Item> implements ItemDao 
     return entity;
   }
 
-  // TODO Review the ItemPagedQueryResponse requirement
-  // Consider a more generic search mechanism
   @SuppressWarnings("unchecked")
   @Override
   @Deprecated
-  public List<Item> getPagedItems(final ItemPagedQueryResponse itemPagedQueryResponse) {
-    Preconditions.checkNotNull(itemPagedQueryResponse, "itemPagedQueryResponse cannot be null");
+  public List<Item> getByExampleByPage(final int pageSize, final int pageNumber, final Item example) {
+    Preconditions.checkNotNull(example, "example cannot be null");
 
     return hibernateTemplate.executeFind(new HibernateCallback() {
       public Object doInHibernate(Session session) throws HibernateException, SQLException {
 
         // Examine the example object to determine the query
-        String hql = buildHql(itemPagedQueryResponse);
+        String hql = buildHql(example);
         
         // Do the work now that the HQL is created
         return (List<Item>) session
           .createQuery(hql)
-          .setFirstResult(itemPagedQueryResponse.getFirstResult())
-          .setMaxResults(itemPagedQueryResponse.getMaxResults())
+          .setFirstResult(pageSize * pageNumber)
+          .setMaxResults(pageSize)
           .setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE)
           .list();
       }
 
       /**
-       * @param itemPagedQueryResponse The query containing an example entity
+       * @param example The example entity
        * @return The HQL required to locate matching entities
        */
-      private String buildHql(ItemPagedQueryResponse itemPagedQueryResponse) {
-        Preconditions.checkNotNull(itemPagedQueryResponse, "itemPagedQueryResponse cannot be null");
+      private String buildHql(Item example) {
+        Preconditions.checkNotNull(example, "example cannot be null");
 
         // The basic starting point
         String hql = "select i from Item i ";
-        Item item = itemPagedQueryResponse.getItem();
-        
-        if (item != null) {
+
+        if (example != null) {
           // Check for simple inline fields (if applicable)
           
           // Check for complex joined fields (if applicable)
-          if (!item.getItemFieldMap().isEmpty()) {
+          if (!example.getItemFieldMap().isEmpty()) {
             // Potential for a complex query
             // Require an inner join on the item field map since there is at least one entry using it
             hql += "inner join i.itemFieldMap ifm where ";
             
             // Currently restrict searching against primary field entries (makes code and query simpler)
             boolean first=true;
-            for (Map.Entry<ItemField, ItemFieldDetail> entry: item.getItemFieldMap().entrySet()) {
+            for (Map.Entry<ItemField, ItemFieldDetail> entry: example.getItemFieldMap().entrySet()) {
               ItemFieldDetail itemFieldDetail = entry.getValue();
               // Compare against the ItemField ordinal and apply a wildcard using a disjunction (OR) between fields
               if (!first) {
