@@ -36,7 +36,7 @@ public class ClientItemCollectionHandlerTest extends BaseHandlerTest {
     assertEquals("Unexpected number of items", 1, items.size());
     assertEquals("Expected title", "Cryptonomicon", items.get(0).getOptionalProperties().get("title"));
     assertEquals("Expected uri", "http://multibit-store.herokuapp.com/images/book.jpg", items.get(0).getOptionalProperties().get("image_thumbnail_uri"));
-    assertEquals("Expected uri", "http://localhost:9998/item/0099410672", items.get(0).getOptionalProperties().get("item self"));
+    assertEquals("Expected uri", "http://localhost:8080/item/0099410672", items.get(0).getOptionalProperties().get("item self"));
 
   }
 
