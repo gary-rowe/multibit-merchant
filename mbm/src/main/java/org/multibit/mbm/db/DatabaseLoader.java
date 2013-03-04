@@ -1,6 +1,6 @@
 package org.multibit.mbm.db;
 
-import com.xeiam.xchange.utils.MoneyUtils;
+import com.xeiam.xchange.currency.MoneyUtils;
 import com.yammer.dropwizard.logging.Log;
 import org.multibit.mbm.auth.Authority;
 import org.multibit.mbm.core.model.*;

@@ -2,7 +2,7 @@ package org.multibit.mbm.core.pricing;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
-import com.xeiam.xchange.utils.MoneyUtils;
+import com.xeiam.xchange.currency.MoneyUtils;
 import org.joda.money.BigMoney;
 import org.joda.time.DateTime;
 import org.multibit.mbm.core.model.Customer;
@@ -28,7 +28,7 @@ public class PriceBuilder {
   private int quantity = 0;
   private DateTime start = DateUtils.nowUtc();
   private DateTime end = DateUtils.nowUtc();
-  private BigMoney startingPrice = MoneyUtils.parseFiat("GBP 0.0");
+  private BigMoney startingPrice = MoneyUtils.parse("GBP 0.0");
   private Optional<Customer> customer = Optional.absent();
   private Optional<Supplier> supplier = Optional.absent();
 

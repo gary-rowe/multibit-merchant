@@ -29,6 +29,7 @@
     <slf4j.version>1.6.1</slf4j.version>
     <logback.version>1.0.6</logback.version>
     <bitcoinj.version>0.5.0</bitcoinj.version>
+    <xchange.version>1.4.0</xchange.version>
   </properties>
 
   <developers>
@@ -263,7 +264,7 @@
         <artifactId>slf4j-api</artifactId>
         <version>${slf4j.version}</version>
       </dependency>
-      <!-- Java Commons Logging through SLF4J -->
+      <!-- Jakarta (Apache) Commons Logging through SLF4J -->
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>jcl-over-slf4j</artifactId>
@@ -282,7 +283,7 @@
         <version>${logback.version}</version>
       </dependency>
 
-      <!-- All time handling is through Joda -->
+      <!-- All time handling is through Joda Time -->
       <dependency>
         <groupId>joda-time</groupId>
         <artifactId>joda-time</artifactId>
@@ -449,8 +450,8 @@
       <!-- XChange for currency operations -->
       <dependency>
         <groupId>com.xeiam.xchange</groupId>
-        <artifactId>xchange</artifactId>
-        <version>1.0.0</version>
+        <artifactId>xchange-core</artifactId>
+        <version>${xchange.version}</version>
         <!-- TODO XChange should not demand logback -->
         <exclusions>
           <exclusion>
@@ -462,7 +463,7 @@
       <dependency>
         <groupId>com.xeiam.xchange</groupId>
         <artifactId>xchange-mtgox</artifactId>
-        <version>1.0.0</version>
+        <version>${xchange.version}</version>
         <exclusions>
           <exclusion>
             <artifactId>logback-classic</artifactId>

@@ -1,9 +1,11 @@
 package org.multibit.mbm.core.pricing;
 
-import com.xeiam.xchange.utils.MoneyUtils;
+import com.xeiam.xchange.currency.MoneyUtils;
 import org.joda.money.BigMoney;
 import org.junit.Test;
-import org.multibit.mbm.core.model.*;
+import org.multibit.mbm.core.model.PricingRule;
+import org.multibit.mbm.core.model.Role;
+import org.multibit.mbm.core.model.User;
 import org.multibit.mbm.db.DatabaseLoader;
 
 import static junit.framework.Assert.assertEquals;
@@ -17,7 +19,7 @@ public class PriceBuilderTest {
     Role supplierRole = DatabaseLoader.buildSupplierRole();
     User steveUser = DatabaseLoader.buildSteveSupplier(supplierRole);
 
-    BigMoney unitPrice = MoneyUtils.parseFiat("GBP 1.23");
+    BigMoney unitPrice = MoneyUtils.parse("GBP 1.23");
 
     // Configure some PricingRules
     PricingRule pricingRule = DatabaseLoader.buildPresetMarginPricingRule();
