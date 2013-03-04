@@ -43,8 +43,14 @@ There are many possibilities, but here are a few that have been designed for:
 * Support for encrypted offsite backups and restores and schema updates
 * Restricted administration access
 
+## Which branch?
+Use `master` for the latest production release. Use `develop` for the latest release candidate. 
+
+At present, given the alpha nature of the project it is best to start with `develop`.
+
 ## Getting started
-Assuming that you're familiar with Bitcoin and the benefits that it can bring to your online business venture, then your next step depends on your technical background. 
+Assuming that you're familiar with Bitcoin and the benefits that it can bring to your online business venture, 
+then your next step depends on your technical background. 
 
 [Installation instructions for merchants](https://github.com/gary-rowe/MultiBitMerchant/wiki/Getting-started-for-merchants)
 
