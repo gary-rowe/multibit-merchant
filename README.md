@@ -48,6 +48,11 @@ Use `master` for the latest production release. Use `develop` for the latest rel
 
 At present, given the alpha nature of the project it is best to start with `develop`.
 
+## Bitcoinj dependency is broken
+
+This is because the current Bitcoinj library is not available through a standard Nexus repository for security reasons.
+In order to install it you will need to [follow the instructions here](https://code.google.com/p/bitcoinj/wiki/UsingMaven).
+
 ## Getting started
 Assuming that you're familiar with Bitcoin and the benefits that it can bring to your online business venture, 
 then your next step depends on your technical background. 
