@@ -23,7 +23,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <atmosphere.version>0.8.0-RC3</atmosphere.version>
-    <dropwizard.version>0.5.1</dropwizard.version>
+    <dropwizard.version>0.6.1</dropwizard.version>
     <spring.version>3.1.0.M2</spring.version>
     <spring-social.version>1.0.0.RELEASE</spring-social.version>
     <slf4j.version>1.6.1</slf4j.version>
@@ -233,13 +233,6 @@
         <version>${spring-social.version}</version>
       </dependency>
 
-      <!-- Jackson JSON Mapper -->
-      <dependency>
-        <groupId>org.codehaus.jackson</groupId>
-        <artifactId>jackson-mapper-asl</artifactId>
-        <version>1.9.2</version>
-      </dependency>
-
       <!-- Hibernate for db -->
       <dependency>
         <groupId>org.hibernate.java-persistence</groupId>
@@ -361,6 +354,8 @@
       </dependency>
 
       <!-- BitCoinJ for Bitcoin in the service layer -->
+      <!-- If not pulled in from repo you may need to build it manually from source
+           using git checkout 25387d68402e -->
       <dependency>
         <groupId>com.google</groupId>
         <artifactId>bitcoinj</artifactId>
@@ -427,17 +422,28 @@
       </dependency>
 
       <!-- Jersey core -->
-      <dependency>
-        <groupId>com.sun.jersey</groupId>
-        <artifactId>jersey-core</artifactId>
-        <version>1.13</version>
-      </dependency>
+      <!--<dependency>-->
+        <!--<groupId>com.sun.jersey</groupId>-->
+        <!--<artifactId>jersey-core</artifactId>-->
+        <!--<version>1.13</version>-->
+      <!--</dependency>-->
 
       <!-- HAL Builder provides resource representation -->
       <dependency>
         <groupId>com.theoryinpractise</groupId>
         <artifactId>halbuilder</artifactId>
         <version>1.0.5</version>
+        <exclusions>
+          <!-- Jackson version interferes with Dropwizard -->
+          <exclusion>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
 
       <!-- Google Guava for low level utilities -->

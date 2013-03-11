@@ -5,8 +5,8 @@ import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.filter.ClientFilter;
 import org.multibit.mbm.utils.DateUtils;
-import com.yammer.dropwizard.logging.Log;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.ext.Providers;
@@ -25,7 +25,7 @@ public class HmacClientFilter extends ClientFilter {
   public static final String MBM_API_KEY = "mbm_api_key";
   public static final String MBM_SECRET_KEY = "mbm_secret_key";
 
-  private static final Log LOG = Log.forClass(HmacClientFilter.class);
+  private static final Logger log = LoggerFactory.getLogger(HmacClientFilter.class);
 
   private final Providers providers;
 
@@ -70,7 +70,7 @@ public class HmacClientFilter extends ClientFilter {
     clientRequest.getHeaders().put(HmacUtils.X_HMAC_DATE, Lists.<Object>newArrayList(httpNow));
 
     String canonicalRepresentation = HmacUtils.createCanonicalRepresentation(clientRequest,providers);
-    LOG.debug("Client side canonical representation: '{}'", canonicalRepresentation);
+    log.debug("Client side canonical representation: '{}'", canonicalRepresentation);
 
     // Build the authorization header
     String signature = new String(HmacUtils.computeSignature("HmacSHA1", canonicalRepresentation.getBytes(), sharedSecret.getBytes()));
@@ -78,7 +78,7 @@ public class HmacClientFilter extends ClientFilter {
     clientRequest.getHeaders().put(HttpHeaders.AUTHORIZATION, Lists.<Object>newArrayList(authorization));
 
     String curlCommand = HmacUtils.createCurlCommand(clientRequest,providers, canonicalRepresentation, sharedSecret, publicKey);
-    LOG.debug("Client side curl command: '{}'", curlCommand);
+    log.debug("Client side curl command: '{}'", curlCommand);
 
     return clientRequest;
   }

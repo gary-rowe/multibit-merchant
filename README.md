@@ -48,10 +48,22 @@ Use `master` for the latest production release. Use `develop` for the latest rel
 
 At present, given the alpha nature of the project it is best to start with `develop`.
 
-## Bitcoinj dependency is broken
+## Bitcoinj dependency is broken - for good reasons
 
-This is because the current Bitcoinj library is not available through a standard Nexus repository for security reasons.
-In order to install it you will need to [follow the instructions here](https://code.google.com/p/bitcoinj/wiki/UsingMaven).
+The current Bitcoinj library is not available through a standard Nexus repository for security reasons. Before you think
+that this is some rubbish that you can safely ignore please bear in mind that Bitcoinj is a financial library that is
+*capable of spending real money*. You want to be sure that no-one between you and their repository has an opportunity
+to change the code. Further, you want to be sure that any of the libraries that it pulls in have not been corrupted.
+
+The best way to ensure that you have the correct Bitcoinj library is to build it locally on a trusted machine and then
+deploy it to a trusted repository under your control. You should [follow their instructions](https://code.google.com/p/bitcoinj/wiki/UsingMaven).
+
+Essentially, at this stage you will need to perform a git checkout to a particular revision denoted by a hash. This will
+ensure that no code before this point has been modified. This approach is more secure than the current Maven dependency
+download implementation. However plans are in place to re-introduce Bitcoinj into the Maven Central process in a more
+secure manner.
+
+If you would like to sponsor the effort to make this a reality, please contact me.
 
 ## Getting started
 Assuming that you're familiar with Bitcoin and the benefits that it can bring to your online business venture, 

@@ -1,11 +1,11 @@
 package org.multibit.mbm.test;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import com.theoryinpractise.halbuilder.spi.Resource;
-import com.yammer.dropwizard.json.Json;
 import junit.framework.Assert;
-import org.codehaus.jackson.JsonNode;
 import org.multibit.mbm.api.hal.HalMediaType;
 
 import java.io.IOException;
@@ -23,8 +23,6 @@ import static junit.framework.Assert.assertTrue;
  */
 public class FixtureAsserts {
 
-  private static final Json JSON = new Json();
-
   /**
    * Validates the fixture JSON and provides a minified String for comparison
    *
@@ -35,7 +33,8 @@ public class FixtureAsserts {
    * @throws IOException If something goes wrong
    */
   public static String jsonFixture(String fixtureClasspath) throws IOException {
-    return JSON.writeValueAsString(JSON.readValue(fixture(fixtureClasspath), JsonNode.class));
+    ObjectMapper om = new ObjectMapper();
+    return om.writeValueAsString(om.readValue(fixture(fixtureClasspath), JsonNode.class));
   }
 
   /**

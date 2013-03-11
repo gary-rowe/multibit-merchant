@@ -6,6 +6,8 @@ import com.sun.jersey.server.impl.inject.AbstractHttpContextInjectable;
 import com.yammer.dropwizard.auth.AuthenticationException;
 import com.yammer.dropwizard.auth.Authenticator;
 import org.multibit.mbm.auth.Authority;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Cookie;
@@ -23,6 +25,8 @@ import java.util.UUID;
  * @since 0.0.1
  */
 class CookieClientRestrictedToInjectable<T> extends AbstractHttpContextInjectable<T> {
+
+  private static final Logger log = LoggerFactory.getLogger(CookieClientRestrictedToInjectable.class);
 
   private final Authenticator<CookieClientCredentials, T> authenticator;
   private final String sessionTokenName;
@@ -106,11 +110,11 @@ class CookieClientRestrictedToInjectable<T> extends AbstractHttpContextInjectabl
       }
 
     } catch (IllegalArgumentException e) {
-      CookieClientRestrictedToProvider.LOG.warn(e, "Error decoding credentials (not a UUID)");
+      log.warn("Error decoding credentials (not a UUID)",e);
     } catch (IllegalStateException e) {
-      CookieClientRestrictedToProvider.LOG.warn(e, "Error decoding credentials (no session token)");
+      log.warn("Error decoding credentials (no session token)",e);
     } catch (AuthenticationException e) {
-      CookieClientRestrictedToProvider.LOG.warn(e, "Error authenticating credentials");
+      log.warn("Error authenticating credentials",e);
       throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
     }
 

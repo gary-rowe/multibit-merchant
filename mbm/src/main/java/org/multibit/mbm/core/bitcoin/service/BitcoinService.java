@@ -1,10 +1,11 @@
 package org.multibit.mbm.core.bitcoin.service;
 
+import com.google.bitcoin.core.Address;
+
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import com.google.bitcoin.core.Address;
 
 /**
  * <p>Service to provide the following to Controllers</p>

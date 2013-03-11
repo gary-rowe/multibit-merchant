@@ -1,7 +1,7 @@
 package org.multibit.mbm.api.request.item;
 
 import com.google.common.collect.Maps;
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Map;
 

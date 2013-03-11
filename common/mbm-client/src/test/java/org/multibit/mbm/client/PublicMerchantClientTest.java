@@ -1,7 +1,7 @@
 package org.multibit.mbm.client;
 
 
-import com.yammer.dropwizard.client.JerseyClient;
+import com.sun.jersey.api.client.Client;
 import org.junit.Test;
 import org.multibit.mbm.client.handlers.item.ClientItemCollectionHandler;
 import org.multibit.mbm.client.handlers.item.ClientItemHandler;
@@ -14,7 +14,7 @@ import static org.mockito.Mockito.mock;
 
 public class PublicMerchantClientTest {
 
-  private final JerseyClient client = mock(JerseyClient.class);
+  private final Client client = mock(Client.class);
   private final Locale locale = Locale.UK;
 
   @Test
