@@ -1,7 +1,7 @@
 package org.multibit.mbm.api.request.cart.purchaseorder;
 
 import com.google.common.collect.Lists;
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 

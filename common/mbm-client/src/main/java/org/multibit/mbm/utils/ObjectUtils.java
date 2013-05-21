@@ -1,6 +1,7 @@
 package org.multibit.mbm.utils;
 
-import com.yammer.dropwizard.logging.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -8,7 +9,7 @@ import com.yammer.dropwizard.logging.Log;
  */
 public final class ObjectUtils {
   
-  private static final Log LOG = Log.forClass(ObjectUtils.class);
+  private static final Logger log = LoggerFactory.getLogger(ObjectUtils.class);
 
   private static final int HASH_START_VALUE = 11;
   private static final int HASH_MULTIPLIER = 29;
@@ -40,7 +41,7 @@ public final class ObjectUtils {
       }
     }
 
-    LOG.debug("Objects are equal");
+    log.debug("Objects are equal");
     
     return true;
   }

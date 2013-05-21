@@ -3,8 +3,8 @@ package org.multibit.mbm;
 import com.google.common.cache.CacheBuilderSpec;
 import com.yammer.dropwizard.Service;
 import com.yammer.dropwizard.auth.CachingAuthenticator;
+import com.yammer.dropwizard.config.Bootstrap;
 import com.yammer.dropwizard.config.Environment;
-import com.yammer.dropwizard.logging.Log;
 import org.multibit.mbm.auth.hmac.HmacServerAuthenticator;
 import org.multibit.mbm.auth.hmac.HmacServerCredentials;
 import org.multibit.mbm.auth.hmac.HmacServerRestrictedToProvider;
@@ -20,6 +20,8 @@ import org.multibit.mbm.resources.user.AdminUserResource;
 import org.multibit.mbm.resources.user.ClientUserResource;
 import org.multibit.mbm.resources.user.CustomerUserResource;
 import org.multibit.mbm.resources.user.SupplierUserResource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -35,7 +37,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class MultiBitMerchantService extends Service<MultiBitMerchantConfiguration> {
 
-  public static final Log LOG = Log.forClass(MultiBitMerchantService.class);
+  public static final Logger log = LoggerFactory.getLogger(MultiBitMerchantService.class);
 
   /**
    * Main entry point to the application
@@ -48,15 +50,15 @@ public class MultiBitMerchantService extends Service<MultiBitMerchantConfigurati
     new MultiBitMerchantService().run(args);
   }
 
-  private MultiBitMerchantService() {
-    super("mbm");
+  @Override
+  public void initialize(Bootstrap<MultiBitMerchantConfiguration> bootstrap) {
+
+    // No bundles required
   }
 
   @Override
-  protected void initialize(MultiBitMerchantConfiguration configuration,
-                            Environment environment) {
-
-    LOG.info("Reading configuration");
+  public void run(MultiBitMerchantConfiguration configuration, Environment environment) throws Exception {
+    log.info("Reading configuration");
 
     // Read the configuration
 
@@ -98,8 +100,6 @@ public class MultiBitMerchantService extends Service<MultiBitMerchantConfigurati
 //    if (configuration.loadInitialData) {
 //      new DataBaseLoader.initialise();
 //    }
-
   }
-
 
 }

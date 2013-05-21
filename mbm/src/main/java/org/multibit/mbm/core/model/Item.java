@@ -2,7 +2,7 @@ package org.multibit.mbm.core.model;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.xeiam.xchange.utils.MoneyUtils;
+import com.xeiam.xchange.currency.MoneyUtils;
 import org.hibernate.annotations.Columns;
 import org.hibernate.annotations.Type;
 import org.joda.money.BigMoney;

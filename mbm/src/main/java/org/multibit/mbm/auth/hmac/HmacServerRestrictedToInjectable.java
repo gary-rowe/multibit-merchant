@@ -8,8 +8,8 @@ import com.sun.jersey.spi.container.ContainerRequest;
 import com.yammer.dropwizard.auth.AuthenticationException;
 import com.yammer.dropwizard.auth.Authenticator;
 import org.multibit.mbm.auth.Authority;
-import com.yammer.dropwizard.logging.Log;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
@@ -23,20 +23,19 @@ import javax.ws.rs.core.Response;
  * <li>Carries HMAC authentication data</li>
  * </ul>
  *
-
  * @since 0.0.1
  */
 class HmacServerRestrictedToInjectable<T> extends AbstractHttpContextInjectable<T> {
 
-  private static final Log LOG = Log.forClass(HmacServerRestrictedToInjectable.class);
+  private static final Logger log = LoggerFactory.getLogger(HmacServerRestrictedToInjectable.class);
 
   private final Authenticator<HmacServerCredentials, T> authenticator;
   private final String realm;
   private final Authority[] requiredAuthorities;
 
   /**
-   * @param authenticator The Authenticator that will compare credentials
-   * @param realm The authentication realm
+   * @param authenticator       The Authenticator that will compare credentials
+   * @param realm               The authentication realm
    * @param requiredAuthorities The required authorities as provided by the RestrictedTo annotation
    */
   HmacServerRestrictedToInjectable(
@@ -74,7 +73,7 @@ class HmacServerRestrictedToInjectable<T> extends AbstractHttpContextInjectable<
 
         if (authTokens.length != 3) {
           // Malformed
-          HmacServerRestrictedToProvider.LOG.debug("Error decoding credentials (length is {})", authTokens.length);
+          log.debug("Error decoding credentials (length is {})", authTokens.length);
           throw new WebApplicationException(Response.Status.BAD_REQUEST);
         }
 
@@ -84,7 +83,7 @@ class HmacServerRestrictedToInjectable<T> extends AbstractHttpContextInjectable<
 
         // Build the canonical representation for the server side
         final String canonicalRepresentation = HmacUtils.createCanonicalRepresentation(containerRequest);
-        LOG.debug("Server side canonical representation: '{}'",canonicalRepresentation);
+        log.debug("Server side canonical representation: '{}'", canonicalRepresentation);
 
         final HmacServerCredentials credentials = new HmacServerCredentials("HmacSHA1", apiKey, signature, canonicalRepresentation, requiredAuthorities);
 
@@ -94,9 +93,9 @@ class HmacServerRestrictedToInjectable<T> extends AbstractHttpContextInjectable<
         }
       }
     } catch (IllegalArgumentException e) {
-      HmacServerRestrictedToProvider.LOG.debug(e, "Error decoding credentials");
+      log.debug("Error decoding credentials", e);
     } catch (AuthenticationException e) {
-      HmacServerRestrictedToProvider.LOG.warn(e, "Error authenticating credentials");
+      log.warn("Error authenticating credentials", e);
       throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
     }
 

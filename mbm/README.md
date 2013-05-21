@@ -41,6 +41,10 @@ To fully explore the RESTful API it is recommended that you now run up one of th
 which provide a much richer user interface experience. Many of the clients automatically run up a
 suitable version of this module so can be treated as a self-contained exploratory environment.
 
+Take a look at:
+
+* [MultiBit Store](https://github.com/gary-rowe/MultiBitStore)
+
 ## Advanced exploration
 
 If you are keen to explore the API without visual feedback, you can use curl to perform the necessary HTTP requests as

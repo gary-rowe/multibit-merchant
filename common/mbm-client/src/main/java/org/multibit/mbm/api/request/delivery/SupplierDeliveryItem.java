@@ -1,6 +1,6 @@
 package org.multibit.mbm.api.request.delivery;
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  *  <p>Value object to provide the following to {@link org.multibit.mbm.api.request.delivery.SupplierUpdateDeliveryRequest}:</p>

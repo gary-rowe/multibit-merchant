@@ -1,6 +1,6 @@
 package org.multibit.mbm.api.request.cart.purchaseorder;
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * <p>Request to provide the following to Resources:</p>

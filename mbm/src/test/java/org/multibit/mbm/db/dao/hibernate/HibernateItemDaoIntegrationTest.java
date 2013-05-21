@@ -1,7 +1,7 @@
 package org.multibit.mbm.db.dao.hibernate;
 
 import com.google.common.base.Optional;
-import com.xeiam.xchange.utils.MoneyUtils;
+import com.xeiam.xchange.currency.MoneyUtils;
 import org.junit.Test;
 import org.multibit.mbm.core.model.*;
 import org.multibit.mbm.db.dao.ItemDao;

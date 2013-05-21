@@ -1,7 +1,7 @@
 package org.multibit.mbm.core.model;
 
 import com.google.common.collect.Lists;
-import com.xeiam.xchange.utils.MoneyUtils;
+import com.xeiam.xchange.currency.MoneyUtils;
 import org.joda.money.BigMoney;
 
 import java.util.List;

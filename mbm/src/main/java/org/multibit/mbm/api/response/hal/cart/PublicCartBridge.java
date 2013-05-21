@@ -2,7 +2,7 @@ package org.multibit.mbm.api.response.hal.cart;
 
 import com.google.common.base.Optional;
 import com.theoryinpractise.halbuilder.spi.Resource;
-import com.xeiam.xchange.utils.MoneyUtils;
+import com.xeiam.xchange.currency.MoneyUtils;
 import org.joda.money.BigMoney;
 import org.multibit.mbm.api.response.hal.BaseBridge;
 import org.multibit.mbm.api.response.hal.item.PublicCartItemBridge;

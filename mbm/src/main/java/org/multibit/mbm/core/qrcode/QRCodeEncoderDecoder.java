@@ -9,8 +9,8 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeReader;
 import com.google.zxing.qrcode.QRCodeWriter;
-import com.yammer.dropwizard.logging.Log;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.image.BufferedImage;
 import java.util.Hashtable;
@@ -25,7 +25,7 @@ import java.util.Hashtable;
  * @since 0.0.1
  */
 public class QRCodeEncoderDecoder {
-  private static final Log LOG = Log.forClass(QRCodeEncoderDecoder.class);
+  private static final Logger log = LoggerFactory.getLogger(QRCodeEncoderDecoder.class);
 
   private int width;
   private int height;
@@ -80,13 +80,13 @@ public class QRCodeEncoderDecoder {
       @SuppressWarnings("rawtypes")
       Hashtable hints = new Hashtable();
       Result result = reader.decode(bitmap, hints);
-      LOG.info("Decoded image successfully, result was : '" + result.getText() + "'");
+      log.info("Decoded image successfully, result was : '" + result.getText() + "'");
 
       return result.getText();
     } catch (ReaderException e) {
       // the data is improperly formatted
-      LOG.debug(e.getMessage());
-      LOG.error("Error while decoding image", e);
+      log.debug(e.getMessage());
+      log.error("Error while decoding image", e);
     }
 
     return "";

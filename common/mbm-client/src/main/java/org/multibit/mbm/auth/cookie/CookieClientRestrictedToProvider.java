@@ -19,8 +19,9 @@ import com.sun.jersey.core.spi.component.ComponentScope;
 import com.sun.jersey.spi.inject.Injectable;
 import com.sun.jersey.spi.inject.InjectableProvider;
 import com.yammer.dropwizard.auth.Authenticator;
-import com.yammer.dropwizard.logging.Log;
+import org.slf4j.Logger;
 import org.multibit.mbm.auth.annotation.RestrictedTo;
+import org.slf4j.LoggerFactory;
 
 /**
  * <p>Authentication provider to provide the following to Jersey:</p>
@@ -34,7 +35,8 @@ import org.multibit.mbm.auth.annotation.RestrictedTo;
  * @since 0.0.1
  */
 public class CookieClientRestrictedToProvider<T> implements InjectableProvider<RestrictedTo, Parameter> {
-  static final Log LOG = Log.forClass(CookieClientRestrictedToProvider.class);
+
+  private static final Logger log = LoggerFactory.getLogger(CookieClientRestrictedToProvider.class);
 
   private final Authenticator<CookieClientCredentials, T> authenticator;
   private final String sessionTokenName;

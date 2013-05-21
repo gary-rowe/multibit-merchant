@@ -1,7 +1,7 @@
 package org.multibit.mbm.client;
 
+import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
-import com.yammer.dropwizard.client.JerseyClient;
 import org.multibit.mbm.api.hal.HalMediaType;
 import org.multibit.mbm.auth.hmac.HmacClientFilter;
 import org.multibit.mbm.model.ClientUser;
@@ -25,7 +25,7 @@ public enum HalHmacResourceFactory {
 
   INSTANCE;
 
-  private JerseyClient client = null;
+  private Client client = null;
   private String clientApiKey = null;
   private String clientSecretKey = null;
   private URI baseUri;
@@ -33,7 +33,7 @@ public enum HalHmacResourceFactory {
   /**
    * @param client The Jersey client to use for building all upstream requests
    */
-  public HalHmacResourceFactory setJerseyClient(JerseyClient client) {
+  public HalHmacResourceFactory setJerseyClient(Client client) {
     this.client = client;
     return this;
   }

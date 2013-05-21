@@ -1,7 +1,7 @@
 package org.multibit.mbm.client.handlers;
 
+import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
-import com.yammer.dropwizard.client.JerseyClient;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.multibit.mbm.api.hal.HalMediaType;
@@ -29,7 +29,7 @@ import static org.mockito.Mockito.when;
 @Ignore
 public abstract class BaseHandlerTest {
 
-  protected JerseyClient client=mock(JerseyClient.class);
+  protected Client client=mock(Client.class);
   protected final Locale locale = Locale.UK;
 
   protected WebResource webResource = mock(WebResource.class);

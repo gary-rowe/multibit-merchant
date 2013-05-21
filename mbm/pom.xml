@@ -168,7 +168,7 @@
     <!-- XChange for currency operations -->
     <dependency>
       <groupId>com.xeiam.xchange</groupId>
-      <artifactId>xchange</artifactId>
+      <artifactId>xchange-core</artifactId>
     </dependency>
     <dependency>
       <groupId>com.xeiam.xchange</groupId>
@@ -200,11 +200,19 @@
       <version>1.0.5</version>
     </dependency>
 
+    <!-- Avoid Jakarta commons logging -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jcl-over-slf4j</artifactId>
+    </dependency>
+
+    <!-- Use Logback -->
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-core</artifactId>
     </dependency>
 
+    <!-- Use Logback -->
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>

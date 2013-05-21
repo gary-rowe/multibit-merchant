@@ -3,7 +3,7 @@ package org.multibit.mbm.resources.purchaseorder;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.xeiam.xchange.utils.MoneyUtils;
+import com.xeiam.xchange.currency.MoneyUtils;
 import org.joda.money.BigMoney;
 import org.junit.Test;
 import org.multibit.mbm.api.hal.HalMediaType;
@@ -51,10 +51,10 @@ public class AdminPurchaseOrderResourceTest extends BaseJerseyHmacResourceTest {
     book2.setId(2L);
 
     // TODO Pull this into DatabaseLoader
-    BigMoney book1UnitPrice = MoneyUtils.parseFiat("GBP 1.23");
-    BigMoney book1UnitTax = MoneyUtils.parseFiat("GBP 0.20");
-    BigMoney book2UnitPrice = MoneyUtils.parseFiat("GBP 2.46");
-    BigMoney book2UnitTax = MoneyUtils.parseFiat("GBP 0.40");
+    BigMoney book1UnitPrice = MoneyUtils.parse("GBP 1.23");
+    BigMoney book1UnitTax = MoneyUtils.parse("GBP 0.20");
+    BigMoney book2UnitPrice = MoneyUtils.parse("GBP 2.46");
+    BigMoney book2UnitTax = MoneyUtils.parse("GBP 0.40");
 
     PurchaseOrder stevePurchaseOrder1 = PurchaseOrderBuilder
       .newInstance()
@@ -77,10 +77,10 @@ public class AdminPurchaseOrderResourceTest extends BaseJerseyHmacResourceTest {
     book4.setId(4L);
 
     // TODO Pull this into DatabaseLoader
-    BigMoney book3UnitPrice = MoneyUtils.parseFiat("GBP 1.23");
-    BigMoney book3UnitTax = MoneyUtils.parseFiat("GBP 0.20");
-    BigMoney book4UnitPrice = MoneyUtils.parseFiat("GBP 2.46");
-    BigMoney book4UnitTax = MoneyUtils.parseFiat("GBP 0.40");
+    BigMoney book3UnitPrice = MoneyUtils.parse("GBP 1.23");
+    BigMoney book3UnitTax = MoneyUtils.parse("GBP 0.20");
+    BigMoney book4UnitPrice = MoneyUtils.parse("GBP 2.46");
+    BigMoney book4UnitTax = MoneyUtils.parse("GBP 0.40");
 
     PurchaseOrder samPurchaseOrder1 = PurchaseOrderBuilder
       .newInstance()

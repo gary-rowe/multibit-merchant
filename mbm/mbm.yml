@@ -21,9 +21,9 @@ logging:
     "org.multibit": DEBUG
 
     # Hibernate
-    "org.hibernate.SQL": DEBUG # SQL DML statements
-    "org.hibernate.type": TRACE # JDBC parameters
-    "org.hibernate.transaction": DEBUG # Transaction state
+    #"org.hibernate.SQL": DEBUG # SQL DML statements
+    #"org.hibernate.type": TRACE # JDBC parameters
+    #"org.hibernate.transaction": DEBUG # Transaction state
 
   # ...
   # Settings for logging to stdout.

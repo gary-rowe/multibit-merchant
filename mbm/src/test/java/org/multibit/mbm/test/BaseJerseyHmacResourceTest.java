@@ -1,5 +1,6 @@
 package org.multibit.mbm.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -9,22 +10,22 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.test.framework.AppDescriptor;
 import com.sun.jersey.test.framework.JerseyTest;
 import com.sun.jersey.test.framework.LowLevelAppDescriptor;
-import com.yammer.dropwizard.bundles.JavaBundle;
 import com.yammer.dropwizard.jersey.DropwizardResourceConfig;
 import com.yammer.dropwizard.jersey.JacksonMessageBodyProvider;
 import com.yammer.dropwizard.jersey.OptionalQueryParamInjectableProvider;
-import com.yammer.dropwizard.json.Json;
+import com.yammer.dropwizard.json.ObjectMapperFactory;
+import com.yammer.dropwizard.validation.Validator;
 import org.codehaus.jackson.map.Module;
 import org.junit.After;
 import org.junit.Before;
 import org.multibit.mbm.auth.hmac.HmacClientFilter;
 import org.multibit.mbm.auth.hmac.HmacServerAuthenticator;
 import org.multibit.mbm.auth.hmac.HmacServerRestrictedToProvider;
-import org.multibit.mbm.db.DatabaseLoader;
-import org.multibit.mbm.db.dao.UserDao;
 import org.multibit.mbm.core.model.Role;
 import org.multibit.mbm.core.model.User;
 import org.multibit.mbm.core.model.UserBuilder;
+import org.multibit.mbm.db.DatabaseLoader;
+import org.multibit.mbm.db.dao.UserDao;
 
 import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
@@ -42,10 +43,13 @@ import static org.mockito.Mockito.when;
 public abstract class BaseJerseyHmacResourceTest extends BaseResourceTest {
   private final Set<Object> singletons = Sets.newHashSet();
   private final Set<Class<?>> providers = Sets.newHashSet();
-  private final List<Module> modules = Lists.newArrayList();
+  private final ObjectMapperFactory objectMapperFactory = new ObjectMapperFactory();
   private final Map<String, Boolean> features = Maps.newHashMap();
+  private final Map<String, Object> properties = Maps.newHashMap();
+  private final List<Module> modules = Lists.newArrayList();
 
   private JerseyTest test;
+  private Validator validator = new Validator();
 
   /**
    * The User providing authentication via HMAC
@@ -64,28 +68,44 @@ public abstract class BaseJerseyHmacResourceTest extends BaseResourceTest {
     singletons.add(singleton);
   }
 
+  public Validator getValidator() {
+    return validator;
+  }
+
+  public void setValidator(Validator validator) {
+    this.validator = validator;
+  }
+
+  protected void addResource(Object resource) {
+    singletons.add(resource);
+  }
+
   public void addProvider(Class<?> klass) {
     providers.add(klass);
   }
 
-  protected void addJacksonModule(Module module) {
-    modules.add(module);
+  public void addProvider(Object provider) {
+    singletons.add(provider);
+  }
+
+  protected ObjectMapperFactory getObjectMapperFactory() {
+    return objectMapperFactory;
   }
 
   protected void addFeature(String feature, Boolean value) {
     features.put(feature, value);
   }
 
-  protected Json getJson() {
-    final Json json = new Json();
-    for (Module module : modules) {
-      json.registerModule(module);
-    }
-    return json;
+  protected void addProperty(String property, Object value) {
+    properties.put(property, value);
   }
 
   protected Client client() {
     return test.client();
+  }
+
+  protected JerseyTest getJerseyTest() {
+    return test;
   }
 
   @Before
@@ -94,6 +114,42 @@ public abstract class BaseJerseyHmacResourceTest extends BaseResourceTest {
     // Provide any specialised resource configuration
     setUpResources();
 
+//    this.test = new JerseyTest() {
+//
+//      @Override
+//      protected URI getBaseURI() {
+//        return URI.create("http://localhost:8080/");
+//      }
+//
+//      @Override
+//      protected AppDescriptor configure() {
+//        final DropwizardResourceConfig config = new DropwizardResourceConfig(true);
+//        // Default singletons
+//        for (Object provider : JavaBundle.DEFAULT_PROVIDERS) {
+//          config.getSingletons().add(provider);
+//        }
+//        // Configure Jackson
+//        final Json json = getJson();
+//        config.getSingletons().add(new JacksonMessageBodyProvider(json));
+//        config.getSingletons().addAll(singletons);
+//
+//        // Add providers
+//        for (Class<?> provider : providers) {
+//          config.getClasses().add(provider);
+//        }
+//        config.getClasses().add(OptionalQueryParamInjectableProvider.class);
+//
+//        // Add any features (see FeaturesAndProperties)
+//        for (Map.Entry<String, Boolean> feature : features.entrySet()) {
+//          config.getFeatures().put(feature.getKey(), feature.getValue());
+//        }
+//
+//        return new LowLevelAppDescriptor
+//          .Builder(config)
+//          .build();
+//      }
+//    };
+
     this.test = new JerseyTest() {
 
       @Override
@@ -101,34 +157,34 @@ public abstract class BaseJerseyHmacResourceTest extends BaseResourceTest {
         return URI.create("http://localhost:8080/");
       }
 
+
       @Override
       protected AppDescriptor configure() {
         final DropwizardResourceConfig config = new DropwizardResourceConfig(true);
-        // Default singletons
-        for (Object provider : JavaBundle.DEFAULT_PROVIDERS) {
-          config.getSingletons().add(provider);
-        }
-        // Configure Jackson
-        final Json json = getJson();
-        config.getSingletons().add(new JacksonMessageBodyProvider(json));
-        config.getSingletons().addAll(singletons);
 
-        // Add providers
         for (Class<?> provider : providers) {
           config.getClasses().add(provider);
         }
         config.getClasses().add(OptionalQueryParamInjectableProvider.class);
 
-        // Add any features (see FeaturesAndProperties)
         for (Map.Entry<String, Boolean> feature : features.entrySet()) {
           config.getFeatures().put(feature.getKey(), feature.getValue());
         }
 
-        return new LowLevelAppDescriptor
-          .Builder(config)
-          .build();
+        // Add any features (see FeaturesAndProperties)
+        for (Map.Entry<String, Object> property : properties.entrySet()) {
+          config.getProperties().put(property.getKey(), property.getValue());
+        }
+
+        // Configure Jackson
+        final ObjectMapper mapper = getObjectMapperFactory().build();
+        config.getSingletons().add(new JacksonMessageBodyProvider(mapper, validator));
+        config.getSingletons().addAll(singletons);
+
+        return new LowLevelAppDescriptor.Builder(config).build();
       }
     };
+
 
     // Allow final client request filtering for HMAC authentication (this allows for secure tests)
     test.client().addFilter(new HmacClientFilter(

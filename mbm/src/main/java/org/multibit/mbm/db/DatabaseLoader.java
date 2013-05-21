@@ -1,7 +1,6 @@
 package org.multibit.mbm.db;
 
-import com.xeiam.xchange.utils.MoneyUtils;
-import com.yammer.dropwizard.logging.Log;
+import com.xeiam.xchange.currency.MoneyUtils;
 import org.multibit.mbm.auth.Authority;
 import org.multibit.mbm.core.model.*;
 import org.multibit.mbm.core.pricing.rules.PercentagePricingRule;
@@ -9,6 +8,8 @@ import org.multibit.mbm.db.dao.CustomerDao;
 import org.multibit.mbm.db.dao.ItemDao;
 import org.multibit.mbm.db.dao.RoleDao;
 import org.multibit.mbm.db.dao.UserDao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -22,7 +23,7 @@ import javax.annotation.Resource;
 @Component
 public class DatabaseLoader {
 
-  private static final Log LOG = Log.forClass(DatabaseLoader.class);
+  private static final Logger log = LoggerFactory.getLogger(DatabaseLoader.class);
 
   @Resource(name = "hibernateItemDao")
   private ItemDao itemDao;
@@ -77,7 +78,7 @@ public class DatabaseLoader {
    */
   public void initialise() {
 
-    LOG.info("Populating database");
+    log.info("Populating database");
 
     // Build the foundations
     buildRolesAndAuthorities();
@@ -88,7 +89,7 @@ public class DatabaseLoader {
     buildCustomerCarts();
     buildSupplierDeliveries();
 
-    LOG.info("Complete");
+    log.info("Complete");
 
   }
 
