@@ -5,7 +5,7 @@ import com.theoryinpractise.halbuilder.ResourceFactory;
 import com.theoryinpractise.halbuilder.spi.ReadableResource;
 import org.joda.time.DateTime;
 import org.multibit.mbm.client.HalHmacResourceFactory;
-import org.multibit.mbm.utils.DateUtils;
+import org.multibit.mbm.infrastructure.utils.DateUtils;
 
 import java.io.Reader;
 import java.io.StringReader;

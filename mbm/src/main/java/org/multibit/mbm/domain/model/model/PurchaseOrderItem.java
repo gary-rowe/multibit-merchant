@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions;
 import org.hibernate.annotations.Columns;
 import org.hibernate.annotations.Type;
 import org.joda.money.BigMoney;
-import org.multibit.mbm.utils.ObjectUtils;
+import org.multibit.mbm.infrastructure.utils.ObjectUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;

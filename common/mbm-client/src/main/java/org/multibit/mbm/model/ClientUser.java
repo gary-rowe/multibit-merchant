@@ -2,7 +2,7 @@ package org.multibit.mbm.model;
 
 import com.google.common.collect.Sets;
 import org.multibit.mbm.interfaces.rest.auth.Authority;
-import org.multibit.mbm.utils.ObjectUtils;
+import org.multibit.mbm.infrastructure.utils.ObjectUtils;
 
 import java.util.Arrays;
 import java.util.Set;

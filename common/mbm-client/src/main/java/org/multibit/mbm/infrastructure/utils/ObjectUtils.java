@@ -1,4 +1,4 @@
-package org.multibit.mbm.utils;
+package org.multibit.mbm.infrastructure.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

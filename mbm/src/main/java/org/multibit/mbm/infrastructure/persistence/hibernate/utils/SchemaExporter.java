@@ -1,4 +1,4 @@
-package org.multibit.mbm.utils;
+package org.multibit.mbm.infrastructure.persistence.hibernate.utils;
 
 import com.google.common.collect.Lists;
 import org.hibernate.cfg.Configuration;

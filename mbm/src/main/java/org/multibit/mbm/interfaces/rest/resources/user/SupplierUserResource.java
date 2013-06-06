@@ -12,7 +12,7 @@ import org.multibit.mbm.interfaces.rest.auth.annotation.RestrictedTo;
 import org.multibit.mbm.domain.model.model.*;
 import org.multibit.mbm.domain.repositories.UserDao;
 import org.multibit.mbm.interfaces.rest.resources.BaseResource;
-import org.multibit.mbm.utils.DateUtils;
+import org.multibit.mbm.infrastructure.utils.DateUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;

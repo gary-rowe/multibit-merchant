@@ -1,4 +1,4 @@
-package org.multibit.mbm.utils;
+package org.multibit.mbm.infrastructure.persistence.hibernate.utils;
 
 import java.util.Random;
 

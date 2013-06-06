@@ -3,7 +3,7 @@ package org.multibit.mbm.domain.model.model;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import org.multibit.mbm.utils.ObjectUtils;
+import org.multibit.mbm.infrastructure.utils.ObjectUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;

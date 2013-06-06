@@ -1,4 +1,4 @@
-package org.multibit.mbm.utils;
+package org.multibit.mbm.infrastructure.utils;
 /**
  * <p>This top-level package provides the following to the application through its sub-packages</p>
  * <ul>
