@@ -2,8 +2,8 @@ package org.multibit.mbm.client;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
-import org.multibit.mbm.api.hal.HalMediaType;
-import org.multibit.mbm.auth.hmac.HmacClientFilter;
+import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
+import org.multibit.mbm.interfaces.rest.auth.hmac.HmacClientFilter;
 import org.multibit.mbm.model.ClientUser;
 
 import javax.ws.rs.core.HttpHeaders;

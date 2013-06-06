@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.multibit.mbm.client.PublicMerchantClient;
 import org.multibit.mbm.client.handlers.BaseHandlerTest;
 import org.multibit.mbm.model.ClientItem;
-import org.multibit.mbm.test.FixtureAsserts;
+import org.multibit.mbm.testing.FixtureAsserts;
 
 import java.net.URI;
 import java.util.List;

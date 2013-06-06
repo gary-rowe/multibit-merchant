@@ -4,7 +4,7 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import org.junit.Before;
 import org.junit.Ignore;
-import org.multibit.mbm.api.hal.HalMediaType;
+import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
 import org.multibit.mbm.client.HalHmacResourceFactory;
 
 import javax.ws.rs.core.HttpHeaders;
