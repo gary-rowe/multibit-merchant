@@ -2,12 +2,12 @@ package org.multibit.mbm.client.handlers.cart;
 
 import com.google.common.collect.Lists;
 import org.junit.Test;
-import org.multibit.mbm.api.request.cart.PublicCartItem;
+import org.multibit.mbm.interfaces.rest.api.request.cart.PublicCartItem;
 import org.multibit.mbm.client.PublicMerchantClient;
 import org.multibit.mbm.client.handlers.BaseHandlerTest;
 import org.multibit.mbm.model.ClientCart;
 import org.multibit.mbm.model.ClientUser;
-import org.multibit.mbm.test.FixtureAsserts;
+import org.multibit.mbm.testing.FixtureAsserts;
 
 import java.net.URI;
 import java.util.List;

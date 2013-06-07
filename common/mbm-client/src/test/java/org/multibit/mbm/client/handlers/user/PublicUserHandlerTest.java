@@ -2,11 +2,11 @@ package org.multibit.mbm.client.handlers.user;
 
 import com.google.common.base.Optional;
 import org.junit.Test;
-import org.multibit.mbm.auth.webform.WebFormClientRegistration;
+import org.multibit.mbm.interfaces.rest.auth.webform.WebFormClientRegistration;
 import org.multibit.mbm.client.PublicMerchantClient;
 import org.multibit.mbm.client.handlers.BaseHandlerTest;
 import org.multibit.mbm.model.ClientUser;
-import org.multibit.mbm.test.FixtureAsserts;
+import org.multibit.mbm.testing.FixtureAsserts;
 
 import java.net.URI;
 
