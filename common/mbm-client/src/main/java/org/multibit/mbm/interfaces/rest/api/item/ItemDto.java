@@ -1,6 +1,7 @@
 package org.multibit.mbm.interfaces.rest.api.item;
 
 import com.google.common.collect.Maps;
+import org.multibit.mbm.domain.common.Identifiable;
 
 import java.util.Map;
 
@@ -13,14 +14,24 @@ import java.util.Map;
  * @since 0.0.1
  *         
  */
-public class ItemDto {
+public class ItemDto implements Identifiable {
 
+  private String id;
   private String sku;
   private String gtin;
   private String price;
   private String taxRate;
 
   private Map<String,String> optionalProperties= Maps.newHashMap();
+
+  @Override
+  public Long getId() {
+    return Long.valueOf(id);
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
 
   /**
    * <p>The <a href="http://en.wikipedia.org/wiki/Stock-keeping_unit">stock-keeping unit</a></p>
@@ -82,4 +93,5 @@ public class ItemDto {
   public void setOptionalProperties(Map<String, String> optionalProperties) {
     this.optionalProperties = optionalProperties;
   }
+
 }

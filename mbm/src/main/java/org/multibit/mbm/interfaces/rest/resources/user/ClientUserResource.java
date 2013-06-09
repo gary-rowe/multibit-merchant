@@ -2,19 +2,20 @@ package org.multibit.mbm.interfaces.rest.resources.user;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Maps;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.yammer.metrics.annotation.Timed;
 import org.multibit.mbm.domain.model.model.*;
 import org.multibit.mbm.domain.repositories.RoleReadService;
 import org.multibit.mbm.domain.repositories.UserReadService;
+import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
 import org.multibit.mbm.interfaces.rest.api.user.WebFormAuthenticationDto;
 import org.multibit.mbm.interfaces.rest.api.user.WebFormRegistrationDto;
-import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
-import org.multibit.mbm.interfaces.rest.api.common.Representations;
 import org.multibit.mbm.interfaces.rest.auth.Authority;
 import org.multibit.mbm.interfaces.rest.auth.annotation.RestrictedTo;
+import org.multibit.mbm.interfaces.rest.common.Representations;
+import org.multibit.mbm.interfaces.rest.common.ResourceAsserts;
 import org.multibit.mbm.interfaces.rest.resources.BaseResource;
-import org.multibit.mbm.interfaces.rest.resources.ResourceAsserts;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -76,7 +77,7 @@ public class ClientUserResource extends BaseResource {
     User persistentUser = userReadService.saveOrUpdate(user);
 
     // Provide a minimal representation to the client
-    Representation representation = Representations.asDetail(self(), persistentUser);
+    Representation representation = Representations.asDetail(self(), persistentUser, Maps.<String, String>newHashMap());
     URI location = UriBuilder.fromResource(CustomerUserResource.class).build();
 
     return created(representation, location);
@@ -125,7 +126,7 @@ public class ClientUserResource extends BaseResource {
     User persistentUser = userReadService.saveOrUpdate(user);
 
     // Provide a minimal representation to the client
-    Representation representation = Representations.asDetail(self(), persistentUser);
+    Representation representation = Representations.asDetail(self(), persistentUser, Maps.<String, String>newHashMap());
     URI location = uriInfo.getAbsolutePathBuilder().path(persistentUser.getApiKey()).build();
 
     return created(representation, location);
@@ -148,7 +149,7 @@ public class ClientUserResource extends BaseResource {
 
     Optional<User> requestedUser = userReadService.getByCredentials(authenticationRequest.getUsername(), authenticationRequest.getPasswordDigest());
 
-    Representation representation = Representations.asDetail(self(), requestedUser.get());
+    Representation representation = Representations.asDetail(self(), requestedUser.get(), Maps.<String, String>newHashMap());
 
     return ok(representation);
 

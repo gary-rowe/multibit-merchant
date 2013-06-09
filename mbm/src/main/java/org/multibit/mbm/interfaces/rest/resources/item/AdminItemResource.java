@@ -1,6 +1,7 @@
 package org.multibit.mbm.interfaces.rest.resources.item;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.Maps;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.yammer.dropwizard.jersey.caching.CacheControl;
 import com.yammer.metrics.annotation.Timed;
@@ -10,14 +11,14 @@ import org.multibit.mbm.domain.model.model.ItemBuilder;
 import org.multibit.mbm.domain.model.model.User;
 import org.multibit.mbm.domain.repositories.ItemReadService;
 import org.multibit.mbm.interfaces.rest.api.AdminDeleteEntityDto;
+import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
 import org.multibit.mbm.interfaces.rest.api.item.AdminCreateItemDto;
 import org.multibit.mbm.interfaces.rest.api.item.AdminUpdateItemDto;
-import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
-import org.multibit.mbm.interfaces.rest.api.common.Representations;
 import org.multibit.mbm.interfaces.rest.auth.Authority;
 import org.multibit.mbm.interfaces.rest.auth.annotation.RestrictedTo;
+import org.multibit.mbm.interfaces.rest.common.Representations;
+import org.multibit.mbm.interfaces.rest.common.ResourceAsserts;
 import org.multibit.mbm.interfaces.rest.resources.BaseResource;
-import org.multibit.mbm.interfaces.rest.resources.ResourceAsserts;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -69,7 +70,7 @@ public class AdminItemResource extends BaseResource {
     Item persistentItem = itemReadService.saveOrUpdate(item);
 
     // Provide a representation to the client
-    Representation representation = Representations.asDetail(self(), persistentItem);
+    Representation representation = Representations.asDetail(self(), persistentItem, Maps.<String, String>newHashMap());
     URI location = uriInfo.getAbsolutePathBuilder().path(persistentItem.getId().toString()).build();
 
     return created(representation, location);
@@ -101,7 +102,7 @@ public class AdminItemResource extends BaseResource {
     PaginatedList<Item> items = itemReadService.getPaginatedList(pageSize, pageNumber);
 
     // Provide a representation to the client
-    Representation representation = Representations.asPaginatedList(self(), items, "items/{id}");
+    Representation representation = Representations.asPaginatedList(self(), "items", items, "items/{id}");
 
     return ok(representation);
 
@@ -137,7 +138,7 @@ public class AdminItemResource extends BaseResource {
     persistentItem = itemReadService.saveOrUpdate(item.get());
 
     // Provide a representation to the client
-    Representation representation = Representations.asDetail(self(), persistentItem);
+    Representation representation = Representations.asDetail(self(), persistentItem, Maps.<String, String>newHashMap());
 
     return ok(representation);
 
@@ -172,7 +173,7 @@ public class AdminItemResource extends BaseResource {
     persistentItem = itemReadService.saveOrUpdate(item.get());
 
     // Provide a representation to the client
-    Representation representation = Representations.asDetail(self(), persistentItem);
+    Representation representation = Representations.asDetail(self(), persistentItem, Maps.<String, String>newHashMap());
 
     return ok(representation);
 

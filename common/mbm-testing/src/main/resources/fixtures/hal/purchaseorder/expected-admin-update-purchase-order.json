@@ -1,16 +1,16 @@
 {"_links":{
   "self":{
-    "href":"http://localhost:8080/purchaseOrder"
+    "href":"/purchaseOrder"
   },
   "supplier":{
-    "href":"http://localhost:8080/supplier"
+    "href":"/supplier"
   }
 }, "currency_code":"BTC", "currency_symbol":"Ƀ", "id":1, "item_total":2, "price_total":"29.700000000000", "quantity_total":7, "tax_total":"0.000000000000", "_embedded":{
   "purchaseOrderItems":[
     {
       "_links":{
         "purchaseOrderItems self":{
-          "href":"http://localhost:8080/purchase-order/item/0316184136"
+          "href":"/purchase-order/item/0316184136"
         }
       },
       "batch_reference":"",
@@ -24,7 +24,7 @@
         "item":{
           "_links":{
             "item self":{
-              "href":"http://localhost:8080/item/0316184136"
+              "href":"/item/0316184136"
             },
             "image_thumbnail_uri":{
               "href":"http://multibit-store.herokuapp.com/images/book.jpg"
@@ -45,7 +45,7 @@
     {
       "_links":{
         "purchaseOrderItems self":{
-          "href":"http://localhost:8080/purchase-order/item/186126173X"
+          "href":"/purchase-order/item/186126173X"
         }
       },
       "batch_reference":"",
@@ -59,7 +59,7 @@
         "item":{
           "_links":{
             "item self":{
-              "href":"http://localhost:8080/item/186126173X"
+              "href":"/item/186126173X"
             },
             "image_thumbnail_uri":{
               "href":"http://multibit-store.herokuapp.com/images/book.jpg"

@@ -1,1 +1,26 @@
-{"_links":{"self":{"href":"http://localhost:8080/user"}},"_embedded":{"http://localhost:8080/user/1":{"_links":{"http://localhost:8080/user/1 self":{"href":"http://localhost:8080/user/1"}},"id":1,"name":null},"http://localhost:8080/user/2":{"_links":{"http://localhost:8080/user/2 self":{"href":"http://localhost:8080/user/2"}},"id":2,"name":null}}}
+{"_links": {
+  "self": {
+    "href": "/users"
+  }
+}, "_embedded": {
+  "/users": [
+    {
+      "_links": {
+        "self": {
+          "href": "/user/1"
+        }
+      },
+      "id": 1,
+      "name": null
+    },
+    {
+      "_links": {
+        "self": {
+          "href": "/user/2"
+        }
+      },
+      "id": 2,
+      "name": null
+    }
+  ]
+}}

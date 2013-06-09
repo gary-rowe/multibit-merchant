@@ -1,6 +1,7 @@
 package org.multibit.mbm.interfaces.rest.resources.user;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.Maps;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.yammer.dropwizard.jersey.caching.CacheControl;
 import com.yammer.metrics.annotation.Timed;
@@ -9,14 +10,14 @@ import org.multibit.mbm.domain.model.model.User;
 import org.multibit.mbm.domain.model.model.UserBuilder;
 import org.multibit.mbm.domain.repositories.UserReadService;
 import org.multibit.mbm.interfaces.rest.api.AdminDeleteEntityDto;
+import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
 import org.multibit.mbm.interfaces.rest.api.user.AdminCreateUserDto;
 import org.multibit.mbm.interfaces.rest.api.user.AdminUpdateUserDto;
-import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
-import org.multibit.mbm.interfaces.rest.api.common.Representations;
 import org.multibit.mbm.interfaces.rest.auth.Authority;
 import org.multibit.mbm.interfaces.rest.auth.annotation.RestrictedTo;
+import org.multibit.mbm.interfaces.rest.common.Representations;
+import org.multibit.mbm.interfaces.rest.common.ResourceAsserts;
 import org.multibit.mbm.interfaces.rest.resources.BaseResource;
-import org.multibit.mbm.interfaces.rest.resources.ResourceAsserts;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -70,7 +71,7 @@ public class AdminUserResource extends BaseResource {
     User persistentUser = userReadService.saveOrUpdate(user);
 
     // Provide a representation to the client
-    Representation representation = Representations.asDetail(self(), persistentUser);
+    Representation representation = Representations.asDetail(self(), persistentUser, Maps.<String, String>newHashMap());
     URI location = uriInfo.getAbsolutePathBuilder().path(persistentUser.getId().toString()).build();
 
     return created(representation,location);
@@ -102,7 +103,7 @@ public class AdminUserResource extends BaseResource {
     PaginatedList<User> users = userReadService.getPaginatedList(pageSize, pageNumber);
 
     // Provide a representation to the client
-    Representation representation = Representations.asPaginatedList(self(), users, "/users/{id}");
+    Representation representation = Representations.asPaginatedList(self(), "users", users, "/users/{id}");
 
     return ok(representation);
 
@@ -138,7 +139,7 @@ public class AdminUserResource extends BaseResource {
     persistentUser = userReadService.saveOrUpdate(user.get());
 
     // Provide a representation to the client
-    Representation representation = Representations.asDetail(self(), persistentUser);
+    Representation representation = Representations.asDetail(self(), persistentUser, Maps.<String, String>newHashMap());
 
     return ok(representation);
 
@@ -173,7 +174,7 @@ public class AdminUserResource extends BaseResource {
     persistentUser = userReadService.saveOrUpdate(user.get());
 
     // Provide a representation to the client
-    Representation representation = Representations.asDetail(self(), persistentUser);
+    Representation representation = Representations.asDetail(self(), persistentUser, Maps.<String, String>newHashMap());
 
     return ok(representation);
 

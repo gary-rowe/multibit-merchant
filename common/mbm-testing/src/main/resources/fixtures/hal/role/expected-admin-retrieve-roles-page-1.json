@@ -1,12 +1,12 @@
 {"_links":{
   "self":{
-    "href":"http://localhost:8080/role"
+    "href":"/role"
   }
 }, "_embedded":{
-  "http://localhost:8080/role/1":{
+  "/role/1":{
     "_links":{
-      "http://localhost:8080/role/1 self":{
-        "href":"http://localhost:8080/role/1"
+      "/role/1 self":{
+        "href":"/role/1"
       }
     },
     "description":"Administration role",
@@ -16,7 +16,7 @@
       "authorities":{
         "_links":{
           "authorities self":{
-            "href":"http://localhost:8080/authorities"
+            "href":"/authorities"
           }
         },
         "CHANGE_OWN_PASSWORD":true,

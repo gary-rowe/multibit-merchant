@@ -1,4 +1,4 @@
-package org.multibit.mbm.interfaces.rest.resources;
+package org.multibit.mbm.interfaces.rest.common;
 
 import com.google.common.base.Optional;
 import org.slf4j.Logger;

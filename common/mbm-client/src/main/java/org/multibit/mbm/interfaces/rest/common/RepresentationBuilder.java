@@ -1,4 +1,4 @@
-package org.multibit.mbm.interfaces.rest.api.common;
+package org.multibit.mbm.interfaces.rest.common;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Maps;

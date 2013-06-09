@@ -1,1 +1,1 @@
-{"_links":{"self":{"href":"http://localhost:8080/customer/1"},"cart":{"href":"http://localhost:8080/cart/1"},"user":{"href":"http://localhost:8080/user/1"}}}
+{"_links":{"self":{"href":"/customer/1"},"cart":{"href":"/cart/1"},"user":{"href":"/user/1"}}}

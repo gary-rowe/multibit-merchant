@@ -1,1 +1,1 @@
-{"_links":{"self":{"href":"http://localhost:8080/item/1"}},"gtin":"gtin123","sku":"sku123"}
+{"_links":{"self":{"href":"/item/1"}},"gtin":"gtin123","sku":"sku123"}

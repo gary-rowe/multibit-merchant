@@ -1,6 +1,7 @@
 package org.multibit.mbm.interfaces.rest.resources.role;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.Maps;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.yammer.dropwizard.jersey.caching.CacheControl;
 import com.yammer.metrics.annotation.Timed;
@@ -10,14 +11,14 @@ import org.multibit.mbm.domain.model.model.RoleBuilder;
 import org.multibit.mbm.domain.model.model.User;
 import org.multibit.mbm.domain.repositories.RoleReadService;
 import org.multibit.mbm.interfaces.rest.api.AdminDeleteEntityDto;
+import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
 import org.multibit.mbm.interfaces.rest.api.role.AdminCreateRoleDto;
 import org.multibit.mbm.interfaces.rest.api.role.AdminUpdateRoleDto;
-import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
-import org.multibit.mbm.interfaces.rest.api.common.Representations;
 import org.multibit.mbm.interfaces.rest.auth.Authority;
 import org.multibit.mbm.interfaces.rest.auth.annotation.RestrictedTo;
+import org.multibit.mbm.interfaces.rest.common.Representations;
+import org.multibit.mbm.interfaces.rest.common.ResourceAsserts;
 import org.multibit.mbm.interfaces.rest.resources.BaseResource;
-import org.multibit.mbm.interfaces.rest.resources.ResourceAsserts;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -70,7 +71,7 @@ public class AdminRoleResource extends BaseResource {
     Role persistentRole = roleReadService.saveOrUpdate(role);
 
     // Provide a representation to the client
-    Representation representation = Representations.asDetail(self(), persistentRole);
+    Representation representation = Representations.asDetail(self(), persistentRole, Maps.<String, String>newHashMap());
     URI location = uriInfo.getAbsolutePathBuilder().path(persistentRole.getId().toString()).build();
 
     return created(representation, location);
@@ -102,7 +103,7 @@ public class AdminRoleResource extends BaseResource {
     PaginatedList<Role> roles = roleReadService.getPaginatedList(pageSize, pageNumber);
 
     // Provide a representation to the client
-    Representation representation = Representations.asPaginatedList(self(), roles, "roles/{id}");
+    Representation representation = Representations.asPaginatedList(self(), "roles", roles, "roles/{id}");
 
     return ok(representation);
 
@@ -146,7 +147,7 @@ public class AdminRoleResource extends BaseResource {
     persistentRole = roleReadService.saveOrUpdate(role.get());
 
     // Provide a representation to the client
-    Representation representation = Representations.asDetail(self(), persistentRole);
+    Representation representation = Representations.asDetail(self(), persistentRole, Maps.<String, String>newHashMap());
 
     return ok(representation);
 
@@ -181,7 +182,7 @@ public class AdminRoleResource extends BaseResource {
     persistentRole = roleReadService.saveOrUpdate(role.get());
 
     // Provide a representation to the client
-    Representation representation = Representations.asDetail(self(), persistentRole);
+    Representation representation = Representations.asDetail(self(), persistentRole, Maps.<String, String>newHashMap());
 
     return ok(representation);
 

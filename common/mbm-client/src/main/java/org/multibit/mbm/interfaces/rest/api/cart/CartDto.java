@@ -1,6 +1,7 @@
 package org.multibit.mbm.interfaces.rest.api.cart;
 
 import com.google.common.collect.Lists;
+import org.multibit.mbm.domain.common.Identifiable;
 
 import java.util.List;
 
@@ -13,14 +14,23 @@ import java.util.List;
  * @since 0.0.1
  *         
  */
-public class CartDto {
+public class CartDto implements Identifiable {
 
+  private Long id;
   private String currencySymbol;
   private String currencyCode;
   private String priceTotal;
   private String itemTotal;
   private String quantityTotal;
   private List<CartItemDto> cartItems = Lists.newArrayList();
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
 
   public String getCurrencySymbol() {
     return currencySymbol;

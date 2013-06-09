@@ -1,17 +1,18 @@
 package org.multibit.mbm.interfaces.rest.api.cart;
 
+import org.multibit.mbm.domain.common.Identifiable;
 import org.multibit.mbm.interfaces.rest.api.item.ItemDto;
 
 /**
  * <p>Value object to provide the following to resources:</p>
  * <ul>
- * <li>Binds the ClientCart to the ClientItem </li>
+ * <li>Binds the {@link CartDto} to the {@link ItemDto}</li>
  * </ul>
  *
  * @since 0.0.1
  *         
  */
-public class CartItemDto {
+public class CartItemDto implements Identifiable {
 
   private int quantity;
   private int index;
@@ -21,6 +22,11 @@ public class CartItemDto {
   private String cartItemSubtotal;
 
   private ItemDto item;
+
+  @Override
+  public Long getId() {
+    return (long) getIndex();
+  }
 
   public int getQuantity() {
     return quantity;
@@ -69,4 +75,5 @@ public class CartItemDto {
   public void setItem(ItemDto item) {
     this.item = item;
   }
+
 }

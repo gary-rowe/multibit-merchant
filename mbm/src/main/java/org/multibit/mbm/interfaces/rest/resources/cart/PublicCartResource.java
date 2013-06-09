@@ -1,6 +1,7 @@
 package org.multibit.mbm.interfaces.rest.resources.cart;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.Maps;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.yammer.dropwizard.jersey.caching.CacheControl;
 import com.yammer.metrics.annotation.Timed;
@@ -12,11 +13,13 @@ import org.multibit.mbm.domain.repositories.ItemReadService;
 import org.multibit.mbm.interfaces.rest.api.cart.PublicCartItemDto;
 import org.multibit.mbm.interfaces.rest.api.cart.PublicUpdateCartDto;
 import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
-import org.multibit.mbm.interfaces.rest.api.common.Representations;
 import org.multibit.mbm.interfaces.rest.auth.Authority;
 import org.multibit.mbm.interfaces.rest.auth.annotation.RestrictedTo;
+import org.multibit.mbm.interfaces.rest.common.Representations;
+import org.multibit.mbm.interfaces.rest.common.ResourceAsserts;
+import org.multibit.mbm.interfaces.rest.links.cart.CartLinks;
+import org.multibit.mbm.interfaces.rest.representations.CartRepresentations;
 import org.multibit.mbm.interfaces.rest.resources.BaseResource;
-import org.multibit.mbm.interfaces.rest.resources.ResourceAsserts;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -39,7 +42,7 @@ import java.util.concurrent.TimeUnit;
  *         
  */
 @Component
-@Path("/cart")
+@Path(CartLinks.PUBLIC_SELF_TEMPLATE)
 @Produces({HalMediaType.APPLICATION_HAL_JSON, HalMediaType.APPLICATION_HAL_XML})
 public class PublicCartResource extends BaseResource {
 
@@ -68,8 +71,7 @@ public class PublicCartResource extends BaseResource {
 
     Cart cart = publicUser.getCustomer().getCart();
 
-    // Provide a representation to the client
-    Representation representation = Representations.asDetail(self(), cart);
+    Representation representation = CartRepresentations.retrieveOwnCart(cart);
 
     return ok(representation);
 
@@ -99,7 +101,7 @@ public class PublicCartResource extends BaseResource {
     cart = cartDao.saveOrUpdate(cart);
 
     // Provide a representation to the client
-    Representation representation = Representations.asDetail(self(), cart);
+    Representation representation = Representations.asDetail(self(), cart, Maps.<String, String>newHashMap());
 
     return ok(representation);
 

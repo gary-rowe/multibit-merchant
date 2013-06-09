@@ -1,6 +1,7 @@
 package org.multibit.mbm.interfaces.rest.resources.item;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.Maps;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.yammer.dropwizard.jersey.caching.CacheControl;
 import com.yammer.metrics.annotation.Timed;
@@ -8,9 +9,9 @@ import org.multibit.mbm.domain.common.pagination.PaginatedList;
 import org.multibit.mbm.domain.model.model.Item;
 import org.multibit.mbm.domain.repositories.ItemReadService;
 import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
-import org.multibit.mbm.interfaces.rest.api.common.Representations;
+import org.multibit.mbm.interfaces.rest.common.Representations;
+import org.multibit.mbm.interfaces.rest.common.ResourceAsserts;
 import org.multibit.mbm.interfaces.rest.resources.BaseResource;
-import org.multibit.mbm.interfaces.rest.resources.ResourceAsserts;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -60,7 +61,7 @@ public class PublicItemResource extends BaseResource {
     PaginatedList<Item> items = itemReadService.getPaginatedList(pageSize, pageNumber);
 
     // Provide a representation to the client
-    Representation representation = Representations.asPaginatedList(self(), items, "items/{id}");
+    Representation representation = Representations.asPaginatedList(self(), "items", items, "items/{id}");
 
     return ok(representation);
 
@@ -87,7 +88,7 @@ public class PublicItemResource extends BaseResource {
     ResourceAsserts.assertPresent(itemOptional, "item");
 
     // Provide a representation to the client
-    Representation representation = Representations.asDetail(self(), itemOptional.get());
+    Representation representation = Representations.asDetail(self(), itemOptional.get(), Maps.<String, String>newHashMap());
 
     return ok(representation);
 
