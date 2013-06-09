@@ -46,9 +46,12 @@
     <!-- HAL provides the resource representation -->
     <dependency>
       <groupId>com.theoryinpractise</groupId>
-      <artifactId>halbuilder</artifactId>
+      <artifactId>halbuilder-core</artifactId>
     </dependency>
-
+    <dependency>
+      <groupId>com.theoryinpractise</groupId>
+      <artifactId>halbuilder-api</artifactId>
+    </dependency>
   </dependencies>
 
 </project>

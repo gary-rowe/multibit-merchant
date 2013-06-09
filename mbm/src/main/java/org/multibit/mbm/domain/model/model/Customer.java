@@ -1,5 +1,6 @@
 package org.multibit.mbm.domain.model.model;
 
+import org.multibit.mbm.domain.common.Identifiable;
 import org.multibit.mbm.infrastructure.utils.ObjectUtils;
 
 import javax.persistence.*;
@@ -16,7 +17,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "customers")
-public class Customer implements Serializable {
+public class Customer implements Identifiable, Serializable {
 
   private static final long serialVersionUID = 38947590324750L;
 

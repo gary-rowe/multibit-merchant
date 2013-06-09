@@ -1,18 +1,17 @@
 package org.multibit.mbm.interfaces.rest.resources.user;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
+import com.theoryinpractise.halbuilder.api.Representation;
 import com.yammer.metrics.annotation.Timed;
+import org.multibit.mbm.domain.model.model.*;
+import org.multibit.mbm.domain.repositories.UserReadService;
+import org.multibit.mbm.infrastructure.utils.DateUtils;
 import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
-import org.multibit.mbm.interfaces.rest.api.response.hal.user.ClientUserBridge;
-import org.multibit.mbm.interfaces.rest.api.response.hal.user.CustomerUserBridge;
+import org.multibit.mbm.interfaces.rest.api.common.Representations;
 import org.multibit.mbm.interfaces.rest.auth.Authority;
 import org.multibit.mbm.interfaces.rest.auth.annotation.RestrictedTo;
-import org.multibit.mbm.domain.model.model.*;
-import org.multibit.mbm.domain.repositories.UserDao;
 import org.multibit.mbm.interfaces.rest.resources.BaseResource;
-import org.multibit.mbm.infrastructure.utils.DateUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -37,7 +36,7 @@ import java.net.URI;
 public class CustomerUserResource extends BaseResource {
 
   @Resource(name = "hibernateUserDao")
-  private UserDao userDao;
+  private UserReadService userReadService;
 
   /**
    * @param customerUser The authenticated Customer
@@ -50,9 +49,9 @@ public class CustomerUserResource extends BaseResource {
     @RestrictedTo({Authority.ROLE_CUSTOMER})
     User customerUser) {
 
-    CustomerUserBridge bridge = new CustomerUserBridge(uriInfo, Optional.of(customerUser));
+    Representation representation = Representations.asDetail(self(), customerUser);
 
-    return ok(bridge, customerUser);
+    return ok(representation);
 
   }
 
@@ -85,19 +84,19 @@ public class CustomerUserResource extends BaseResource {
     customerUser.setUserFieldMap(Maps.<UserField, UserFieldDetail>newHashMap());
 
     // Persist the User with cascade for the Customer
-    User persistentUser = userDao.saveOrUpdate(customerUser);
+    User persistentUser = userReadService.saveOrUpdate(customerUser);
 
     // Provide a minimal representation to the client
     // so that they can see their secret key as a last resort
     // manual recovery option
-    ClientUserBridge bridge = new ClientUserBridge(uriInfo, Optional.of(customerUser));
+    Representation representation = Representations.asDetail(self(), persistentUser);
     URI location = uriInfo.getAbsolutePathBuilder().path(persistentUser.getApiKey()).build();
 
-    return created(bridge, persistentUser, location);
+    return created(representation, location);
 
   }
 
-  public void setUserDao(UserDao userDao) {
-    this.userDao = userDao;
+  public void setUserReadService(UserReadService userReadService) {
+    this.userReadService = userReadService;
   }
 }

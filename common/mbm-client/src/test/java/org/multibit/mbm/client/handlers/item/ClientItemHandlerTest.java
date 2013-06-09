@@ -4,7 +4,7 @@ import com.google.common.base.Optional;
 import org.junit.Test;
 import org.multibit.mbm.client.PublicMerchantClient;
 import org.multibit.mbm.client.handlers.BaseHandlerTest;
-import org.multibit.mbm.model.ClientItem;
+import org.multibit.mbm.interfaces.rest.api.item.ItemDto;
 import org.multibit.mbm.testing.FixtureAsserts;
 
 import java.net.URI;
@@ -29,7 +29,7 @@ public class ClientItemHandlerTest extends BaseHandlerTest {
         FixtureAsserts.fixture("/fixtures/hal/item/expected-customer-retrieve-item.json"));
 
     // Act
-    Optional<ClientItem> optionalItem = PublicMerchantClient
+    Optional<ItemDto> optionalItem = PublicMerchantClient
       .newInstance(locale)
       .item()
       .retrieveBySku("0575088893");
@@ -37,7 +37,7 @@ public class ClientItemHandlerTest extends BaseHandlerTest {
     // Assert
     assertTrue(optionalItem.isPresent());
 
-    ClientItem actualItem = optionalItem.get();
+    ItemDto actualItem = optionalItem.get();
 
     assertEquals("0575088893",actualItem.getSKU());
     assertEquals("The Quantum Thief",actualItem.getOptionalProperties().get("title"));

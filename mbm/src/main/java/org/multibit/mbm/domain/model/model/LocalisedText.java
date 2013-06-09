@@ -2,7 +2,8 @@ package org.multibit.mbm.domain.model.model;
 
 import org.multibit.mbm.infrastructure.utils.ObjectUtils;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import java.io.Serializable;
 
 /**

@@ -5,7 +5,7 @@ import org.junit.Test;
 import org.multibit.mbm.interfaces.rest.auth.webform.WebFormClientRegistration;
 import org.multibit.mbm.client.PublicMerchantClient;
 import org.multibit.mbm.client.handlers.BaseHandlerTest;
-import org.multibit.mbm.model.ClientUser;
+import org.multibit.mbm.interfaces.rest.api.user.UserDto;
 import org.multibit.mbm.testing.FixtureAsserts;
 
 import java.net.URI;
@@ -34,7 +34,7 @@ public class PublicUserHandlerTest extends BaseHandlerTest {
     );
 
     // Act
-    Optional<ClientUser> publicUser = PublicMerchantClient
+    Optional<UserDto> publicUser = PublicMerchantClient
       .newInstance(locale)
       .user()
       .registerWithWebForm(registration);
@@ -60,7 +60,7 @@ public class PublicUserHandlerTest extends BaseHandlerTest {
     );
 
     // Act
-    Optional<ClientUser> publicUser = PublicMerchantClient
+    Optional<UserDto> publicUser = PublicMerchantClient
       .newInstance(locale)
       .user()
       .registerAnonymously();

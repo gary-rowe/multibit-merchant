@@ -1,11 +1,11 @@
 package org.multibit.mbm.client.handlers.item;
 
 import com.google.common.base.Optional;
-import com.theoryinpractise.halbuilder.spi.Link;
-import com.theoryinpractise.halbuilder.spi.ReadableResource;
+import com.theoryinpractise.halbuilder.api.Link;
+import com.theoryinpractise.halbuilder.api.ReadableRepresentation;
 import org.multibit.mbm.client.HalHmacResourceFactory;
 import org.multibit.mbm.client.handlers.BaseHandler;
-import org.multibit.mbm.model.ClientItem;
+import org.multibit.mbm.interfaces.rest.api.item.ItemDto;
 
 import java.util.List;
 import java.util.Locale;
@@ -34,9 +34,9 @@ public class ClientItemHandler extends BaseHandler {
    *
    * @param sku The required Stock Keeping Unit (SKU)
    *
-   * @return A matching {@link org.multibit.mbm.model.ClientItem}
+   * @return A matching {@link org.multibit.mbm.interfaces.rest.api.item.ItemDto}
    */
-  public Optional<ClientItem> retrieveBySku(String sku) {
+  public Optional<ItemDto> retrieveBySku(String sku) {
 
     // Sanity check
     // TODO How to sanity check an SKU?
@@ -48,12 +48,12 @@ public class ClientItemHandler extends BaseHandler {
       .get(String.class);
 
     // Read the HAL
-    ReadableResource rr = unmarshalHal(hal);
+    ReadableRepresentation rr = unmarshalHal(hal);
 
-    Map<String, Optional<Object>> properties = rr.getProperties();
+    Map<String, Object> properties = rr.getProperties();
     List<Link> links = rr.getLinks();
 
-    ClientItem item = buildClientItem(properties, links);
+    ItemDto item = buildClientItem(properties, links);
 
     return Optional.of(item);
   }
@@ -64,8 +64,8 @@ public class ClientItemHandler extends BaseHandler {
    *
    * @return A PublicItem
    */
-  public static ClientItem buildClientItem(Map<String, Optional<Object>> properties, List<Link> links) {
-    ClientItem item = new ClientItem();
+  public static ItemDto buildClientItem(Map<String, Object> properties, List<Link> links) {
+    ItemDto item = new ItemDto();
 
     // Mandatory properties (will cause IllegalStateException if not present)
     item.setSKU(getMandatoryPropertyAsString("sku", properties));
@@ -74,21 +74,21 @@ public class ClientItemHandler extends BaseHandler {
 
     // Optional direct properties
     if (properties.containsKey("gtin")) {
-      Optional<Object> gtin = properties.get("gtin");
-      if (gtin.isPresent()) {
-        item.setGTIN((String) gtin.get());
+      Object gtin = properties.get("gtin");
+      if (gtin != null) {
+        item.setGTIN((String) gtin);
       }
     }
 
     // Optional properties
-    for (Map.Entry<String, Optional<Object>> entry : properties.entrySet()) {
+    for (Map.Entry<String, Object> entry : properties.entrySet()) {
       if ("sku".equals(entry.getKey()) ||
         "gtin".equals(entry.getKey()) ||
         "price".equals(entry.getKey()) ||
         "tax_rate".equals(entry.getKey())) {
         continue;
       }
-      item.getOptionalProperties().put(entry.getKey(), (String) entry.getValue().get());
+      item.getOptionalProperties().put(entry.getKey(), (String) entry.getValue());
     }
 
     // Optional links

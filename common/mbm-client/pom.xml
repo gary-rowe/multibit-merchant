@@ -68,7 +68,11 @@
     <!-- HAL Builder provides resource representation -->
     <dependency>
       <groupId>com.theoryinpractise</groupId>
-      <artifactId>halbuilder</artifactId>
+      <artifactId>halbuilder-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.theoryinpractise</groupId>
+      <artifactId>halbuilder-api</artifactId>
     </dependency>
 
     <!-- Jasypt for protecting shared secrets -->

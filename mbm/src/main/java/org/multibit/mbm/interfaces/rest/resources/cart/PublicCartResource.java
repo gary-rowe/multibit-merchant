@@ -1,19 +1,20 @@
 package org.multibit.mbm.interfaces.rest.resources.cart;
 
 import com.google.common.base.Optional;
+import com.theoryinpractise.halbuilder.api.Representation;
 import com.yammer.dropwizard.jersey.caching.CacheControl;
 import com.yammer.metrics.annotation.Timed;
-import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
-import org.multibit.mbm.interfaces.rest.api.request.cart.PublicCartItem;
-import org.multibit.mbm.interfaces.rest.api.request.cart.PublicUpdateCartRequest;
-import org.multibit.mbm.interfaces.rest.api.response.hal.cart.PublicCartBridge;
-import org.multibit.mbm.interfaces.rest.auth.Authority;
-import org.multibit.mbm.interfaces.rest.auth.annotation.RestrictedTo;
-import org.multibit.mbm.domain.repositories.CartDao;
-import org.multibit.mbm.domain.repositories.ItemDao;
 import org.multibit.mbm.domain.model.model.Cart;
 import org.multibit.mbm.domain.model.model.Item;
 import org.multibit.mbm.domain.model.model.User;
+import org.multibit.mbm.domain.repositories.CartReadService;
+import org.multibit.mbm.domain.repositories.ItemReadService;
+import org.multibit.mbm.interfaces.rest.api.cart.PublicCartItemDto;
+import org.multibit.mbm.interfaces.rest.api.cart.PublicUpdateCartDto;
+import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
+import org.multibit.mbm.interfaces.rest.api.common.Representations;
+import org.multibit.mbm.interfaces.rest.auth.Authority;
+import org.multibit.mbm.interfaces.rest.auth.annotation.RestrictedTo;
 import org.multibit.mbm.interfaces.rest.resources.BaseResource;
 import org.multibit.mbm.interfaces.rest.resources.ResourceAsserts;
 import org.springframework.stereotype.Component;
@@ -43,10 +44,10 @@ import java.util.concurrent.TimeUnit;
 public class PublicCartResource extends BaseResource {
 
   @Resource(name="hibernateCartDao")
-  CartDao cartDao;
+  CartReadService cartDao;
 
   @Resource(name="hibernateItemDao")
-  ItemDao itemDao;
+  ItemReadService itemReadService;
 
   /**
    * Provides this Customer's Cart
@@ -68,9 +69,9 @@ public class PublicCartResource extends BaseResource {
     Cart cart = publicUser.getCustomer().getCart();
 
     // Provide a representation to the client
-    PublicCartBridge bridge = new PublicCartBridge(uriInfo, Optional.of(publicUser));
+    Representation representation = Representations.asDetail(self(), cart);
 
-    return ok(bridge, cart);
+    return ok(representation);
 
   }
 
@@ -86,7 +87,7 @@ public class PublicCartResource extends BaseResource {
   public Response update(
     @RestrictedTo({Authority.ROLE_PUBLIC})
     User publicUser,
-    PublicUpdateCartRequest updateCartRequest) {
+    PublicUpdateCartDto updateCartRequest) {
 
     // Retrieve the cart
     Cart cart = publicUser.getCustomer().getCart();
@@ -98,9 +99,9 @@ public class PublicCartResource extends BaseResource {
     cart = cartDao.saveOrUpdate(cart);
 
     // Provide a representation to the client
-    PublicCartBridge bridge = new PublicCartBridge(uriInfo, Optional.of(publicUser));
+    Representation representation = Representations.asDetail(self(), cart);
 
-    return ok(bridge, cart);
+    return ok(representation);
 
   }
 
@@ -109,24 +110,24 @@ public class PublicCartResource extends BaseResource {
    * @param updateRequest The update request containing the changes
    * @param entity        The entity to which these changes will be applied
    */
-  private void apply(PublicUpdateCartRequest updateRequest, Cart entity) {
+  private void apply(PublicUpdateCartDto updateRequest, Cart entity) {
 
-    for (PublicCartItem customerCartItem : updateRequest.getCartItems()) {
+    for (PublicCartItemDto customerCartItem : updateRequest.getCartItems()) {
       ResourceAsserts.assertNotNull(customerCartItem.getSKU(), "sku");
       ResourceAsserts.assertPositive(customerCartItem.getQuantity(), "quantity");
 
-      Optional<Item> item = itemDao.getBySKU(customerCartItem.getSKU());
+      Optional<Item> item = itemReadService.getBySKU(customerCartItem.getSKU());
       ResourceAsserts.assertPresent(item,"item");
 
       entity.setItemQuantity(item.get(),customerCartItem.getQuantity());
     }
   }
 
-  public void setCartDao(CartDao cartDao) {
+  public void setCartDao(CartReadService cartDao) {
     this.cartDao = cartDao;
   }
 
-  public void setItemDao(ItemDao itemDao) {
-    this.itemDao = itemDao;
+  public void setItemReadService(ItemReadService itemReadService) {
+    this.itemReadService = itemReadService;
   }
 }

@@ -3,6 +3,7 @@ package org.multibit.mbm.domain.model.model;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
+import org.multibit.mbm.domain.common.Identifiable;
 import org.multibit.mbm.infrastructure.utils.ObjectUtils;
 
 import javax.persistence.*;
@@ -19,7 +20,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "purchase_orders")
-public class PurchaseOrder implements Serializable {
+public class PurchaseOrder implements Identifiable, Serializable {
 
   private static final long serialVersionUID = 38947590321234L;
 

@@ -1,19 +1,20 @@
 package org.multibit.mbm.interfaces.rest.resources.user;
 
 import com.google.common.base.Optional;
+import com.theoryinpractise.halbuilder.api.Representation;
 import com.yammer.dropwizard.jersey.caching.CacheControl;
 import com.yammer.metrics.annotation.Timed;
-import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
-import org.multibit.mbm.interfaces.rest.api.request.AdminDeleteEntityRequest;
-import org.multibit.mbm.interfaces.rest.api.request.user.AdminCreateUserRequest;
-import org.multibit.mbm.interfaces.rest.api.request.user.AdminUpdateUserRequest;
-import org.multibit.mbm.interfaces.rest.api.response.hal.user.AdminUserBridge;
-import org.multibit.mbm.interfaces.rest.api.response.hal.user.AdminUserCollectionBridge;
-import org.multibit.mbm.interfaces.rest.auth.Authority;
-import org.multibit.mbm.interfaces.rest.auth.annotation.RestrictedTo;
-import org.multibit.mbm.domain.repositories.UserDao;
+import org.multibit.mbm.domain.common.pagination.PaginatedList;
 import org.multibit.mbm.domain.model.model.User;
 import org.multibit.mbm.domain.model.model.UserBuilder;
+import org.multibit.mbm.domain.repositories.UserReadService;
+import org.multibit.mbm.interfaces.rest.api.AdminDeleteEntityDto;
+import org.multibit.mbm.interfaces.rest.api.user.AdminCreateUserDto;
+import org.multibit.mbm.interfaces.rest.api.user.AdminUpdateUserDto;
+import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
+import org.multibit.mbm.interfaces.rest.api.common.Representations;
+import org.multibit.mbm.interfaces.rest.auth.Authority;
+import org.multibit.mbm.interfaces.rest.auth.annotation.RestrictedTo;
 import org.multibit.mbm.interfaces.rest.resources.BaseResource;
 import org.multibit.mbm.interfaces.rest.resources.ResourceAsserts;
 import org.springframework.stereotype.Component;
@@ -22,7 +23,6 @@ import javax.annotation.Resource;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.net.URI;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -39,7 +39,7 @@ import java.util.concurrent.TimeUnit;
 public class AdminUserResource extends BaseResource {
 
   @Resource(name = "hibernateUserDao")
-  private UserDao userDao;
+  private UserReadService userReadService;
 
   /**
    * Create a new User from the given mandatory fields
@@ -54,7 +54,7 @@ public class AdminUserResource extends BaseResource {
   public Response create(
     @RestrictedTo({Authority.ROLE_ADMIN})
     User adminUser,
-    AdminCreateUserRequest createUserRequest) {
+    AdminCreateUserDto createUserRequest) {
 
     // Build a new User from the given request information
     User user = UserBuilder.newInstance()
@@ -63,17 +63,17 @@ public class AdminUserResource extends BaseResource {
       .build();
 
     // Perform basic verification
-    Optional<User> verificationUser = userDao.getByCredentials(user.getUsername(), user.getPasswordDigest());
+    Optional<User> verificationUser = userReadService.getByCredentials(user.getUsername(), user.getPasswordDigest());
     ResourceAsserts.assertNotConflicted(verificationUser, "user");
 
     // Persist the user
-    User persistentUser = userDao.saveOrUpdate(user);
+    User persistentUser = userReadService.saveOrUpdate(user);
 
     // Provide a representation to the client
-    AdminUserBridge bridge = new AdminUserBridge(uriInfo, Optional.of(adminUser));
+    Representation representation = Representations.asDetail(self(), persistentUser);
     URI location = uriInfo.getAbsolutePathBuilder().path(persistentUser.getId().toString()).build();
 
-    return created(bridge, persistentUser, location);
+    return created(representation,location);
 
   }
 
@@ -99,12 +99,12 @@ public class AdminUserResource extends BaseResource {
     int pageSize = Integer.valueOf(rawPageSize.get());
     int pageNumber = Integer.valueOf(rawPageNumber.get());
 
-    List<User> users = userDao.getAllByPage(pageSize, pageNumber);
+    PaginatedList<User> users = userReadService.getPaginatedList(pageSize, pageNumber);
 
     // Provide a representation to the client
-    AdminUserCollectionBridge bridge = new AdminUserCollectionBridge(uriInfo, Optional.of(adminUser));
+    Representation representation = Representations.asPaginatedList(self(), users, "/users/{id}");
 
-    return ok(bridge, users);
+    return ok(representation);
 
   }
 
@@ -122,10 +122,10 @@ public class AdminUserResource extends BaseResource {
     @RestrictedTo({Authority.ROLE_ADMIN})
     User adminUser,
     @PathParam("userId") Long userId,
-    AdminUpdateUserRequest updateUserRequest) {
+    AdminUpdateUserDto updateUserRequest) {
 
     // Retrieve the user
-    Optional<User> user = userDao.getById(userId);
+    Optional<User> user = userReadService.getById(userId);
     ResourceAsserts.assertPresent(user, "user");
 
     // Verify and apply any changes to the User
@@ -135,12 +135,12 @@ public class AdminUserResource extends BaseResource {
     apply(updateUserRequest, persistentUser);
 
     // Persist the updated user
-    persistentUser = userDao.saveOrUpdate(user.get());
+    persistentUser = userReadService.saveOrUpdate(user.get());
 
     // Provide a representation to the client
-    AdminUserBridge bridge = new AdminUserBridge(uriInfo, Optional.of(adminUser));
+    Representation representation = Representations.asDetail(self(), persistentUser);
 
-    return ok(bridge, persistentUser);
+    return ok(representation);
 
   }
 
@@ -158,10 +158,10 @@ public class AdminUserResource extends BaseResource {
     @RestrictedTo({Authority.ROLE_ADMIN})
     User adminUser,
     @PathParam("userId") Long userId,
-    AdminDeleteEntityRequest deleteEntityRequest) {
+    AdminDeleteEntityDto deleteEntityRequest) {
 
     // Retrieve the user
-    Optional<User> user = userDao.getById(userId);
+    Optional<User> user = userReadService.getById(userId);
     ResourceAsserts.assertPresent(user, "user");
 
     // Verify and apply any changes to the User
@@ -170,12 +170,12 @@ public class AdminUserResource extends BaseResource {
     persistentUser.setReasonForDelete(deleteEntityRequest.getReason());
 
     // Persist the updated user
-    persistentUser = userDao.saveOrUpdate(user.get());
+    persistentUser = userReadService.saveOrUpdate(user.get());
 
     // Provide a representation to the client
-    AdminUserBridge bridge = new AdminUserBridge(uriInfo, Optional.of(adminUser));
+    Representation representation = Representations.asDetail(self(), persistentUser);
 
-    return ok(bridge, persistentUser);
+    return ok(representation);
 
   }
 
@@ -183,7 +183,7 @@ public class AdminUserResource extends BaseResource {
    * @param updateRequest The update request containing the changes
    * @param entity        The entity to which these changes will be applied
    */
-  private void apply(AdminUpdateUserRequest updateRequest, User entity) {
+  private void apply(AdminUpdateUserDto updateRequest, User entity) {
     // TODO This will fail due to specialised password digest in UserBuilder
     // General approach here should be to use UserBuilder to create a new User
     // then bean copy into the persistent entity ignoring the ID field
@@ -206,8 +206,8 @@ public class AdminUserResource extends BaseResource {
 //    }
   }
 
-  public void setUserDao(UserDao userDao) {
-    this.userDao = userDao;
+  public void setUserReadService(UserReadService userReadService) {
+    this.userReadService = userReadService;
   }
 
 

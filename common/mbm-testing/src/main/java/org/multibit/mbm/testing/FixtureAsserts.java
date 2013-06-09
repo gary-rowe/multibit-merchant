@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
-import com.theoryinpractise.halbuilder.spi.Resource;
+import com.theoryinpractise.halbuilder.api.Representation;
 import junit.framework.Assert;
 import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
 
@@ -91,11 +91,11 @@ public class FixtureAsserts {
    *
    * @throws java.io.IOException If something goes wrong
    */
-  public static void assertRepresentationMatchesJsonFixture(String reason, Resource representation, String fixtureClasspath) throws IOException {
+  public static void assertRepresentationMatchesJsonFixture(String reason, Representation representation, String fixtureClasspath) throws IOException {
 
     Assert.assertEquals(reason,
       jsonFixture(fixtureClasspath),
-      representation.renderContent(HalMediaType.APPLICATION_HAL_JSON)
+      representation.toString(HalMediaType.APPLICATION_HAL_JSON)
     );
   }
 
@@ -108,10 +108,10 @@ public class FixtureAsserts {
    *
    * @throws java.io.IOException If something goes wrong
    */
-  public static void assertRepresentationMatchesXmlFixture(String reason, Resource representation, String fixtureClasspath) throws IOException {
+  public static void assertRepresentationMatchesXmlFixture(String reason, Representation representation, String fixtureClasspath) throws IOException {
     Assert.assertEquals(reason,
       fixture(fixtureClasspath),
-      representation.renderContent(HalMediaType.APPLICATION_HAL_XML)
+      representation.toString(HalMediaType.APPLICATION_HAL_XML)
     );
   }
 

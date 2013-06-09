@@ -3,6 +3,7 @@ package org.multibit.mbm.domain.model.model;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.joda.time.DateTime;
+import org.multibit.mbm.domain.common.Identifiable;
 import org.multibit.mbm.interfaces.rest.auth.Authority;
 
 import javax.persistence.*;
@@ -23,7 +24,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "users")
-public class User implements Serializable {
+public class User implements Identifiable, Serializable {
   private static final long serialVersionUID = 38345280321234L;
 
   /**

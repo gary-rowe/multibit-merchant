@@ -1,20 +1,17 @@
 package org.multibit.mbm.client.handlers.delivery;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import com.theoryinpractise.halbuilder.spi.Link;
-import com.theoryinpractise.halbuilder.spi.ReadableResource;
-import com.theoryinpractise.halbuilder.spi.Resource;
-import org.multibit.mbm.interfaces.rest.api.request.cart.PublicCartItem;
-import org.multibit.mbm.interfaces.rest.api.request.cart.PublicUpdateCartRequest;
+import com.theoryinpractise.halbuilder.api.ReadableRepresentation;
 import org.multibit.mbm.client.HalHmacResourceFactory;
 import org.multibit.mbm.client.handlers.BaseHandler;
-import org.multibit.mbm.client.handlers.item.ClientItemHandler;
-import org.multibit.mbm.model.ClientCart;
-import org.multibit.mbm.model.ClientCartItem;
-import org.multibit.mbm.model.ClientUser;
+import org.multibit.mbm.interfaces.rest.api.cart.CartDto;
+import org.multibit.mbm.interfaces.rest.api.cart.CartItemDto;
+import org.multibit.mbm.interfaces.rest.api.cart.PublicCartItemDto;
+import org.multibit.mbm.interfaces.rest.api.cart.PublicUpdateCartDto;
+import org.multibit.mbm.interfaces.rest.api.user.UserDto;
 
 import javax.ws.rs.core.MediaType;
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -42,9 +39,9 @@ public class SupplierDeliveryHandler extends BaseHandler {
    *
    * @param clientUser The authenticated client user
    *
-   * @return A matching {@link org.multibit.mbm.model.ClientItem}
+   * @return A matching {@link org.multibit.mbm.interfaces.rest.api.item.ItemDto}
    */
-  public ClientCart retrieveCart(ClientUser clientUser) {
+  public CartDto retrieveCart(UserDto clientUser) {
 
     // Sanity check
     Preconditions.checkNotNull(clientUser);
@@ -59,9 +56,9 @@ public class SupplierDeliveryHandler extends BaseHandler {
       .get(String.class);
 
     // Read the HAL
-    ReadableResource rr = unmarshalHal(hal);
+    ReadableRepresentation rr = unmarshalHal(hal);
 
-    Map<String, Optional<Object>> properties = rr.getProperties();
+    Map<String, Object> properties = rr.getProperties();
 
     return buildClientCart(rr, properties);
   }
@@ -71,9 +68,9 @@ public class SupplierDeliveryHandler extends BaseHandler {
    *
    * @param clientUser The authenticated client user
    *
-   * @return A matching {@link org.multibit.mbm.model.ClientItem}
+   * @return A matching {@link org.multibit.mbm.interfaces.rest.api.item.ItemDto}
    */
-  public ClientCart updateCartItems(ClientUser clientUser, List<PublicCartItem> cartItems) {
+  public CartDto updateCartItems(UserDto clientUser, List<PublicCartItemDto> cartItems) {
 
     // Sanity check
     Preconditions.checkNotNull(clientUser);
@@ -83,7 +80,7 @@ public class SupplierDeliveryHandler extends BaseHandler {
     // TODO Replace "magic string" with auto-discover based on link rel
     String path = String.format("/cart");
 
-    PublicUpdateCartRequest updateCartRequest = new PublicUpdateCartRequest();
+    PublicUpdateCartDto updateCartRequest = new PublicUpdateCartDto();
     updateCartRequest.setCartItems(cartItems);
 
     String hal = HalHmacResourceFactory.INSTANCE
@@ -92,9 +89,9 @@ public class SupplierDeliveryHandler extends BaseHandler {
       .put(String.class);
 
     // Read the HAL
-    ReadableResource rr = unmarshalHal(hal);
+    ReadableRepresentation rr = unmarshalHal(hal);
 
-    Map<String, Optional<Object>> properties = rr.getProperties();
+    Map<String, Object> properties = rr.getProperties();
 
     return buildClientCart(rr, properties);
   }
@@ -104,25 +101,26 @@ public class SupplierDeliveryHandler extends BaseHandler {
    *
    * @return A ClientCart with all items populated
    */
-  private ClientCart buildClientCart(ReadableResource rr, Map<String, Optional<Object>> properties) {
+  private CartDto buildClientCart(ReadableRepresentation rr, Map<String, Object> properties) {
 
     // Build the basic cart
-    ClientCart clientCart = buildClientCartNoItems(properties);
+    CartDto clientCart = buildClientCartNoItems(properties);
 
     // Read the cart items
-    List<Resource> cartitemResources = rr.getResources();
+    Collection<Map.Entry<String, ReadableRepresentation>> cartitemResources = rr.getResources();
 
-    for (Resource cartItemResource : cartitemResources) {
+    for (Map.Entry<String, ReadableRepresentation> cartItemResource : cartitemResources) {
 
-      ClientCartItem cartItem = buildClientCartItem(cartItemResource.getProperties());
+      CartItemDto cartItem = buildClientCartItem(cartItemResource.getValue().getProperties());
 
       // Extract the embedded item
-      Preconditions.checkArgument(cartItemResource.getResources().size()==1);
+      Preconditions.checkArgument(cartItemResource.getValue().getResources().size()==1);
 
-      Resource itemResource = cartItemResource.getResources().get(0);
-      List<Link> links = itemResource.getLinks();
+      // TODO Fix or replace this
+      //Representation itemResource = cartItemResource.getValue().getResources().iterator().next().getValue();
+      //List<Link> links = itemResource.getLinks();
 
-      cartItem.setItem(ClientItemHandler.buildClientItem(itemResource.getProperties(), links));
+      //cartItem.setItem(ClientItemHandler.buildClientItem(itemResource.getProperties(), links));
 
       clientCart.getCartItems().add(cartItem);
 
@@ -131,9 +129,9 @@ public class SupplierDeliveryHandler extends BaseHandler {
     return clientCart;
   }
 
-  private ClientCartItem buildClientCartItem(Map<String, Optional<Object>> properties) {
+  private CartItemDto buildClientCartItem(Map<String, Object> properties) {
 
-    ClientCartItem cartItem = new ClientCartItem();
+    CartItemDto cartItem = new CartItemDto();
     Integer index = getMandatoryPropertyAsInteger("index",properties);
     Integer quantity = getMandatoryPropertyAsInteger("quantity", properties);
     String priceSubtotal = getMandatoryPropertyAsString("price_subtotal", properties);
@@ -154,9 +152,9 @@ public class SupplierDeliveryHandler extends BaseHandler {
    *
    * @return A ClientCart with no items populated
    */
-  public static ClientCart buildClientCartNoItems(Map<String, Optional<Object>> properties) {
+  public static CartDto buildClientCartNoItems(Map<String, Object> properties) {
 
-    ClientCart clientCart = new ClientCart();
+    CartDto clientCart = new CartDto();
 
     clientCart.setCurrencySymbol(getMandatoryPropertyAsString("currency_symbol", properties));
     clientCart.setCurrencyCode(getMandatoryPropertyAsString("currency_code", properties));

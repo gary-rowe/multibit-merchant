@@ -1,20 +1,21 @@
 package org.multibit.mbm.interfaces.rest.resources.purchaseorder;
 
 import com.google.common.base.Optional;
+import com.theoryinpractise.halbuilder.api.Representation;
 import com.yammer.dropwizard.jersey.caching.CacheControl;
 import com.yammer.metrics.annotation.Timed;
-import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
-import org.multibit.mbm.interfaces.rest.api.request.cart.purchaseorder.AdminUpdatePurchaseOrderRequest;
-import org.multibit.mbm.interfaces.rest.api.request.cart.purchaseorder.BuyerPurchaseOrderItem;
-import org.multibit.mbm.interfaces.rest.api.response.hal.purchaseorder.AdminPurchaseOrderBridge;
-import org.multibit.mbm.interfaces.rest.api.response.hal.purchaseorder.AdminPurchaseOrderCollectionBridge;
-import org.multibit.mbm.interfaces.rest.auth.Authority;
-import org.multibit.mbm.interfaces.rest.auth.annotation.RestrictedTo;
-import org.multibit.mbm.domain.repositories.ItemDao;
-import org.multibit.mbm.domain.repositories.PurchaseOrderDao;
+import org.multibit.mbm.domain.common.pagination.PaginatedList;
 import org.multibit.mbm.domain.model.model.Item;
 import org.multibit.mbm.domain.model.model.PurchaseOrder;
 import org.multibit.mbm.domain.model.model.User;
+import org.multibit.mbm.domain.repositories.ItemReadService;
+import org.multibit.mbm.domain.repositories.PurchaseOrderReadService;
+import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
+import org.multibit.mbm.interfaces.rest.api.common.Representations;
+import org.multibit.mbm.interfaces.rest.api.cart.purchaseorder.AdminUpdatePurchaseOrderRequest;
+import org.multibit.mbm.interfaces.rest.api.cart.purchaseorder.BuyerPurchaseOrderItem;
+import org.multibit.mbm.interfaces.rest.auth.Authority;
+import org.multibit.mbm.interfaces.rest.auth.annotation.RestrictedTo;
 import org.multibit.mbm.interfaces.rest.resources.BaseResource;
 import org.multibit.mbm.interfaces.rest.resources.ResourceAsserts;
 import org.springframework.stereotype.Component;
@@ -22,7 +23,6 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -39,10 +39,10 @@ import java.util.concurrent.TimeUnit;
 public class AdminPurchaseOrderResource extends BaseResource {
 
   @Resource(name = "hibernatePurchaseOrderDao")
-  PurchaseOrderDao purchaseOrderDao;
+  PurchaseOrderReadService purchaseOrderReadService;
 
   @Resource(name = "hibernateItemDao")
-  ItemDao itemDao;
+  ItemReadService itemReadService;
 
   /**
    * Provide a paged response of all PurchaseOrders in the system
@@ -66,12 +66,12 @@ public class AdminPurchaseOrderResource extends BaseResource {
     int pageSize = Integer.valueOf(rawPageSize.get());
     int pageNumber = Integer.valueOf(rawPageNumber.get());
 
-    List<PurchaseOrder> purchaseOrders = purchaseOrderDao.getAllByPage(pageSize, pageNumber);
+    PaginatedList<PurchaseOrder> purchaseOrders = purchaseOrderReadService.getPaginatedList(pageSize, pageNumber);
 
     // Provide a representation to the client
-    AdminPurchaseOrderCollectionBridge bridge = new AdminPurchaseOrderCollectionBridge(uriInfo, Optional.of(buyerUser));
+    Representation representation = Representations.asPaginatedList(self(), purchaseOrders, "purchase-order/{id}");
 
-    return ok(bridge, purchaseOrders);
+    return ok(representation);
 
   }
 
@@ -92,7 +92,7 @@ public class AdminPurchaseOrderResource extends BaseResource {
     AdminUpdatePurchaseOrderRequest updatePurchaseOrderRequest) {
 
     // Retrieve the purchaseOrder
-    Optional<PurchaseOrder> purchaseOrder = purchaseOrderDao.getById(purchaseOrderId);
+    Optional<PurchaseOrder> purchaseOrder = purchaseOrderReadService.getById(purchaseOrderId);
     ResourceAsserts.assertPresent(purchaseOrder,"purchaseOrder");
 
     // Verify and apply any changes to the PurchaseOrder
@@ -100,12 +100,12 @@ public class AdminPurchaseOrderResource extends BaseResource {
     apply(updatePurchaseOrderRequest,persistentPurchaseOrder);
 
     // Persist the updated purchaseOrder
-    persistentPurchaseOrder = purchaseOrderDao.saveOrUpdate(persistentPurchaseOrder);
+    persistentPurchaseOrder = purchaseOrderReadService.saveOrUpdate(persistentPurchaseOrder);
 
     // Provide a representation to the client
-    AdminPurchaseOrderBridge bridge = new AdminPurchaseOrderBridge(uriInfo, Optional.of(adminUser));
+    Representation representation = Representations.asDetail(self(), persistentPurchaseOrder);
 
-    return ok(bridge, persistentPurchaseOrder);
+    return ok(representation);
 
   }
 
@@ -120,18 +120,18 @@ public class AdminPurchaseOrderResource extends BaseResource {
       ResourceAsserts.assertNotNull(supplierPurchaseOrderItem.getSKU(), "id");
       ResourceAsserts.assertPositive(supplierPurchaseOrderItem.getQuantity(), "quantity");
 
-      Optional<Item> item = itemDao.getBySKU(supplierPurchaseOrderItem.getSKU());
+      Optional<Item> item = itemReadService.getBySKU(supplierPurchaseOrderItem.getSKU());
       ResourceAsserts.assertPresent(item,"item");
 
       entity.setItemQuantity(item.get(),supplierPurchaseOrderItem.getQuantity());
     }
   }
 
-  public void setPurchaseOrderDao(PurchaseOrderDao purchaseOrderDao) {
-    this.purchaseOrderDao = purchaseOrderDao;
+  public void setPurchaseOrderReadService(PurchaseOrderReadService purchaseOrderReadService) {
+    this.purchaseOrderReadService = purchaseOrderReadService;
   }
 
-  public void setItemDao(ItemDao itemDao) {
-    this.itemDao = itemDao;
+  public void setItemReadService(ItemReadService itemReadService) {
+    this.itemReadService = itemReadService;
   }
 }

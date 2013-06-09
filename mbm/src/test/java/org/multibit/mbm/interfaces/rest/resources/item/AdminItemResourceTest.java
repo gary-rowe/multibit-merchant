@@ -3,12 +3,14 @@ package org.multibit.mbm.interfaces.rest.resources.item;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import org.junit.Test;
+import org.multibit.mbm.domain.common.pagination.PaginatedArrayList;
+import org.multibit.mbm.domain.common.pagination.PaginatedLists;
+import org.multibit.mbm.interfaces.rest.api.AdminDeleteEntityDto;
+import org.multibit.mbm.interfaces.rest.api.item.AdminCreateItemDto;
+import org.multibit.mbm.interfaces.rest.api.item.AdminUpdateItemDto;
 import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
-import org.multibit.mbm.interfaces.rest.api.request.AdminDeleteEntityRequest;
-import org.multibit.mbm.interfaces.rest.api.request.item.AdminCreateItemRequest;
-import org.multibit.mbm.interfaces.rest.api.request.item.AdminUpdateItemRequest;
 import org.multibit.mbm.infrastructure.persistence.DatabaseLoader;
-import org.multibit.mbm.domain.repositories.ItemDao;
+import org.multibit.mbm.domain.repositories.ItemReadService;
 import org.multibit.mbm.domain.model.model.Item;
 import org.multibit.mbm.domain.model.model.User;
 import org.multibit.mbm.testing.BaseJerseyHmacResourceTest;
@@ -23,7 +25,7 @@ import static org.mockito.Mockito.when;
 
 public class AdminItemResourceTest extends BaseJerseyHmacResourceTest {
 
-  private final ItemDao itemDao=mock(ItemDao.class);
+  private final ItemReadService itemReadService =mock(ItemReadService.class);
 
   private final AdminItemResource testObject=new AdminItemResource();
 
@@ -47,18 +49,20 @@ public class AdminItemResourceTest extends BaseJerseyHmacResourceTest {
     itemsPage2.add(book2);
 
     // Configure the mock DAO
+    PaginatedArrayList<Item> page1 = PaginatedLists.newPaginatedArrayList(1, 2, itemsPage1);
+    PaginatedArrayList<Item> page2 = PaginatedLists.newPaginatedArrayList(2,2, itemsPage2);
     // Create
-    when(itemDao.saveOrUpdate((Item) isNotNull())).thenReturn(book1);
-    when(itemDao.getBySKU("sku123")).thenReturn(Optional.<Item>absent());
+    when(itemReadService.saveOrUpdate((Item) isNotNull())).thenReturn(book1);
+    when(itemReadService.getBySKU("sku123")).thenReturn(Optional.<Item>absent());
     // Retrieve
-    when(itemDao.getAllByPage(1,0)).thenReturn(itemsPage1);
-    when(itemDao.getAllByPage(1,1)).thenReturn(itemsPage2);
+    when(itemReadService.getPaginatedList(1, 0)).thenReturn(page1);
+    when(itemReadService.getPaginatedList(1, 1)).thenReturn(page2);
     // Update
-    when(itemDao.getById(1L)).thenReturn(Optional.of(book1));
-    when(itemDao.getById(2L)).thenReturn(Optional.of(book2));
-    when(itemDao.getBySKU("0099410672")).thenReturn(Optional.of(book1));
+    when(itemReadService.getById(1L)).thenReturn(Optional.of(book1));
+    when(itemReadService.getById(2L)).thenReturn(Optional.of(book2));
+    when(itemReadService.getBySKU("0099410672")).thenReturn(Optional.of(book1));
 
-    testObject.setItemDao(itemDao);
+    testObject.setItemReadService(itemReadService);
 
     // Configure resources
     addSingleton(testObject);
@@ -68,7 +72,7 @@ public class AdminItemResourceTest extends BaseJerseyHmacResourceTest {
   @Test
   public void adminCreateItemAsHalJson() throws Exception {
 
-    AdminCreateItemRequest createItemRequest = new AdminCreateItemRequest();
+    AdminCreateItemDto createItemRequest = new AdminCreateItemDto();
     createItemRequest.setSKU("sku123");
 
     String actualResponse = configureAsClient(AdminItemResource.class)
@@ -104,7 +108,7 @@ public class AdminItemResourceTest extends BaseJerseyHmacResourceTest {
   @Test
   public void adminUpdateItemAsHalJson() throws Exception {
 
-    AdminUpdateItemRequest updateItemRequest = new AdminUpdateItemRequest();
+    AdminUpdateItemDto updateItemRequest = new AdminUpdateItemDto();
     updateItemRequest.setSKU("sku123");
     updateItemRequest.setGTIN("gtin123");
 
@@ -120,7 +124,7 @@ public class AdminItemResourceTest extends BaseJerseyHmacResourceTest {
   @Test
   public void adminDeleteItemAsHalJson() throws Exception {
 
-    AdminDeleteEntityRequest deleteItemRequest = new AdminDeleteEntityRequest();
+    AdminDeleteEntityDto deleteItemRequest = new AdminDeleteEntityDto();
     deleteItemRequest.setReason("No longer available");
 
     String actualResponse = configureAsClient("/admin/item/1")

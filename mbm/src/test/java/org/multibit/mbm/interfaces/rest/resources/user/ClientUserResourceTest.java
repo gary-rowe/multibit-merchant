@@ -2,12 +2,12 @@ package org.multibit.mbm.interfaces.rest.resources.user;
 
 import com.google.common.base.Optional;
 import org.junit.Test;
+import org.multibit.mbm.interfaces.rest.api.user.WebFormAuthenticationDto;
 import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
-import org.multibit.mbm.interfaces.rest.api.request.user.WebFormAuthenticationRequest;
 import org.multibit.mbm.interfaces.rest.auth.Authority;
 import org.multibit.mbm.infrastructure.persistence.DatabaseLoader;
-import org.multibit.mbm.domain.repositories.RoleDao;
-import org.multibit.mbm.domain.repositories.UserDao;
+import org.multibit.mbm.domain.repositories.RoleReadService;
+import org.multibit.mbm.domain.repositories.UserReadService;
 import org.multibit.mbm.domain.model.model.Role;
 import org.multibit.mbm.domain.model.model.User;
 import org.multibit.mbm.testing.BaseJerseyHmacResourceTest;
@@ -25,8 +25,8 @@ import static org.mockito.Mockito.when;
  */
 public class ClientUserResourceTest extends BaseJerseyHmacResourceTest {
 
-  private final UserDao userDao=mock(UserDao.class);
-  private final RoleDao roleDao=mock(RoleDao.class);
+  private final UserReadService userReadService =mock(UserReadService.class);
+  private final RoleReadService roleReadService =mock(RoleReadService.class);
 
   private final ClientUserResource testObject=new ClientUserResource();
 
@@ -44,13 +44,13 @@ public class ClientUserResourceTest extends BaseJerseyHmacResourceTest {
     User bobUser = DatabaseLoader.buildBobCustomer(customerRole);
 
     // Configure mocks
-    when(userDao.getByCredentials(anyString(), anyString())).thenReturn(Optional.of(aliceUser));
-    when(userDao.saveOrUpdate(any(User.class))).thenReturn(bobUser);
-    when(roleDao.getByName(Authority.ROLE_PUBLIC.name())).thenReturn(Optional.of(publicRole));
+    when(userReadService.getByCredentials(anyString(), anyString())).thenReturn(Optional.of(aliceUser));
+    when(userReadService.saveOrUpdate(any(User.class))).thenReturn(bobUser);
+    when(roleReadService.getByName(Authority.ROLE_PUBLIC.name())).thenReturn(Optional.of(publicRole));
 
     // Bind mocks
-    testObject.setUserDao(userDao);
-    testObject.setRoleDao(roleDao);
+    testObject.setUserReadService(userReadService);
+    testObject.setRoleReadService(roleReadService);
 
     // Configure resources
     addSingleton(testObject);
@@ -76,7 +76,7 @@ public class ClientUserResourceTest extends BaseJerseyHmacResourceTest {
   public void clientAuthenticateUserAsHalJson() throws Exception {
 
     // Arrange
-    WebFormAuthenticationRequest authenticateUserRequest = new WebFormAuthenticationRequest(
+    WebFormAuthenticationDto authenticateUserRequest = new WebFormAuthenticationDto(
       "alice",
       "alice1"
     );

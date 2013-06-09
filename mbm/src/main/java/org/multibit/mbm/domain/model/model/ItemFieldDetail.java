@@ -1,8 +1,10 @@
 package org.multibit.mbm.domain.model.model;
 
 import com.google.common.collect.Sets;
+import org.multibit.mbm.domain.common.Identifiable;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 /**
@@ -14,7 +16,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "item_field_details")
-public class ItemFieldDetail {
+public class ItemFieldDetail implements Identifiable, Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

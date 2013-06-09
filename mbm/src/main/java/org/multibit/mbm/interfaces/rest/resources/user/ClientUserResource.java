@@ -2,16 +2,17 @@ package org.multibit.mbm.interfaces.rest.resources.user;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.theoryinpractise.halbuilder.api.Representation;
 import com.yammer.metrics.annotation.Timed;
+import org.multibit.mbm.domain.model.model.*;
+import org.multibit.mbm.domain.repositories.RoleReadService;
+import org.multibit.mbm.domain.repositories.UserReadService;
+import org.multibit.mbm.interfaces.rest.api.user.WebFormAuthenticationDto;
+import org.multibit.mbm.interfaces.rest.api.user.WebFormRegistrationDto;
 import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
-import org.multibit.mbm.interfaces.rest.api.request.user.WebFormAuthenticationRequest;
-import org.multibit.mbm.interfaces.rest.api.request.user.WebFormRegistrationRequest;
-import org.multibit.mbm.interfaces.rest.api.response.hal.user.ClientUserBridge;
+import org.multibit.mbm.interfaces.rest.api.common.Representations;
 import org.multibit.mbm.interfaces.rest.auth.Authority;
 import org.multibit.mbm.interfaces.rest.auth.annotation.RestrictedTo;
-import org.multibit.mbm.domain.model.model.*;
-import org.multibit.mbm.domain.repositories.RoleDao;
-import org.multibit.mbm.domain.repositories.UserDao;
 import org.multibit.mbm.interfaces.rest.resources.BaseResource;
 import org.multibit.mbm.interfaces.rest.resources.ResourceAsserts;
 import org.springframework.stereotype.Component;
@@ -38,10 +39,10 @@ import java.net.URI;
 public class ClientUserResource extends BaseResource {
 
   @Resource(name = "hibernateUserDao")
-  private UserDao userDao;
+  private UserReadService userReadService;
 
   @Resource(name = "hibernateRoleDao")
-  private RoleDao roleDao;
+  private RoleReadService roleReadService;
 
   /**
    * @param clientUser The client application acting as the proxy for this user
@@ -56,7 +57,7 @@ public class ClientUserResource extends BaseResource {
     User clientUser) {
 
     // Retrieve the role by its authority name
-    Optional<Role> optionalRole = roleDao.getByName(Authority.ROLE_PUBLIC.name());
+    Optional<Role> optionalRole = roleReadService.getByName(Authority.ROLE_PUBLIC.name());
     ResourceAsserts.assertPresent(optionalRole,"role");
 
     // Build a new Customer for the anonymous user
@@ -72,13 +73,13 @@ public class ClientUserResource extends BaseResource {
       .build();
 
     // Persist the User with cascade for the Customer
-    User persistentUser = userDao.saveOrUpdate(user);
+    User persistentUser = userReadService.saveOrUpdate(user);
 
     // Provide a minimal representation to the client
-    ClientUserBridge bridge = new ClientUserBridge(uriInfo, Optional.of(clientUser));
+    Representation representation = Representations.asDetail(self(), persistentUser);
     URI location = UriBuilder.fromResource(CustomerUserResource.class).build();
 
-    return created(bridge, persistentUser, location);
+    return created(representation, location);
 
   }
 
@@ -94,14 +95,14 @@ public class ClientUserResource extends BaseResource {
   public Response registerUser(
     @RestrictedTo({Authority.ROLE_CLIENT})
     User clientUser,
-    WebFormRegistrationRequest registrationRequest) {
+    WebFormRegistrationDto registrationRequest) {
 
     Preconditions.checkNotNull(registrationRequest);
     Preconditions.checkNotNull(registrationRequest.getPasswordDigest());
     Preconditions.checkNotNull(registrationRequest.getUsername());
 
     // Perform conflict check
-    Optional<User> verificationUser = userDao.getByCredentials(
+    Optional<User> verificationUser = userReadService.getByCredentials(
       registrationRequest.getUsername(),
       registrationRequest.getPasswordDigest());
     ResourceAsserts.assertNotConflicted(verificationUser, "user");
@@ -121,13 +122,13 @@ public class ClientUserResource extends BaseResource {
       .build();
 
     // Persist the User with cascade for the Customer
-    User persistentUser = userDao.saveOrUpdate(user);
+    User persistentUser = userReadService.saveOrUpdate(user);
 
     // Provide a minimal representation to the client
-    ClientUserBridge bridge = new ClientUserBridge(uriInfo, Optional.of(clientUser));
+    Representation representation = Representations.asDetail(self(), persistentUser);
     URI location = uriInfo.getAbsolutePathBuilder().path(persistentUser.getApiKey()).build();
 
-    return created(bridge, persistentUser, location);
+    return created(representation, location);
 
   }
 
@@ -143,22 +144,21 @@ public class ClientUserResource extends BaseResource {
   public Response authenticateUser(
     @RestrictedTo({Authority.ROLE_CLIENT})
     User clientUser,
-    WebFormAuthenticationRequest authenticationRequest) {
+    WebFormAuthenticationDto authenticationRequest) {
 
-    Optional<User> requestedUser = userDao.getByCredentials(authenticationRequest.getUsername(), authenticationRequest.getPasswordDigest());
+    Optional<User> requestedUser = userReadService.getByCredentials(authenticationRequest.getUsername(), authenticationRequest.getPasswordDigest());
 
-    ClientUserBridge bridge = new ClientUserBridge(uriInfo, Optional.of(clientUser));
+    Representation representation = Representations.asDetail(self(), requestedUser.get());
 
-    // The bridge can handle a null
-    return ok(bridge, requestedUser.orNull());
+    return ok(representation);
 
   }
 
-  public void setUserDao(UserDao userDao) {
-    this.userDao = userDao;
+  public void setUserReadService(UserReadService userReadService) {
+    this.userReadService = userReadService;
   }
 
-  public void setRoleDao(RoleDao roleDao) {
-    this.roleDao = roleDao;
+  public void setRoleReadService(RoleReadService roleReadService) {
+    this.roleReadService = roleReadService;
   }
 }

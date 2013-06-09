@@ -6,13 +6,14 @@ import com.google.common.collect.Sets;
 import com.xeiam.xchange.currency.MoneyUtils;
 import org.joda.money.BigMoney;
 import org.junit.Test;
+import org.multibit.mbm.domain.common.pagination.PaginatedArrayList;
 import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
-import org.multibit.mbm.interfaces.rest.api.request.cart.purchaseorder.BuyerPurchaseOrderItem;
-import org.multibit.mbm.interfaces.rest.api.request.cart.purchaseorder.BuyerUpdatePurchaseOrderRequest;
+import org.multibit.mbm.interfaces.rest.api.cart.purchaseorder.BuyerPurchaseOrderItem;
+import org.multibit.mbm.interfaces.rest.api.cart.purchaseorder.BuyerUpdatePurchaseOrderRequest;
 import org.multibit.mbm.domain.model.model.*;
 import org.multibit.mbm.infrastructure.persistence.DatabaseLoader;
-import org.multibit.mbm.domain.repositories.ItemDao;
-import org.multibit.mbm.domain.repositories.PurchaseOrderDao;
+import org.multibit.mbm.domain.repositories.ItemReadService;
+import org.multibit.mbm.domain.repositories.PurchaseOrderReadService;
 import org.multibit.mbm.testing.BaseJerseyHmacResourceTest;
 import org.multibit.mbm.testing.FixtureAsserts;
 
@@ -24,8 +25,8 @@ import static org.mockito.Mockito.when;
 
 public class AdminPurchaseOrderResourceTest extends BaseJerseyHmacResourceTest {
 
-  private final PurchaseOrderDao purchaseOrderDao = mock(PurchaseOrderDao.class);
-  private final ItemDao itemDao = mock(ItemDao.class);
+  private final PurchaseOrderReadService purchaseOrderReadService = mock(PurchaseOrderReadService.class);
+  private final ItemReadService itemReadService = mock(ItemReadService.class);
 
   private final AdminPurchaseOrderResource testObject = new AdminPurchaseOrderResource();
 
@@ -95,22 +96,24 @@ public class AdminPurchaseOrderResourceTest extends BaseJerseyHmacResourceTest {
     Set<PurchaseOrder> stevePurchaseOrders = Sets.newHashSet(steveUser.getSupplier().getPurchaseOrders());
     Set<PurchaseOrder> samPurchaseOrders = Sets.newHashSet(samUser.getSupplier().getPurchaseOrders());
 
-    // Configure PurchaseOrder DAO
-    when(purchaseOrderDao.getById(stevePurchaseOrder1.getId())).thenReturn(Optional.of(stevePurchaseOrder1));
-    when(purchaseOrderDao.getById(samPurchaseOrder1.getId())).thenReturn(Optional.of(samPurchaseOrder1));
-    when(purchaseOrderDao.getAllByPage(1, 0)).thenReturn(Lists.newLinkedList(stevePurchaseOrders));
-    when(purchaseOrderDao.getAllByPage(1, 1)).thenReturn(Lists.newLinkedList(samPurchaseOrders));
-    when(purchaseOrderDao.saveOrUpdate(stevePurchaseOrder1)).thenReturn(stevePurchaseOrder1);
-    when(purchaseOrderDao.saveOrUpdate(samPurchaseOrder1)).thenReturn(samPurchaseOrder1);
+    // Configure PurchaseOrder read service
+    PaginatedArrayList stevesPurchaseOrders = new PaginatedArrayList(1,2, Lists.newArrayList(stevePurchaseOrders));
+    PaginatedArrayList samsPurchaseOrders = new PaginatedArrayList(1,2, Lists.newArrayList(samPurchaseOrders));
+    when(purchaseOrderReadService.getById(stevePurchaseOrder1.getId())).thenReturn(Optional.of(stevePurchaseOrder1));
+    when(purchaseOrderReadService.getById(samPurchaseOrder1.getId())).thenReturn(Optional.of(samPurchaseOrder1));
+    when(purchaseOrderReadService.getPaginatedList(1, 0)).thenReturn(stevesPurchaseOrders);
+    when(purchaseOrderReadService.getPaginatedList(1, 1)).thenReturn(samsPurchaseOrders);
+    when(purchaseOrderReadService.saveOrUpdate(stevePurchaseOrder1)).thenReturn(stevePurchaseOrder1);
+    when(purchaseOrderReadService.saveOrUpdate(samPurchaseOrder1)).thenReturn(samPurchaseOrder1);
 
-    // Configure Item DAO
-    when(itemDao.getBySKU(book1.getSKU())).thenReturn(Optional.of(book1));
-    when(itemDao.getBySKU(book2.getSKU())).thenReturn(Optional.of(book2));
-    when(itemDao.getBySKU(book3.getSKU())).thenReturn(Optional.of(book3));
-    when(itemDao.getBySKU(book4.getSKU())).thenReturn(Optional.of(book4));
+    // Configure Item read service
+    when(itemReadService.getBySKU(book1.getSKU())).thenReturn(Optional.of(book1));
+    when(itemReadService.getBySKU(book2.getSKU())).thenReturn(Optional.of(book2));
+    when(itemReadService.getBySKU(book3.getSKU())).thenReturn(Optional.of(book3));
+    when(itemReadService.getBySKU(book4.getSKU())).thenReturn(Optional.of(book4));
 
-    testObject.setPurchaseOrderDao(purchaseOrderDao);
-    testObject.setItemDao(itemDao);
+    testObject.setPurchaseOrderReadService(purchaseOrderReadService);
+    testObject.setItemReadService(itemReadService);
 
     // Configure resources
     addSingleton(testObject);

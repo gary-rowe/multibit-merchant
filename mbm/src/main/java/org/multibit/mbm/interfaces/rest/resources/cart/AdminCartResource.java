@@ -1,20 +1,21 @@
 package org.multibit.mbm.interfaces.rest.resources.cart;
 
 import com.google.common.base.Optional;
+import com.theoryinpractise.halbuilder.api.Representation;
 import com.yammer.dropwizard.jersey.caching.CacheControl;
 import com.yammer.metrics.annotation.Timed;
-import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
-import org.multibit.mbm.interfaces.rest.api.request.cart.AdminUpdateCartRequest;
-import org.multibit.mbm.interfaces.rest.api.request.cart.PublicCartItem;
-import org.multibit.mbm.interfaces.rest.api.response.hal.cart.AdminCartBridge;
-import org.multibit.mbm.interfaces.rest.api.response.hal.cart.AdminCartCollectionBridge;
-import org.multibit.mbm.interfaces.rest.auth.annotation.RestrictedTo;
-import org.multibit.mbm.domain.repositories.CartDao;
-import org.multibit.mbm.domain.repositories.ItemDao;
-import org.multibit.mbm.interfaces.rest.auth.Authority;
+import org.multibit.mbm.domain.common.pagination.PaginatedList;
 import org.multibit.mbm.domain.model.model.Cart;
 import org.multibit.mbm.domain.model.model.Item;
 import org.multibit.mbm.domain.model.model.User;
+import org.multibit.mbm.domain.repositories.CartReadService;
+import org.multibit.mbm.domain.repositories.ItemReadService;
+import org.multibit.mbm.interfaces.rest.api.cart.AdminUpdateCartDto;
+import org.multibit.mbm.interfaces.rest.api.cart.PublicCartItemDto;
+import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
+import org.multibit.mbm.interfaces.rest.api.common.Representations;
+import org.multibit.mbm.interfaces.rest.auth.Authority;
+import org.multibit.mbm.interfaces.rest.auth.annotation.RestrictedTo;
 import org.multibit.mbm.interfaces.rest.resources.BaseResource;
 import org.multibit.mbm.interfaces.rest.resources.ResourceAsserts;
 import org.springframework.stereotype.Component;
@@ -22,7 +23,6 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -41,10 +41,10 @@ import java.util.concurrent.TimeUnit;
 public class AdminCartResource extends BaseResource {
 
   @Resource(name = "hibernateCartDao")
-  CartDao cartDao;
+  CartReadService cartDao;
 
   @Resource(name = "hibernateItemDao")
-  ItemDao itemDao;
+  ItemReadService itemReadService;
 
   /**
    * Provide a paged response of all Carts in the system
@@ -68,12 +68,12 @@ public class AdminCartResource extends BaseResource {
     int pageSize = Integer.valueOf(rawPageSize.get());
     int pageNumber = Integer.valueOf(rawPageNumber.get());
 
-    List<Cart> carts = cartDao.getAllByPage(pageSize, pageNumber);
+    PaginatedList<Cart> carts = cartDao.getPaginatedList(pageSize, pageNumber);
 
     // Provide a representation to the client
-    AdminCartCollectionBridge bridge = new AdminCartCollectionBridge(uriInfo, Optional.of(adminUser));
+    Representation representation = Representations.asPaginatedList(self(), carts, "/carts/{id}");
 
-    return ok(bridge, carts);
+    return ok(representation);
 
   }
 
@@ -91,23 +91,23 @@ public class AdminCartResource extends BaseResource {
     @RestrictedTo({Authority.ROLE_ADMIN})
     User adminUser,
     @PathParam("cartId") Long cartId,
-    AdminUpdateCartRequest updateCartRequest) {
+    AdminUpdateCartDto updateCartRequest) {
 
     // Retrieve the cart
-    Optional<Cart> cart = cartDao.getById(cartId);
-    ResourceAsserts.assertPresent(cart,"cart");
+    Optional<Cart> cartOptional = cartDao.getById(cartId);
+    ResourceAsserts.assertPresent(cartOptional,"cart");
 
     // Verify and apply any changes to the Cart
-    Cart persistentCart = cart.get();
-    apply(updateCartRequest,persistentCart);
+    Cart cart = cartOptional.get();
+    apply(updateCartRequest,cart);
 
     // Persist the updated cart
-    persistentCart = cartDao.saveOrUpdate(persistentCart);
+    cart = cartDao.saveOrUpdate(cart);
 
     // Provide a representation to the client
-    AdminCartBridge bridge = new AdminCartBridge(uriInfo, Optional.of(adminUser));
+    Representation representation = Representations.asDetail(self(), cart);
 
-    return ok(bridge, persistentCart);
+    return ok(representation);
 
   }
 
@@ -116,24 +116,24 @@ public class AdminCartResource extends BaseResource {
    * @param updateRequest The update request containing the changes
    * @param entity        The entity to which these changes will be applied
    */
-  private void apply(AdminUpdateCartRequest updateRequest, Cart entity) {
+  private void apply(AdminUpdateCartDto updateRequest, Cart entity) {
 
-    for (PublicCartItem customerCartItem : updateRequest.getCartItems()) {
+    for (PublicCartItemDto customerCartItem : updateRequest.getCartItems()) {
       ResourceAsserts.assertNotNull(customerCartItem.getSKU(), "id");
       ResourceAsserts.assertPositive(customerCartItem.getQuantity(), "quantity");
 
-      Optional<Item> item = itemDao.getBySKU(customerCartItem.getSKU());
+      Optional<Item> item = itemReadService.getBySKU(customerCartItem.getSKU());
       ResourceAsserts.assertPresent(item,"item");
 
       entity.setItemQuantity(item.get(),customerCartItem.getQuantity());
     }
   }
 
-  public void setCartDao(CartDao cartDao) {
+  public void setCartDao(CartReadService cartDao) {
     this.cartDao = cartDao;
   }
 
-  public void setItemDao(ItemDao itemDao) {
-    this.itemDao = itemDao;
+  public void setItemReadService(ItemReadService itemReadService) {
+    this.itemReadService = itemReadService;
   }
 }
