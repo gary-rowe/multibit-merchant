@@ -3,6 +3,7 @@ package org.multibit.mbm.domain.model.model;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import org.joda.money.BigMoney;
+import org.multibit.mbm.domain.common.Identifiable;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -31,7 +32,7 @@ import java.util.List;
   name = "rule",
   discriminatorType = DiscriminatorType.STRING
 )
-public class PricingRule implements Serializable {
+public class PricingRule implements Identifiable, Serializable {
 
   private static final long serialVersionUID = 38947435343837482L;
 

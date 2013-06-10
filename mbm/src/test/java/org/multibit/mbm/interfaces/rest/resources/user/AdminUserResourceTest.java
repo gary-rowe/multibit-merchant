@@ -3,14 +3,16 @@ package org.multibit.mbm.interfaces.rest.resources.user;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import org.junit.Test;
-import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
-import org.multibit.mbm.interfaces.rest.api.request.AdminDeleteEntityRequest;
-import org.multibit.mbm.interfaces.rest.api.request.user.AdminCreateUserRequest;
-import org.multibit.mbm.interfaces.rest.api.request.user.AdminUpdateUserRequest;
-import org.multibit.mbm.infrastructure.persistence.DatabaseLoader;
-import org.multibit.mbm.domain.repositories.UserDao;
+import org.multibit.mbm.domain.common.pagination.PaginatedList;
+import org.multibit.mbm.domain.common.pagination.PaginatedLists;
 import org.multibit.mbm.domain.model.model.Role;
 import org.multibit.mbm.domain.model.model.User;
+import org.multibit.mbm.domain.repositories.UserReadService;
+import org.multibit.mbm.infrastructure.persistence.DatabaseLoader;
+import org.multibit.mbm.interfaces.rest.api.AdminDeleteEntityDto;
+import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
+import org.multibit.mbm.interfaces.rest.api.user.AdminCreateUserDto;
+import org.multibit.mbm.interfaces.rest.api.user.AdminUpdateUserDto;
 import org.multibit.mbm.testing.BaseJerseyHmacResourceTest;
 import org.multibit.mbm.testing.FixtureAsserts;
 
@@ -24,7 +26,7 @@ import static org.mockito.Mockito.when;
 
 public class AdminUserResourceTest extends BaseJerseyHmacResourceTest {
 
-  private final UserDao userDao = mock(UserDao.class);
+  private final UserReadService userReadService = mock(UserReadService.class);
 
   private final AdminUserResource testObject = new AdminUserResource();
 
@@ -51,16 +53,18 @@ public class AdminUserResourceTest extends BaseJerseyHmacResourceTest {
     usersPage2.add(bobUser);
 
     // Configure the mock DAO
+    PaginatedList<User> page1 = PaginatedLists.newPaginatedArrayList(1,2, usersPage1);
+    PaginatedList<User> page2 = PaginatedLists.newPaginatedArrayList(2,2, usersPage2);
     // Create
-    when(userDao.saveOrUpdate((User) isNotNull())).thenReturn(aliceUser);
-    when(userDao.getByCredentials(anyString(), anyString())).thenReturn(Optional.<User>absent());
+    when(userReadService.saveOrUpdate((User) isNotNull())).thenReturn(aliceUser);
+    when(userReadService.getByCredentials(anyString(), anyString())).thenReturn(Optional.<User>absent());
     // Retrieve
-    when(userDao.getAllByPage(1, 0)).thenReturn(usersPage1);
-    when(userDao.getAllByPage(1, 1)).thenReturn(usersPage2);
+    when(userReadService.getPaginatedList(1, 0)).thenReturn(page1);
+    when(userReadService.getPaginatedList(1, 1)).thenReturn(page2);
     // Update
-    when(userDao.getById(1L)).thenReturn(Optional.of(aliceUser));
+    when(userReadService.getById(1L)).thenReturn(Optional.of(aliceUser));
 
-    testObject.setUserDao(userDao);
+    testObject.setUserReadService(userReadService);
 
     // Configure resources
     addSingleton(testObject);
@@ -70,7 +74,7 @@ public class AdminUserResourceTest extends BaseJerseyHmacResourceTest {
   @Test
   public void adminCreateUserAsHalJson() throws Exception {
 
-    AdminCreateUserRequest createUserRequest = new AdminCreateUserRequest();
+    AdminCreateUserDto createUserRequest = new AdminCreateUserDto();
     createUserRequest.setUsername("charlie");
     createUserRequest.setPasswordDigest("charlie1");
 
@@ -107,7 +111,7 @@ public class AdminUserResourceTest extends BaseJerseyHmacResourceTest {
   @Test
   public void adminUpdateUserAsHalJson() throws Exception {
 
-    AdminUpdateUserRequest updateUserRequest = new AdminUpdateUserRequest();
+    AdminUpdateUserDto updateUserRequest = new AdminUpdateUserDto();
     updateUserRequest.setUsername("charlie");
     updateUserRequest.setPasswordDigest("charlie1");
 
@@ -123,7 +127,7 @@ public class AdminUserResourceTest extends BaseJerseyHmacResourceTest {
   @Test
   public void adminDeleteUserAsHalJson() throws Exception {
 
-    AdminDeleteEntityRequest deleteUserRequest = new AdminDeleteEntityRequest();
+    AdminDeleteEntityDto deleteUserRequest = new AdminDeleteEntityDto();
     deleteUserRequest.setReason("At user request");
 
     String actualResponse = configureAsClient("/admin/user/1")

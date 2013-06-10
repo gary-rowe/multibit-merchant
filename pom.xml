@@ -24,6 +24,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <atmosphere.version>0.8.0-RC3</atmosphere.version>
     <dropwizard.version>0.6.2</dropwizard.version>
+    <halbuilder.version>2.0.1</halbuilder.version>
     <spring.version>3.1.0.M2</spring.version>
     <spring-social.version>1.0.0.RELEASE</spring-social.version>
     <slf4j.version>1.6.1</slf4j.version>
@@ -103,17 +104,6 @@
   </profiles>
 
   <repositories>
-    <!-- BitCoinJ Nexus for BitCoinJ -->
-    <repository>
-      <id>bitcoinj-snapshot</id>
-      <snapshots/>
-      <url>http://nexus.bitcoinj.org/content/repositories/snapshots</url>
-    </repository>
-    <repository>
-      <id>bitcoinj-releases</id>
-      <snapshots/>
-      <url>http://nexus.bitcoinj.org/content/repositories/releases</url>
-    </repository>
     <!-- Provide the latest Spring releases -->
     <repository>
       <id>springframework-milestone</id>
@@ -421,29 +411,16 @@
         <version>${dropwizard.version}</version>
       </dependency>
 
-      <!-- Jersey core -->
-      <!--<dependency>-->
-        <!--<groupId>com.sun.jersey</groupId>-->
-        <!--<artifactId>jersey-core</artifactId>-->
-        <!--<version>1.13</version>-->
-      <!--</dependency>-->
-
       <!-- HAL Builder provides resource representation -->
       <dependency>
         <groupId>com.theoryinpractise</groupId>
-        <artifactId>halbuilder</artifactId>
-        <version>1.0.5</version>
-        <exclusions>
-          <!-- Jackson version interferes with Dropwizard -->
-          <exclusion>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-          </exclusion>
-        </exclusions>
+        <artifactId>halbuilder-core</artifactId>
+        <version>${halbuilder.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.theoryinpractise</groupId>
+        <artifactId>halbuilder-api</artifactId>
+        <version>${halbuilder.version}</version>
       </dependency>
 
       <!-- Google Guava for low level utilities -->

@@ -1,58 +1,68 @@
 package org.multibit.mbm.interfaces.rest.resources;
 
 import com.google.common.base.Optional;
+import com.theoryinpractise.halbuilder.api.Representation;
 import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
-import org.multibit.mbm.interfaces.rest.api.response.hal.BaseBridge;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.*;
 import java.net.URI;
 
 /**
- * <p>Abstract base class to provide the following to subclasses:</p>
+ * <p>Abstract base class to provide the following to resources:</p>
  * <ul>
- * <li>Provision of common methods</li>
+ * <li>Provision of common methods dealing with REST representations within HTTP</li>
  * </ul>
- * <p><code>E</code> is the primary entity</p>
- * <p><code>C</code> is the primary entity in a suitable collection</p>
  *
  * @since 0.0.1
  *         
  */
 public abstract class BaseResource {
 
-  // TODO Verify thread safety
   @Context
   protected UriInfo uriInfo;
 
-  // TODO Verify thread safety
   @Context
   protected HttpHeaders httpHeaders;
 
   /**
-   * @param bridge The bridge for the entity
-   * @param entity The entity
+   * @param representation The representation for the entity
+   *
    * @return A configured HTTP 200 OK response
    */
-  protected <T> Response ok(BaseBridge<T> bridge,T entity) {
+  protected Response ok(Representation representation) {
     MediaType acceptedMediaType = getAcceptedMediaType(httpHeaders);
 
-    String body = bridge.toResource(entity).renderContent(acceptedMediaType.toString());
+    String body = representation.toString(acceptedMediaType.toString());
 
     return Response.ok().type(acceptedMediaType).entity(body).build();
   }
 
   /**
-   * @param bridge The bridge for the entity
-   * @param entity The entity
+   * @param representation The representation for the entity
+   *
    * @return A configured HTTP 201 CREATED response
    */
-  protected <T> Response created(BaseBridge<T> bridge,T entity, URI location) {
+  protected Response created(Representation representation, URI location) {
     MediaType acceptedMediaType = getAcceptedMediaType(httpHeaders);
 
-    String body = bridge.toResource(entity).renderContent(acceptedMediaType.toString());
+    String body = representation.toString(acceptedMediaType.toString());
 
     return Response.created(location).type(acceptedMediaType).entity(body).build();
+  }
+
+  /**
+   * @return An exception covering a HTTP BAD_REQUEST
+   */
+  protected WebApplicationException badRequest() {
+    return new WebApplicationException(Response.Status.BAD_REQUEST);
+  }
+
+  /**
+   * @return An exception covering a HTTP NOT_FOUND
+   */
+  protected WebApplicationException notFound() {
+    return new WebApplicationException(Response.Status.NOT_FOUND);
   }
 
   /**
@@ -81,4 +91,7 @@ public abstract class BaseResource {
     return accepted.get();
   }
 
+  protected URI self() {
+    return uriInfo.getRequestUri();
+  }
 }

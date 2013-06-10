@@ -1,24 +1,26 @@
-{"_links":{
-  "self":{
-    "href":"http://localhost:8080/user"
+{"_links": {
+  "self": {
+    "href": "/carts"
   }
-}, "_embedded":{
-  "http://localhost:8080/user/1":{
-    "_links":{
-      "http://localhost:8080/user/1 self":{
-        "href":"http://localhost:8080/user/1"
-      }
+}, "_embedded": {
+  "/carts": [
+    {
+      "_links": {
+        "self": {
+          "href": "/carts/1"
+        }
+      },
+      "id": 1,
+      "name": null
     },
-    "id":1,
-    "name":null
-  },
-  "http://localhost:8080/user/2":{
-    "_links":{
-      "http://localhost:8080/user/2 self":{
-        "href":"http://localhost:8080/user/2"
-      }
-    },
-    "id":2,
-    "name":null
-  }
+    {
+      "_links": {
+        "self": {
+          "href": "/carts/2"
+        }
+      },
+      "id": 2,
+      "name": null
+    }
+  ]
 }}

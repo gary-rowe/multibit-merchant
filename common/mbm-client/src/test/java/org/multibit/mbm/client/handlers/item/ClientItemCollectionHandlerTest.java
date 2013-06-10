@@ -3,7 +3,7 @@ package org.multibit.mbm.client.handlers.item;
 import org.junit.Test;
 import org.multibit.mbm.client.PublicMerchantClient;
 import org.multibit.mbm.client.handlers.BaseHandlerTest;
-import org.multibit.mbm.model.ClientItem;
+import org.multibit.mbm.interfaces.rest.api.item.ItemDto;
 import org.multibit.mbm.testing.FixtureAsserts;
 
 import java.net.URI;
@@ -27,7 +27,7 @@ public class ClientItemCollectionHandlerTest extends BaseHandlerTest {
     );
 
     // Act
-    List<ClientItem> items = PublicMerchantClient
+    List<ItemDto> items = PublicMerchantClient
       .newInstance(locale)
       .items()
       .retrievePromotionalItemsByPage(0,1);

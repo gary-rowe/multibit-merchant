@@ -2,14 +2,14 @@ package org.multibit.mbm.client.handlers.user;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import com.theoryinpractise.halbuilder.spi.ReadableResource;
-import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
-import org.multibit.mbm.interfaces.rest.api.request.user.WebFormRegistrationRequest;
-import org.multibit.mbm.interfaces.rest.auth.Authority;
-import org.multibit.mbm.interfaces.rest.auth.webform.WebFormClientRegistration;
+import com.theoryinpractise.halbuilder.api.ReadableRepresentation;
 import org.multibit.mbm.client.HalHmacResourceFactory;
 import org.multibit.mbm.client.handlers.BaseHandler;
-import org.multibit.mbm.model.ClientUser;
+import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
+import org.multibit.mbm.interfaces.rest.api.user.UserDto;
+import org.multibit.mbm.interfaces.rest.api.user.WebFormRegistrationDto;
+import org.multibit.mbm.interfaces.rest.auth.Authority;
+import org.multibit.mbm.interfaces.rest.auth.webform.WebFormClientRegistration;
 
 import java.util.Locale;
 import java.util.Map;
@@ -39,12 +39,12 @@ public class PublicUserHandler extends BaseHandler {
    *
    * @return A matching user
    */
-  public Optional<ClientUser> registerWithWebForm(WebFormClientRegistration registration) {
+  public Optional<UserDto> registerWithWebForm(WebFormClientRegistration registration) {
 
     // Sanity check
     Preconditions.checkNotNull(registration);
 
-    WebFormRegistrationRequest entity = new WebFormRegistrationRequest();
+    WebFormRegistrationDto entity = new WebFormRegistrationDto();
     entity.setUsername(registration.getUsername());
     entity.setPasswordDigest(registration.getPasswordDigest());
 
@@ -57,13 +57,13 @@ public class PublicUserHandler extends BaseHandler {
       .post(String.class);
 
     // Read the HAL
-    ReadableResource rr = unmarshalHal(hal);
+    ReadableRepresentation rr = unmarshalHal(hal);
 
-    Map<String, Optional<Object>> properties = rr.getProperties();
+    Map<String, Object> properties = rr.getProperties();
 
-    ClientUser clientUser = new ClientUser();
-    String apiKey = (String) properties.get("api_key").get();
-    String secretKey = (String) properties.get("secret_key").get();
+    UserDto clientUser = new UserDto();
+    String apiKey = (String) properties.get("api_key");
+    String secretKey = (String) properties.get("secret_key");
 
     if ("".equals(apiKey) || "".equals(secretKey)) {
       return Optional.absent();
@@ -83,7 +83,7 @@ public class PublicUserHandler extends BaseHandler {
    *
    * @return A matching user
    */
-  public Optional<ClientUser> registerAnonymously() {
+  public Optional<UserDto> registerAnonymously() {
 
     // TODO Replace "magic string" with auto-discover based on link rel
     String path = String.format("/client/user/anonymous");
@@ -93,13 +93,13 @@ public class PublicUserHandler extends BaseHandler {
       .post(String.class);
 
     // Read the HAL
-    ReadableResource rr = unmarshalHal(hal);
+    ReadableRepresentation rr = unmarshalHal(hal);
 
-    Map<String, Optional<Object>> properties = rr.getProperties();
+    Map<String, Object> properties = rr.getProperties();
 
-    ClientUser clientUser = new ClientUser();
-    String apiKey = (String) properties.get("api_key").get();
-    String secretKey = (String) properties.get("secret_key").get();
+    UserDto clientUser = new UserDto();
+    String apiKey = (String) properties.get("api_key");
+    String secretKey = (String) properties.get("secret_key");
 
     if ("".equals(apiKey) || "".equals(secretKey)) {
       return Optional.absent();

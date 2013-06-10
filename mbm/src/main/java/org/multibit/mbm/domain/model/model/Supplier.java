@@ -1,7 +1,8 @@
 package org.multibit.mbm.domain.model.model;
 
 import com.google.common.collect.Sets;
-import org.multibit.mbm.utils.ObjectUtils;
+import org.multibit.mbm.domain.common.Identifiable;
+import org.multibit.mbm.infrastructure.utils.ObjectUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,7 +18,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "suppliers")
-public class Supplier implements Serializable {
+public class Supplier implements Identifiable, Serializable {
 
   private static final long serialVersionUID = 32324950734295L;
 

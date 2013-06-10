@@ -25,7 +25,7 @@ import org.multibit.mbm.domain.model.model.Role;
 import org.multibit.mbm.domain.model.model.User;
 import org.multibit.mbm.domain.model.model.UserBuilder;
 import org.multibit.mbm.infrastructure.persistence.DatabaseLoader;
-import org.multibit.mbm.domain.repositories.UserDao;
+import org.multibit.mbm.domain.repositories.UserReadService;
 
 import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
@@ -265,11 +265,11 @@ public abstract class BaseJerseyHmacResourceTest extends BaseResourceTest {
    */
   protected User setUpHmacAuthenticator(User user) {
 
-    UserDao userDao = mock(UserDao.class);
-    when(userDao.getByApiKey(user.getApiKey())).thenReturn(Optional.of(user));
+    UserReadService userReadService = mock(UserReadService.class);
+    when(userReadService.getByApiKey(user.getApiKey())).thenReturn(Optional.of(user));
 
     HmacServerAuthenticator authenticator = new HmacServerAuthenticator();
-    authenticator.setUserDao(userDao);
+    authenticator.setUserReadService(userReadService);
 
     addSingleton(new HmacServerRestrictedToProvider<User>(authenticator, "REST"));
 

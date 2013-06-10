@@ -8,7 +8,7 @@ import org.hibernate.type.Type;
 import org.hibernate.usertype.CompositeUserType;
 import org.joda.money.BigMoney;
 import org.joda.money.CurrencyUnit;
-import org.multibit.mbm.utils.ObjectUtils;
+import org.multibit.mbm.infrastructure.utils.ObjectUtils;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

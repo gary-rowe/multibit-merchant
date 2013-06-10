@@ -1,12 +1,12 @@
 {"_links":{
   "self":{
-    "href":"http://localhost:8080/items/promotion?ps=1&pn=1"
+    "href":"/items/promotion?ps=1&pn=1"
   }
 }, "_embedded":{
   "item":{
     "_links":{
       "item self":{
-        "href":"http://localhost:8080/item/0575088893"
+        "href":"/item/0575088893"
       },
       "image_thumbnail_uri":{
         "href":"http://multibit-store.herokuapp.com/images/book.jpg"

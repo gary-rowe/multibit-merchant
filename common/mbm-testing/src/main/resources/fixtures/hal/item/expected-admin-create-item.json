@@ -1,5 +1,5 @@
 {"_links":{
   "self":{
-    "href":"http://localhost:8080/item/1"
+    "href":"/item/1"
   }
 }, "gtin":null, "sku":"0099410672"}

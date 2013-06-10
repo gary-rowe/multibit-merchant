@@ -3,7 +3,8 @@ package org.multibit.mbm.domain.model.model;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import org.multibit.mbm.utils.ObjectUtils;
+import org.multibit.mbm.domain.common.Identifiable;
+import org.multibit.mbm.infrastructure.utils.ObjectUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -19,7 +20,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "carts")
-public class Cart implements Serializable {
+public class Cart implements Identifiable, Serializable {
 
   private static final long serialVersionUID = 38947590321234L;
 

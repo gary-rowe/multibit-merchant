@@ -1,5 +1,5 @@
 {"_links":{
   "self":{
-    "href":"http://localhost:8080/delivery/1"
+    "href":"/delivery/1"
   }
 }, "btcTotal":"0.0000", "localSymbol":"&euro;", "localTotal":"0.00"}

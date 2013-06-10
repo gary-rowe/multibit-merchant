@@ -2,12 +2,12 @@ package org.multibit.mbm.interfaces.rest.resources.cart;
 
 import com.google.common.base.Optional;
 import org.junit.Test;
+import org.multibit.mbm.interfaces.rest.api.cart.PublicCartItemDto;
+import org.multibit.mbm.interfaces.rest.api.cart.PublicUpdateCartDto;
 import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
-import org.multibit.mbm.interfaces.rest.api.request.cart.PublicCartItem;
-import org.multibit.mbm.interfaces.rest.api.request.cart.PublicUpdateCartRequest;
 import org.multibit.mbm.infrastructure.persistence.DatabaseLoader;
-import org.multibit.mbm.domain.repositories.CartDao;
-import org.multibit.mbm.domain.repositories.ItemDao;
+import org.multibit.mbm.domain.repositories.CartReadService;
+import org.multibit.mbm.domain.repositories.ItemReadService;
 import org.multibit.mbm.domain.model.model.Cart;
 import org.multibit.mbm.domain.model.model.Customer;
 import org.multibit.mbm.domain.model.model.Item;
@@ -22,8 +22,8 @@ import static org.mockito.Mockito.when;
 
 public class PublicCartResourceTest extends BaseJerseyHmacResourceTest {
 
-  private final CartDao cartDao=mock(CartDao.class);
-  private final ItemDao itemDao=mock(ItemDao.class);
+  private final CartReadService cartDao=mock(CartReadService.class);
+  private final ItemReadService itemReadService =mock(ItemReadService.class);
 
   private final PublicCartResource testObject=new PublicCartResource();
 
@@ -58,13 +58,13 @@ public class PublicCartResourceTest extends BaseJerseyHmacResourceTest {
     when(cartDao.saveOrUpdate(customerCart)).thenReturn(customerCart);
 
     // Configure Item DAO
-    when(itemDao.getBySKU(book1.getSKU())).thenReturn(Optional.of(book1));
-    when(itemDao.getBySKU(book2.getSKU())).thenReturn(Optional.of(book2));
-    when(itemDao.getBySKU(book3.getSKU())).thenReturn(Optional.of(book3));
-    when(itemDao.getBySKU(book4.getSKU())).thenReturn(Optional.of(book4));
+    when(itemReadService.getBySKU(book1.getSKU())).thenReturn(Optional.of(book1));
+    when(itemReadService.getBySKU(book2.getSKU())).thenReturn(Optional.of(book2));
+    when(itemReadService.getBySKU(book3.getSKU())).thenReturn(Optional.of(book3));
+    when(itemReadService.getBySKU(book4.getSKU())).thenReturn(Optional.of(book4));
 
     testObject.setCartDao(cartDao);
-    testObject.setItemDao(itemDao);
+    testObject.setItemReadService(itemReadService);
 
     // Configure resources
     addSingleton(testObject);
@@ -88,11 +88,11 @@ public class PublicCartResourceTest extends BaseJerseyHmacResourceTest {
     // Starting condition is Customer has {book1: 1, book2: 2}
     // Ending condition is Customer has {book1: 0, book2: 2, book3: 3}
 
-    PublicUpdateCartRequest updateCartRequest = new PublicUpdateCartRequest();
+    PublicUpdateCartDto updateCartRequest = new PublicUpdateCartDto();
     // Add a few new items
-    updateCartRequest.getCartItems().add(new PublicCartItem("0316184136",3));
+    updateCartRequest.getCartItems().add(new PublicCartItemDto("0316184136",3));
     // Remove by setting to zero
-    updateCartRequest.getCartItems().add(new PublicCartItem("0099410672",0));
+    updateCartRequest.getCartItems().add(new PublicCartItemDto("0099410672",0));
 
     String actualResponse = configureAsClient(PublicCartResource.class)
       .accept(HalMediaType.APPLICATION_HAL_JSON)

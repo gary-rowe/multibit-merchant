@@ -1,21 +1,23 @@
 package org.multibit.mbm.interfaces.rest.resources.purchaseorder;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.Maps;
+import com.theoryinpractise.halbuilder.api.Representation;
 import com.yammer.dropwizard.jersey.caching.CacheControl;
 import com.yammer.metrics.annotation.Timed;
-import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
-import org.multibit.mbm.interfaces.rest.api.request.delivery.SupplierDeliveryItem;
-import org.multibit.mbm.interfaces.rest.api.request.delivery.SupplierUpdateDeliveryRequest;
-import org.multibit.mbm.interfaces.rest.api.response.hal.delivery.SupplierDeliveryBridge;
-import org.multibit.mbm.interfaces.rest.auth.Authority;
-import org.multibit.mbm.interfaces.rest.auth.annotation.RestrictedTo;
-import org.multibit.mbm.domain.repositories.DeliveryDao;
-import org.multibit.mbm.domain.repositories.ItemDao;
 import org.multibit.mbm.domain.model.model.Delivery;
 import org.multibit.mbm.domain.model.model.Item;
 import org.multibit.mbm.domain.model.model.User;
+import org.multibit.mbm.domain.repositories.DeliveryReadService;
+import org.multibit.mbm.domain.repositories.ItemReadService;
+import org.multibit.mbm.interfaces.rest.api.delivery.SupplierDeliveryItemDto;
+import org.multibit.mbm.interfaces.rest.api.delivery.SupplierUpdateDeliveryDto;
+import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
+import org.multibit.mbm.interfaces.rest.auth.Authority;
+import org.multibit.mbm.interfaces.rest.auth.annotation.RestrictedTo;
+import org.multibit.mbm.interfaces.rest.common.Representations;
+import org.multibit.mbm.interfaces.rest.common.ResourceAsserts;
 import org.multibit.mbm.interfaces.rest.resources.BaseResource;
-import org.multibit.mbm.interfaces.rest.resources.ResourceAsserts;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -40,10 +42,10 @@ import java.util.concurrent.TimeUnit;
 public class SupplierPurchaseOrderResource extends BaseResource {
 
   @Resource(name = "hibernateDeliveryDao")
-  DeliveryDao deliveryDao;
+  DeliveryReadService deliveryReadService;
 
   @Resource(name = "hibernateItemDao")
-  ItemDao itemDao;
+  ItemReadService itemReadService;
 
   /**
    * Provides this Supplier's Delivery
@@ -72,9 +74,9 @@ public class SupplierPurchaseOrderResource extends BaseResource {
     Delivery delivery = supplierUser.getSupplier().getDeliveries().iterator().next();
 
     // Provide a representation to the client
-    SupplierDeliveryBridge bridge = new SupplierDeliveryBridge(uriInfo, Optional.of(supplierUser));
+    Representation representation = Representations.asDetail(self(), delivery, Maps.<String, String>newHashMap());
 
-    return ok(bridge, delivery);
+    return ok(representation);
 
   }
 
@@ -90,7 +92,7 @@ public class SupplierPurchaseOrderResource extends BaseResource {
   public Response update(
     @RestrictedTo({Authority.ROLE_SUPPLIER})
     User supplierUser,
-    SupplierUpdateDeliveryRequest updateDeliveryRequest) {
+    SupplierUpdateDeliveryDto updateDeliveryRequest) {
 
     // Retrieve the delivery
     Delivery delivery = supplierUser.getSupplier().getDeliveries().iterator().next();
@@ -99,12 +101,12 @@ public class SupplierPurchaseOrderResource extends BaseResource {
     apply(updateDeliveryRequest, delivery);
 
     // Persist the updated delivery
-    delivery = deliveryDao.saveOrUpdate(delivery);
+    delivery = deliveryReadService.saveOrUpdate(delivery);
 
     // Provide a representation to the client
-    SupplierDeliveryBridge bridge = new SupplierDeliveryBridge(uriInfo, Optional.of(supplierUser));
+    Representation representation = Representations.asDetail(self(), delivery, Maps.<String, String>newHashMap());
 
-    return ok(bridge, delivery);
+    return ok(representation);
 
   }
 
@@ -114,24 +116,24 @@ public class SupplierPurchaseOrderResource extends BaseResource {
    * @param updateRequest The update request containing the changes
    * @param entity        The entity to which these changes will be applied
    */
-  private void apply(SupplierUpdateDeliveryRequest updateRequest, Delivery entity) {
+  private void apply(SupplierUpdateDeliveryDto updateRequest, Delivery entity) {
 
-    for (SupplierDeliveryItem supplierDeliveryItem : updateRequest.getDeliveryItems()) {
+    for (SupplierDeliveryItemDto supplierDeliveryItem : updateRequest.getDeliveryItems()) {
       ResourceAsserts.assertNotNull(supplierDeliveryItem.getSKU(), "sku");
       ResourceAsserts.assertPositive(supplierDeliveryItem.getQuantity(), "quantity");
 
-      Optional<Item> item = itemDao.getBySKU(supplierDeliveryItem.getSKU());
+      Optional<Item> item = itemReadService.getBySKU(supplierDeliveryItem.getSKU());
       ResourceAsserts.assertPresent(item, "item");
 
       entity.setItemQuantity(item.get(), supplierDeliveryItem.getQuantity());
     }
   }
 
-  public void setDeliveryDao(DeliveryDao deliveryDao) {
-    this.deliveryDao = deliveryDao;
+  public void setDeliveryReadService(DeliveryReadService deliveryReadService) {
+    this.deliveryReadService = deliveryReadService;
   }
 
-  public void setItemDao(ItemDao itemDao) {
-    this.itemDao = itemDao;
+  public void setItemReadService(ItemReadService itemReadService) {
+    this.itemReadService = itemReadService;
   }
 }

@@ -75,7 +75,7 @@
       <artifactId>mbm-hal</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
-    <!-- Provides client support and allows integration testing -->
+    <!-- Provides REST API for clients -->
     <dependency>
       <groupId>org.multibit.merchant</groupId>
       <artifactId>mbm-client</artifactId>
@@ -196,8 +196,11 @@
     <!-- HAL provides the resource representation -->
     <dependency>
       <groupId>com.theoryinpractise</groupId>
-      <artifactId>halbuilder</artifactId>
-      <version>1.0.5</version>
+      <artifactId>halbuilder-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.theoryinpractise</groupId>
+      <artifactId>halbuilder-api</artifactId>
     </dependency>
 
     <!-- Avoid Jakarta commons logging -->

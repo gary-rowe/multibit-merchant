@@ -1,0 +1,58 @@
+{"_links": {
+  "self": {
+    "href": "/cart"
+  },
+  "customer": {
+    "href": "/customer"
+  }
+}, "cartItems": [
+  {
+    "quantity": 1,
+    "index": 0,
+    "priceSubtotal": "BTC 1.100000000000",
+    "taxSubtotal": "BTC 0.0000000000000",
+    "cartItemSubtotal": "BTC 1.100000000000",
+    "item": {
+      "id": 1,
+      "sku": "0099410672",
+      "gtin": null,
+      "price": "BTC 1.100000000000",
+      "taxRate": "0.0",
+      "optionalProperties": {
+        "genre": "Sci-Fi",
+        "summary": "'A brilliant patchwork of code-breaking mathematicians and their descendants who are striving to create a data haven in the Philippines...trust me on this one' Guardian",
+        "author": "Neal Stephenson",
+        "title": "Cryptonomicon",
+        "image_thumbnail_uri": "http://multibit-store.herokuapp.com/images/book.jpg"
+      }
+    },
+    "id": 0
+  },
+  {
+    "quantity": 2,
+    "index": 1,
+    "priceSubtotal": "BTC 8.800000000000",
+    "taxSubtotal": "BTC 0.0000000000000",
+    "cartItemSubtotal": "BTC 8.800000000000",
+    "item": {
+      "id": 2,
+      "sku": "0575088893",
+      "gtin": "978-0575088894",
+      "price": "BTC 4.400000000000",
+      "taxRate": "0.0",
+      "optionalProperties": {
+        "genre": "Sci-Fi",
+        "summary": "The most exciting SF debut of the last five years - a star to stand alongside Alistair Reynolds and Richard Morgan.",
+        "author": "Hannu Rajaniemi",
+        "title": "The Quantum Thief",
+        "image_thumbnail_uri": "http://multibit-store.herokuapp.com/images/book.jpg",
+        "description": "<p>The Quantum Thief is a dazzling hard SF novel set in the solar system of the far future - a heist novel peopled by bizarre post-humans but powered by very human motives of betrayal, revenge and jealousy. It is a stunning debut.</p><br/><p>Jean le Flambeur is a post-human criminal, mind burglar, confidence artist and trickster. His origins are shrouded in mystery, but his exploits are known throughout the Heterarchy - from breaking into the vast Zeusbrains of the Inner System to steal their thoughts, to stealing rare Earth antiques from the aristocrats of the Moving Cities of Mars.</p><p>Except that Jean made one mistake. Now he is condemned to play endless variations of a game-theoretic riddle in the vast virtual jail of the Axelrod Archons - the Dilemma Prison - against countless copies of himself.</p><p>Jean's routine of death, defection and cooperation is upset by the arrival of Mieli and her spidership, Perhonen. She offers him a chance to win back his freedom and the powers of his old self - in exchange for finishing the one heist he never quite managed...</p>",
+        "format": "Paperback",
+        "size": "12.9 x 2.1 x 19.6 cm",
+        "page_count": "336",
+        "publisher": "Gollancz (1 Nov 2011)"
+      }
+    },
+    "id": 1
+  }
+], "currencyCode": "BTC", "currencySymbol": "Ƀ", "empty": false, "id": 1, "itemTotal": "2", "priceTotal": null, "quantityTotal": "3"}

@@ -3,16 +3,18 @@ package org.multibit.mbm.interfaces.rest.resources.cart;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import org.junit.Test;
+import org.multibit.mbm.domain.common.pagination.PaginatedList;
+import org.multibit.mbm.domain.common.pagination.PaginatedLists;
+import org.multibit.mbm.domain.repositories.CartReadService;
+import org.multibit.mbm.interfaces.rest.api.cart.AdminUpdateCartDto;
+import org.multibit.mbm.interfaces.rest.api.cart.PublicCartItemDto;
 import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
-import org.multibit.mbm.interfaces.rest.api.request.cart.AdminUpdateCartRequest;
-import org.multibit.mbm.interfaces.rest.api.request.cart.PublicCartItem;
 import org.multibit.mbm.domain.model.model.Cart;
 import org.multibit.mbm.domain.model.model.Item;
 import org.multibit.mbm.domain.model.model.Role;
 import org.multibit.mbm.domain.model.model.User;
 import org.multibit.mbm.infrastructure.persistence.DatabaseLoader;
-import org.multibit.mbm.domain.repositories.CartDao;
-import org.multibit.mbm.domain.repositories.ItemDao;
+import org.multibit.mbm.domain.repositories.ItemReadService;
 import org.multibit.mbm.testing.BaseJerseyHmacResourceTest;
 import org.multibit.mbm.testing.FixtureAsserts;
 
@@ -24,8 +26,8 @@ import static org.mockito.Mockito.when;
 
 public class AdminCartResourceTest extends BaseJerseyHmacResourceTest {
 
-  private final CartDao cartDao=mock(CartDao.class);
-  private final ItemDao itemDao=mock(ItemDao.class);
+  private final CartReadService cartDao=mock(CartReadService.class);
+  private final ItemReadService itemReadService =mock(ItemReadService.class);
 
   private final AdminCartResource testObject=new AdminCartResource();
 
@@ -76,22 +78,26 @@ public class AdminCartResourceTest extends BaseJerseyHmacResourceTest {
     List<Cart> cartList1 = Lists.newArrayList(aliceCart);
     List<Cart> cartList2 = Lists.newArrayList(bobCart);
 
+    PaginatedList<Cart> page1 = PaginatedLists.newPaginatedArrayList(1, 2, cartList1);
+    PaginatedList<Cart> page2 = PaginatedLists.newPaginatedArrayList(2, 2, cartList1);
+
     // Configure Cart DAO
+
     when(cartDao.getById(aliceCart.getId())).thenReturn(Optional.of(aliceCart));
     when(cartDao.getById(bobCart.getId())).thenReturn(Optional.of(bobCart));
-    when(cartDao.getAllByPage(1, 0)).thenReturn(Lists.newLinkedList(cartList1));
-    when(cartDao.getAllByPage(1, 1)).thenReturn(Lists.newLinkedList(cartList2));
+    when(cartDao.getPaginatedList(1, 0)).thenReturn(page1);
+    when(cartDao.getPaginatedList(1, 1)).thenReturn(page2);
     when(cartDao.saveOrUpdate(aliceCart)).thenReturn(aliceCart);
     when(cartDao.saveOrUpdate(bobCart)).thenReturn(bobCart);
 
     // Configure Item DAO
-    when(itemDao.getBySKU(book1.getSKU())).thenReturn(Optional.of(book1));
-    when(itemDao.getBySKU(book2.getSKU())).thenReturn(Optional.of(book2));
-    when(itemDao.getBySKU(book3.getSKU())).thenReturn(Optional.of(book3));
-    when(itemDao.getBySKU(book4.getSKU())).thenReturn(Optional.of(book4));
+    when(itemReadService.getBySKU(book1.getSKU())).thenReturn(Optional.of(book1));
+    when(itemReadService.getBySKU(book2.getSKU())).thenReturn(Optional.of(book2));
+    when(itemReadService.getBySKU(book3.getSKU())).thenReturn(Optional.of(book3));
+    when(itemReadService.getBySKU(book4.getSKU())).thenReturn(Optional.of(book4));
 
     testObject.setCartDao(cartDao);
-    testObject.setItemDao(itemDao);
+    testObject.setItemReadService(itemReadService);
 
     // Configure resources
     addSingleton(testObject);
@@ -124,12 +130,12 @@ public class AdminCartResourceTest extends BaseJerseyHmacResourceTest {
     // Starting condition is Alice has {book1: 1, book2: 2}
     // Ending condition is Alice has {book1: 0, book2: 2, book3: 3}
 
-    AdminUpdateCartRequest updateCartRequest = new AdminUpdateCartRequest();
+    AdminUpdateCartDto updateCartRequest = new AdminUpdateCartDto();
     updateCartRequest.setId(1L);
     // Add a few new items
-    updateCartRequest.getCartItems().add(new PublicCartItem("0316184136",3));
+    updateCartRequest.getCartItems().add(new PublicCartItemDto("0316184136",3));
     // Remove by setting to zero
-    updateCartRequest.getCartItems().add(new PublicCartItem("0099410672",0));
+    updateCartRequest.getCartItems().add(new PublicCartItemDto("0099410672",0));
 
     String actualResponse = configureAsClient("/admin/carts/1")
       .accept(HalMediaType.APPLICATION_HAL_JSON)

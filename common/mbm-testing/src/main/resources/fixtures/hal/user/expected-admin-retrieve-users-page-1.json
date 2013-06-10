@@ -1,12 +1,12 @@
 {"_links":{
   "self":{
-    "href":"http://localhost:8080/admin/user?ps=1&pn=0"
+    "href":"/admin/user?ps=1&pn=0"
   }
 }, "_embedded":{
-  "http://localhost:8080/user/1":{
+  "/user/1":{
     "_links":{
-      "http://localhost:8080/user/1 self":{
-        "href":"http://localhost:8080/admin/user/1"
+      "/user/1 self":{
+        "href":"/admin/user/1"
       }
     },
     "api_key":"alice123",

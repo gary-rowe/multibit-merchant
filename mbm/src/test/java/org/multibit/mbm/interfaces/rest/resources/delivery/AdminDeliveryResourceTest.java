@@ -1,16 +1,17 @@
 package org.multibit.mbm.interfaces.rest.resources.delivery;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.junit.Test;
-import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
-import org.multibit.mbm.interfaces.rest.api.request.delivery.AdminUpdateDeliveryRequest;
-import org.multibit.mbm.interfaces.rest.api.request.delivery.SupplierDeliveryItem;
+import org.multibit.mbm.domain.common.pagination.PaginatedList;
+import org.multibit.mbm.domain.common.pagination.PaginatedLists;
 import org.multibit.mbm.domain.model.model.*;
+import org.multibit.mbm.domain.repositories.DeliveryReadService;
+import org.multibit.mbm.domain.repositories.ItemReadService;
 import org.multibit.mbm.infrastructure.persistence.DatabaseLoader;
-import org.multibit.mbm.domain.repositories.DeliveryDao;
-import org.multibit.mbm.domain.repositories.ItemDao;
+import org.multibit.mbm.interfaces.rest.api.delivery.AdminUpdateDeliveryDto;
+import org.multibit.mbm.interfaces.rest.api.delivery.SupplierDeliveryItemDto;
+import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
 import org.multibit.mbm.testing.BaseJerseyHmacResourceTest;
 import org.multibit.mbm.testing.FixtureAsserts;
 
@@ -22,8 +23,8 @@ import static org.mockito.Mockito.when;
 
 public class AdminDeliveryResourceTest extends BaseJerseyHmacResourceTest {
 
-  private final DeliveryDao deliveryDao=mock(DeliveryDao.class);
-  private final ItemDao itemDao=mock(ItemDao.class);
+  private final DeliveryReadService deliveryReadService =mock(DeliveryReadService.class);
+  private final ItemReadService itemReadService =mock(ItemReadService.class);
 
   private final AdminDeliveryResource testObject=new AdminDeliveryResource();
 
@@ -82,21 +83,25 @@ public class AdminDeliveryResourceTest extends BaseJerseyHmacResourceTest {
     Set<Delivery> samDeliveries = Sets.newHashSet(samUser.getSupplier().getDeliveries());
 
     // Configure Delivery DAO
-    when(deliveryDao.getById(steveDelivery1.getId())).thenReturn(Optional.of(steveDelivery1));
-    when(deliveryDao.getById(samDelivery1.getId())).thenReturn(Optional.of(samDelivery1));
-    when(deliveryDao.getAllByPage(1, 0)).thenReturn(Lists.newLinkedList(steveDeliveries));
-    when(deliveryDao.getAllByPage(1, 1)).thenReturn(Lists.newLinkedList(samDeliveries));
-    when(deliveryDao.saveOrUpdate(steveDelivery1)).thenReturn(steveDelivery1);
-    when(deliveryDao.saveOrUpdate(samDelivery1)).thenReturn(samDelivery1);
+
+    PaginatedList<Delivery> page1 = PaginatedLists.newPaginatedArrayList(1, 2, steveDeliveries);
+    PaginatedList<Delivery> page2 = PaginatedLists.newPaginatedArrayList(2, 2, samDeliveries);
+
+    when(deliveryReadService.getById(steveDelivery1.getId())).thenReturn(Optional.of(steveDelivery1));
+    when(deliveryReadService.getById(samDelivery1.getId())).thenReturn(Optional.of(samDelivery1));
+    when(deliveryReadService.getPaginatedList(1, 0)).thenReturn(page1);
+    when(deliveryReadService.getPaginatedList(1, 1)).thenReturn(page2);
+    when(deliveryReadService.saveOrUpdate(steveDelivery1)).thenReturn(steveDelivery1);
+    when(deliveryReadService.saveOrUpdate(samDelivery1)).thenReturn(samDelivery1);
 
     // Configure Item DAO
-    when(itemDao.getBySKU(book1.getSKU())).thenReturn(Optional.of(book1));
-    when(itemDao.getBySKU(book2.getSKU())).thenReturn(Optional.of(book2));
-    when(itemDao.getBySKU(book3.getSKU())).thenReturn(Optional.of(book3));
-    when(itemDao.getBySKU(book4.getSKU())).thenReturn(Optional.of(book4));
+    when(itemReadService.getBySKU(book1.getSKU())).thenReturn(Optional.of(book1));
+    when(itemReadService.getBySKU(book2.getSKU())).thenReturn(Optional.of(book2));
+    when(itemReadService.getBySKU(book3.getSKU())).thenReturn(Optional.of(book3));
+    when(itemReadService.getBySKU(book4.getSKU())).thenReturn(Optional.of(book4));
 
-    testObject.setDeliveryDao(deliveryDao);
-    testObject.setItemDao(itemDao);
+    testObject.setDeliveryReadService(deliveryReadService);
+    testObject.setItemReadService(itemReadService);
 
     // Configure resources
     addSingleton(testObject);
@@ -129,12 +134,12 @@ public class AdminDeliveryResourceTest extends BaseJerseyHmacResourceTest {
     // Starting condition is Alice has {book1: 1, book2: 2}
     // Ending condition is Alice has {book1: 0, book2: 2, book3: 3}
 
-    AdminUpdateDeliveryRequest updateDeliveryRequest = new AdminUpdateDeliveryRequest();
+    AdminUpdateDeliveryDto updateDeliveryRequest = new AdminUpdateDeliveryDto();
     updateDeliveryRequest.setId(1L);
     // Add a few new items
-    updateDeliveryRequest.getDeliveryItems().add(new SupplierDeliveryItem("0316184136",3));
+    updateDeliveryRequest.getDeliveryItems().add(new SupplierDeliveryItemDto("0316184136",3));
     // Remove by setting to zero
-    updateDeliveryRequest.getDeliveryItems().add(new SupplierDeliveryItem("0099410672",0));
+    updateDeliveryRequest.getDeliveryItems().add(new SupplierDeliveryItemDto("0099410672",0));
 
     String actualResponse = configureAsClient("/admin/deliveries/1")
       .accept(HalMediaType.APPLICATION_HAL_JSON)

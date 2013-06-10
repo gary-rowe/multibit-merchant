@@ -1,28 +1,29 @@
 package org.multibit.mbm.interfaces.rest.resources.delivery;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.Maps;
+import com.theoryinpractise.halbuilder.api.Representation;
 import com.yammer.dropwizard.jersey.caching.CacheControl;
 import com.yammer.metrics.annotation.Timed;
-import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
-import org.multibit.mbm.interfaces.rest.api.request.delivery.AdminUpdateDeliveryRequest;
-import org.multibit.mbm.interfaces.rest.api.request.delivery.SupplierDeliveryItem;
-import org.multibit.mbm.interfaces.rest.api.response.hal.delivery.AdminDeliveryBridge;
-import org.multibit.mbm.interfaces.rest.api.response.hal.delivery.AdminDeliveryCollectionBridge;
-import org.multibit.mbm.interfaces.rest.auth.Authority;
-import org.multibit.mbm.interfaces.rest.auth.annotation.RestrictedTo;
-import org.multibit.mbm.domain.repositories.DeliveryDao;
-import org.multibit.mbm.domain.repositories.ItemDao;
+import org.multibit.mbm.domain.common.pagination.PaginatedList;
 import org.multibit.mbm.domain.model.model.Delivery;
 import org.multibit.mbm.domain.model.model.Item;
 import org.multibit.mbm.domain.model.model.User;
+import org.multibit.mbm.domain.repositories.DeliveryReadService;
+import org.multibit.mbm.domain.repositories.ItemReadService;
+import org.multibit.mbm.interfaces.rest.api.delivery.AdminUpdateDeliveryDto;
+import org.multibit.mbm.interfaces.rest.api.delivery.SupplierDeliveryItemDto;
+import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
+import org.multibit.mbm.interfaces.rest.auth.Authority;
+import org.multibit.mbm.interfaces.rest.auth.annotation.RestrictedTo;
+import org.multibit.mbm.interfaces.rest.common.Representations;
+import org.multibit.mbm.interfaces.rest.common.ResourceAsserts;
 import org.multibit.mbm.interfaces.rest.resources.BaseResource;
-import org.multibit.mbm.interfaces.rest.resources.ResourceAsserts;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -41,19 +42,19 @@ import java.util.concurrent.TimeUnit;
 public class AdminDeliveryResource extends BaseResource {
 
   @Resource(name = "hibernateDeliveryDao")
-  DeliveryDao deliveryDao;
+  DeliveryReadService deliveryReadService;
 
   @Resource(name = "hibernateItemDao")
-  ItemDao itemDao;
+  ItemReadService itemReadService;
 
   /**
-   * Provide a paged response of all Deliverys in the system
+   * Provide a paged response of all Deliveries in the system
    *
    * @param adminUser     A User with administrator rights
    * @param rawPageSize   The unvalidated page size
    * @param rawPageNumber The unvalidated page number
    *
-   * @return A response containing a paged list of all Deliverys
+   * @return A response containing a paged list of all Deliveries
    */
   @GET
   @Timed
@@ -68,12 +69,12 @@ public class AdminDeliveryResource extends BaseResource {
     int pageSize = Integer.valueOf(rawPageSize.get());
     int pageNumber = Integer.valueOf(rawPageNumber.get());
 
-    List<Delivery> deliveries = deliveryDao.getAllByPage(pageSize, pageNumber);
+    PaginatedList<Delivery> deliveries = deliveryReadService.getPaginatedList(pageSize, pageNumber);
 
     // Provide a representation to the client
-    AdminDeliveryCollectionBridge bridge = new AdminDeliveryCollectionBridge(uriInfo, Optional.of(adminUser));
+    Representation representation = Representations.asPaginatedList(self(), "deliveries", deliveries, "deliveries/{id}");
 
-    return ok(bridge, deliveries);
+    return ok(representation);
 
   }
 
@@ -91,10 +92,10 @@ public class AdminDeliveryResource extends BaseResource {
     @RestrictedTo({Authority.ROLE_ADMIN})
     User adminUser,
     @PathParam("deliveryId") Long deliveryId,
-    AdminUpdateDeliveryRequest updateDeliveryRequest) {
+    AdminUpdateDeliveryDto updateDeliveryRequest) {
 
     // Retrieve the delivery
-    Optional<Delivery> delivery = deliveryDao.getById(deliveryId);
+    Optional<Delivery> delivery = deliveryReadService.getById(deliveryId);
     ResourceAsserts.assertPresent(delivery,"delivery");
 
     // Verify and apply any changes to the Delivery
@@ -102,12 +103,12 @@ public class AdminDeliveryResource extends BaseResource {
     apply(updateDeliveryRequest,persistentDelivery);
 
     // Persist the updated delivery
-    persistentDelivery = deliveryDao.saveOrUpdate(persistentDelivery);
+    persistentDelivery = deliveryReadService.saveOrUpdate(persistentDelivery);
 
     // Provide a representation to the client
-    AdminDeliveryBridge bridge = new AdminDeliveryBridge(uriInfo, Optional.of(adminUser));
+    Representation representation = Representations.asDetail(self(), persistentDelivery, Maps.<String, String>newHashMap());
 
-    return ok(bridge, persistentDelivery);
+    return ok(representation);
 
   }
 
@@ -116,24 +117,24 @@ public class AdminDeliveryResource extends BaseResource {
    * @param updateRequest The update request containing the changes
    * @param entity        The entity to which these changes will be applied
    */
-  private void apply(AdminUpdateDeliveryRequest updateRequest, Delivery entity) {
+  private void apply(AdminUpdateDeliveryDto updateRequest, Delivery entity) {
 
-    for (SupplierDeliveryItem supplierDeliveryItem : updateRequest.getDeliveryItems()) {
+    for (SupplierDeliveryItemDto supplierDeliveryItem : updateRequest.getDeliveryItems()) {
       ResourceAsserts.assertNotNull(supplierDeliveryItem.getSKU(), "id");
       ResourceAsserts.assertPositive(supplierDeliveryItem.getQuantity(), "quantity");
 
-      Optional<Item> item = itemDao.getBySKU(supplierDeliveryItem.getSKU());
+      Optional<Item> item = itemReadService.getBySKU(supplierDeliveryItem.getSKU());
       ResourceAsserts.assertPresent(item,"item");
 
       entity.setItemQuantity(item.get(),supplierDeliveryItem.getQuantity());
     }
   }
 
-  public void setDeliveryDao(DeliveryDao deliveryDao) {
-    this.deliveryDao = deliveryDao;
+  public void setDeliveryReadService(DeliveryReadService deliveryReadService) {
+    this.deliveryReadService = deliveryReadService;
   }
 
-  public void setItemDao(ItemDao itemDao) {
-    this.itemDao = itemDao;
+  public void setItemReadService(ItemReadService itemReadService) {
+    this.itemReadService = itemReadService;
   }
 }

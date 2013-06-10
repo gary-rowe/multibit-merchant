@@ -6,7 +6,8 @@ import com.xeiam.xchange.currency.MoneyUtils;
 import org.hibernate.annotations.Columns;
 import org.hibernate.annotations.Type;
 import org.joda.money.BigMoney;
-import org.multibit.mbm.utils.ObjectUtils;
+import org.multibit.mbm.domain.common.Identifiable;
+import org.multibit.mbm.infrastructure.utils.ObjectUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -22,7 +23,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "items")
-public class Item implements Serializable {
+public class Item implements Identifiable, Serializable {
 
   private static final long serialVersionUID = 38947590324750L;
 

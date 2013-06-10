@@ -3,9 +3,11 @@ package org.multibit.mbm.interfaces.rest.resources.item;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import org.junit.Test;
+import org.multibit.mbm.domain.common.pagination.PaginatedArrayList;
+import org.multibit.mbm.domain.common.pagination.PaginatedLists;
 import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
 import org.multibit.mbm.infrastructure.persistence.DatabaseLoader;
-import org.multibit.mbm.domain.repositories.ItemDao;
+import org.multibit.mbm.domain.repositories.ItemReadService;
 import org.multibit.mbm.domain.model.model.Item;
 import org.multibit.mbm.testing.BaseJerseyHmacResourceTest;
 import org.multibit.mbm.testing.FixtureAsserts;
@@ -16,7 +18,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class PublicItemResourceTest extends BaseJerseyHmacResourceTest {
-  private final ItemDao itemDao=mock(ItemDao.class);
+  private final ItemReadService itemReadService =mock(ItemReadService.class);
 
   private final PublicItemResource testObject=new PublicItemResource();
 
@@ -39,12 +41,15 @@ public class PublicItemResourceTest extends BaseJerseyHmacResourceTest {
     itemsPage2.add(book2);
 
     // Configure the mock DAO
-    // Retrieve
-    when(itemDao.getAllByPage(1, 0)).thenReturn(itemsPage1);
-    when(itemDao.getAllByPage(1, 1)).thenReturn(itemsPage2);
-    when(itemDao.getBySKU("0575088893")).thenReturn(Optional.of(book2));
+    PaginatedArrayList<Item> page1 = PaginatedLists.newPaginatedArrayList(1, 2, itemsPage1);
+    PaginatedArrayList<Item> page2 = PaginatedLists.newPaginatedArrayList(2,2, itemsPage2);
 
-    testObject.setItemDao(itemDao);
+    // Retrieve
+    when(itemReadService.getPaginatedList(1, 0)).thenReturn(page1);
+    when(itemReadService.getPaginatedList(1, 1)).thenReturn(page2);
+    when(itemReadService.getBySKU("0575088893")).thenReturn(Optional.of(book2));
+
+    testObject.setItemReadService(itemReadService);
 
     // Configure resources
     addSingleton(testObject);

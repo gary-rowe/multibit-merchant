@@ -3,12 +3,13 @@ package org.multibit.mbm.interfaces.rest.resources.role;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import org.junit.Test;
+import org.multibit.mbm.domain.common.pagination.PaginatedArrayList;
+import org.multibit.mbm.interfaces.rest.api.AdminDeleteEntityDto;
+import org.multibit.mbm.interfaces.rest.api.role.AdminCreateRoleDto;
+import org.multibit.mbm.interfaces.rest.api.role.AdminUpdateRoleDto;
 import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
-import org.multibit.mbm.interfaces.rest.api.request.AdminDeleteEntityRequest;
-import org.multibit.mbm.interfaces.rest.api.request.role.AdminCreateRoleRequest;
-import org.multibit.mbm.interfaces.rest.api.request.role.AdminUpdateRoleRequest;
 import org.multibit.mbm.infrastructure.persistence.DatabaseLoader;
-import org.multibit.mbm.domain.repositories.RoleDao;
+import org.multibit.mbm.domain.repositories.RoleReadService;
 import org.multibit.mbm.domain.model.model.Role;
 import org.multibit.mbm.domain.model.model.RoleBuilder;
 import org.multibit.mbm.domain.model.model.User;
@@ -24,7 +25,7 @@ import static org.mockito.Mockito.when;
 
 public class AdminRoleResourceTest extends BaseJerseyHmacResourceTest {
 
-  private final RoleDao roleDao=mock(RoleDao.class);
+  private final RoleReadService roleReadService =mock(RoleReadService.class);
 
   private final AdminRoleResource testObject=new AdminRoleResource();
 
@@ -55,17 +56,20 @@ public class AdminRoleResourceTest extends BaseJerseyHmacResourceTest {
     List<Role> rolesPage2 = Lists.newArrayList();
     rolesPage2.add(customerRole);
 
-    // Configure the mock DAO
-    // Create
-    when(roleDao.saveOrUpdate((Role) isNotNull())).thenReturn(newRole);
-    when(roleDao.getByName("Stock Manager")).thenReturn(Optional.<Role>absent());
-    // Retrieve
-    when(roleDao.getAllByPage(1, 1)).thenReturn(rolesPage1);
-    when(roleDao.getAllByPage(1, 2)).thenReturn(rolesPage2);
-    // Update
-    when(roleDao.getById(1L)).thenReturn(Optional.of(adminRole));
+    // Configure the mock read service
+    PaginatedArrayList paginatedRoles1 = new PaginatedArrayList(1,2, Lists.newArrayList(rolesPage1));
+    PaginatedArrayList paginatedRoles2 = new PaginatedArrayList(2,2, Lists.newArrayList(rolesPage2));
 
-    testObject.setRoleDao(roleDao);
+    // Create
+    when(roleReadService.saveOrUpdate((Role) isNotNull())).thenReturn(newRole);
+    when(roleReadService.getByName("Stock Manager")).thenReturn(Optional.<Role>absent());
+    // Retrieve
+    when(roleReadService.getPaginatedList(1, 1)).thenReturn(paginatedRoles1);
+    when(roleReadService.getPaginatedList(1, 2)).thenReturn(paginatedRoles2);
+    // Update
+    when(roleReadService.getById(1L)).thenReturn(Optional.of(adminRole));
+
+    testObject.setRoleReadService(roleReadService);
 
     // Configure resources
     addSingleton(testObject);
@@ -75,7 +79,7 @@ public class AdminRoleResourceTest extends BaseJerseyHmacResourceTest {
   @Test
   public void adminCreateRoleAsHalJson() throws Exception {
 
-    AdminCreateRoleRequest createRoleRequest = new AdminCreateRoleRequest();
+    AdminCreateRoleDto createRoleRequest = new AdminCreateRoleDto();
     createRoleRequest.setName("Stock Manager");
     createRoleRequest.setDescription("Stock Manager roles");
 
@@ -112,7 +116,7 @@ public class AdminRoleResourceTest extends BaseJerseyHmacResourceTest {
   @Test
   public void adminUpdateRoleAsHalJson() throws Exception {
 
-    AdminUpdateRoleRequest updateRoleRequest = new AdminUpdateRoleRequest();
+    AdminUpdateRoleDto updateRoleRequest = new AdminUpdateRoleDto();
     updateRoleRequest.setName("charlie");
     updateRoleRequest.setDescription("charlie1");
     // TODO Re-instate this
@@ -130,7 +134,7 @@ public class AdminRoleResourceTest extends BaseJerseyHmacResourceTest {
   @Test
   public void adminDeleteRoleAsHalJson() throws Exception {
 
-    AdminDeleteEntityRequest deleteRoleRequest = new AdminDeleteEntityRequest();
+    AdminDeleteEntityDto deleteRoleRequest = new AdminDeleteEntityDto();
     deleteRoleRequest.setReason("At role request");
 
     String actualResponse = configureAsClient("/admin/role/1")

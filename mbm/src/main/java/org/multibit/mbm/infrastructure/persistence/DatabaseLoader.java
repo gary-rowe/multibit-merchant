@@ -1,13 +1,13 @@
 package org.multibit.mbm.infrastructure.persistence;
 
 import com.xeiam.xchange.currency.MoneyUtils;
+import org.multibit.mbm.domain.repositories.CustomerReadService;
 import org.multibit.mbm.interfaces.rest.auth.Authority;
 import org.multibit.mbm.domain.model.model.*;
 import org.multibit.mbm.domain.model.pricing.rules.PercentagePricingRule;
-import org.multibit.mbm.domain.repositories.CustomerDao;
-import org.multibit.mbm.domain.repositories.ItemDao;
-import org.multibit.mbm.domain.repositories.RoleDao;
-import org.multibit.mbm.domain.repositories.UserDao;
+import org.multibit.mbm.domain.repositories.ItemReadService;
+import org.multibit.mbm.domain.repositories.RoleReadService;
+import org.multibit.mbm.domain.repositories.UserReadService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -26,16 +26,16 @@ public class DatabaseLoader {
   private static final Logger log = LoggerFactory.getLogger(DatabaseLoader.class);
 
   @Resource(name = "hibernateItemDao")
-  private ItemDao itemDao;
+  private ItemReadService itemReadService;
 
   @Resource(name = "hibernateCustomerDao")
-  private CustomerDao customerDao;
+  private CustomerReadService customerReadService;
 
   @Resource(name = "hibernateUserDao")
-  private UserDao userDao;
+  private UserReadService userReadService;
 
   @Resource(name = "hibernateRoleDao")
-  private RoleDao roleDao;
+  private RoleReadService roleReadService;
 
   // Various Users
   // (saves on DAO access during loading)
@@ -97,33 +97,33 @@ public class DatabaseLoader {
 
     // Admin role
     adminRole = buildAdminRole();
-    adminRole = roleDao.saveOrUpdate(adminRole);
+    adminRole = roleReadService.saveOrUpdate(adminRole);
 
     // Catalog admin
     catalogAdminRole = buildCatalogAdminRole();
-    catalogAdminRole = roleDao.saveOrUpdate(catalogAdminRole);
+    catalogAdminRole = roleReadService.saveOrUpdate(catalogAdminRole);
 
     // Buyer role
     buyerRole = buildBuyerRole();
-    buyerRole = roleDao.saveOrUpdate(buyerRole);
+    buyerRole = roleReadService.saveOrUpdate(buyerRole);
 
     // Build the Customer Role and Authorities
     customerRole = buildCustomerRole();
-    customerRole = roleDao.saveOrUpdate(customerRole);
+    customerRole = roleReadService.saveOrUpdate(customerRole);
 
     // Build the Client Role and Authorities
     clientRole = buildClientRole();
-    clientRole = roleDao.saveOrUpdate(clientRole);
+    clientRole = roleReadService.saveOrUpdate(clientRole);
 
     // Build the Public Role and Authorities
     publicRole = buildPublicRole();
-    publicRole = roleDao.saveOrUpdate(publicRole);
+    publicRole = roleReadService.saveOrUpdate(publicRole);
 
     // Build the Supplier Role and Authorities
     supplierRole = buildSupplierRole();
-    supplierRole = roleDao.saveOrUpdate(supplierRole);
+    supplierRole = roleReadService.saveOrUpdate(supplierRole);
 
-    roleDao.flush();
+    roleReadService.flush();
 
   }
 
@@ -211,25 +211,25 @@ public class DatabaseLoader {
   private void buildCatalogBooks() {
     book1 = buildBookItemCryptonomicon();
 
-    itemDao.saveOrUpdate(book1);
+    itemReadService.saveOrUpdate(book1);
 
     book2 = buildBookItemProvence();
 
-    itemDao.saveOrUpdate(book2);
+    itemReadService.saveOrUpdate(book2);
 
     book3 = buildBookItemPlumbing();
 
-    itemDao.saveOrUpdate(book3);
+    itemReadService.saveOrUpdate(book3);
 
     book4 = buildBookItemQuantumThief();
 
-    itemDao.saveOrUpdate(book4);
+    itemReadService.saveOrUpdate(book4);
 
     book5 = buildBookItemCompleteWorks();
 
-    itemDao.saveOrUpdate(book5);
+    itemReadService.saveOrUpdate(book5);
 
-    itemDao.flush();
+    itemReadService.flush();
   }
 
   /**
@@ -247,10 +247,10 @@ public class DatabaseLoader {
       .getCart()
       .setItemQuantity(book2, 1);
 
-    userDao.saveOrUpdate(aliceCustomer);
-    userDao.saveOrUpdate(bobCustomer);
+    userReadService.saveOrUpdate(aliceCustomer);
+    userReadService.saveOrUpdate(bobCustomer);
 
-    userDao.flush();
+    userReadService.flush();
 
   }
 
@@ -272,10 +272,10 @@ public class DatabaseLoader {
       .withDeliveryItem(book2, 2)
       .build();
 
-    userDao.saveOrUpdate(steveSupplier);
-    userDao.saveOrUpdate(samSupplier);
+    userReadService.saveOrUpdate(steveSupplier);
+    userReadService.saveOrUpdate(samSupplier);
 
-    userDao.flush();
+    userReadService.flush();
 
   }
 
@@ -379,44 +379,44 @@ public class DatabaseLoader {
     // Administrators
     // Trent
     trentAdmin = buildTrentAdministrator(adminRole);
-    userDao.saveOrUpdate(trentAdmin);
+    userReadService.saveOrUpdate(trentAdmin);
 
     // Cameron
     cameronCatalogAdmin = buildCameronCatalogAdministrator(catalogAdminRole);
-    userDao.saveOrUpdate(cameronCatalogAdmin);
+    userReadService.saveOrUpdate(cameronCatalogAdmin);
 
     // Buyers
     // Belinda
     belindaBuyer = buildBelindaBuyer(buyerRole);
-    userDao.saveOrUpdate(belindaBuyer);
+    userReadService.saveOrUpdate(belindaBuyer);
 
     // Suppliers
     // Steve
     steveSupplier = buildSteveSupplier(supplierRole);
-    userDao.saveOrUpdate(steveSupplier);
+    userReadService.saveOrUpdate(steveSupplier);
 
     // Sam
     samSupplier = buildSamSupplier(supplierRole);
-    userDao.saveOrUpdate(samSupplier);
+    userReadService.saveOrUpdate(samSupplier);
 
     // Clients
     storeClient = buildStoreClient(clientRole);
-    userDao.saveOrUpdate(storeClient);
+    userReadService.saveOrUpdate(storeClient);
 
     // Customers
     // Alice
     aliceCustomer = buildAliceCustomer(customerRole);
-    userDao.saveOrUpdate(aliceCustomer);
+    userReadService.saveOrUpdate(aliceCustomer);
 
     // Bob
     bobCustomer = buildBobCustomer(customerRole);
-    userDao.saveOrUpdate(bobCustomer);
+    userReadService.saveOrUpdate(bobCustomer);
 
     // Public
     anonymous = buildAnonymousPublic(publicRole);
-    userDao.saveOrUpdate(anonymous);
+    userReadService.saveOrUpdate(anonymous);
 
-    userDao.flush();
+    userReadService.flush();
 
   }
 
@@ -568,11 +568,11 @@ public class DatabaseLoader {
     return pricingRule;
   }
 
-  public void setCustomerDao(CustomerDao customerDao) {
-    this.customerDao = customerDao;
+  public void setCustomerReadService(CustomerReadService customerReadService) {
+    this.customerReadService = customerReadService;
   }
 
-  public void setItemDao(ItemDao itemDao) {
-    this.itemDao = itemDao;
+  public void setItemReadService(ItemReadService itemReadService) {
+    this.itemReadService = itemReadService;
   }
 }

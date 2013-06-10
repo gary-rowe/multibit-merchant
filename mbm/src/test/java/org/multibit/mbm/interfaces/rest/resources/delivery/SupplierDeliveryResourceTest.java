@@ -2,13 +2,13 @@ package org.multibit.mbm.interfaces.rest.resources.delivery;
 
 import com.google.common.base.Optional;
 import org.junit.Test;
+import org.multibit.mbm.interfaces.rest.api.delivery.SupplierDeliveryItemDto;
+import org.multibit.mbm.interfaces.rest.api.delivery.SupplierUpdateDeliveryDto;
 import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
-import org.multibit.mbm.interfaces.rest.api.request.delivery.SupplierDeliveryItem;
-import org.multibit.mbm.interfaces.rest.api.request.delivery.SupplierUpdateDeliveryRequest;
 import org.multibit.mbm.domain.model.model.*;
 import org.multibit.mbm.infrastructure.persistence.DatabaseLoader;
-import org.multibit.mbm.domain.repositories.DeliveryDao;
-import org.multibit.mbm.domain.repositories.ItemDao;
+import org.multibit.mbm.domain.repositories.DeliveryReadService;
+import org.multibit.mbm.domain.repositories.ItemReadService;
 import org.multibit.mbm.testing.BaseJerseyHmacResourceTest;
 import org.multibit.mbm.testing.FixtureAsserts;
 
@@ -19,8 +19,8 @@ import static org.mockito.Mockito.when;
 
 public class SupplierDeliveryResourceTest extends BaseJerseyHmacResourceTest {
 
-  private final DeliveryDao deliveryDao=mock(DeliveryDao.class);
-  private final ItemDao itemDao=mock(ItemDao.class);
+  private final DeliveryReadService deliveryReadService =mock(DeliveryReadService.class);
+  private final ItemReadService itemReadService =mock(ItemReadService.class);
 
   private final SupplierDeliveryResource testObject=new SupplierDeliveryResource();
 
@@ -55,16 +55,16 @@ public class SupplierDeliveryResourceTest extends BaseJerseyHmacResourceTest {
     supplier.getDeliveries().add(supplierDelivery);
 
     // Configure Delivery DAO
-    when(deliveryDao.saveOrUpdate(supplierDelivery)).thenReturn(supplierDelivery);
+    when(deliveryReadService.saveOrUpdate(supplierDelivery)).thenReturn(supplierDelivery);
 
     // Configure Item DAO
-    when(itemDao.getBySKU(book1.getSKU())).thenReturn(Optional.of(book1));
-    when(itemDao.getBySKU(book2.getSKU())).thenReturn(Optional.of(book2));
-    when(itemDao.getBySKU(book3.getSKU())).thenReturn(Optional.of(book3));
-    when(itemDao.getBySKU(book4.getSKU())).thenReturn(Optional.of(book4));
+    when(itemReadService.getBySKU(book1.getSKU())).thenReturn(Optional.of(book1));
+    when(itemReadService.getBySKU(book2.getSKU())).thenReturn(Optional.of(book2));
+    when(itemReadService.getBySKU(book3.getSKU())).thenReturn(Optional.of(book3));
+    when(itemReadService.getBySKU(book4.getSKU())).thenReturn(Optional.of(book4));
 
-    testObject.setDeliveryDao(deliveryDao);
-    testObject.setItemDao(itemDao);
+    testObject.setDeliveryReadService(deliveryReadService);
+    testObject.setItemReadService(itemReadService);
 
     // Configure resources
     addSingleton(testObject);
@@ -88,11 +88,11 @@ public class SupplierDeliveryResourceTest extends BaseJerseyHmacResourceTest {
     // Starting condition is Supplier has {book1: 1, book2: 2}
     // Ending condition is Supplier has {book1: 0, book2: 2, book3: 3}
 
-    SupplierUpdateDeliveryRequest updateDeliveryRequest = new SupplierUpdateDeliveryRequest();
+    SupplierUpdateDeliveryDto updateDeliveryRequest = new SupplierUpdateDeliveryDto();
     // Add a few new items
-    updateDeliveryRequest.getDeliveryItems().add(new SupplierDeliveryItem("0316184136",3));
+    updateDeliveryRequest.getDeliveryItems().add(new SupplierDeliveryItemDto("0316184136",3));
     // Remove by setting to zero
-    updateDeliveryRequest.getDeliveryItems().add(new SupplierDeliveryItem("0099410672",0));
+    updateDeliveryRequest.getDeliveryItems().add(new SupplierDeliveryItemDto("0099410672",0));
 
     String actualResponse = configureAsClient(SupplierDeliveryResource.class)
       .accept(HalMediaType.APPLICATION_HAL_JSON)

@@ -8,7 +8,7 @@ import org.joda.time.DateTime;
 import org.multibit.mbm.domain.model.model.Customer;
 import org.multibit.mbm.domain.model.model.PricingRule;
 import org.multibit.mbm.domain.model.model.Supplier;
-import org.multibit.mbm.utils.DateUtils;
+import org.multibit.mbm.infrastructure.utils.DateUtils;
 
 import java.util.List;
 

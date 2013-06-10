@@ -1,29 +1,30 @@
 package org.multibit.mbm.interfaces.rest.resources.item;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.Maps;
+import com.theoryinpractise.halbuilder.api.Representation;
 import com.yammer.dropwizard.jersey.caching.CacheControl;
 import com.yammer.metrics.annotation.Timed;
-import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
-import org.multibit.mbm.interfaces.rest.api.request.AdminDeleteEntityRequest;
-import org.multibit.mbm.interfaces.rest.api.request.item.AdminCreateItemRequest;
-import org.multibit.mbm.interfaces.rest.api.request.item.AdminUpdateItemRequest;
-import org.multibit.mbm.interfaces.rest.api.response.hal.item.AdminItemBridge;
-import org.multibit.mbm.interfaces.rest.api.response.hal.item.AdminItemCollectionBridge;
-import org.multibit.mbm.interfaces.rest.auth.annotation.RestrictedTo;
-import org.multibit.mbm.domain.repositories.ItemDao;
-import org.multibit.mbm.interfaces.rest.auth.Authority;
+import org.multibit.mbm.domain.common.pagination.PaginatedList;
 import org.multibit.mbm.domain.model.model.Item;
 import org.multibit.mbm.domain.model.model.ItemBuilder;
 import org.multibit.mbm.domain.model.model.User;
+import org.multibit.mbm.domain.repositories.ItemReadService;
+import org.multibit.mbm.interfaces.rest.api.AdminDeleteEntityDto;
+import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
+import org.multibit.mbm.interfaces.rest.api.item.AdminCreateItemDto;
+import org.multibit.mbm.interfaces.rest.api.item.AdminUpdateItemDto;
+import org.multibit.mbm.interfaces.rest.auth.Authority;
+import org.multibit.mbm.interfaces.rest.auth.annotation.RestrictedTo;
+import org.multibit.mbm.interfaces.rest.common.Representations;
+import org.multibit.mbm.interfaces.rest.common.ResourceAsserts;
 import org.multibit.mbm.interfaces.rest.resources.BaseResource;
-import org.multibit.mbm.interfaces.rest.resources.ResourceAsserts;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.net.URI;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -40,7 +41,7 @@ import java.util.concurrent.TimeUnit;
 public class AdminItemResource extends BaseResource {
 
   @Resource(name = "hibernateItemDao")
-  ItemDao itemDao;
+  ItemReadService itemReadService;
 
   /**
    * Create a new Item from the given mandatory fields
@@ -54,7 +55,7 @@ public class AdminItemResource extends BaseResource {
   public Response create(
     @RestrictedTo({Authority.ROLE_ADMIN})
     User adminUser,
-    AdminCreateItemRequest createItemRequest) {
+    AdminCreateItemDto createItemRequest) {
 
     // Build a item from the given request information
     Item item = ItemBuilder.newInstance()
@@ -62,17 +63,17 @@ public class AdminItemResource extends BaseResource {
       .build();
 
     // Perform basic verification
-    Optional<Item> verificationItem = itemDao.getBySKU(item.getSKU());
-    ResourceAsserts.assertNotConflicted(verificationItem,"item");
+    Optional<Item> verificationItem = itemReadService.getBySKU(item.getSKU());
+    ResourceAsserts.assertNotConflicted(verificationItem, "item");
 
     // Persist the item
-    Item persistentItem = itemDao.saveOrUpdate(item);
+    Item persistentItem = itemReadService.saveOrUpdate(item);
 
     // Provide a representation to the client
-    AdminItemBridge bridge = new AdminItemBridge(uriInfo, Optional.of(adminUser));
+    Representation representation = Representations.asDetail(self(), persistentItem, Maps.<String, String>newHashMap());
     URI location = uriInfo.getAbsolutePathBuilder().path(persistentItem.getId().toString()).build();
 
-    return created(bridge, persistentItem, location);
+    return created(representation, location);
 
   }
 
@@ -98,12 +99,12 @@ public class AdminItemResource extends BaseResource {
     int pageSize = Integer.valueOf(rawPageSize.get());
     int pageNumber = Integer.valueOf(rawPageNumber.get());
 
-    List<Item> items = itemDao.getAllByPage(pageSize, pageNumber);
+    PaginatedList<Item> items = itemReadService.getPaginatedList(pageSize, pageNumber);
 
     // Provide a representation to the client
-    AdminItemCollectionBridge bridge = new AdminItemCollectionBridge(uriInfo, Optional.of(adminUser));
+    Representation representation = Representations.asPaginatedList(self(), "items", items, "items/{id}");
 
-    return ok(bridge, items);
+    return ok(representation);
 
   }
 
@@ -121,10 +122,10 @@ public class AdminItemResource extends BaseResource {
     @RestrictedTo({Authority.ROLE_ADMIN})
     User adminUser,
     @PathParam("itemId") Long itemId,
-    AdminUpdateItemRequest updateItemRequest) {
+    AdminUpdateItemDto updateItemRequest) {
 
     // Retrieve the item
-    Optional<Item> item = itemDao.getById(itemId);
+    Optional<Item> item = itemReadService.getById(itemId);
     ResourceAsserts.assertPresent(item, "item");
 
     // Verify and apply any changes to the Item
@@ -134,12 +135,12 @@ public class AdminItemResource extends BaseResource {
     persistentItem.setGTIN(updateItemRequest.getGTIN());
 
     // Persist the updated item
-    persistentItem = itemDao.saveOrUpdate(item.get());
+    persistentItem = itemReadService.saveOrUpdate(item.get());
 
     // Provide a representation to the client
-    AdminItemBridge bridge = new AdminItemBridge(uriInfo, Optional.of(adminUser));
+    Representation representation = Representations.asDetail(self(), persistentItem, Maps.<String, String>newHashMap());
 
-    return ok(bridge, persistentItem);
+    return ok(representation);
 
   }
 
@@ -157,11 +158,11 @@ public class AdminItemResource extends BaseResource {
     @RestrictedTo({Authority.ROLE_ADMIN})
     User adminUser,
     @PathParam("itemId") Long itemId,
-    AdminDeleteEntityRequest deleteEntityRequest) {
+    AdminDeleteEntityDto deleteEntityRequest) {
 
     // Retrieve the item
-    Optional<Item> item = itemDao.getById(itemId);
-    ResourceAsserts.assertPresent(item,"item");
+    Optional<Item> item = itemReadService.getById(itemId);
+    ResourceAsserts.assertPresent(item, "item");
 
     // Verify and apply any changes to the Item
     Item persistentItem = item.get();
@@ -169,16 +170,16 @@ public class AdminItemResource extends BaseResource {
     persistentItem.setReasonForDelete(deleteEntityRequest.getReason());
 
     // Persist the updated item
-    persistentItem = itemDao.saveOrUpdate(item.get());
+    persistentItem = itemReadService.saveOrUpdate(item.get());
 
     // Provide a representation to the client
-    AdminItemBridge bridge = new AdminItemBridge(uriInfo, Optional.of(adminUser));
+    Representation representation = Representations.asDetail(self(), persistentItem, Maps.<String, String>newHashMap());
 
-    return ok(bridge, persistentItem);
+    return ok(representation);
 
   }
 
-  public void setItemDao(ItemDao itemDao) {
-    this.itemDao = itemDao;
+  public void setItemReadService(ItemReadService itemReadService) {
+    this.itemReadService = itemReadService;
   }
 }

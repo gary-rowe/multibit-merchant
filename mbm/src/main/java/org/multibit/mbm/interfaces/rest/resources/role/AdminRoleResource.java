@@ -1,29 +1,30 @@
 package org.multibit.mbm.interfaces.rest.resources.role;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.Maps;
+import com.theoryinpractise.halbuilder.api.Representation;
 import com.yammer.dropwizard.jersey.caching.CacheControl;
 import com.yammer.metrics.annotation.Timed;
-import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
-import org.multibit.mbm.interfaces.rest.api.request.AdminDeleteEntityRequest;
-import org.multibit.mbm.interfaces.rest.api.request.role.AdminCreateRoleRequest;
-import org.multibit.mbm.interfaces.rest.api.request.role.AdminUpdateRoleRequest;
-import org.multibit.mbm.interfaces.rest.api.response.hal.role.AdminRoleBridge;
-import org.multibit.mbm.interfaces.rest.api.response.hal.role.AdminRoleCollectionBridge;
-import org.multibit.mbm.interfaces.rest.auth.annotation.RestrictedTo;
-import org.multibit.mbm.domain.repositories.RoleDao;
-import org.multibit.mbm.interfaces.rest.auth.Authority;
+import org.multibit.mbm.domain.common.pagination.PaginatedList;
 import org.multibit.mbm.domain.model.model.Role;
 import org.multibit.mbm.domain.model.model.RoleBuilder;
 import org.multibit.mbm.domain.model.model.User;
+import org.multibit.mbm.domain.repositories.RoleReadService;
+import org.multibit.mbm.interfaces.rest.api.AdminDeleteEntityDto;
+import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
+import org.multibit.mbm.interfaces.rest.api.role.AdminCreateRoleDto;
+import org.multibit.mbm.interfaces.rest.api.role.AdminUpdateRoleDto;
+import org.multibit.mbm.interfaces.rest.auth.Authority;
+import org.multibit.mbm.interfaces.rest.auth.annotation.RestrictedTo;
+import org.multibit.mbm.interfaces.rest.common.Representations;
+import org.multibit.mbm.interfaces.rest.common.ResourceAsserts;
 import org.multibit.mbm.interfaces.rest.resources.BaseResource;
-import org.multibit.mbm.interfaces.rest.resources.ResourceAsserts;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.net.URI;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -40,7 +41,7 @@ import java.util.concurrent.TimeUnit;
 public class AdminRoleResource extends BaseResource {
 
   @Resource(name = "hibernateRoleDao")
-  RoleDao roleDao;
+  RoleReadService roleReadService;
 
   /**
    * Create a new Role from the given mandatory fields
@@ -54,7 +55,7 @@ public class AdminRoleResource extends BaseResource {
   public Response create(
     @RestrictedTo({Authority.ROLE_ADMIN})
     User adminUser,
-    AdminCreateRoleRequest createRoleRequest) {
+    AdminCreateRoleDto createRoleRequest) {
 
     // Build a role from the given request information
     Role role = RoleBuilder.newInstance()
@@ -63,17 +64,17 @@ public class AdminRoleResource extends BaseResource {
       .build();
 
     // Perform basic verification
-    Optional<Role> verificationRole = roleDao.getByName(role.getName());
+    Optional<Role> verificationRole = roleReadService.getByName(role.getName());
     ResourceAsserts.assertNotConflicted(verificationRole,"role");
 
     // Persist the role
-    Role persistentRole = roleDao.saveOrUpdate(role);
+    Role persistentRole = roleReadService.saveOrUpdate(role);
 
     // Provide a representation to the client
-    AdminRoleBridge bridge = new AdminRoleBridge(uriInfo, Optional.of(adminUser));
+    Representation representation = Representations.asDetail(self(), persistentRole, Maps.<String, String>newHashMap());
     URI location = uriInfo.getAbsolutePathBuilder().path(persistentRole.getId().toString()).build();
 
-    return created(bridge, persistentRole, location);
+    return created(representation, location);
 
   }
 
@@ -99,12 +100,12 @@ public class AdminRoleResource extends BaseResource {
     int pageSize = Integer.valueOf(rawPageSize.get());
     int pageNumber = Integer.valueOf(rawPageNumber.get());
 
-    List<Role> roles = roleDao.getAllByPage(pageSize, pageNumber);
+    PaginatedList<Role> roles = roleReadService.getPaginatedList(pageSize, pageNumber);
 
     // Provide a representation to the client
-    AdminRoleCollectionBridge bridge = new AdminRoleCollectionBridge(uriInfo, Optional.of(adminUser));
+    Representation representation = Representations.asPaginatedList(self(), "roles", roles, "roles/{id}");
 
-    return ok(bridge, roles);
+    return ok(representation);
 
   }
 
@@ -122,10 +123,10 @@ public class AdminRoleResource extends BaseResource {
     @RestrictedTo({Authority.ROLE_ADMIN})
     User adminUser,
     @PathParam("roleId") Long roleId,
-    AdminUpdateRoleRequest updateRoleRequest) {
+    AdminUpdateRoleDto updateRoleRequest) {
 
     // Retrieve the role
-    Optional<Role> role = roleDao.getById(roleId);
+    Optional<Role> role = roleReadService.getById(roleId);
     ResourceAsserts.assertPresent(role, "role");
 
     // Verify and apply any changes to the Role
@@ -143,12 +144,12 @@ public class AdminRoleResource extends BaseResource {
 //    }
 
     // Persist the updated role
-    persistentRole = roleDao.saveOrUpdate(role.get());
+    persistentRole = roleReadService.saveOrUpdate(role.get());
 
     // Provide a representation to the client
-    AdminRoleBridge bridge = new AdminRoleBridge(uriInfo, Optional.of(adminUser));
+    Representation representation = Representations.asDetail(self(), persistentRole, Maps.<String, String>newHashMap());
 
-    return ok(bridge, persistentRole);
+    return ok(representation);
 
   }
 
@@ -166,10 +167,10 @@ public class AdminRoleResource extends BaseResource {
     @RestrictedTo({Authority.ROLE_ADMIN})
     User adminUser,
     @PathParam("roleId") Long roleId,
-    AdminDeleteEntityRequest deleteEntityRequest) {
+    AdminDeleteEntityDto deleteEntityRequest) {
 
     // Retrieve the role
-    Optional<Role> role = roleDao.getById(roleId);
+    Optional<Role> role = roleReadService.getById(roleId);
     ResourceAsserts.assertPresent(role,"role");
 
     // Verify and apply any changes to the Role
@@ -178,16 +179,16 @@ public class AdminRoleResource extends BaseResource {
     persistentRole.setReasonForDelete(deleteEntityRequest.getReason());
 
     // Persist the updated role
-    persistentRole = roleDao.saveOrUpdate(role.get());
+    persistentRole = roleReadService.saveOrUpdate(role.get());
 
     // Provide a representation to the client
-    AdminRoleBridge bridge = new AdminRoleBridge(uriInfo, Optional.of(adminUser));
+    Representation representation = Representations.asDetail(self(), persistentRole, Maps.<String, String>newHashMap());
 
-    return ok(bridge, persistentRole);
+    return ok(representation);
 
   }
 
-  public void setRoleDao(RoleDao roleDao) {
-    this.roleDao = roleDao;
+  public void setRoleReadService(RoleReadService roleReadService) {
+    this.roleReadService = roleReadService;
   }
 }

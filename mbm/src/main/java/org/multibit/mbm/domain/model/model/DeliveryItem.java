@@ -2,7 +2,7 @@ package org.multibit.mbm.domain.model.model;
 
 import com.google.common.base.Preconditions;
 import org.joda.money.BigMoney;
-import org.multibit.mbm.utils.ObjectUtils;
+import org.multibit.mbm.infrastructure.utils.ObjectUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;

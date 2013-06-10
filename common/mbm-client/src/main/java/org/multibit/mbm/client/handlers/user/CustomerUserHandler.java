@@ -2,15 +2,15 @@ package org.multibit.mbm.client.handlers.user;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import com.theoryinpractise.halbuilder.spi.ReadableResource;
-import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
-import org.multibit.mbm.interfaces.rest.api.request.user.WebFormAuthenticationRequest;
-import org.multibit.mbm.interfaces.rest.auth.Authority;
-import org.multibit.mbm.interfaces.rest.auth.webform.WebFormClientCredentials;
+import com.theoryinpractise.halbuilder.api.ReadableRepresentation;
 import org.multibit.mbm.client.HalHmacResourceFactory;
 import org.multibit.mbm.client.handlers.BaseHandler;
-import org.multibit.mbm.model.ClientUser;
-import org.multibit.mbm.model.CustomerUser;
+import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
+import org.multibit.mbm.interfaces.rest.api.user.CustomerUserDto;
+import org.multibit.mbm.interfaces.rest.api.user.UserDto;
+import org.multibit.mbm.interfaces.rest.api.user.WebFormAuthenticationDto;
+import org.multibit.mbm.interfaces.rest.auth.Authority;
+import org.multibit.mbm.interfaces.rest.auth.webform.WebFormClientCredentials;
 
 import java.util.Locale;
 import java.util.Map;
@@ -38,16 +38,16 @@ public class CustomerUserHandler extends BaseHandler {
    *
    * @param credentials The web form credentials provided by the user
    *
-   * @return A matching {@link org.multibit.mbm.model.ClientItem}
+   * @return A matching {@link org.multibit.mbm.interfaces.rest.api.item.ItemDto}
    */
-  public Optional<ClientUser> authenticateWithWebForm(WebFormClientCredentials credentials) {
+  public Optional<UserDto> authenticateWithWebForm(WebFormClientCredentials credentials) {
 
     // Sanity check
     Preconditions.checkNotNull(credentials);
     Preconditions.checkNotNull(credentials.getUsername());
     Preconditions.checkNotNull(credentials.getPasswordDigest());
 
-    WebFormAuthenticationRequest entity = new WebFormAuthenticationRequest(
+    WebFormAuthenticationDto entity = new WebFormAuthenticationDto(
       credentials.getUsername(),
       credentials.getPasswordDigest()
     );
@@ -61,13 +61,13 @@ public class CustomerUserHandler extends BaseHandler {
       .post(String.class);
 
     // Read the HAL
-    ReadableResource rr = unmarshalHal(hal);
+    ReadableRepresentation rr = unmarshalHal(hal);
 
-    Map<String, Optional<Object>> properties = rr.getProperties();
+    Map<String, Object> properties = rr.getProperties();
 
-    ClientUser clientUser = new ClientUser();
-    String apiKey = (String) properties.get("api_key").get();
-    String secretKey = (String) properties.get("secret_key").get();
+    UserDto clientUser = new UserDto();
+    String apiKey = (String) properties.get("api_key");
+    String secretKey = (String) properties.get("secret_key");
 
     if ("".equals(apiKey) || "".equals(secretKey)) {
       return Optional.absent();
@@ -87,9 +87,9 @@ public class CustomerUserHandler extends BaseHandler {
    *
    * @param clientUser The ClientUser containing the API access information
    *
-   * @return A matching {@link org.multibit.mbm.model.ClientItem}
+   * @return A matching {@link org.multibit.mbm.interfaces.rest.api.item.ItemDto}
    */
-  public Optional<CustomerUser> retrieveProfile(ClientUser clientUser) {
+  public Optional<CustomerUserDto> retrieveProfile(UserDto clientUser) {
 
     // Sanity check
     Preconditions.checkNotNull(clientUser);
@@ -103,16 +103,16 @@ public class CustomerUserHandler extends BaseHandler {
       .get(String.class);
 
     // Read the HAL
-    ReadableResource rr = unmarshalHal(hal);
+    ReadableRepresentation rr = unmarshalHal(hal);
 
-    Map<String, Optional<Object>> properties = rr.getProperties();
+    Map<String, Object> properties = rr.getProperties();
 
-    CustomerUser customerUser = new CustomerUser();
+    CustomerUserDto customerUser = new CustomerUserDto();
     // Mandatory properties (will cause IllegalStateException if not present)
     // Optional direct properties
     // Optional properties
-    for (Map.Entry<String, Optional<Object>> entry : properties.entrySet()) {
-      customerUser.getOptionalProperties().put(entry.getKey(), (String) entry.getValue().get());
+    for (Map.Entry<String, Object> entry : properties.entrySet()) {
+      customerUser.getOptionalProperties().put(entry.getKey(), (String) entry.getValue());
     }
 
     return Optional.of(customerUser);

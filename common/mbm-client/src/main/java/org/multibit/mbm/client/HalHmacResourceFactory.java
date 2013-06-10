@@ -4,7 +4,7 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
 import org.multibit.mbm.interfaces.rest.auth.hmac.HmacClientFilter;
-import org.multibit.mbm.model.ClientUser;
+import org.multibit.mbm.interfaces.rest.api.user.UserDto;
 
 import javax.ws.rs.core.HttpHeaders;
 import java.net.URI;
@@ -66,7 +66,7 @@ public enum HalHmacResourceFactory {
     return baseUri;
   }
 
-  public WebResource newUserResource(Locale locale, String path, ClientUser clientUser) {
+  public WebResource newUserResource(Locale locale, String path, UserDto clientUser) {
 
     // Configure the URI
     URI uri = URI.create(getBaseUri() + path);

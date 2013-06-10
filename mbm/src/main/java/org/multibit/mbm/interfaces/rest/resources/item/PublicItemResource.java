@@ -1,23 +1,23 @@
 package org.multibit.mbm.interfaces.rest.resources.item;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.Maps;
+import com.theoryinpractise.halbuilder.api.Representation;
 import com.yammer.dropwizard.jersey.caching.CacheControl;
 import com.yammer.metrics.annotation.Timed;
-import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
-import org.multibit.mbm.interfaces.rest.api.response.hal.item.PublicItemBridge;
-import org.multibit.mbm.interfaces.rest.api.response.hal.item.PublicItemCollectionBridge;
-import org.multibit.mbm.domain.repositories.ItemDao;
+import org.multibit.mbm.domain.common.pagination.PaginatedList;
 import org.multibit.mbm.domain.model.model.Item;
-import org.multibit.mbm.domain.model.model.User;
+import org.multibit.mbm.domain.repositories.ItemReadService;
+import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
+import org.multibit.mbm.interfaces.rest.common.Representations;
+import org.multibit.mbm.interfaces.rest.common.ResourceAsserts;
 import org.multibit.mbm.interfaces.rest.resources.BaseResource;
-import org.multibit.mbm.interfaces.rest.resources.ResourceAsserts;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -36,7 +36,7 @@ import java.util.concurrent.TimeUnit;
 public class PublicItemResource extends BaseResource {
 
   @Resource(name = "hibernateItemDao")
-  ItemDao itemDao;
+  ItemReadService itemReadService;
 
   /**
    * Provide a paged response of all items in the system
@@ -58,12 +58,12 @@ public class PublicItemResource extends BaseResource {
     int pageSize = Integer.valueOf(rawPageSize.get());
     int pageNumber = Integer.valueOf(rawPageNumber.get());
 
-    List<Item> items = itemDao.getAllByPage(pageSize, pageNumber);
+    PaginatedList<Item> items = itemReadService.getPaginatedList(pageSize, pageNumber);
 
     // Provide a representation to the client
-    PublicItemCollectionBridge bridge = new PublicItemCollectionBridge(uriInfo, Optional.<User>absent());
+    Representation representation = Representations.asPaginatedList(self(), "items", items, "items/{id}");
 
-    return ok(bridge, items);
+    return ok(representation);
 
   }
 
@@ -84,17 +84,17 @@ public class PublicItemResource extends BaseResource {
     // TODO Work out how to validate a SKU
     String sku = rawSku;
 
-    Optional<Item> item = itemDao.getBySKU(sku);
-    ResourceAsserts.assertPresent(item, "item");
+    Optional<Item> itemOptional = itemReadService.getBySKU(sku);
+    ResourceAsserts.assertPresent(itemOptional, "item");
 
     // Provide a representation to the client
-    PublicItemBridge bridge = new PublicItemBridge(uriInfo, Optional.<User>absent());
+    Representation representation = Representations.asDetail(self(), itemOptional.get(), Maps.<String, String>newHashMap());
 
-    return ok(bridge, item.get());
+    return ok(representation);
 
   }
 
-  public void setItemDao(ItemDao itemDao) {
-    this.itemDao = itemDao;
+  public void setItemReadService(ItemReadService itemReadService) {
+    this.itemReadService = itemReadService;
   }
 }
