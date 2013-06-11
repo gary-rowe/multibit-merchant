@@ -1,6 +1,7 @@
 package org.multibit.mbm.interfaces.rest.resources.cart;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.yammer.dropwizard.jersey.caching.CacheControl;
@@ -121,7 +122,7 @@ public class AdminCartResource extends BaseResource {
   private void apply(AdminUpdateCartDto updateRequest, Cart entity) {
 
     for (PublicCartItemDto customerCartItem : updateRequest.getCartItems()) {
-      ResourceAsserts.assertNotNull(customerCartItem.getSKU(), "id");
+      Preconditions.checkNotNull(customerCartItem.getSKU(), "id");
       ResourceAsserts.assertPositive(customerCartItem.getQuantity(), "quantity");
 
       Optional<Item> item = itemReadService.getBySKU(customerCartItem.getSKU());

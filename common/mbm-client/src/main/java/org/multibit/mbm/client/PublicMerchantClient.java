@@ -12,7 +12,7 @@ import java.util.Locale;
  * <ul>
  * <li>Access to public API for the MultiBit Merchant</li>
  * </ul>
- * <p>This client provides access to public resources for an anonymous visitor. For example, the visitor
+ * <p>This client provides access to public Representations for an anonymous visitor. For example, the visitor
  * can search and view items, or manage their shopping cart through this API.</p>
  *
  * @since 0.0.1

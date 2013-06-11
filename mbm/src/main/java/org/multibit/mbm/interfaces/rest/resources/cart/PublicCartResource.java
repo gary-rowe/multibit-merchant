@@ -1,6 +1,7 @@
 package org.multibit.mbm.interfaces.rest.resources.cart;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.yammer.dropwizard.jersey.caching.CacheControl;
@@ -67,7 +68,7 @@ public class PublicCartResource extends BaseResource {
     User publicUser) {
 
     // Validation
-    ResourceAsserts.assertNotNull(publicUser.getCustomer(), "customer");
+    Preconditions.checkNotNull(publicUser.getCustomer(), "customer");
 
     Cart cart = publicUser.getCustomer().getCart();
 
@@ -115,7 +116,7 @@ public class PublicCartResource extends BaseResource {
   private void apply(PublicUpdateCartDto updateRequest, Cart entity) {
 
     for (PublicCartItemDto customerCartItem : updateRequest.getCartItems()) {
-      ResourceAsserts.assertNotNull(customerCartItem.getSKU(), "sku");
+      Preconditions.checkNotNull(customerCartItem.getSKU(), "sku");
       ResourceAsserts.assertPositive(customerCartItem.getQuantity(), "quantity");
 
       Optional<Item> item = itemReadService.getBySKU(customerCartItem.getSKU());

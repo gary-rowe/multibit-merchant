@@ -1,6 +1,7 @@
 package org.multibit.mbm.interfaces.rest.resources.purchaseorder;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.yammer.dropwizard.jersey.caching.CacheControl;
@@ -66,7 +67,7 @@ public class SupplierPurchaseOrderResource extends BaseResource {
   ) {
 
     // Validation
-    ResourceAsserts.assertNotNull(supplierUser.getSupplier(), "supplier");
+    Preconditions.checkNotNull(supplierUser.getSupplier(), "supplier");
 
     if (supplierUser.getSupplier().getDeliveries().isEmpty()) {
       // TODO Fill in the location of a Delivery by a Supplier
@@ -119,7 +120,7 @@ public class SupplierPurchaseOrderResource extends BaseResource {
   private void apply(SupplierUpdateDeliveryDto updateRequest, Delivery entity) {
 
     for (SupplierDeliveryItemDto supplierDeliveryItem : updateRequest.getDeliveryItems()) {
-      ResourceAsserts.assertNotNull(supplierDeliveryItem.getSKU(), "sku");
+      Preconditions.checkNotNull(supplierDeliveryItem.getSKU(), "sku");
       ResourceAsserts.assertPositive(supplierDeliveryItem.getQuantity(), "quantity");
 
       Optional<Item> item = itemReadService.getBySKU(supplierDeliveryItem.getSKU());

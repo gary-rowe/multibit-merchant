@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 /**
  * <p>Authentication provider to provide the following to Jersey:</p>
  * <ul>
- * <li>Bridge between Dropwizard and Jersey for HMAC authentication</li>
+ * <li>Representation between Dropwizard and Jersey for HMAC authentication</li>
  * <li>Provides additional {@link org.multibit.mbm.interfaces.rest.auth.Authority} information</li>
  * </ul>
  *

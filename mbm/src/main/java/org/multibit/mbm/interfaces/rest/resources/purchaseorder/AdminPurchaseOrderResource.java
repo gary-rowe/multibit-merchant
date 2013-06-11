@@ -1,6 +1,7 @@
 package org.multibit.mbm.interfaces.rest.resources.purchaseorder;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.yammer.dropwizard.jersey.caching.CacheControl;
@@ -118,7 +119,7 @@ public class AdminPurchaseOrderResource extends BaseResource {
   private void apply(AdminUpdatePurchaseOrderRequest updateRequest, PurchaseOrder entity) {
 
     for (BuyerPurchaseOrderItem supplierPurchaseOrderItem : updateRequest.getPurchaseOrderItems()) {
-      ResourceAsserts.assertNotNull(supplierPurchaseOrderItem.getSKU(), "id");
+      Preconditions.checkNotNull(supplierPurchaseOrderItem.getSKU(), "id");
       ResourceAsserts.assertPositive(supplierPurchaseOrderItem.getQuantity(), "quantity");
 
       Optional<Item> item = itemReadService.getBySKU(supplierPurchaseOrderItem.getSKU());

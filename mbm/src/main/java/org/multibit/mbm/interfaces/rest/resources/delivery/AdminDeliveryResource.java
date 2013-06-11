@@ -1,6 +1,7 @@
 package org.multibit.mbm.interfaces.rest.resources.delivery;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.yammer.dropwizard.jersey.caching.CacheControl;
@@ -120,7 +121,7 @@ public class AdminDeliveryResource extends BaseResource {
   private void apply(AdminUpdateDeliveryDto updateRequest, Delivery entity) {
 
     for (SupplierDeliveryItemDto supplierDeliveryItem : updateRequest.getDeliveryItems()) {
-      ResourceAsserts.assertNotNull(supplierDeliveryItem.getSKU(), "id");
+      Preconditions.checkNotNull(supplierDeliveryItem.getSKU(), "id");
       ResourceAsserts.assertPositive(supplierDeliveryItem.getQuantity(), "quantity");
 
       Optional<Item> item = itemReadService.getBySKU(supplierDeliveryItem.getSKU());
