@@ -18,7 +18,7 @@ public class ClientItemCollectionHandlerTest extends BaseHandlerTest {
   public void retrievePromotionalItemsByPage() throws Exception {
 
     // Arrange
-    URI expectedUri = URI.create("http://localhost:8080/mbm/items/promotion?pn=0&ps=1");
+    URI expectedUri = URI.create("http://localhost:8080/mbm/items/promotion?pn=1&ps=1");
 
     // Test-specific JerseyClient behaviour
     when(client.resource(expectedUri)).thenReturn(webResource);
@@ -30,13 +30,13 @@ public class ClientItemCollectionHandlerTest extends BaseHandlerTest {
     List<ItemDto> items = PublicMerchantClient
       .newInstance(locale)
       .items()
-      .retrievePromotionalItemsByPage(0,1);
+      .retrievePromotionalItemsByPage(1,1);
 
     // Assert
     assertEquals("Unexpected number of items", 1, items.size());
     assertEquals("Expected title", "Cryptonomicon", items.get(0).getOptionalProperties().get("title"));
     assertEquals("Expected uri", "http://multibit-store.herokuapp.com/images/book.jpg", items.get(0).getOptionalProperties().get("image_thumbnail_uri"));
-    assertEquals("Expected uri", "http://localhost:8080/item/0099410672", items.get(0).getOptionalProperties().get("item self"));
+    assertEquals("Expected uri", "/item/0099410672", items.get(0).getOptionalProperties().get("self"));
 
   }
 
