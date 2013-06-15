@@ -1,15 +1,11 @@
 package org.multibit.mbm.interfaces.rest.api.representations.hal.role;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.theoryinpractise.halbuilder.DefaultRepresentationFactory;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
+import org.multibit.mbm.domain.common.pagination.PaginatedList;
 import org.multibit.mbm.domain.model.model.Role;
-import org.multibit.mbm.domain.model.model.User;
-
-import javax.ws.rs.core.UriInfo;
-import java.util.List;
 
 /**
  * <p>Representation to provide the following to {@link org.multibit.mbm.domain.model.model.Role}:</p>
@@ -21,7 +17,7 @@ import java.util.List;
  */
 public class AdminRoleCollectionRepresentation {
 
-  public Representation get(List<Role> roles) {
+  public Representation get(PaginatedList<Role> roles) {
 
     Preconditions.checkNotNull(roles, "roles");
 
@@ -29,7 +25,7 @@ public class AdminRoleCollectionRepresentation {
 
     Representation roleList = factory.newRepresentation("/role");
 
-    for (Role role : roles) {
+    for (Role role : roles.list()) {
       Representation roleRepresentation = new AdminRoleRepresentation().get(role);
 
       roleList.withRepresentation("/role/" + role.getId(), roleRepresentation);

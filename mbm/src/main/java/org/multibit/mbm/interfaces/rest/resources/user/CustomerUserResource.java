@@ -8,7 +8,7 @@ import org.multibit.mbm.domain.model.model.*;
 import org.multibit.mbm.domain.repositories.UserReadService;
 import org.multibit.mbm.infrastructure.utils.DateUtils;
 import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
-import org.multibit.mbm.interfaces.rest.common.Representations;
+import org.multibit.mbm.interfaces.rest.api.representations.hal.user.CustomerUserRepresentation;
 import org.multibit.mbm.interfaces.rest.auth.Authority;
 import org.multibit.mbm.interfaces.rest.auth.annotation.RestrictedTo;
 import org.multibit.mbm.interfaces.rest.resources.BaseResource;
@@ -49,7 +49,7 @@ public class CustomerUserResource extends BaseResource {
     @RestrictedTo({Authority.ROLE_CUSTOMER})
     User customerUser) {
 
-    Representation representation = Representations.asDetail(self(), customerUser, Maps.<String, String>newHashMap());
+    Representation representation = new CustomerUserRepresentation().get(customerUser);
 
     return ok(representation);
 
@@ -89,7 +89,7 @@ public class CustomerUserResource extends BaseResource {
     // Provide a minimal representation to the client
     // so that they can see their secret key as a last resort
     // manual recovery option
-    Representation representation = Representations.asDetail(self(), persistentUser, Maps.<String, String>newHashMap());
+    Representation representation = new CustomerUserRepresentation().get(persistentUser);
     URI location = uriInfo.getAbsolutePathBuilder().path(persistentUser.getApiKey()).build();
 
     return created(representation, location);

@@ -1,80 +1,80 @@
-{"_links":{
-  "self":{
-    "href":"/cart"
+{"_links": {
+  "self": {
+    "href": "/cart"
   },
-  "customer":{
-    "href":"/customer"
+  "customer": {
+    "href": "/customer"
   }
-}, "currency_code":"BTC", "currency_symbol":"Ƀ", "item_total":2, "price_total":"25.300000000000", "quantity_total":5, "tax_total":"0.000000000000", "_embedded":{
-  "cartitems":[
+}, "currency_code": "BTC", "currency_symbol": "Ƀ", "item_total": 2, "price_total": "25.300000000000", "quantity_total": 5, "tax_total": "0.000000000000", "_embedded": {
+  "cartitems": [
     {
-      "_links":{
-        "cartitems self":{
-          "href":"/cart/item/0"
+      "_links": {
+        "self": {
+          "href": "/cart/item/0"
         }
       },
-      "cart_item_subtotal":"8.800000000000",
-      "index":0,
-      "price_subtotal":"8.800000000000",
-      "quantity":2,
-      "tax_subtotal":"0.0000000000000",
-      "_embedded":{
-        "item":{
-          "_links":{
-            "item self":{
-              "href":"/item/0575088893"
+      "cart_item_subtotal": "8.800000000000",
+      "index": 0,
+      "price_subtotal": "8.800000000000",
+      "quantity": 2,
+      "tax_subtotal": "0.0000000000000",
+      "_embedded": {
+        "item": {
+          "_links": {
+            "self": {
+              "href": "/item/0575088893"
             },
-            "image_thumbnail_uri":{
-              "href":"http://multibit-store.herokuapp.com/images/book.jpg"
+            "image_thumbnail_uri": {
+              "href": "http://multibit-store.herokuapp.com/images/book.jpg"
             }
           },
-          "author":"Hannu Rajaniemi",
-          "description":"<p>The Quantum Thief is a dazzling hard SF novel set in the solar system of the far future - a heist novel peopled by bizarre post-humans but powered by very human motives of betrayal, revenge and jealousy. It is a stunning debut.</p><br/><p>Jean le Flambeur is a post-human criminal, mind burglar, confidence artist and trickster. His origins are shrouded in mystery, but his exploits are known throughout the Heterarchy - from breaking into the vast Zeusbrains of the Inner System to steal their thoughts, to stealing rare Earth antiques from the aristocrats of the Moving Cities of Mars.</p><p>Except that Jean made one mistake. Now he is condemned to play endless variations of a game-theoretic riddle in the vast virtual jail of the Axelrod Archons - the Dilemma Prison - against countless copies of himself.</p><p>Jean's routine of death, defection and cooperation is upset by the arrival of Mieli and her spidership, Perhonen. She offers him a chance to win back his freedom and the powers of his old self - in exchange for finishing the one heist he never quite managed...</p>",
-          "format":"Paperback",
-          "genre":"Sci-Fi",
-          "gtin":"978-0575088894",
-          "page_count":"336",
-          "price":"4.400000000000",
-          "publisher":"Gollancz (1 Nov 2011)",
-          "size":"12.9 x 2.1 x 19.6 cm",
-          "sku":"0575088893",
-          "slug":"the-quantum-thief",
-          "summary":"The most exciting SF debut of the last five years - a star to stand alongside Alistair Reynolds and Richard Morgan.",
-          "tax_rate":"0.0",
-          "title":"The Quantum Thief"
+          "author": "Hannu Rajaniemi",
+          "description": "<p>The Quantum Thief is a dazzling hard SF novel set in the solar system of the far future - a heist novel peopled by bizarre post-humans but powered by very human motives of betrayal, revenge and jealousy. It is a stunning debut.</p><br/><p>Jean le Flambeur is a post-human criminal, mind burglar, confidence artist and trickster. His origins are shrouded in mystery, but his exploits are known throughout the Heterarchy - from breaking into the vast Zeusbrains of the Inner System to steal their thoughts, to stealing rare Earth antiques from the aristocrats of the Moving Cities of Mars.</p><p>Except that Jean made one mistake. Now he is condemned to play endless variations of a game-theoretic riddle in the vast virtual jail of the Axelrod Archons - the Dilemma Prison - against countless copies of himself.</p><p>Jean's routine of death, defection and cooperation is upset by the arrival of Mieli and her spidership, Perhonen. She offers him a chance to win back his freedom and the powers of his old self - in exchange for finishing the one heist he never quite managed...</p>",
+          "format": "Paperback",
+          "genre": "Sci-Fi",
+          "gtin": "978-0575088894",
+          "page_count": "336",
+          "price": "4.400000000000",
+          "publisher": "Gollancz (1 Nov 2011)",
+          "size": "12.9 x 2.1 x 19.6 cm",
+          "sku": "0575088893",
+          "slug": "the-quantum-thief",
+          "summary": "The most exciting SF debut of the last five years - a star to stand alongside Alistair Reynolds and Richard Morgan.",
+          "tax_rate": "0.0",
+          "title": "The Quantum Thief"
         }
       }
     },
     {
-      "_links":{
-        "cartitems self":{
-          "href":"/cart/item/1"
+      "_links": {
+        "self": {
+          "href": "/cart/item/1"
         }
       },
-      "cart_item_subtotal":"16.500000000000",
-      "index":1,
-      "price_subtotal":"16.500000000000",
-      "quantity":3,
-      "tax_subtotal":"0.0000000000000",
-      "_embedded":{
-        "item":{
-          "_links":{
-            "item self":{
-              "href":"/item/0316184136"
+      "cart_item_subtotal": "16.500000000000",
+      "index": 1,
+      "price_subtotal": "16.500000000000",
+      "quantity": 3,
+      "tax_subtotal": "0.0000000000000",
+      "_embedded": {
+        "item": {
+          "_links": {
+            "self": {
+              "href": "/item/0316184136"
             },
-            "image_thumbnail_uri":{
-              "href":"http://multibit-store.herokuapp.com/images/book.jpg"
+            "image_thumbnail_uri": {
+              "href": "http://multibit-store.herokuapp.com/images/book.jpg"
             }
           },
-          "author":"Emily Dickinson, edited by Thomas H Johnson",
-          "genre":"Poetry",
-          "gtin":null,
-          "price":"5.500000000000",
-          "sku":"0316184136",
-          "slug":"the-complete-works-of-emily-dickinson",
-          "summary":"The Complete Poems of Emily Dickinson is the only one-volume edition containing all Emily Dickinson's poems.",
-          "tax_rate":"0.0",
-          "title":"The Complete Works of Emily Dickinson"
+          "author": "Emily Dickinson, edited by Thomas H Johnson",
+          "genre": "Poetry",
+          "gtin": null,
+          "price": "5.500000000000",
+          "sku": "0316184136",
+          "slug": "the-complete-works-of-emily-dickinson",
+          "summary": "The Complete Poems of Emily Dickinson is the only one-volume edition containing all Emily Dickinson's poems.",
+          "tax_rate": "0.0",
+          "title": "The Complete Works of Emily Dickinson"
         }
       }
     }

@@ -4,9 +4,8 @@ import com.google.common.base.Preconditions;
 import com.theoryinpractise.halbuilder.DefaultRepresentationFactory;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
+import org.multibit.mbm.domain.common.pagination.PaginatedList;
 import org.multibit.mbm.domain.model.model.User;
-
-import java.util.List;
 
 /**
  * <p>Representation to provide the following to {@link org.multibit.mbm.domain.model.model.User}:</p>
@@ -20,14 +19,14 @@ public class AdminUserCollectionRepresentation {
 
   private final CustomerUserRepresentation customerUserRepresentation = new CustomerUserRepresentation();
 
-  public Representation get(List<User> users) {
+  public Representation get(PaginatedList<User> users) {
     Preconditions.checkNotNull(users, "users");
 
     RepresentationFactory factory = new DefaultRepresentationFactory();
 
     Representation userList = factory.newRepresentation();
 
-    for (User user : users) {
+    for (User user : users.list()) {
       Representation userRepresentation = customerUserRepresentation.get(user);
 
       // TODO Fill this in for all admin fields

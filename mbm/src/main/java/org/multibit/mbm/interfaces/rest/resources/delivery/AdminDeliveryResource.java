@@ -2,7 +2,6 @@ package org.multibit.mbm.interfaces.rest.resources.delivery;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Maps;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.yammer.dropwizard.jersey.caching.CacheControl;
 import com.yammer.metrics.annotation.Timed;
@@ -15,9 +14,10 @@ import org.multibit.mbm.domain.repositories.ItemReadService;
 import org.multibit.mbm.interfaces.rest.api.delivery.AdminUpdateDeliveryDto;
 import org.multibit.mbm.interfaces.rest.api.delivery.SupplierDeliveryItemDto;
 import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
+import org.multibit.mbm.interfaces.rest.api.representations.hal.delivery.AdminDeliveryCollectionRepresentation;
+import org.multibit.mbm.interfaces.rest.api.representations.hal.delivery.AdminDeliveryRepresentation;
 import org.multibit.mbm.interfaces.rest.auth.Authority;
 import org.multibit.mbm.interfaces.rest.auth.annotation.RestrictedTo;
-import org.multibit.mbm.interfaces.rest.common.Representations;
 import org.multibit.mbm.interfaces.rest.common.ResourceAsserts;
 import org.multibit.mbm.interfaces.rest.resources.BaseResource;
 import org.springframework.stereotype.Component;
@@ -73,7 +73,7 @@ public class AdminDeliveryResource extends BaseResource {
     PaginatedList<Delivery> deliveries = deliveryReadService.getPaginatedList(pageSize, pageNumber);
 
     // Provide a representation to the client
-    Representation representation = Representations.asPaginatedList(self(), "deliveries", deliveries, "deliveries/{id}");
+    Representation representation = new AdminDeliveryCollectionRepresentation().get(deliveries);
 
     return ok(representation);
 
@@ -107,7 +107,7 @@ public class AdminDeliveryResource extends BaseResource {
     persistentDelivery = deliveryReadService.saveOrUpdate(persistentDelivery);
 
     // Provide a representation to the client
-    Representation representation = Representations.asDetail(self(), persistentDelivery, Maps.<String, String>newHashMap());
+    Representation representation = new AdminDeliveryRepresentation().get(persistentDelivery);
 
     return ok(representation);
 

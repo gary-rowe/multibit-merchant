@@ -64,7 +64,7 @@ public class PublicItemRepresentation {
       // TODO Consider how i18n will be transmitted
       // Consider filtering on Locale
       if (isLink) {
-        userRepresentation.withLink(primaryDetail.getContent(), propertyName);
+        userRepresentation.withLink(propertyName,primaryDetail.getContent());
       } else {
         userRepresentation.withProperty(propertyName, primaryDetail.getContent());
       }
@@ -73,7 +73,7 @@ public class PublicItemRepresentation {
       int index = 1;
       for (LocalisedText secondaryDetail : secondaryDetails) {
         if (isLink) {
-          userRepresentation.withLink(secondaryDetail.getContent(), propertyName + index);
+          userRepresentation.withLink(propertyName + index,secondaryDetail.getContent());
         } else {
           userRepresentation.withProperty(propertyName + index, secondaryDetail.getContent());
         }

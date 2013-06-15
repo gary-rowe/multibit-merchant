@@ -3,9 +3,8 @@ package org.multibit.mbm.interfaces.rest.api.representations.hal.purchaseorder;
 import com.theoryinpractise.halbuilder.DefaultRepresentationFactory;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
+import org.multibit.mbm.domain.common.pagination.PaginatedList;
 import org.multibit.mbm.domain.model.model.PurchaseOrder;
-
-import java.util.List;
 
 /**
  * <p>Representation to provide the following to {@link org.multibit.mbm.domain.model.model.PurchaseOrder}:</p>
@@ -17,12 +16,12 @@ import java.util.List;
  */
 public class AdminPurchaseOrderCollectionRepresentation {
 
-  public Representation get(List<PurchaseOrder> deliveries) {
+  public Representation get(PaginatedList<PurchaseOrder> deliveries) {
     RepresentationFactory factory = new DefaultRepresentationFactory();
 
     Representation purchaseOrderList = factory.newRepresentation();
 
-    for (PurchaseOrder purchaseOrder : deliveries) {
+    for (PurchaseOrder purchaseOrder : deliveries.list()) {
       Representation purchaseOrderRepresentation = new SupplierPurchaseOrderRepresentation().get(purchaseOrder);
 
       purchaseOrderRepresentation.withProperty("id", purchaseOrder.getId())

@@ -14,7 +14,7 @@ import org.multibit.mbm.domain.model.model.Customer;
  *
  * @since 0.0.1
  */
-public class CustomerRepresentation  {
+public class CustomerRepresentation {
 
   public Representation get(Customer customer) {
     Preconditions.checkNotNull(customer, "customer");
@@ -26,8 +26,8 @@ public class CustomerRepresentation  {
     RepresentationFactory factory = new DefaultRepresentationFactory();
     return factory
       .newRepresentation(basePath)
-      .withLink("/user/" + customer.getUser().getId(), "user")
-      .withLink("/cart/" + customer.getCart().getId(), "cart");
+      .withLink("user", "/user/" + customer.getUser().getId())
+      .withLink("cart", "/cart/" + customer.getCart().getId());
   }
 
 }

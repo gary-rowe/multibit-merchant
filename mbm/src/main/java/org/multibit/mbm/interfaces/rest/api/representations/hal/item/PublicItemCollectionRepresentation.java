@@ -4,9 +4,8 @@ import com.google.common.base.Preconditions;
 import com.theoryinpractise.halbuilder.DefaultRepresentationFactory;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
+import org.multibit.mbm.domain.common.pagination.PaginatedList;
 import org.multibit.mbm.domain.model.model.Item;
-
-import java.util.List;
 
 /**
  * <p>Representation to provide the following to {@link org.multibit.mbm.domain.model.model.Item}:</p>
@@ -20,7 +19,7 @@ public class PublicItemCollectionRepresentation {
 
   private final PublicItemRepresentation publicItemRepresentation = new PublicItemRepresentation();
 
-  public Representation get(List<Item> items) {
+  public Representation get(PaginatedList<Item> items) {
 
     Preconditions.checkNotNull(items, "items");
 
@@ -29,7 +28,7 @@ public class PublicItemCollectionRepresentation {
     Representation itemList = factory.newRepresentation();
 
     // Use the reduced public fields as embedded resources
-    for (Item item : items) {
+    for (Item item : items.list()) {
       Representation itemRepresentation = publicItemRepresentation.get(item);
       itemList.withRepresentation("item", itemRepresentation);
     }

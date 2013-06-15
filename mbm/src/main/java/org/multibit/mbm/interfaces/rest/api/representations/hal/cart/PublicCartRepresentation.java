@@ -45,7 +45,7 @@ public class PublicCartRepresentation {
     Representation cartRepresentation= new DefaultRepresentationFactory()
       .newRepresentation(basePath)
         // Do not reveal the customer to non-admins
-      .withLink("/customer", "customer")
+      .withLink("customer", "/customer")
       .withProperty("currency_symbol", currencySymbol)
       .withProperty("currency_code", currencyCode)
       .withProperty("price_total", cartTotal.getAmount().toPlainString())

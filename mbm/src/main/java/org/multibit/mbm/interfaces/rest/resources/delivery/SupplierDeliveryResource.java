@@ -2,7 +2,6 @@ package org.multibit.mbm.interfaces.rest.resources.delivery;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Maps;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.yammer.dropwizard.jersey.caching.CacheControl;
 import com.yammer.metrics.annotation.Timed;
@@ -14,9 +13,9 @@ import org.multibit.mbm.domain.repositories.ItemReadService;
 import org.multibit.mbm.interfaces.rest.api.delivery.SupplierDeliveryItemDto;
 import org.multibit.mbm.interfaces.rest.api.delivery.SupplierUpdateDeliveryDto;
 import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
+import org.multibit.mbm.interfaces.rest.api.representations.hal.delivery.SupplierDeliveryRepresentation;
 import org.multibit.mbm.interfaces.rest.auth.Authority;
 import org.multibit.mbm.interfaces.rest.auth.annotation.RestrictedTo;
-import org.multibit.mbm.interfaces.rest.common.Representations;
 import org.multibit.mbm.interfaces.rest.common.ResourceAsserts;
 import org.multibit.mbm.interfaces.rest.resources.BaseResource;
 import org.springframework.stereotype.Component;
@@ -75,7 +74,7 @@ public class SupplierDeliveryResource extends BaseResource {
     Delivery delivery = supplierUser.getSupplier().getDeliveries().iterator().next();
 
     // Provide a representation to the client
-    Representation representation = Representations.asDetail(self(), delivery, Maps.<String, String>newHashMap());
+    Representation representation = new SupplierDeliveryRepresentation().get(delivery);
 
     return ok(representation);
 
@@ -105,7 +104,7 @@ public class SupplierDeliveryResource extends BaseResource {
     delivery = deliveryReadService.saveOrUpdate(delivery);
 
     // Provide a representation to the client
-    Representation representation = Representations.asDetail(self(), delivery, Maps.<String, String>newHashMap());
+    Representation representation = new SupplierDeliveryRepresentation().get(delivery);
 
     return ok(representation);
 

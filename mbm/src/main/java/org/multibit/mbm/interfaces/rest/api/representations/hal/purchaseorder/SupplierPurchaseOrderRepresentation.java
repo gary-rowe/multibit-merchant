@@ -45,7 +45,7 @@ public class SupplierPurchaseOrderRepresentation {
     Representation purchaseOrderRepresentation = new DefaultRepresentationFactory()
       .newRepresentation(basePath)
       // Do not reveal the supplier to non-admins
-      .withLink("/supplier", "supplier")
+      .withLink("supplier","/supplier")
       .withProperty("currency_symbol", currencySymbol)
       .withProperty("currency_code", currencyCode)
       .withProperty("price_total", purchaseOrderTotal.getAmount().toPlainString())

@@ -2,7 +2,6 @@ package org.multibit.mbm.interfaces.rest.resources.purchaseorder;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Maps;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.yammer.dropwizard.jersey.caching.CacheControl;
 import com.yammer.metrics.annotation.Timed;
@@ -15,9 +14,10 @@ import org.multibit.mbm.domain.repositories.PurchaseOrderReadService;
 import org.multibit.mbm.interfaces.rest.api.cart.purchaseorder.AdminUpdatePurchaseOrderRequest;
 import org.multibit.mbm.interfaces.rest.api.cart.purchaseorder.BuyerPurchaseOrderItem;
 import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
+import org.multibit.mbm.interfaces.rest.api.representations.hal.purchaseorder.AdminPurchaseOrderCollectionRepresentation;
+import org.multibit.mbm.interfaces.rest.api.representations.hal.purchaseorder.AdminPurchaseOrderRepresentation;
 import org.multibit.mbm.interfaces.rest.auth.Authority;
 import org.multibit.mbm.interfaces.rest.auth.annotation.RestrictedTo;
-import org.multibit.mbm.interfaces.rest.common.Representations;
 import org.multibit.mbm.interfaces.rest.common.ResourceAsserts;
 import org.multibit.mbm.interfaces.rest.resources.BaseResource;
 import org.springframework.stereotype.Component;
@@ -71,7 +71,7 @@ public class AdminPurchaseOrderResource extends BaseResource {
     PaginatedList<PurchaseOrder> purchaseOrders = purchaseOrderReadService.getPaginatedList(pageSize, pageNumber);
 
     // Provide a representation to the client
-    Representation representation = Representations.asPaginatedList(self(), "purchaseOrders", purchaseOrders, "purchase-order/{id}");
+    Representation representation = new AdminPurchaseOrderCollectionRepresentation().get(purchaseOrders);
 
     return ok(representation);
 
@@ -105,7 +105,7 @@ public class AdminPurchaseOrderResource extends BaseResource {
     persistentPurchaseOrder = purchaseOrderReadService.saveOrUpdate(persistentPurchaseOrder);
 
     // Provide a representation to the client
-    Representation representation = Representations.asDetail(self(), persistentPurchaseOrder, Maps.<String, String>newHashMap());
+    Representation representation = new AdminPurchaseOrderRepresentation().get(persistentPurchaseOrder);
 
     return ok(representation);
 

@@ -2,7 +2,6 @@ package org.multibit.mbm.interfaces.rest.resources.cart;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Maps;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.yammer.dropwizard.jersey.caching.CacheControl;
 import com.yammer.metrics.annotation.Timed;
@@ -14,12 +13,11 @@ import org.multibit.mbm.domain.repositories.ItemReadService;
 import org.multibit.mbm.interfaces.rest.api.cart.PublicCartItemDto;
 import org.multibit.mbm.interfaces.rest.api.cart.UpdateCartDto;
 import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
+import org.multibit.mbm.interfaces.rest.api.representations.hal.cart.PublicCartRepresentation;
 import org.multibit.mbm.interfaces.rest.auth.Authority;
 import org.multibit.mbm.interfaces.rest.auth.annotation.RestrictedTo;
-import org.multibit.mbm.interfaces.rest.common.Representations;
 import org.multibit.mbm.interfaces.rest.common.ResourceAsserts;
 import org.multibit.mbm.interfaces.rest.links.cart.CartLinks;
-import org.multibit.mbm.interfaces.rest.representations.CartRepresentations;
 import org.multibit.mbm.interfaces.rest.resources.BaseResource;
 import org.springframework.stereotype.Component;
 
@@ -72,7 +70,7 @@ public class PublicCartResource extends BaseResource {
 
     Cart cart = publicUser.getCustomer().getCart();
 
-    Representation representation = CartRepresentations.retrieveOwnCart(cart);
+    Representation representation = new PublicCartRepresentation().get(cart);
 
     return ok(representation);
 
@@ -102,7 +100,7 @@ public class PublicCartResource extends BaseResource {
     cart = cartDao.saveOrUpdate(cart);
 
     // Provide a representation to the client
-    Representation representation = Representations.asDetail(self(), cart, Maps.<String, String>newHashMap());
+    Representation representation = new PublicCartRepresentation().get(cart);
 
     return ok(representation);
 

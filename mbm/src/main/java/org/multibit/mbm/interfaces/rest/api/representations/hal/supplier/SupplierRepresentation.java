@@ -24,7 +24,7 @@ public class SupplierRepresentation {
     // Create top-level resource
     return new DefaultRepresentationFactory()
       .newRepresentation(basePath)
-      .withLink("/users/" + supplier.getUser().getId(), "user");
+      .withLink("user","/users/" + supplier.getUser().getId());
   }
 
 }
