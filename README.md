@@ -1,6 +1,6 @@
 ## Current build status
 
-[![Build Status](https://travis-ci.org/gary-rowe/MultiBitMerchant.png)](https://travis-ci.org/gary-rowe/MultiBitMerchant)
+[![Build Status](https://travis-ci.org/gary-rowe/MultiBitMerchant.png?branch=develop)](https://travis-ci.org/gary-rowe/MultiBitMerchant)
 
 ## The vision
 MultiBit Merchant is trading, reinvented. It is designed to minimise the amount of time you have to spend looking after it - most of it is fully automatic. It is intended to free you from a traditional working life and introduce you to a different approach. 
