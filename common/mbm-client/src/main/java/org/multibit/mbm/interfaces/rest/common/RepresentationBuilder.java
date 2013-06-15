@@ -60,32 +60,49 @@ public class RepresentationBuilder {
 
     // Representation is a DTO so requires a default constructor
     DefaultRepresentationFactory factory = new DefaultRepresentationFactory();
-    Representation representation = factory.newRepresentation(self);
+
+    final Representation representation;
 
     // Check for pagination links
     if (paginationOptional.isPresent()) {
       Pagination pagination = paginationOptional.get();
+
+      // Build a self URI with pagination parameters
+      URI paginatedSelf = UriBuilder
+        .fromUri(self)
+        .queryParam("pn",pagination.getCurrentPage())
+        .queryParam("ps",pagination.getResultsPerPage())
+        .build();
+
+      representation = factory.newRepresentation(paginatedSelf);
       representation
         .withLink("first", UriBuilder
           .fromUri(self)
-          .queryParam("page", 1)
+          .queryParam("pn", 1)
+          .queryParam("ps", pagination.getResultsPerPage())
           .build())
         .withLink("previous", UriBuilder
           .fromUri(self)
-          .queryParam("page", pagination.getPreviousPage())
+          .queryParam("pn", pagination.getPreviousPage())
+          .queryParam("ps", pagination.getResultsPerPage())
           .build())
         .withLink("current", UriBuilder
           .fromUri(self)
-          .queryParam("page", pagination.getCurrentPage())
+          .queryParam("pn", pagination.getPreviousPage())
+          .queryParam("ps", pagination.getResultsPerPage())
           .build())
         .withLink("next", UriBuilder
           .fromUri(self)
-          .queryParam("page", pagination.getNextPage())
+          .queryParam("pn", pagination.getNextPage())
+          .queryParam("ps", pagination.getResultsPerPage())
           .build())
         .withLink("last", UriBuilder
           .fromUri(self)
-          .queryParam("page", pagination.getTotalPages())
+          .queryParam("pn", pagination.getTotalPages())
+          .queryParam("ps", pagination.getResultsPerPage())
           .build());
+    } else {
+      representation = factory.newRepresentation(self);
     }
 
     // Add any links
@@ -131,7 +148,7 @@ public class RepresentationBuilder {
   }
 
   /**
-   * Add a collection of embedded representations (useful for side-loading associated representations)
+   * Add a map of embedded representations (useful for side-loading associated representations)
    *
    * @param embedded A map to allow each collection to be named
    *

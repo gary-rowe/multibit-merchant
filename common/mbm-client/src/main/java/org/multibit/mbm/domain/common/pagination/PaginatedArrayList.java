@@ -14,6 +14,8 @@ import java.util.List;
  */
 public class PaginatedArrayList<T> implements PaginatedList<T> {
 
+  private static final int DEFAULT_RESULTS_PER_PAGE=10;
+
   private final Pagination pagination;
 
   private final ArrayList<T> list;
@@ -24,7 +26,12 @@ public class PaginatedArrayList<T> implements PaginatedList<T> {
   }
 
   public PaginatedArrayList(int pageNumber, int totalPages, ArrayList<T> list) {
-    this.pagination = new Pagination(pageNumber, totalPages);
+    this.pagination = new Pagination(pageNumber, totalPages, DEFAULT_RESULTS_PER_PAGE);
+    this.list = list;
+  }
+
+  public PaginatedArrayList(int pageNumber, int totalPages, int resultsPerPage, ArrayList<T> list) {
+    this.pagination = new Pagination(pageNumber, totalPages, resultsPerPage);
     this.list = list;
   }
 

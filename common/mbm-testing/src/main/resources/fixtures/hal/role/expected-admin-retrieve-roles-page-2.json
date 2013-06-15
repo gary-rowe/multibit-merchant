@@ -1,27 +1,42 @@
-{"_links":{
-  "self":{
-    "href":"/role"
+{"_links": {
+  "self": {
+    "href": "/admin/role?pn=2&ps=1"
+  },
+  "current": {
+    "href": "/admin/role?pn=1&ps=1"
+  },
+  "first": {
+    "href": "/admin/role?pn=1&ps=1"
+  },
+  "last": {
+    "href": "/admin/role?pn=2&ps=1"
+  },
+  "next": {
+    "href": "/admin/role?pn=2&ps=1"
+  },
+  "previous": {
+    "href": "/admin/role?pn=1&ps=1"
   }
-}, "_embedded":{
-  "/role/2":{
-    "_links":{
-      "/role/2 self":{
-        "href":"/role/2"
+}, "_embedded": {
+  "/role/2": {
+    "_links": {
+      "self": {
+        "href": "/role/2"
       }
     },
-    "description":"Customer role",
-    "internal":true,
-    "name":"ROLE_CUSTOMER",
-    "_embedded":{
-      "authorities":{
-        "_links":{
-          "authorities self":{
-            "href":"/authorities"
+    "description": "Customer role",
+    "internal": true,
+    "name": "ROLE_CUSTOMER",
+    "_embedded": {
+      "authorities": {
+        "_links": {
+          "self": {
+            "href": "authorities"
           }
         },
-        "ROLE_CUSTOMER":true,
-        "ROLE_PARTIAL":true,
-        "ROLE_PUBLIC":true
+        "ROLE_CUSTOMER": true,
+        "ROLE_PARTIAL": true,
+        "ROLE_PUBLIC": true
       }
     }
   }

@@ -1,79 +1,79 @@
-{"_links":{
-  "self":{
-    "href":"/delivery"
+{"_links": {
+  "self": {
+    "href": "/delivery"
   },
-  "supplier":{
-    "href":"/supplier"
+  "supplier": {
+    "href": "/supplier"
   }
-}, "currency_code":"BTC", "currency_symbol":"Ƀ", "id":1, "item_total":2, "price_total":"29.700000000000", "quantity_total":7, "tax_total":"0.000000000000", "_embedded":{
-  "deliveryitems":[
+}, "currency_code": "BTC", "currency_symbol": "Ƀ", "id": 1, "item_total": 2, "price_total": "29.700000000000", "quantity_total": 7, "tax_total": "0.000000000000", "_embedded": {
+  "deliveryitems": [
     {
-      "_links":{
-        "deliveryitems self":{
-          "href":"/delivery/item/0316184136"
+      "_links": {
+        "self": {
+          "href": "/delivery/item/0316184136"
         }
       },
-      "batch_reference":"",
-      "delivery_item_subtotal":"16.500000000000",
-      "price_subtotal":"16.500000000000",
-      "quantity":3,
-      "supplier_gtin":"",
-      "supplier_sku":"",
-      "tax_subtotal":"0.0000000000000",
-      "_embedded":{
-        "item":{
-          "_links":{
-            "item self":{
-              "href":"/item/0316184136"
+      "batch_reference": "",
+      "delivery_item_subtotal": "16.500000000000",
+      "price_subtotal": "16.500000000000",
+      "quantity": 3,
+      "supplier_gtin": "",
+      "supplier_sku": "",
+      "tax_subtotal": "0.0000000000000",
+      "_embedded": {
+        "item": {
+          "_links": {
+            "self": {
+              "href": "/item/0316184136"
             },
-            "image_thumbnail_uri":{
-              "href":"http://multibit-store.herokuapp.com/images/book.jpg"
+            "image_thumbnail_uri": {
+              "href": "http://multibit-store.herokuapp.com/images/book.jpg"
             }
           },
-          "author":"Emily Dickinson, edited by Thomas H Johnson",
-          "genre":"Poetry",
-          "gtin":null,
-          "price":"5.500000000000",
-          "sku":"0316184136",
-          "slug":"the-complete-works-of-emily-dickinson",
-          "summary":"The Complete Poems of Emily Dickinson is the only one-volume edition containing all Emily Dickinson's poems.",
-          "tax_rate":"0.0",
-          "title":"The Complete Works of Emily Dickinson"
+          "author": "Emily Dickinson, edited by Thomas H Johnson",
+          "genre": "Poetry",
+          "gtin": null,
+          "price": "5.500000000000",
+          "sku": "0316184136",
+          "slug": "the-complete-works-of-emily-dickinson",
+          "summary": "The Complete Poems of Emily Dickinson is the only one-volume edition containing all Emily Dickinson's poems.",
+          "tax_rate": "0.0",
+          "title": "The Complete Works of Emily Dickinson"
         }
       }
     },
     {
-      "_links":{
-        "deliveryitems self":{
-          "href":"/delivery/item/186126173X"
+      "_links": {
+        "self": {
+          "href": "/delivery/item/186126173X"
         }
       },
-      "batch_reference":"",
-      "delivery_item_subtotal":"13.200000000000",
-      "price_subtotal":"13.200000000000",
-      "quantity":4,
-      "supplier_gtin":"",
-      "supplier_sku":"",
-      "tax_subtotal":"0.0000000000000",
-      "_embedded":{
-        "item":{
-          "_links":{
-            "item self":{
-              "href":"/item/186126173X"
+      "batch_reference": "",
+      "delivery_item_subtotal": "13.200000000000",
+      "price_subtotal": "13.200000000000",
+      "quantity": 4,
+      "supplier_gtin": "",
+      "supplier_sku": "",
+      "tax_subtotal": "0.0000000000000",
+      "_embedded": {
+        "item": {
+          "_links": {
+            "self": {
+              "href": "/item/186126173X"
             },
-            "image_thumbnail_uri":{
-              "href":"http://multibit-store.herokuapp.com/images/book.jpg"
+            "image_thumbnail_uri": {
+              "href": "http://multibit-store.herokuapp.com/images/book.jpg"
             }
           },
-          "author":"Mike Lawrence",
-          "genre":"DIY",
-          "gtin":null,
-          "price":"3.300000000000",
-          "sku":"186126173X",
-          "slug":"plumbing-and-central-heating",
-          "summary":"This guide begins with the basic skills of plumbing, which once mastered, can be applied to any situation, from mending a leaking tap to installing a new shower unit.",
-          "tax_rate":"0.0",
-          "title":"Plumbing and Central Heating"
+          "author": "Mike Lawrence",
+          "genre": "DIY",
+          "gtin": null,
+          "price": "3.300000000000",
+          "sku": "186126173X",
+          "slug": "plumbing-and-central-heating",
+          "summary": "This guide begins with the basic skills of plumbing, which once mastered, can be applied to any situation, from mending a leaking tap to installing a new shower unit.",
+          "tax_rate": "0.0",
+          "title": "Plumbing and Central Heating"
         }
       }
     }

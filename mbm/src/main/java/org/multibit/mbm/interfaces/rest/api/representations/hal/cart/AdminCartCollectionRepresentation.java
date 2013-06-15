@@ -5,6 +5,7 @@ import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import org.multibit.mbm.domain.common.pagination.PaginatedList;
 import org.multibit.mbm.domain.model.model.Cart;
+import org.multibit.mbm.interfaces.rest.api.hal.Representations;
 
 import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
@@ -24,14 +25,8 @@ public class AdminCartCollectionRepresentation {
   public Representation get(PaginatedList<Cart> carts) {
     RepresentationFactory factory = new DefaultRepresentationFactory();
 
-    // TODO Integrate with Paths and Parameters
-    URI self = UriBuilder
-      .fromPath("/admin/carts")
-      .queryParam("ps",carts.pagination().getTotalPages())
-      .queryParam("pn",carts.pagination().getCurrentPage())
-      .build();
-
-    Representation cartList = factory.newRepresentation(self);
+    URI self = UriBuilder.fromPath("/admin/cart").build();
+    Representation cartList = Representations.newPaginatedList(self, carts);
 
     for (Cart cart : carts.list()) {
       Representation cartRepresentation= publicCartRepresentation.get(cart);

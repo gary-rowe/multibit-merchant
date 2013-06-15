@@ -24,7 +24,7 @@ public class PaginatedHashSet<T> implements PaginatedSet<T> {
   }
 
   public PaginatedHashSet(int pageNumber, int totalPages, HashSet<T> set) {
-    this.pagination = new Pagination(pageNumber, totalPages);
+    this.pagination = new Pagination(pageNumber, totalPages, 0);
     this.set = set;
   }
 

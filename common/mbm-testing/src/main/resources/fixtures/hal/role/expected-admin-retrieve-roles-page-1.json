@@ -1,72 +1,87 @@
-{"_links":{
-  "self":{
-    "href":"/role"
+{"_links": {
+  "self": {
+    "href": "/admin/role?pn=1&ps=1"
+  },
+  "current": {
+    "href": "/admin/role?pn=1&ps=1"
+  },
+  "first": {
+    "href": "/admin/role?pn=1&ps=1"
+  },
+  "last": {
+    "href": "/admin/role?pn=2&ps=1"
+  },
+  "next": {
+    "href": "/admin/role?pn=2&ps=1"
+  },
+  "previous": {
+    "href": "/admin/role?pn=1&ps=1"
   }
-}, "_embedded":{
-  "/role/1":{
-    "_links":{
-      "/role/1 self":{
-        "href":"/role/1"
+}, "_embedded": {
+  "/role/1": {
+    "_links": {
+      "self": {
+        "href": "/role/1"
       }
     },
-    "description":"Administration role",
-    "internal":true,
-    "name":"ROLE_ADMIN",
-    "_embedded":{
-      "authorities":{
-        "_links":{
-          "authorities self":{
-            "href":"/authorities"
+    "description": "Administration role",
+    "internal": true,
+    "name": "ROLE_ADMIN",
+    "_embedded": {
+      "authorities": {
+        "_links": {
+          "self": {
+            "href": "authorities"
           }
         },
-        "CHANGE_OWN_PASSWORD":true,
-        "CREATE_CUSTOMERS":true,
-        "CREATE_INVOICES":true,
-        "CREATE_ITEMS":true,
-        "CREATE_ORDERS":true,
-        "CREATE_PRICES":true,
-        "CREATE_ROLES":true,
-        "CREATE_USERS":true,
-        "DELETE_CUSTOMERS":true,
-        "DELETE_INVOICES":true,
-        "DELETE_ITEMS":true,
-        "DELETE_ORDERS":true,
-        "DELETE_PRICES":true,
-        "DELETE_ROLES":true,
-        "DELETE_USERS":true,
-        "RETRIEVE_CUSTOMERS":true,
-        "RETRIEVE_INVOICES":true,
-        "RETRIEVE_ITEMS":true,
-        "RETRIEVE_ORDERS":true,
-        "RETRIEVE_PRICES":true,
-        "RETRIEVE_ROLES":true,
-        "RETRIEVE_USERS":true,
-        "ROLE_ADMIN":true,
-        "ROLE_BUYER":true,
-        "ROLE_BUYER_MANAGER":true,
-        "ROLE_CATALOG_ADMIN":true,
-        "ROLE_CLIENT":true,
-        "ROLE_CUSTOMER":true,
-        "ROLE_DELIVERY":true,
-        "ROLE_DELIVERY_MANAGER":true,
-        "ROLE_FINANCE":true,
-        "ROLE_FINANCE_MANAGER":true,
-        "ROLE_MARKETING":true,
-        "ROLE_MARKETING_MANAGER":true,
-        "ROLE_PARTIAL":true,
-        "ROLE_PUBLIC":true,
-        "ROLE_SALES":true,
-        "ROLE_SALES_MANAGER":true,
-        "ROLE_STORES":true,
-        "ROLE_STORES_MANAGER":true,
-        "ROLE_SUPPLIER":true,
-        "UPDATE_CUSTOMERS":true,
-        "UPDATE_INVOICES":true,
-        "UPDATE_ITEMS":true,
-        "UPDATE_ORDERS":true,
-        "UPDATE_PRICES":true,
-        "UPDATE_ROLES":true,
-        "UPDATE_USERS":true
+        "CHANGE_OWN_PASSWORD": true,
+        "CREATE_CUSTOMERS": true,
+        "CREATE_INVOICES": true,
+        "CREATE_ITEMS": true,
+        "CREATE_ORDERS": true,
+        "CREATE_PRICES": true,
+        "CREATE_ROLES": true,
+        "CREATE_USERS": true,
+        "DELETE_CUSTOMERS": true,
+        "DELETE_INVOICES": true,
+        "DELETE_ITEMS": true,
+        "DELETE_ORDERS": true,
+        "DELETE_PRICES": true,
+        "DELETE_ROLES": true,
+        "DELETE_USERS": true,
+        "RETRIEVE_CUSTOMERS": true,
+        "RETRIEVE_INVOICES": true,
+        "RETRIEVE_ITEMS": true,
+        "RETRIEVE_ORDERS": true,
+        "RETRIEVE_PRICES": true,
+        "RETRIEVE_ROLES": true,
+        "RETRIEVE_USERS": true,
+        "ROLE_ADMIN": true,
+        "ROLE_BUYER": true,
+        "ROLE_BUYER_MANAGER": true,
+        "ROLE_CATALOG_ADMIN": true,
+        "ROLE_CLIENT": true,
+        "ROLE_CUSTOMER": true,
+        "ROLE_DELIVERY": true,
+        "ROLE_DELIVERY_MANAGER": true,
+        "ROLE_FINANCE": true,
+        "ROLE_FINANCE_MANAGER": true,
+        "ROLE_MARKETING": true,
+        "ROLE_MARKETING_MANAGER": true,
+        "ROLE_PARTIAL": true,
+        "ROLE_PUBLIC": true,
+        "ROLE_SALES": true,
+        "ROLE_SALES_MANAGER": true,
+        "ROLE_STORES": true,
+        "ROLE_STORES_MANAGER": true,
+        "ROLE_SUPPLIER": true,
+        "UPDATE_CUSTOMERS": true,
+        "UPDATE_INVOICES": true,
+        "UPDATE_ITEMS": true,
+        "UPDATE_ORDERS": true,
+        "UPDATE_PRICES": true,
+        "UPDATE_ROLES": true,
+        "UPDATE_USERS": true
       }
     }
   }

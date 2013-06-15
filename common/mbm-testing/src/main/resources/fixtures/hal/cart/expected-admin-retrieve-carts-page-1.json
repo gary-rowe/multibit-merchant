@@ -1,6 +1,21 @@
 {"_links": {
   "self": {
-    "href": "/admin/carts?ps=2&pn=1"
+    "href": "/admin/cart?pn=1&ps=1"
+  },
+  "current": {
+    "href": "/admin/cart?pn=1&ps=1"
+  },
+  "first": {
+    "href": "/admin/cart?pn=1&ps=1"
+  },
+  "last": {
+    "href": "/admin/cart?pn=2&ps=1"
+  },
+  "next": {
+    "href": "/admin/cart?pn=2&ps=1"
+  },
+  "previous": {
+    "href": "/admin/cart?pn=1&ps=1"
   }
 }, "_embedded": {
   "/cart/1": {
@@ -8,8 +23,8 @@
       "self": {
         "href": "/cart"
       },
-      "/customer": {
-        "href": "customer"
+      "customer": {
+        "href": "/customer"
       }
     },
     "currency_code": "BTC",
@@ -38,8 +53,8 @@
                 "self": {
                   "href": "/item/0099410672"
                 },
-                "http://multibit-store.herokuapp.com/images/book.jpg": {
-                  "href": "image_thumbnail_uri"
+                "image_thumbnail_uri": {
+                  "href": "http://multibit-store.herokuapp.com/images/book.jpg"
                 }
               },
               "author": "Neal Stephenson",
@@ -71,8 +86,8 @@
                 "self": {
                   "href": "/item/0575088893"
                 },
-                "http://multibit-store.herokuapp.com/images/book.jpg": {
-                  "href": "image_thumbnail_uri"
+                "image_thumbnail_uri": {
+                  "href": "http://multibit-store.herokuapp.com/images/book.jpg"
                 }
               },
               "author": "Hannu Rajaniemi",

@@ -49,8 +49,8 @@ public class AdminItemResourceTest extends BaseJerseyHmacResourceTest {
     itemsPage2.add(book2);
 
     // Configure the mock DAO
-    PaginatedArrayList<Item> page1 = PaginatedLists.newPaginatedArrayList(1, 2, itemsPage1);
-    PaginatedArrayList<Item> page2 = PaginatedLists.newPaginatedArrayList(2,2, itemsPage2);
+    PaginatedArrayList<Item> page1 = PaginatedLists.newPaginatedArrayList(1, 2, 1, itemsPage1);
+    PaginatedArrayList<Item> page2 = PaginatedLists.newPaginatedArrayList(2,2, 1, itemsPage2);
     // Create
     when(itemReadService.saveOrUpdate((Item) isNotNull())).thenReturn(book1);
     when(itemReadService.getBySKU("sku123")).thenReturn(Optional.<Item>absent());

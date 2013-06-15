@@ -1,11 +1,13 @@
 package org.multibit.mbm.interfaces.rest.api.representations.hal.item;
 
 import com.google.common.base.Preconditions;
-import com.theoryinpractise.halbuilder.DefaultRepresentationFactory;
 import com.theoryinpractise.halbuilder.api.Representation;
-import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import org.multibit.mbm.domain.common.pagination.PaginatedList;
 import org.multibit.mbm.domain.model.model.Item;
+import org.multibit.mbm.interfaces.rest.api.hal.Representations;
+
+import javax.ws.rs.core.UriBuilder;
+import java.net.URI;
 
 /**
  * <p>Representation to provide the following to {@link org.multibit.mbm.domain.model.model.Item}:</p>
@@ -23,9 +25,8 @@ public class PublicItemCollectionRepresentation {
 
     Preconditions.checkNotNull(items, "items");
 
-    RepresentationFactory factory = new DefaultRepresentationFactory();
-
-    Representation itemList = factory.newRepresentation();
+    URI self = UriBuilder.fromPath("/admin/item").build();
+    Representation itemList = Representations.newPaginatedList(self, items);
 
     // Use the reduced public fields as embedded resources
     for (Item item : items.list()) {

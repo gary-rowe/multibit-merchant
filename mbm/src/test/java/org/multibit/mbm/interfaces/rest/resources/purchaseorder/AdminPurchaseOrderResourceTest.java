@@ -7,13 +7,14 @@ import com.xeiam.xchange.currency.MoneyUtils;
 import org.joda.money.BigMoney;
 import org.junit.Test;
 import org.multibit.mbm.domain.common.pagination.PaginatedArrayList;
-import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
-import org.multibit.mbm.interfaces.rest.api.cart.purchaseorder.BuyerPurchaseOrderItem;
-import org.multibit.mbm.interfaces.rest.api.cart.purchaseorder.BuyerUpdatePurchaseOrderRequest;
+import org.multibit.mbm.domain.common.pagination.PaginatedLists;
 import org.multibit.mbm.domain.model.model.*;
-import org.multibit.mbm.infrastructure.persistence.DatabaseLoader;
 import org.multibit.mbm.domain.repositories.ItemReadService;
 import org.multibit.mbm.domain.repositories.PurchaseOrderReadService;
+import org.multibit.mbm.infrastructure.persistence.DatabaseLoader;
+import org.multibit.mbm.interfaces.rest.api.cart.purchaseorder.BuyerPurchaseOrderItem;
+import org.multibit.mbm.interfaces.rest.api.cart.purchaseorder.BuyerUpdatePurchaseOrderRequest;
+import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
 import org.multibit.mbm.testing.BaseJerseyHmacResourceTest;
 import org.multibit.mbm.testing.FixtureAsserts;
 
@@ -97,8 +98,8 @@ public class AdminPurchaseOrderResourceTest extends BaseJerseyHmacResourceTest {
     Set<PurchaseOrder> samPurchaseOrders = Sets.newHashSet(samUser.getSupplier().getPurchaseOrders());
 
     // Configure PurchaseOrder read service
-    PaginatedArrayList stevesPurchaseOrders = new PaginatedArrayList(1,2, Lists.newArrayList(stevePurchaseOrders));
-    PaginatedArrayList samsPurchaseOrders = new PaginatedArrayList(1,2, Lists.newArrayList(samPurchaseOrders));
+    PaginatedArrayList<PurchaseOrder> stevesPurchaseOrders = PaginatedLists.newPaginatedArrayList(1, 2,1, Lists.newArrayList(stevePurchaseOrders));
+    PaginatedArrayList<PurchaseOrder> samsPurchaseOrders = PaginatedLists.newPaginatedArrayList(1,2,1, Lists.newArrayList(samPurchaseOrders));
     when(purchaseOrderReadService.getById(stevePurchaseOrder1.getId())).thenReturn(Optional.of(stevePurchaseOrder1));
     when(purchaseOrderReadService.getById(samPurchaseOrder1.getId())).thenReturn(Optional.of(samPurchaseOrder1));
     when(purchaseOrderReadService.getPaginatedList(1, 0)).thenReturn(stevesPurchaseOrders);

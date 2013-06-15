@@ -1,11 +1,14 @@
 package org.multibit.mbm.interfaces.rest.api.representations.hal.user;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import com.theoryinpractise.halbuilder.DefaultRepresentationFactory;
 import com.theoryinpractise.halbuilder.api.Representation;
-import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import org.multibit.mbm.domain.common.pagination.PaginatedList;
 import org.multibit.mbm.domain.model.model.User;
+import org.multibit.mbm.interfaces.rest.api.hal.Representations;
+
+import javax.ws.rs.core.UriBuilder;
+import java.net.URI;
 
 /**
  * <p>Representation to provide the following to {@link org.multibit.mbm.domain.model.model.User}:</p>
@@ -19,25 +22,30 @@ public class AdminUserCollectionRepresentation {
 
   private final CustomerUserRepresentation customerUserRepresentation = new CustomerUserRepresentation();
 
-  public Representation get(PaginatedList<User> users) {
+  public Representation get(PaginatedList<User> users, Optional<User> principal) {
+
     Preconditions.checkNotNull(users, "users");
 
-    RepresentationFactory factory = new DefaultRepresentationFactory();
-
-    Representation userList = factory.newRepresentation();
+    URI self = UriBuilder.fromPath("/admin/user").build();
+    Representation userList = Representations.newPaginatedList(self, users);
 
     for (User user : users.list()) {
-      Representation userRepresentation = customerUserRepresentation.get(user);
+      Representation userRepresentation = customerUserRepresentation.get(user, principal);
 
       // TODO Fill this in for all admin fields
       //userRepresentation.withProperty("id", user.getId())
-        // End of build
-        ;
+      // End of build
+      ;
 
       userList.withRepresentation("/user/" + user.getId(), userRepresentation);
     }
 
     return userList;
+
+  }
+
+  public Representation get(PaginatedList<User> users) {
+    return get(users, Optional.<User>absent());
 
   }
 

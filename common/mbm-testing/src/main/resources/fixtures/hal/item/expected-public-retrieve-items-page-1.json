@@ -1,25 +1,40 @@
-{"_links":{
-  "self":{
-    "href":"/items/promotion?ps=1&pn=0"
+{"_links": {
+  "self": {
+    "href": "/admin/item?pn=1&ps=1"
+  },
+  "current": {
+    "href": "/admin/item?pn=1&ps=1"
+  },
+  "first": {
+    "href": "/admin/item?pn=1&ps=1"
+  },
+  "last": {
+    "href": "/admin/item?pn=2&ps=1"
+  },
+  "next": {
+    "href": "/admin/item?pn=2&ps=1"
+  },
+  "previous": {
+    "href": "/admin/item?pn=1&ps=1"
   }
-}, "_embedded":{
-  "item":{
-    "_links":{
-      "item self":{
-        "href":"/item/0099410672"
+}, "_embedded": {
+  "item": {
+    "_links": {
+      "self": {
+        "href": "/item/0099410672"
       },
-      "image_thumbnail_uri":{
-        "href":"http://multibit-store.herokuapp.com/images/book.jpg"
+      "image_thumbnail_uri": {
+        "href": "http://multibit-store.herokuapp.com/images/book.jpg"
       }
     },
-    "author":"Neal Stephenson",
-    "genre":"Sci-Fi",
-    "gtin":null,
-    "price":"1.100000000000",
-    "sku":"0099410672",
-    "slug":"cryptonomicon",
-    "summary":"'A brilliant patchwork of code-breaking mathematicians and their descendants who are striving to create a data haven in the Philippines...trust me on this one' Guardian",
-    "tax_rate":"0.0",
-    "title":"Cryptonomicon"
+    "author": "Neal Stephenson",
+    "genre": "Sci-Fi",
+    "gtin": null,
+    "price": "1.100000000000",
+    "sku": "0099410672",
+    "slug": "cryptonomicon",
+    "summary": "'A brilliant patchwork of code-breaking mathematicians and their descendants who are striving to create a data haven in the Philippines...trust me on this one' Guardian",
+    "tax_rate": "0.0",
+    "title": "Cryptonomicon"
   }
 }}

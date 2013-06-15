@@ -53,8 +53,8 @@ public class AdminUserResourceTest extends BaseJerseyHmacResourceTest {
     usersPage2.add(bobUser);
 
     // Configure the mock DAO
-    PaginatedList<User> page1 = PaginatedLists.newPaginatedArrayList(1,2, usersPage1);
-    PaginatedList<User> page2 = PaginatedLists.newPaginatedArrayList(2,2, usersPage2);
+    PaginatedList<User> page1 = PaginatedLists.newPaginatedArrayList(1, 2, 1, usersPage1);
+    PaginatedList<User> page2 = PaginatedLists.newPaginatedArrayList(2, 2, 1, usersPage2);
     // Create
     when(userReadService.saveOrUpdate((User) isNotNull())).thenReturn(aliceUser);
     when(userReadService.getByCredentials(anyString(), anyString())).thenReturn(Optional.<User>absent());

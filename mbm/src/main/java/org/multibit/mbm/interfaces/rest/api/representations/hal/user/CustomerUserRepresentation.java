@@ -1,5 +1,6 @@
 package org.multibit.mbm.interfaces.rest.api.representations.hal.user;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.theoryinpractise.halbuilder.api.Representation;
 import org.multibit.mbm.domain.model.model.ContactMethod;
@@ -21,10 +22,10 @@ public class CustomerUserRepresentation {
 
   private final ClientUserRepresentation clientUserRepresentation = new ClientUserRepresentation();
 
-  public Representation get(User user) {
+  public Representation get(User user, Optional<User> principal) {
 
     // Build on the minimal representation
-    Representation representation = clientUserRepresentation.get(user);
+    Representation representation = clientUserRepresentation.get(user, principal);
 
     // Apply restrictions against the more detailed representation
     Preconditions.checkNotNull(user, "user");
@@ -55,6 +56,11 @@ public class CustomerUserRepresentation {
 
     return representation;
 
+  }
+
+  public Representation get(User user) {
+
+    return get(user, Optional.<User>absent());
   }
 
 }

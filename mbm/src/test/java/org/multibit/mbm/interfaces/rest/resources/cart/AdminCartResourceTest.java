@@ -81,8 +81,8 @@ public class AdminCartResourceTest extends BaseJerseyHmacResourceTest {
     List<Cart> cartList1 = Lists.newArrayList(aliceCart);
     List<Cart> cartList2 = Lists.newArrayList(bobCart);
 
-    PaginatedList<Cart> page1 = PaginatedLists.newPaginatedArrayList(1, 2, cartList1);
-    PaginatedList<Cart> page2 = PaginatedLists.newPaginatedArrayList(2, 2, cartList2);
+    PaginatedList<Cart> page1 = PaginatedLists.newPaginatedArrayList(1, 2, 1, cartList1);
+    PaginatedList<Cart> page2 = PaginatedLists.newPaginatedArrayList(2, 2, 1, cartList2);
 
     // Configure Cart DAO
 

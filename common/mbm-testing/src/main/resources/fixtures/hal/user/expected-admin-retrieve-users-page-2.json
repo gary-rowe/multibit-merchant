@@ -1,19 +1,34 @@
-{"_links":{
-  "self":{
-    "href":"/admin/user?ps=1&pn=1"
+{"_links": {
+  "self": {
+    "href": "/admin/user?pn=2&ps=1"
+  },
+  "current": {
+    "href": "/admin/user?pn=1&ps=1"
+  },
+  "first": {
+    "href": "/admin/user?pn=1&ps=1"
+  },
+  "last": {
+    "href": "/admin/user?pn=2&ps=1"
+  },
+  "next": {
+    "href": "/admin/user?pn=2&ps=1"
+  },
+  "previous": {
+    "href": "/admin/user?pn=1&ps=1"
   }
-}, "_embedded":{
-  "/user/2":{
-    "_links":{
-      "/user/2 self":{
-        "href":"/admin/user/2"
+}, "_embedded": {
+  "/user/2": {
+    "_links": {
+      "self": {
+        "href": "/admin/user/2"
       }
     },
-    "api_key":"bob123",
-    "email":"bob@example.org",
-    "last_name":"Customer",
-    "names":"Bob",
-    "secret_key":"bob456",
-    "username":"bob"
+    "api_key": "bob123",
+    "email": "bob@example.org",
+    "last_name": "Customer",
+    "names": "Bob",
+    "secret_key": "bob456",
+    "username": "bob"
   }
 }}

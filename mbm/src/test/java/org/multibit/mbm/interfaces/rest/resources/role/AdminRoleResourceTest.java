@@ -4,15 +4,16 @@ import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import org.junit.Test;
 import org.multibit.mbm.domain.common.pagination.PaginatedArrayList;
-import org.multibit.mbm.interfaces.rest.api.AdminDeleteEntityDto;
-import org.multibit.mbm.interfaces.rest.api.role.AdminCreateRoleDto;
-import org.multibit.mbm.interfaces.rest.api.role.AdminUpdateRoleDto;
-import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
-import org.multibit.mbm.infrastructure.persistence.DatabaseLoader;
-import org.multibit.mbm.domain.repositories.RoleReadService;
+import org.multibit.mbm.domain.common.pagination.PaginatedLists;
 import org.multibit.mbm.domain.model.model.Role;
 import org.multibit.mbm.domain.model.model.RoleBuilder;
 import org.multibit.mbm.domain.model.model.User;
+import org.multibit.mbm.domain.repositories.RoleReadService;
+import org.multibit.mbm.infrastructure.persistence.DatabaseLoader;
+import org.multibit.mbm.interfaces.rest.api.AdminDeleteEntityDto;
+import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
+import org.multibit.mbm.interfaces.rest.api.role.AdminCreateRoleDto;
+import org.multibit.mbm.interfaces.rest.api.role.AdminUpdateRoleDto;
 import org.multibit.mbm.testing.BaseJerseyHmacResourceTest;
 import org.multibit.mbm.testing.FixtureAsserts;
 
@@ -57,8 +58,8 @@ public class AdminRoleResourceTest extends BaseJerseyHmacResourceTest {
     rolesPage2.add(customerRole);
 
     // Configure the mock read service
-    PaginatedArrayList paginatedRoles1 = new PaginatedArrayList(1,2, Lists.newArrayList(rolesPage1));
-    PaginatedArrayList paginatedRoles2 = new PaginatedArrayList(2,2, Lists.newArrayList(rolesPage2));
+    PaginatedArrayList<Role> paginatedRoles1 = PaginatedLists.newPaginatedArrayList(1, 2,1, Lists.newArrayList(rolesPage1));
+    PaginatedArrayList<Role> paginatedRoles2 = PaginatedLists.newPaginatedArrayList(2,2,1, Lists.newArrayList(rolesPage2));
 
     // Create
     when(roleReadService.saveOrUpdate((Role) isNotNull())).thenReturn(newRole);

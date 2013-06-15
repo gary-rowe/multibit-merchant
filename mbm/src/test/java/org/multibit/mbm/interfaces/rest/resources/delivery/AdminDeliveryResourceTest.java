@@ -84,8 +84,8 @@ public class AdminDeliveryResourceTest extends BaseJerseyHmacResourceTest {
 
     // Configure Delivery DAO
 
-    PaginatedList<Delivery> page1 = PaginatedLists.newPaginatedArrayList(1, 2, steveDeliveries);
-    PaginatedList<Delivery> page2 = PaginatedLists.newPaginatedArrayList(2, 2, samDeliveries);
+    PaginatedList<Delivery> page1 = PaginatedLists.newPaginatedArrayList(1, 2, 1, steveDeliveries);
+    PaginatedList<Delivery> page2 = PaginatedLists.newPaginatedArrayList(2, 2, 1, samDeliveries);
 
     when(deliveryReadService.getById(steveDelivery1.getId())).thenReturn(Optional.of(steveDelivery1));
     when(deliveryReadService.getById(samDelivery1.getId())).thenReturn(Optional.of(samDelivery1));
@@ -108,7 +108,7 @@ public class AdminDeliveryResourceTest extends BaseJerseyHmacResourceTest {
 
   }
   @Test
-  public void adminRetrieveDeliverysAsHalJson() throws Exception {
+  public void adminRetrieveDeliveriesAsHalJson() throws Exception {
 
     String actualResponse = configureAsClient(AdminDeliveryResource.class)
       .queryParam("ps","1")

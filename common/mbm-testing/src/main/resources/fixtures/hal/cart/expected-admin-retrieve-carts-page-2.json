@@ -1,6 +1,21 @@
 {"_links": {
   "self": {
-    "href": "/admin/carts?ps=2&pn=2"
+    "href": "/admin/cart?pn=2&ps=1"
+  },
+  "current": {
+    "href": "/admin/cart?pn=1&ps=1"
+  },
+  "first": {
+    "href": "/admin/cart?pn=1&ps=1"
+  },
+  "last": {
+    "href": "/admin/cart?pn=2&ps=1"
+  },
+  "next": {
+    "href": "/admin/cart?pn=2&ps=1"
+  },
+  "previous": {
+    "href": "/admin/cart?pn=1&ps=1"
   }
 }, "_embedded": {
   "/cart/2": {
@@ -8,8 +23,8 @@
       "self": {
         "href": "/cart"
       },
-      "/customer": {
-        "href": "customer"
+      "customer": {
+        "href": "/customer"
       }
     },
     "currency_code": "BTC",
@@ -38,8 +53,8 @@
                 "self": {
                   "href": "/item/0316184136"
                 },
-                "http://multibit-store.herokuapp.com/images/book.jpg": {
-                  "href": "image_thumbnail_uri"
+                "image_thumbnail_uri": {
+                  "href": "http://multibit-store.herokuapp.com/images/book.jpg"
                 }
               },
               "author": "Emily Dickinson, edited by Thomas H Johnson",
@@ -71,8 +86,8 @@
                 "self": {
                   "href": "/item/186126173X"
                 },
-                "http://multibit-store.herokuapp.com/images/book.jpg": {
-                  "href": "image_thumbnail_uri"
+                "image_thumbnail_uri": {
+                  "href": "http://multibit-store.herokuapp.com/images/book.jpg"
                 }
               },
               "author": "Mike Lawrence",

@@ -1,10 +1,13 @@
 package org.multibit.mbm.interfaces.rest.api.representations.hal.purchaseorder;
 
-import com.theoryinpractise.halbuilder.DefaultRepresentationFactory;
+import com.google.common.base.Preconditions;
 import com.theoryinpractise.halbuilder.api.Representation;
-import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import org.multibit.mbm.domain.common.pagination.PaginatedList;
 import org.multibit.mbm.domain.model.model.PurchaseOrder;
+import org.multibit.mbm.interfaces.rest.api.hal.Representations;
+
+import javax.ws.rs.core.UriBuilder;
+import java.net.URI;
 
 /**
  * <p>Representation to provide the following to {@link org.multibit.mbm.domain.model.model.PurchaseOrder}:</p>
@@ -16,12 +19,14 @@ import org.multibit.mbm.domain.model.model.PurchaseOrder;
  */
 public class AdminPurchaseOrderCollectionRepresentation {
 
-  public Representation get(PaginatedList<PurchaseOrder> deliveries) {
-    RepresentationFactory factory = new DefaultRepresentationFactory();
+  public Representation get(PaginatedList<PurchaseOrder> purchaseOrders) {
 
-    Representation purchaseOrderList = factory.newRepresentation();
+    Preconditions.checkNotNull(purchaseOrders);
 
-    for (PurchaseOrder purchaseOrder : deliveries.list()) {
+    URI self = UriBuilder.fromPath("/admin/purchase-order").build();
+    Representation purchaseOrderList = Representations.newPaginatedList(self, purchaseOrders);
+
+    for (PurchaseOrder purchaseOrder : purchaseOrders.list()) {
       Representation purchaseOrderRepresentation = new SupplierPurchaseOrderRepresentation().get(purchaseOrder);
 
       purchaseOrderRepresentation.withProperty("id", purchaseOrder.getId())

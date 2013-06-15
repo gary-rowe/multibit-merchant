@@ -41,12 +41,12 @@ public class PublicItemResourceTest extends BaseJerseyHmacResourceTest {
     itemsPage2.add(book2);
 
     // Configure the mock DAO
-    PaginatedArrayList<Item> page1 = PaginatedLists.newPaginatedArrayList(1, 2, itemsPage1);
-    PaginatedArrayList<Item> page2 = PaginatedLists.newPaginatedArrayList(2,2, itemsPage2);
+    PaginatedArrayList<Item> page1 = PaginatedLists.newPaginatedArrayList(1, 2, 1, itemsPage1);
+    PaginatedArrayList<Item> page2 = PaginatedLists.newPaginatedArrayList(2,2, 1, itemsPage2);
 
     // Retrieve
-    when(itemReadService.getPaginatedList(1, 0)).thenReturn(page1);
-    when(itemReadService.getPaginatedList(1, 1)).thenReturn(page2);
+    when(itemReadService.getPaginatedList(1, 1)).thenReturn(page1);
+    when(itemReadService.getPaginatedList(1, 2)).thenReturn(page2);
     when(itemReadService.getBySKU("0575088893")).thenReturn(Optional.of(book2));
 
     testObject.setItemReadService(itemReadService);
@@ -61,7 +61,7 @@ public class PublicItemResourceTest extends BaseJerseyHmacResourceTest {
 
     String actualResponse = configureAsClient("/items/promotion")
       .queryParam("ps","1")
-      .queryParam("pn", "0")
+      .queryParam("pn", "1")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 
@@ -69,7 +69,7 @@ public class PublicItemResourceTest extends BaseJerseyHmacResourceTest {
 
     actualResponse = configureAsClient("/items/promotion")
       .queryParam("ps","1")
-      .queryParam("pn", "1")
+      .queryParam("pn", "2")
       .accept(HalMediaType.APPLICATION_HAL_JSON)
       .get(String.class);
 

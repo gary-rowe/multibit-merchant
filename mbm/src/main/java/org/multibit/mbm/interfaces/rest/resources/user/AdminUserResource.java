@@ -71,7 +71,7 @@ public class AdminUserResource extends BaseResource {
     User persistentUser = userReadService.saveOrUpdate(user);
 
     // Provide a representation to the client
-    Representation representation = new AdminUserRepresentation().get(persistentUser);
+    Representation representation = new AdminUserRepresentation().get(persistentUser, Optional.of(adminUser));
     URI location = uriInfo.getAbsolutePathBuilder().path(persistentUser.getId().toString()).build();
 
     return created(representation,location);
@@ -103,7 +103,7 @@ public class AdminUserResource extends BaseResource {
     PaginatedList<User> users = userReadService.getPaginatedList(pageSize, pageNumber);
 
     // Provide a representation to the client
-    Representation representation = new AdminUserCollectionRepresentation().get(users);
+    Representation representation = new AdminUserCollectionRepresentation().get(users, Optional.of(adminUser));
 
     return ok(representation);
 
@@ -139,7 +139,7 @@ public class AdminUserResource extends BaseResource {
     persistentUser = userReadService.saveOrUpdate(user.get());
 
     // Provide a representation to the client
-    Representation representation = new AdminUserRepresentation().get(persistentUser);
+    Representation representation = new AdminUserRepresentation().get(persistentUser, Optional.of(adminUser));
 
     return ok(representation);
 
@@ -174,7 +174,7 @@ public class AdminUserResource extends BaseResource {
     persistentUser = userReadService.saveOrUpdate(user.get());
 
     // Provide a representation to the client
-    Representation representation = new AdminUserRepresentation().get(persistentUser);
+    Representation representation = new AdminUserRepresentation().get(persistentUser, Optional.of(adminUser));
 
     return ok(representation);
 

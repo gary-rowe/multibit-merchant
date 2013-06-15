@@ -1,93 +1,108 @@
-{"_links":{
-  "self":{
-    "href":"/admin/purchase-orders?ps=1&pn=1"
+{"_links": {
+  "self": {
+    "href": "/admin/purchase-order?pn=1&ps=1"
+  },
+  "current": {
+    "href": "/admin/purchase-order?pn=1&ps=1"
+  },
+  "first": {
+    "href": "/admin/purchase-order?pn=1&ps=1"
+  },
+  "last": {
+    "href": "/admin/purchase-order?pn=2&ps=1"
+  },
+  "next": {
+    "href": "/admin/purchase-order?pn=2&ps=1"
+  },
+  "previous": {
+    "href": "/admin/purchase-order?pn=1&ps=1"
   }
-}, "_embedded":{
-  "/purchase-order/1":{
-    "_links":{
-      "/purchase-order/1 self":{
-        "href":"/purchaseOrder"
+}, "_embedded": {
+  "/purchase-order/1": {
+    "_links": {
+      "self": {
+        "href": "/purchaseOrder"
       },
-      "supplier":{
-        "href":"/supplier"
+      "supplier": {
+        "href": "/supplier"
       }
     },
-    "currency_code":"BTC",
-    "currency_symbol":"Ƀ",
-    "id":1,
-    "item_total":2,
-    "price_total":"29.700000000000",
-    "quantity_total":7,
-    "tax_total":"0.000000000000",
-    "_embedded":{
-      "purchaseOrderItems":[
+    "currency_code": "BTC",
+    "currency_symbol": "Ƀ",
+    "id": 1,
+    "item_total": 2,
+    "price_total": "29.700000000000",
+    "quantity_total": 7,
+    "tax_total": "0.000000000000",
+    "_embedded": {
+      "purchaseOrderItems": [
         {
-          "_links":{
-            "purchaseOrderItems self":{
-              "href":"/purchase-order/item/0316184136"
+          "_links": {
+            "self": {
+              "href": "/purchase-order/item/0316184136"
             }
           },
-          "batch_reference":"",
-          "price_subtotal":"16.500000000000",
-          "purchase_order_item_subtotal":"16.500000000000",
-          "quantity":3,
-          "supplier_gtin":"",
-          "supplier_sku":"",
-          "tax_subtotal":"0.0000000000000",
-          "_embedded":{
-            "item":{
-              "_links":{
-                "item self":{
-                  "href":"/item/0316184136"
+          "batch_reference": "",
+          "price_subtotal": "16.500000000000",
+          "purchase_order_item_subtotal": "16.500000000000",
+          "quantity": 3,
+          "supplier_gtin": "",
+          "supplier_sku": "",
+          "tax_subtotal": "0.0000000000000",
+          "_embedded": {
+            "item": {
+              "_links": {
+                "self": {
+                  "href": "/item/0316184136"
                 },
-                "image_thumbnail_uri":{
-                  "href":"http://multibit-store.herokuapp.com/images/book.jpg"
+                "image_thumbnail_uri": {
+                  "href": "http://multibit-store.herokuapp.com/images/book.jpg"
                 }
               },
-              "author":"Emily Dickinson, edited by Thomas H Johnson",
-              "genre":"Poetry",
-              "gtin":null,
-              "price":"5.500000000000",
-              "sku":"0316184136",
-              "slug":"the-complete-works-of-emily-dickinson",
-              "summary":"The Complete Poems of Emily Dickinson is the only one-volume edition containing all Emily Dickinson's poems.",
-              "tax_rate":"0.0",
-              "title":"The Complete Works of Emily Dickinson"
+              "author": "Emily Dickinson, edited by Thomas H Johnson",
+              "genre": "Poetry",
+              "gtin": null,
+              "price": "5.500000000000",
+              "sku": "0316184136",
+              "slug": "the-complete-works-of-emily-dickinson",
+              "summary": "The Complete Poems of Emily Dickinson is the only one-volume edition containing all Emily Dickinson's poems.",
+              "tax_rate": "0.0",
+              "title": "The Complete Works of Emily Dickinson"
             }
           }
         },
         {
-          "_links":{
-            "purchaseOrderItems self":{
-              "href":"/purchase-order/item/186126173X"
+          "_links": {
+            "self": {
+              "href": "/purchase-order/item/186126173X"
             }
           },
-          "batch_reference":"",
-          "price_subtotal":"13.200000000000",
-          "purchase_order_item_subtotal":"13.200000000000",
-          "quantity":4,
-          "supplier_gtin":"",
-          "supplier_sku":"",
-          "tax_subtotal":"0.0000000000000",
-          "_embedded":{
-            "item":{
-              "_links":{
-                "item self":{
-                  "href":"/item/186126173X"
+          "batch_reference": "",
+          "price_subtotal": "13.200000000000",
+          "purchase_order_item_subtotal": "13.200000000000",
+          "quantity": 4,
+          "supplier_gtin": "",
+          "supplier_sku": "",
+          "tax_subtotal": "0.0000000000000",
+          "_embedded": {
+            "item": {
+              "_links": {
+                "self": {
+                  "href": "/item/186126173X"
                 },
-                "image_thumbnail_uri":{
-                  "href":"http://multibit-store.herokuapp.com/images/book.jpg"
+                "image_thumbnail_uri": {
+                  "href": "http://multibit-store.herokuapp.com/images/book.jpg"
                 }
               },
-              "author":"Mike Lawrence",
-              "genre":"DIY",
-              "gtin":null,
-              "price":"3.300000000000",
-              "sku":"186126173X",
-              "slug":"plumbing-and-central-heating",
-              "summary":"This guide begins with the basic skills of plumbing, which once mastered, can be applied to any situation, from mending a leaking tap to installing a new shower unit.",
-              "tax_rate":"0.0",
-              "title":"Plumbing and Central Heating"
+              "author": "Mike Lawrence",
+              "genre": "DIY",
+              "gtin": null,
+              "price": "3.300000000000",
+              "sku": "186126173X",
+              "slug": "plumbing-and-central-heating",
+              "summary": "This guide begins with the basic skills of plumbing, which once mastered, can be applied to any situation, from mending a leaking tap to installing a new shower unit.",
+              "tax_rate": "0.0",
+              "title": "Plumbing and Central Heating"
             }
           }
         }

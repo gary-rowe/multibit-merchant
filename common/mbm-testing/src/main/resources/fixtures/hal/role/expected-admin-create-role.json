@@ -1,1 +1,13 @@
-{"_links":{"self":{"href":"/role/3"}},"description":"Stock Manager roles","internal":true,"name":"Stock Manager","_embedded":{"authorities":{"_links":{"authorities self":{"href":"/authorities"}}}}}
+{"_links": {
+  "self": {
+    "href": "/role/3"
+  }
+}, "description": "Stock Manager roles", "internal": true, "name": "Stock Manager", "_embedded": {
+  "authorities": {
+    "_links": {
+      "self": {
+        "href": "authorities"
+      }
+    }
+  }
+}}
