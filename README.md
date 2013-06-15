@@ -1,3 +1,7 @@
+## Current build status
+
+[![Build Status](https://travis-ci.org/gary-rowe/MultiBitMerchant.png)](https://travis-ci.org/gary-rowe/MultiBitMerchant)
+
 ## The vision
 MultiBit Merchant is trading, reinvented. It is designed to minimise the amount of time you have to spend looking after it - most of it is fully automatic. It is intended to free you from a traditional working life and introduce you to a different approach. 
 
@@ -50,13 +54,15 @@ At present, given the alpha nature of the project it is best to start with `deve
 
 ## Bitcoinj dependency is broken - for good reasons
 
-The current Bitcoinj library is not available through a standard Nexus repository for security reasons. Before you think
-that this is some rubbish that you can safely ignore please bear in mind that Bitcoinj is a financial library that is
-*capable of spending real money*. You want to be sure that no-one between you and their repository has an opportunity
-to change the code. Further, you want to be sure that any of the libraries that it pulls in have not been corrupted.
+The current Bitcoinj library is not available through a standard Nexus repository for security reasons.
+
+Before you think that this is some rubbish that you can safely ignore please bear in mind that Bitcoinj is a
+financial library that is *capable of spending real money*. You want to be sure that no-one between you and their
+repository has an opportunity to change the code. Further, you want to be sure that any of the libraries that it
+pulls in have not been corrupted (a "build side-chain attack").
 
 The best way to ensure that you have the correct Bitcoinj library is to build it locally on a trusted machine and then
-deploy it to a trusted repository under your control. You should [follow their instructions](https://code.google.com/p/bitcoinj/wiki/UsingMaven).
+deploy it to a trusted repository under your control. To accomplish this, you should [follow the Bitcoinj build instructions](https://code.google.com/p/bitcoinj/wiki/UsingMaven).
 
 Essentially, at this stage you will need to perform a git checkout to a particular revision denoted by a hash. This will
 ensure that no code before this point has been modified. This approach is more secure than the current Maven dependency
