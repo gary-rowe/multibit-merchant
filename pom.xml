@@ -13,10 +13,10 @@
   <inceptionYear>2012</inceptionYear>
 
   <modules>
-    <module>mbm</module>
-    <module>common/mbm-hal</module>
-    <module>common/mbm-client</module>
-    <module>common/mbm-testing</module>
+    <module>mbm-platform</module>
+    <module>mbm-hal</module>
+    <module>mbm-client</module>
+    <module>mbm-testing</module>
   </modules>
 
   <!-- Entries listed here occur more than once in the POM -->

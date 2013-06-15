@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <groupId>org.multibit.merchant</groupId>
+    <artifactId>mbm-parent</artifactId>
+    <version>develop-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.multibit.merchant</groupId>
+  <artifactId>mbm-testing</artifactId>
+  <version>develop-SNAPSHOT</version>
+
+  <url>http://multibitmerchant.org</url>
+
+  <name>MultiBit Merchant Testing</name>
+  <description>Provides common test support for MBM and client projects.</description>
+  <inceptionYear>2012</inceptionYear>
+
+  <dependencies>
+
+    <!-- Common library support -->
+    <!-- Provides common HAL support -->
+    <dependency>
+      <groupId>org.multibit.merchant</groupId>
+      <artifactId>mbm-hal</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
+
+    <!-- Require Dropwizard test support -->
+    <dependency>
+      <groupId>com.yammer.dropwizard</groupId>
+      <artifactId>dropwizard-testing</artifactId>
+    </dependency>
+
+    <!-- JUnit with forced compile scope -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>compile</scope>
+    </dependency>
+
+    <!-- HAL provides the resource representation -->
+    <dependency>
+      <groupId>com.theoryinpractise</groupId>
+      <artifactId>halbuilder-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.theoryinpractise</groupId>
+      <artifactId>halbuilder-api</artifactId>
+    </dependency>
+  </dependencies>
+
+</project>
