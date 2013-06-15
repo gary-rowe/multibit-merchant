@@ -119,7 +119,7 @@ public class HibernateItemReadServiceIntegrationTest extends BaseIntegrationTest
   public void testGetPaginatedList() {
 
     // All items (check against inefficient joins)
-    final PaginatedList<Item> allItems = testObject.getPaginatedList(5, 0);
+    final PaginatedList<Item> allItems = testObject.getPaginatedList(5, 1);
 
     assertThat("Unexpected size in Item page 1", allItems.list().size(), equalTo(5));
     assertThat("Unexpected data ordering in Item [0,1]", allItems.list().get(0).getId(), equalTo(1L));
@@ -129,21 +129,21 @@ public class HibernateItemReadServiceIntegrationTest extends BaseIntegrationTest
     assertThat("Unexpected data ordering in Item [4,1]", allItems.list().get(4).getId(), equalTo(5L));
 
     // Page 1
-    final PaginatedList<Item> page1 = testObject.getPaginatedList(2, 0);
+    final PaginatedList<Item> page1 = testObject.getPaginatedList(2, 1);
 
     assertThat("Unexpected size in Item page 1", page1.list().size(), equalTo(2));
     assertThat("Unexpected data ordering in Item [0,1]", page1.list().get(0).getId(), equalTo(1L));
     assertThat("Unexpected data ordering in Item [1,1]", page1.list().get(1).getId(), equalTo(2L));
 
     // Page 2
-    final PaginatedList<Item> page2 = testObject.getPaginatedList(2, 1);
+    final PaginatedList<Item> page2 = testObject.getPaginatedList(2, 2);
 
     assertThat("Unexpected size in Item page 2", page2.list().size(), equalTo(2));
     assertThat("Unexpected data ordering in Item [0,2]", page2.list().get(0).getId(), equalTo(3L));
     assertThat("Unexpected data ordering in Item [1,2]", page2.list().get(1).getId(), equalTo(4L));
 
     // Page 3
-    final PaginatedList<Item> page3 = testObject.getPaginatedList(2, 2);
+    final PaginatedList<Item> page3 = testObject.getPaginatedList(2, 3);
 
     assertThat("Unexpected size in Item page 3", page3.list().size(), equalTo(1));
     assertThat("Unexpected data ordering in Item [0,3]", page3.list().get(0).getId(), equalTo(5L));
@@ -164,7 +164,7 @@ public class HibernateItemReadServiceIntegrationTest extends BaseIntegrationTest
       .withPrimaryFieldDetail(ItemField.TITLE, "Central Heating", "en")
       .build();
 
-    final PaginatedList<Item> byTitle = testObject.getPaginatedListByExample(5,0,example);
+    final PaginatedList<Item> byTitle = testObject.getPaginatedListByExample(5,1,example);
 
     assertThat("Unexpected size in Item page 1 (title)", byTitle.list().size(), equalTo(1));
     assertThat("Unexpected data ordering in Item (title) [0,1]", byTitle.list().get(0).getId(), equalTo(3L));
@@ -176,7 +176,7 @@ public class HibernateItemReadServiceIntegrationTest extends BaseIntegrationTest
       .withPrimaryFieldDetail(ItemField.SUMMARY, "trust me", "en")
       .build();
 
-    final PaginatedList<Item> byTitleAndSummary = testObject.getPaginatedListByExample(5,0,example);
+    final PaginatedList<Item> byTitleAndSummary = testObject.getPaginatedListByExample(5,1,example);
 
     assertThat("Unexpected size in Item page 1 (summary)", byTitleAndSummary.list().size(), equalTo(1));
     assertThat("Unexpected data ordering in Item (summary) [0,1]", byTitleAndSummary.list().get(0).getId(), equalTo(1L));

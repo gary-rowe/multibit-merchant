@@ -58,12 +58,12 @@ public abstract class BaseHibernateReadService<T> implements EntityReadService<T
   }
 
   /**
-   *
    * @param clazz The class for the criteria
+   *
    * @return The number of rows in the table
    */
   protected Number rowCount(final Class<T> clazz) {
-    Number rowCount = (Number) hibernateTemplate.executeFind(new HibernateCallback() {
+    Number rowCount = (Number) hibernateTemplate.execute(new HibernateCallback() {
       public Object doInHibernate(Session session) throws HibernateException, SQLException {
         return session
           .createCriteria(clazz)
@@ -108,10 +108,10 @@ public abstract class BaseHibernateReadService<T> implements EntityReadService<T
   }
 
   /**
-   *
-   * @param pageSize The page size
+   * @param pageSize   The page size
    * @param pageNumber The page number
-   * @param clazz The class to which this will apply
+   * @param clazz      The class to which this will apply
+   *
    * @return The paginated list
    */
   protected PaginatedList<T> buildPaginatedList(final int pageSize, final int pageNumber, final Class<T> clazz) {
@@ -127,9 +127,10 @@ public abstract class BaseHibernateReadService<T> implements EntityReadService<T
     @SuppressWarnings("unchecked")
     List<T> list = (List<T>) hibernateTemplate.executeFind(new HibernateCallback() {
       public Object doInHibernate(Session session) throws HibernateException, SQLException {
-        Query query = session.createQuery("from "+clazz.getSimpleName());
-        query.setMaxResults(pageSize);
-        query.setFirstResult(pageSize * pageNumber);
+        Query query = session
+          .createQuery("from " + clazz.getSimpleName())
+          .setMaxResults(pageSize)
+          .setFirstResult(pageSize * (pageNumber - 1)); // Apply 0-based index
         return query.list();
       }
     });
@@ -139,7 +140,7 @@ public abstract class BaseHibernateReadService<T> implements EntityReadService<T
 
   @Override
   public PaginatedList<Item> getPaginatedListByExample(int pageSize, int pageNumber, T example) {
-    throw new IllegalStateException("Not yet supported");
+    throw new IllegalStateException("Not yet supported for this entity");
   }
 
 }

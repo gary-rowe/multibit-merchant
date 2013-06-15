@@ -54,13 +54,18 @@ public class HibernateItemReadService extends BaseHibernateReadService<Item> imp
 
   @Override
   public PaginatedList<Item> getPaginatedList(int pageSize, int pageNumber) {
+
+    Preconditions.checkState(pageSize>0,"pageSize is 1-based and must be positive");
+    Preconditions.checkState(pageNumber>0,"pageSize is 1-based and must be positive");
+
     return buildPaginatedList(pageSize, pageNumber, Item.class);
   }
 
   @SuppressWarnings("unchecked")
-  @Deprecated
   public PaginatedList<Item> getPaginatedListByExample(final int pageSize, final int pageNumber, final Item example) {
 
+    Preconditions.checkState(pageSize>0,"pageSize is 1-based and must be positive");
+    Preconditions.checkState(pageNumber>0,"pageSize is 1-based and must be positive");
     Preconditions.checkNotNull(example, "example cannot be null");
 
     Number total = rowCount(Item.class);
@@ -76,7 +81,7 @@ public class HibernateItemReadService extends BaseHibernateReadService<Item> imp
         // Do the work now that the HQL is created
         return (List<Item>) session
           .createQuery(hql)
-          .setFirstResult(pageSize * pageNumber)
+          .setFirstResult(pageSize * (pageNumber - 1)) // Apply offset
           .setMaxResults(pageSize)
           .setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE)
           .list();

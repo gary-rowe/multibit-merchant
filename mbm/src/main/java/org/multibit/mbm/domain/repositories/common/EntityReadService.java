@@ -28,8 +28,8 @@ public interface EntityReadService<T> {
   /**
    * Provide a {@link org.multibit.mbm.domain.common.pagination.PaginatedList} list of a subset of the entity
    *
-   * @param pageSize   The total entities returned in one page
-   * @param pageNumber The page number starts from 1
+   * @param pageSize   The total entities returned in one page (1-based)
+   * @param pageNumber The page number (1-based)
    * @return A {@link org.multibit.mbm.domain.common.pagination.PaginatedList} with the entities
    */
   PaginatedList<T> getPaginatedList(final int pageSize, final int pageNumber);
@@ -37,8 +37,8 @@ public interface EntityReadService<T> {
   /**
    * Provide a paged list of all Items filtered by an example
    *
-   * @param pageSize   The total record in one page
-   * @param pageNumber The page number starts from 0
+   * @param pageSize   The total record in one page (1-based)
+   * @param pageNumber The page number (1-based)
    * @param example    An example containing fields to match on (nulls are wildcards)
    *
    * @return A {@link org.multibit.mbm.domain.common.pagination.PaginatedList} with the matching entities

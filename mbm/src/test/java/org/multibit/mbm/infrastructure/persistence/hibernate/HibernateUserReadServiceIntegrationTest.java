@@ -121,14 +121,14 @@ public class HibernateUserReadServiceIntegrationTest extends BaseIntegrationTest
   @Test
   public void testPaging() {
 
-    PaginatedList<User> users = testObject.getPaginatedList(1, 0);
+    PaginatedList<User> users = testObject.getPaginatedList(1, 1);
 
     // Trent the admin is built first
     assertNotNull("Expected pre-populated data (page 1)",users);
     assertThat("Unexpected number of Users",users.list().size(), equalTo(1));
     assertThat("Unexpected ordering of Users",users.list().get(0).getUsername(), equalTo("trent"));
 
-    users = testObject.getPaginatedList(1, 1);
+    users = testObject.getPaginatedList(1, 2);
 
     // Alice the customer is built second
     assertNotNull("Expected pre-populated data (page 2)",users);
