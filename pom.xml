@@ -346,18 +346,19 @@
       <!-- BitCoinJ for Bitcoin in the service layer -->
       <!-- If not pulled in from repo you may need to build it manually from source
            using git checkout 25387d68402e -->
-      <dependency>
-        <groupId>com.google</groupId>
-        <artifactId>bitcoinj</artifactId>
-        <version>${bitcoinj.version}</version>
-        <!-- TODO This should be optional -->
-        <exclusions>
-          <exclusion>
-            <artifactId>slf4j-jdk14</artifactId>
-            <groupId>org.slf4j</groupId>
-          </exclusion>
-        </exclusions>
-      </dependency>
+      <!-- Temporarily disabled due to Travis requiring complete dependency chain -->
+      <!--<dependency>-->
+        <!--<groupId>com.google</groupId>-->
+        <!--<artifactId>bitcoinj</artifactId>-->
+        <!--<version>${bitcoinj.version}</version>-->
+        <!--&lt;!&ndash; TODO This should be optional &ndash;&gt;-->
+        <!--<exclusions>-->
+          <!--<exclusion>-->
+            <!--<artifactId>slf4j-jdk14</artifactId>-->
+            <!--<groupId>org.slf4j</groupId>-->
+          <!--</exclusion>-->
+        <!--</exclusions>-->
+      <!--</dependency>-->
       <dependency>
         <groupId>org.bouncycastle</groupId>
         <artifactId>bcprov-jdk15</artifactId>

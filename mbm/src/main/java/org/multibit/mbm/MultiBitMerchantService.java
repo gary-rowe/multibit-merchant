@@ -10,7 +10,6 @@ import org.multibit.mbm.interfaces.rest.auth.hmac.HmacServerCredentials;
 import org.multibit.mbm.interfaces.rest.auth.hmac.HmacServerRestrictedToProvider;
 import org.multibit.mbm.domain.model.model.User;
 import org.multibit.mbm.interfaces.rest.health.TemplatePropertyHealthCheck;
-import org.multibit.mbm.interfaces.rest.resources.BitcoinPaymentResource;
 import org.multibit.mbm.interfaces.rest.resources.cart.AdminCartResource;
 import org.multibit.mbm.interfaces.rest.resources.cart.PublicCartResource;
 import org.multibit.mbm.interfaces.rest.resources.item.AdminItemResource;
@@ -86,7 +85,6 @@ public class MultiBitMerchantService extends Service<MultiBitMerchantConfigurati
     // Resources - supplier (needs ROLE_SUPPLIER)
     environment.addResource(context.getBean(SupplierUserResource.class));
     // Resources - public (no authentication)
-    environment.addResource(context.getBean(BitcoinPaymentResource.class));
     environment.addResource(context.getBean(PublicCartResource.class));
     environment.addResource(context.getBean(PublicItemResource.class));
 

@@ -159,11 +159,11 @@
     <!--<artifactId>atmosphere-runtime</artifactId>-->
     <!--</dependency>-->
 
-    <!-- Bitcoin -->
-    <dependency>
-      <groupId>com.google</groupId>
-      <artifactId>bitcoinj</artifactId>
-    </dependency>
+    <!-- Bitcoin support from Bitcoinj -->
+    <!--<dependency>-->
+      <!--<groupId>com.google</groupId>-->
+      <!--<artifactId>bitcoinj</artifactId>-->
+    <!--</dependency>-->
 
     <!-- XChange for currency operations -->
     <dependency>
