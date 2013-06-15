@@ -2,7 +2,6 @@ package org.multibit.mbm.interfaces.rest.resources.cart;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Maps;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.yammer.dropwizard.jersey.caching.CacheControl;
 import com.yammer.metrics.annotation.Timed;
@@ -15,9 +14,10 @@ import org.multibit.mbm.domain.repositories.ItemReadService;
 import org.multibit.mbm.interfaces.rest.api.cart.AdminUpdateCartDto;
 import org.multibit.mbm.interfaces.rest.api.cart.PublicCartItemDto;
 import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
+import org.multibit.mbm.interfaces.rest.api.representations.hal.cart.AdminCartCollectionRepresentation;
+import org.multibit.mbm.interfaces.rest.api.representations.hal.cart.AdminCartRepresentation;
 import org.multibit.mbm.interfaces.rest.auth.Authority;
 import org.multibit.mbm.interfaces.rest.auth.annotation.RestrictedTo;
-import org.multibit.mbm.interfaces.rest.common.Representations;
 import org.multibit.mbm.interfaces.rest.common.ResourceAsserts;
 import org.multibit.mbm.interfaces.rest.links.cart.CartLinks;
 import org.multibit.mbm.interfaces.rest.resources.BaseResource;
@@ -25,6 +25,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.concurrent.TimeUnit;
 
@@ -41,6 +42,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 @Path(CartLinks.ADMIN_SELF_TEMPLATE)
 @Produces({HalMediaType.APPLICATION_HAL_JSON, HalMediaType.APPLICATION_HAL_XML})
+@Consumes(MediaType.APPLICATION_JSON)
 public class AdminCartResource extends BaseResource {
 
   @Resource(name = "hibernateCartDao")
@@ -74,7 +76,8 @@ public class AdminCartResource extends BaseResource {
     PaginatedList<Cart> carts = cartDao.getPaginatedList(pageSize, pageNumber);
 
     // Provide a representation to the client
-    Representation representation = Representations.asPaginatedList(self(), "carts", carts, "/carts/{id}");
+
+    Representation representation = new AdminCartCollectionRepresentation().get(carts);
 
     return ok(representation);
 
@@ -89,7 +92,6 @@ public class AdminCartResource extends BaseResource {
    */
   @PUT
   @Timed
-  @Path("/{cartId}")
   public Response update(
     @RestrictedTo({Authority.ROLE_ADMIN})
     User adminUser,
@@ -108,7 +110,7 @@ public class AdminCartResource extends BaseResource {
     cart = cartDao.saveOrUpdate(cart);
 
     // Provide a representation to the client
-    Representation representation = Representations.asDetail(self(), cart, Maps.<String, String>newHashMap());
+    Representation representation = new AdminCartRepresentation().get(cart);
 
     return ok(representation);
 

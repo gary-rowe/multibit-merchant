@@ -3,9 +3,11 @@ package org.multibit.mbm.interfaces.rest.api.representations.hal.cart;
 import com.theoryinpractise.halbuilder.DefaultRepresentationFactory;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
+import org.multibit.mbm.domain.common.pagination.PaginatedList;
 import org.multibit.mbm.domain.model.model.Cart;
 
-import java.util.List;
+import javax.ws.rs.core.UriBuilder;
+import java.net.URI;
 
 /**
  * <p>Representation to provide the following to {@link org.multibit.mbm.domain.model.model.Cart}:</p>
@@ -19,12 +21,19 @@ public class AdminCartCollectionRepresentation {
 
   private final PublicCartRepresentation publicCartRepresentation = new PublicCartRepresentation();
 
-  public Representation get(List<Cart> carts) {
+  public Representation get(PaginatedList<Cart> carts) {
     RepresentationFactory factory = new DefaultRepresentationFactory();
 
-    Representation cartList = factory.newRepresentation();
+    // TODO Integrate with Paths and Parameters
+    URI self = UriBuilder
+      .fromPath("/admin/carts")
+      .queryParam("ps",carts.pagination().getTotalPages())
+      .queryParam("pn",carts.pagination().getCurrentPage())
+      .build();
 
-    for (Cart cart : carts) {
+    Representation cartList = factory.newRepresentation(self);
+
+    for (Cart cart : carts.list()) {
       Representation cartRepresentation= publicCartRepresentation.get(cart);
 
       cartRepresentation.withProperty("id", cart.getId())

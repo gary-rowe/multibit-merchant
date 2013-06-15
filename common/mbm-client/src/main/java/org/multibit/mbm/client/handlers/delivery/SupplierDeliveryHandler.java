@@ -7,7 +7,7 @@ import org.multibit.mbm.client.handlers.BaseHandler;
 import org.multibit.mbm.interfaces.rest.api.cart.CartDto;
 import org.multibit.mbm.interfaces.rest.api.cart.CartItemDto;
 import org.multibit.mbm.interfaces.rest.api.cart.PublicCartItemDto;
-import org.multibit.mbm.interfaces.rest.api.cart.PublicUpdateCartDto;
+import org.multibit.mbm.interfaces.rest.api.cart.UpdateCartDto;
 import org.multibit.mbm.interfaces.rest.api.user.UserDto;
 
 import javax.ws.rs.core.MediaType;
@@ -80,7 +80,7 @@ public class SupplierDeliveryHandler extends BaseHandler {
     // TODO Replace "magic string" with auto-discover based on link rel
     String path = String.format("/cart");
 
-    PublicUpdateCartDto updateCartRequest = new PublicUpdateCartDto();
+    UpdateCartDto updateCartRequest = new UpdateCartDto();
     updateCartRequest.setCartItems(cartItems);
 
     String hal = HalHmacResourceFactory.INSTANCE

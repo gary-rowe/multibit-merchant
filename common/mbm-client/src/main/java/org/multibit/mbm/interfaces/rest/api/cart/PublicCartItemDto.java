@@ -3,7 +3,7 @@ package org.multibit.mbm.interfaces.rest.api.cart;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- *  <p>Value object to provide the following to {@link PublicUpdateCartDto}:</p>
+ *  <p>Value object to provide the following to {@link UpdateCartDto}:</p>
  *  <ul>
  *  <li>Defines the updates to the CartItem</li>
  *  </ul>

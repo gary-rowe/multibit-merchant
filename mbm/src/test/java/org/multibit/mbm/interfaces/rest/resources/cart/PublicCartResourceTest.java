@@ -3,7 +3,7 @@ package org.multibit.mbm.interfaces.rest.resources.cart;
 import com.google.common.base.Optional;
 import org.junit.Test;
 import org.multibit.mbm.interfaces.rest.api.cart.PublicCartItemDto;
-import org.multibit.mbm.interfaces.rest.api.cart.PublicUpdateCartDto;
+import org.multibit.mbm.interfaces.rest.api.cart.UpdateCartDto;
 import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
 import org.multibit.mbm.infrastructure.persistence.DatabaseLoader;
 import org.multibit.mbm.domain.repositories.CartReadService;
@@ -88,7 +88,7 @@ public class PublicCartResourceTest extends BaseJerseyHmacResourceTest {
     // Starting condition is Customer has {book1: 1, book2: 2}
     // Ending condition is Customer has {book1: 0, book2: 2, book3: 3}
 
-    PublicUpdateCartDto updateCartRequest = new PublicUpdateCartDto();
+    UpdateCartDto updateCartRequest = new UpdateCartDto();
     // Add a few new items
     updateCartRequest.getCartItems().add(new PublicCartItemDto("0316184136",3));
     // Remove by setting to zero

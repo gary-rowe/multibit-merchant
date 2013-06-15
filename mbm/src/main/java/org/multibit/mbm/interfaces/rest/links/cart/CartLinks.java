@@ -23,7 +23,7 @@ public class CartLinks extends Links {
   public static final String PUBLIC_SELF_TEMPLATE = "/cart";
 
   public static final String ADMIN_PATH="/admin/carts";
-  public static final String ADMIN_SELF_TEMPLATE = "/admin/carts/{id}";
+  public static final String ADMIN_SELF_TEMPLATE = "/admin/carts/{cartId}";
 
   /**
    * @return A URI suitable for use by the public (normally based on an inferred relationship without an ID)

@@ -14,7 +14,7 @@ import java.util.List;
  * @since 0.0.1
  *         
  */
-public class PublicUpdateCartDto {
+public class UpdateCartDto {
 
   /**
    * The cart items (item id, quantity etc)

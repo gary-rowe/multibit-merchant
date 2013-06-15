@@ -416,11 +416,41 @@
         <groupId>com.theoryinpractise</groupId>
         <artifactId>halbuilder-core</artifactId>
         <version>${halbuilder.version}</version>
+        <!-- Avoid version collisions -->
+        <exclusions>
+          <exclusion>
+            <artifactId>jackson-core</artifactId>
+            <groupId>com.fasterxml.jackson.core</groupId>
+          </exclusion>
+          <exclusion>
+            <artifactId>jackson-databind</artifactId>
+            <groupId>com.fasterxml.jackson.core</groupId>
+          </exclusion>
+          <exclusion>
+            <artifactId>guava</artifactId>
+            <groupId>com.google.guava</groupId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>com.theoryinpractise</groupId>
         <artifactId>halbuilder-api</artifactId>
         <version>${halbuilder.version}</version>
+        <!-- Avoid version collisions -->
+        <exclusions>
+          <exclusion>
+            <artifactId>jackson-core</artifactId>
+            <groupId>com.fasterxml.jackson.core</groupId>
+          </exclusion>
+          <exclusion>
+            <artifactId>jackson-databind</artifactId>
+            <groupId>com.fasterxml.jackson.core</groupId>
+          </exclusion>
+          <exclusion>
+            <artifactId>guava</artifactId>
+            <groupId>com.google.guava</groupId>
+          </exclusion>
+        </exclusions>
       </dependency>
 
       <!-- Google Guava for low level utilities -->

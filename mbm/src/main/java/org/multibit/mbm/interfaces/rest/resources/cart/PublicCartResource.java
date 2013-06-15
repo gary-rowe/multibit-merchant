@@ -12,7 +12,7 @@ import org.multibit.mbm.domain.model.model.User;
 import org.multibit.mbm.domain.repositories.CartReadService;
 import org.multibit.mbm.domain.repositories.ItemReadService;
 import org.multibit.mbm.interfaces.rest.api.cart.PublicCartItemDto;
-import org.multibit.mbm.interfaces.rest.api.cart.PublicUpdateCartDto;
+import org.multibit.mbm.interfaces.rest.api.cart.UpdateCartDto;
 import org.multibit.mbm.interfaces.rest.api.hal.HalMediaType;
 import org.multibit.mbm.interfaces.rest.auth.Authority;
 import org.multibit.mbm.interfaces.rest.auth.annotation.RestrictedTo;
@@ -90,7 +90,7 @@ public class PublicCartResource extends BaseResource {
   public Response update(
     @RestrictedTo({Authority.ROLE_PUBLIC})
     User publicUser,
-    PublicUpdateCartDto updateCartRequest) {
+    UpdateCartDto updateCartRequest) {
 
     // Retrieve the cart
     Cart cart = publicUser.getCustomer().getCart();
@@ -113,7 +113,7 @@ public class PublicCartResource extends BaseResource {
    * @param updateRequest The update request containing the changes
    * @param entity        The entity to which these changes will be applied
    */
-  private void apply(PublicUpdateCartDto updateRequest, Cart entity) {
+  private void apply(UpdateCartDto updateRequest, Cart entity) {
 
     for (PublicCartItemDto customerCartItem : updateRequest.getCartItems()) {
       Preconditions.checkNotNull(customerCartItem.getSKU(), "sku");

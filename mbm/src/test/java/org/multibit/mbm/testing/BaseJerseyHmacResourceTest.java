@@ -18,14 +18,14 @@ import com.yammer.dropwizard.validation.Validator;
 import org.codehaus.jackson.map.Module;
 import org.junit.After;
 import org.junit.Before;
-import org.multibit.mbm.interfaces.rest.auth.hmac.HmacClientFilter;
-import org.multibit.mbm.interfaces.rest.auth.hmac.HmacServerAuthenticator;
-import org.multibit.mbm.interfaces.rest.auth.hmac.HmacServerRestrictedToProvider;
 import org.multibit.mbm.domain.model.model.Role;
 import org.multibit.mbm.domain.model.model.User;
 import org.multibit.mbm.domain.model.model.UserBuilder;
-import org.multibit.mbm.infrastructure.persistence.DatabaseLoader;
 import org.multibit.mbm.domain.repositories.UserReadService;
+import org.multibit.mbm.infrastructure.persistence.DatabaseLoader;
+import org.multibit.mbm.interfaces.rest.auth.hmac.HmacClientFilter;
+import org.multibit.mbm.interfaces.rest.auth.hmac.HmacServerAuthenticator;
+import org.multibit.mbm.interfaces.rest.auth.hmac.HmacServerRestrictedToProvider;
 
 import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
@@ -195,7 +195,7 @@ public abstract class BaseJerseyHmacResourceTest extends BaseResourceTest {
     test.setUp();
 
     // Configure for weak hashes
-    UserBuilder.isTestMode =true;
+    UserBuilder.isTestMode = true;
   }
 
   @After
@@ -285,7 +285,6 @@ public abstract class BaseJerseyHmacResourceTest extends BaseResourceTest {
    * @param path The relative path to the resource
    *
    * @return A web resource suitable for method chaining
-   *
    */
   protected WebResource configureAsClient(String path) {
     WebResource resource = client().resource(path);
@@ -297,10 +296,23 @@ public abstract class BaseJerseyHmacResourceTest extends BaseResourceTest {
   /**
    * Configure request as a client to access the resource on behalf of a user
    *
+   * @param uri The URI for the resource
+   *
+   * @return A web resource suitable for method chaining
+   */
+  protected WebResource configureAsClient(URI uri) {
+    WebResource resource = client().resource(uri);
+    resource.setProperty(HmacClientFilter.MBM_API_KEY, hmacUser.getApiKey());
+    resource.setProperty(HmacClientFilter.MBM_SECRET_KEY, hmacUser.getSecretKey());
+    return resource;
+  }
+
+  /**
+   * Configure request as a client to access the resource on behalf of a user
+   *
    * @param clazz The class of the Resource
    *
    * @return A web resource suitable for method chaining
-   *
    */
   protected WebResource configureAsClient(Class clazz) {
     URI uri = UriBuilder
