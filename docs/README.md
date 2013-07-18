@@ -4,5 +4,6 @@ MultiBit Merchant is a daunting project so here is a guide to help you get to gr
 
 ### Contents
 
-[Chapter 1 Architecture](1-Architecture.md)
-[Chapter 2 Design Choices](2-Design.md)
+* [Chapter 1 Architecture](1-Architecture.md)
+* [Chapter 2 Design Choices](2-Design.md)
+* [Chapter 3 Implementation](3-Implementation.md)
